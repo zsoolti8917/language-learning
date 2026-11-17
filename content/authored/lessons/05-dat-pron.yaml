@@ -1,0 +1,40 @@
+# Lesson 5 of the declension course (stage `lessons`, package C4).
+id: dat-pron
+ord: 5
+titleEn: Dative, starting with pronouns
+titleSk: Datív, najprv zámená
+case: dat
+prerequisites: [ins-sg]
+buckets: [dat.sg.m_anim, dat.sg.f, dat.sg.n, dat.sg.m_inan]
+# Besides nouns, the exercises of this lesson target the dative of these pronouns.
+pronouns: [on, ona]
+triggerIds:
+  - verb-pomahat
+  - verb-dakovat
+  - verb-rozumiet
+  - verb-volat-dat
+  - verb-patrit
+  - verb-pacit
+  - verb-dat
+  - prep-k
+  - prep-kvoli
+  - prep-vdaka
+  - prep-proti
+  - q-komu
+  - q-comu
+summaryMd: The dative is the person something is for or to. *Pomáham mu. Pomáham bratovi.*
+explain:
+  md: |-
+    The dative is the case of the **person who receives** something: the one you help, thank, give something to or phone. It also follows *k* (towards), *kvôli* (because of) and *vďaka* (thanks to).
+
+    Start with the pronouns, which you will hear all the time: *mi* (to me), *ti* (to you), *mu* (to him), *jej* (to her), *nám*, *vám*, *im*. *Páči sa mi to* means *I like it*: it pleases me.
+
+    - Masculine nouns for people take *-ovi*: *bratovi*, *kolegovi*. Masculine nouns for things and neuter nouns take *-u*: *k domu*, *k mestu*.
+    - Feminine nouns take *-e* after a hard consonant and *-i* after a soft one: *mame*, *sestre*, *k ulici*, *k miestnosti*.
+  examples:
+    - sk: Pomáham [bratovi].
+      en: I help my brother.
+    - sk: Ďakujem [mame].
+      en: I thank my mum.
+    - sk: Idem k [lekárovi].
+      en: I am going to the doctor.

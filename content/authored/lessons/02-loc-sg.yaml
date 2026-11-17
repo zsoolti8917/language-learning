@@ -1,0 +1,36 @@
+# Lesson 2 of the declension course (stage `lessons`, package C4).
+id: loc-sg
+ord: 2
+titleEn: Locative singular
+titleSk: Lokál jednotného čísla
+case: loc
+number: sg
+prerequisites: [acc-sg]
+buckets: [loc.sg.m_inan, loc.sg.f, loc.sg.n, loc.sg.m_anim]
+triggerIds:
+  - prep-v-loc
+  - prep-na-loc
+  - prep-o-loc
+  - prep-pri
+  - prep-po-loc
+  - q-kde
+  - q-o-kom
+  - q-o-com
+summaryMd: The locative follows *v*, *na*, *o*, *pri* and *po*. *Bývam v Bratislave.*
+explain:
+  md: |-
+    The locative always comes after a preposition. With *v* (in) and *na* (on, at) it says **where** something is. *O* means *about*, *pri* means *by* and *po* means *after* or *around*.
+
+    - Hard masculine and neuter nouns take *-e*: *dom → v dome*, *mesto → v meste*. Many that end in *-k*, *-g* or *-h* take *-u*: *v parku*.
+    - Soft ones take *-i*: *počítač → v počítači*, *more → na mori*.
+    - Masculine nouns for people take *-ovi*: *o bratovi*.
+    - Feminine nouns in *-a* take *-e* after a hard consonant and *-i* after a soft one: *v škole*, *na ulici*. Nouns that end in a consonant take *-i*: *v miestnosti*.
+
+    Watch *na* and *v*: with the locative they say where (*som na námestí*), with the accusative where to (*idem na námestie*).
+  examples:
+    - sk: Bývam v [Bratislave].
+      en: I live in Bratislava.
+    - sk: Som v [obchode].
+      en: I am in the shop.
+    - sk: Hovoríme o [bratovi].
+      en: We are talking about my brother.

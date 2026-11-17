@@ -1,0 +1,185 @@
+# Noun declension patterns (stage `lessons`, package C4).
+#
+# The endings are not typed here: the stage takes them from the real forms of the model word
+# in the morphology data. `stem` is the part every form starts with; `stems` names another
+# stem for some tags where the stem itself changes (ženy but žien, dlane but dlaňou).
+# `prefer` picks the form when the model word has two for one tag. `everyday` is the common
+# word the app shows beside the traditional label.
+patterns:
+  - id: chlap
+    labelSk: chlap
+    pos: noun
+    gender: m_anim
+    model: chlap
+    everyday: muž
+    stem: chlap
+    prefer: { s5: chlap }
+    notesEn: >-
+      Masculine nouns for people and animals that end in a consonant, like muž, brat and
+      kamarát. The accusative looks like the genitive: vidím brata. Many take -ia or -ovia in
+      the nominative plural: bratia, rodičia, synovia.
+
+  - id: hrdina
+    labelSk: hrdina
+    pos: noun
+    gender: m_anim
+    model: hrdina
+    everyday: kolega
+    stem: hrdin
+    notesEn: >-
+      Masculine nouns for people that end in -a, like kolega, turista and hokejista. In the
+      singular they look like žena in the genitive and accusative (kolegu), and like chlap in
+      the dative and locative (kolegovi). The plural ends in -ovia.
+
+  - id: dub
+    labelSk: dub
+    pos: noun
+    gender: m_inan
+    model: dub
+    everyday: dom
+    stem: dub
+    notesEn: >-
+      Masculine nouns for things that end in a hard consonant, like dom, obchod and stôl. The
+      accusative is the same as the nominative. Many take -u in the genitive instead of -a:
+      domu, obchodu, but duba, stola.
+
+  - id: stroj
+    labelSk: stroj
+    pos: noun
+    gender: m_inan
+    model: stroj
+    everyday: počítač
+    stem: stroj
+    notesEn: >-
+      Masculine nouns for things that end in a soft consonant (j, č, š, ž, ň, ď, ť, ľ, c, dz),
+      like počítač and čaj. They are like dub, but the locative singular ends in -i and the
+      nominative plural in -e: v počítači, počítače.
+
+  - id: kuli
+    labelSk: kuli
+    pos: noun
+    gender: m_anim
+    model: kuli
+    stem: kuli
+    notesEn: >-
+      A rare pattern for masculine nouns that end in -i, -y or -e, mostly foreign words and
+      nicknames like pony. In the singular they take adjective endings: kuliho, kulimu. The
+      plural is like hrdina.
+
+  - id: zena
+    labelSk: žena
+    pos: noun
+    gender: f
+    model: žena
+    everyday: škola
+    stem: žen
+    stems: { žien: [p2] }
+    notesEn: >-
+      Feminine nouns that end in -a after a hard consonant, like škola, kniha and mama. The
+      genitive plural has no ending, and its last syllable often gets longer: žien, škôl, kníh.
+
+  - id: ulica
+    labelSk: ulica
+    pos: noun
+    gender: f
+    model: ulica
+    everyday: práca
+    stem: ulic
+    stems: { ulíc: [p2] }
+    notesEn: >-
+      Feminine nouns that end in -a after a soft consonant, like práca, stanica and
+      kancelária. Where žena has -y it has -e (ulice), and where žena has -e it has -i (na
+      ulici). The genitive plural often gets a long vowel: ulíc.
+
+  - id: dlan
+    labelSk: dlaň
+    pos: noun
+    gender: f
+    model: dlaň
+    everyday: pieseň
+    stem: dlan
+    stems: { dlaň: [s1, s4, s5, s7, p7] }
+    notesEn: >-
+      Feminine nouns that end in a soft consonant and take -e in the genitive singular, like
+      pieseň, posteľ and tvár. Before e and i the soft letter is written without its mark:
+      dlaň, dlane.
+
+  - id: kost
+    labelSk: kosť
+    pos: noun
+    gender: f
+    model: kosť
+    everyday: miestnosť
+    stem: kost
+    stems: { kosť: [s1, s4, s5, s7, p7] }
+    notesEn: >-
+      Feminine nouns that end in a consonant and take -i in the genitive singular, like
+      miestnosť, noc and vec. Every noun in -osť follows it: v miestnosti.
+
+  - id: gazdina
+    labelSk: gazdiná
+    pos: noun
+    gender: f
+    model: gazdiná
+    everyday: kráľovná
+    stem: gazdin
+    stems: { gazdín: [p2] }
+    notesEn: >-
+      Feminine nouns that end in -á, like kráľovná and princezná. In the singular they take
+      adjective endings: gazdinej, gazdinú, gazdinou.
+
+  - id: mesto
+    labelSk: mesto
+    pos: noun
+    gender: n
+    model: mesto
+    everyday: auto
+    stem: mest
+    stems: { miest: [p2] }
+    notesEn: >-
+      Neuter nouns that end in -o, like auto, okno and slovo. The plural ends in -á or -a:
+      mestá, autá. The genitive plural has no ending and often a longer vowel: miest, áut.
+      Nouns in -um drop it: múzeum, v múzeu.
+
+  - id: srdce
+    labelSk: srdce
+    pos: noun
+    gender: n
+    model: srdce
+    everyday: more
+    stem: srdc
+    stems: { sŕdc: [p2] }
+    notesEn: >-
+      Neuter nouns that end in -e, like more, pole and vajce. The locative singular ends in
+      -i (na mori), and the plural in -ia (moria).
+
+  - id: vysvedcenie
+    labelSk: vysvedčenie
+    pos: noun
+    gender: n
+    model: vysvedčenie
+    everyday: námestie
+    stem: vysvedčen
+    notesEn: >-
+      Neuter nouns that end in -ie, like námestie, stretnutie and poschodie. Most of them are
+      made from verbs. The locative singular ends in -í: na námestí.
+
+  - id: dievca
+    labelSk: dievča
+    pos: noun
+    gender: n
+    model: dievča
+    everyday: kurča
+    stem: dievč
+    prefer:
+      p1: dievčatá
+      p2: dievčat
+      p3: dievčatám
+      p4: dievčatá
+      p5: dievčatá
+      p6: dievčatách
+      p7: dievčatami
+    notesEn: >-
+      Neuter nouns that end in -a or -ä, mostly young people and animals, like kurča and
+      mača. They add -ať- in the singular (dievčaťa) and -at- in the plural (dievčatá). The
+      plural can also be dievčence.

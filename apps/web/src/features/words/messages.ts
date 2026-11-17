@@ -3,7 +3,7 @@ import { defineMessages } from '../../messages';
 
 export const m = defineMessages({
   overview: {
-    intro: 'Sort the most common words. Each band holds 500 of them, in order of use.',
+    intro: 'Sort the most common words, one band at a time, in order of use.',
     bandTitle: 'Words {from}–{to}',
     progressLabel: 'Known in words {from}–{to}',
     counts: '{known} known · {learning} learning · {unknown} new',

@@ -1,0 +1,43 @@
+# Lesson 6 of the declension course (stage `lessons`, package C4).
+id: nom-acc-pl
+ord: 6
+titleEn: Nominative and accusative plural
+titleSk: Nominatív a akuzatív množného čísla
+number: pl
+prerequisites: [dat-pron]
+buckets:
+  - nom.pl.f
+  - nom.pl.n
+  - nom.pl.m_inan
+  - nom.pl.m_anim
+  - acc.pl.f
+  - acc.pl.n
+  - acc.pl.m_inan
+  - acc.pl.m_anim
+triggerIds:
+  - verb-byt-nom
+  - num-dva
+  - num-tri
+  - num-styri
+  - q-kto-nom
+  - q-co-nom
+  - verb-vidiet
+  - verb-mat
+  - prep-na-acc
+  - prep-pre
+summaryMd: The plural of the subject and of the object. *Domy sú nové. Mám dva domy.*
+explain:
+  md: |-
+    The nominative plural is the plural of the **subject**, the accusative plural the plural of the **object**. *Dva*, *tri* and *štyri* take the nominative plural: *dva domy*, *tri sestry*.
+
+    - Feminine nouns: *-y* or *-e*, the same in both cases: *ženy*, *ulice*, *miestnosti*.
+    - Neuter nouns: *-á* or *-a*, *-ia*: *mestá*, *autá*, *námestia*.
+    - Masculine nouns for things: *-y* or *-e*, the same in both cases: *domy*, *počítače*.
+    - Masculine nouns for people are the only ones that differ: *-i* or *-ia*, *-ovia* in the nominative (*bratia*, *kolegovia*), and *-ov* in the accusative (*vidím bratov*).
+  examples:
+    - sk: To sú moji [bratia].
+      en: These are my brothers.
+    - sk: Mám dva [domy].
+      en: I have two houses.
+    - sk: Vidím [bratov].
+      en: I see my brothers.

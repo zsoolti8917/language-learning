@@ -1,0 +1,40 @@
+# Lesson 3 of the declension course (stage `lessons`, package C4).
+id: gen-sg
+ord: 3
+titleEn: Genitive singular
+titleSk: Genitív jednotného čísla
+case: gen
+number: sg
+prerequisites: [loc-sg]
+buckets: [gen.sg.f, gen.sg.n, gen.sg.m_inan, gen.sg.m_anim]
+triggerIds:
+  - prep-do
+  - prep-z
+  - prep-od
+  - prep-bez
+  - prep-u
+  - prep-okrem
+  - prep-vedla
+  - prep-pocas
+  - prep-podla
+  - verb-bat
+  - noun-pohar
+  - noun-salka
+  - q-koho-gen
+  - q-coho-gen
+summaryMd: The genitive follows *do*, *z*, *od*, *bez* and *u*, and means *of*. *Idem do mesta.*
+explain:
+  md: |-
+    The genitive means **of** (*šálka kávy*, a cup of coffee) and follows many prepositions: *do* (to, into), *z* (from, out of), *od* (from a person), *bez* (without) and *u* (at someone's place).
+
+    - Feminine nouns in *-a* take *-y* after a hard consonant and *-e* after a soft one: *do školy*, *z práce*. Most nouns in a consonant take *-i*: *z miestnosti*.
+    - Masculine nouns for people take *-a*: *od brata*. Those in *-a* take *-u*: *od kolegu*.
+    - Masculine nouns for things take *-a* or *-u*: *do obchodu*, *z domu*, *bez stola*. The dictionary tells you which.
+    - Neuter nouns take *-a*: *do mesta*, *z námestia*.
+  examples:
+    - sk: Idem do [mesta].
+      en: I am going to town.
+    - sk: Som z [Bratislavy].
+      en: I am from Bratislava.
+    - sk: Pijem čaj bez [cukru].
+      en: I drink tea without sugar.

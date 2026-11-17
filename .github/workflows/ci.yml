@@ -42,3 +42,26 @@ jobs:
             apps/web/src/features/*/e2e/test-results
             apps/web/node_modules/.cache/tutor-e2e-results
           if-no-files-found: ignore
+  browser:
+    # The learner flows against the real API in local mode (PGlite, dev login, mock gateway) at
+    # 390x844, three runs of every flow (e2e/scripts/run.mjs picks free ports).
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Chromium for Playwright (CI only; the cloud containers have /opt/pw-browsers)
+        run: pnpm --filter @app/e2e exec playwright install --with-deps chromium
+      - run: pnpm e2e -- --repeat-each=3
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-flow-results
+          path: e2e/test-results
+          if-no-files-found: ignore

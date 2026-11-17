@@ -1,0 +1,28 @@
+id: scn-cafe-order
+mode: scenario
+ord: 1
+level: A2
+titleEn: At the café
+titleSk: V kaviarni
+goalEn: Order a drink and something to eat, say how you want it, and pay.
+settingSk: Si v malej kaviarni v centre mesta. Je sobota ráno a máš chuť na kávu a niečo sladké.
+tutorRole: A friendly waiter in a small café in Bratislava. Speaks simple, polite A2 Slovak and uses the formal vy.
+targetCases: [acc, ins, gen]
+targetTriggers: [q-co-acc, prep-s-ins, prep-bez]
+openingSk: Dobrý deň, vitajte! Čo si dáte?
+successCriteria:
+  - id: c1
+    textEn: Order a drink.
+  - id: c2
+    textEn: Say how you want it, for example with milk or without sugar.
+  - id: c3
+    textEn: Order something to eat.
+  - id: c4
+    textEn: Ask for the bill and pay.
+vocabHint:
+  - { sk: káva, en: coffee }
+  - { sk: čaj, en: tea }
+  - { sk: mlieko, en: milk }
+  - { sk: cukor, en: sugar }
+  - { sk: koláč, en: cake }
+  - { sk: účet, en: the bill }

@@ -12,6 +12,12 @@ import { STAGES } from '..';
 import { morphStage } from '../morph';
 import { allChecks, validateStage } from '.';
 
+// The stages whose checks the mini dataset is held to: later stages (scenarios, library, …)
+// check content targets the mini dataset does not aim at.
+const MINI_STAGES = STAGES.filter((s) =>
+  ['fetch', 'morph', 'freq', 'dict', 'validate', 'load'].includes(s.name),
+);
+
 const SAMPLE = fileURLToPath(new URL('../morph/fixtures/snk-sample.txt', import.meta.url));
 
 async function miniRegistry(): Promise<LemmaRegistry> {
@@ -36,15 +42,18 @@ describe('validate on a set folder', () => {
   afterAll(() => t.remove());
 
   it('passes the mini dataset, with every core check and the morph checks', async () => {
-    const r = await validateSet(MINI_DIR, allChecks(STAGES), { registry: await miniRegistry() });
+    const r = await validateSet(MINI_DIR, allChecks(MINI_STAGES), {
+      registry: await miniRegistry(),
+    });
     expect(r.issues).toEqual([]);
     expect(r.ok).toBe(true);
     // The mini prepositions carry no flags.cases: a warning here, an issue in a full build.
     expect(r.warnings.filter((w) => w.check === 'morph.prep-cases')).toHaveLength(12);
-    const full = await validateSet(MINI_DIR, allChecks(STAGES), {
+    const full = await validateSet(MINI_DIR, allChecks(MINI_STAGES), {
       registry: await miniRegistry(),
       complete: true,
     });
+    // MINI_STAGES stops at dict, so sentences.coverage is not checked here (see sentences.test.ts).
     expect(Object.keys(full.issueCounts)).toEqual(['morph.prep-cases']);
   });
 
@@ -122,7 +131,9 @@ describe('the validate stage', () => {
 
   it('assembles the set from the stages, writes its manifest, passes, and keeps it on a rerun', async () => {
     await runStage(morphStage, t.ctx({ input: SAMPLE, mini: MINI_DIR, measure: 'off' }));
-    const first = await runStage(validateStage, t.ctx());
+    // Only morph has run: later stages (freq, dict, …) would ask for parts that do not exist.
+    const upToMorph = [STAGES[0] as Stage, morphStage, validateStage];
+    const first = await runStage(validateStage, t.ctx({}, upToMorph));
     expect(first.result).toMatchObject({ version: '2026-11-17.1' });
     const manifestPath = join(t.paths.set, 'manifest.json');
     const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
@@ -134,7 +145,7 @@ describe('the validate stage', () => {
       }),
     ]);
     const before = await readFile(manifestPath, 'utf8');
-    await runStage(validateStage, t.ctx(), { force: true });
+    await runStage(validateStage, t.ctx({}, upToMorph), { force: true });
     expect(await readFile(manifestPath, 'utf8')).toBe(before);
     expect(await readFile(join(t.paths.build, 'validate', 'report.md'), 'utf8')).toContain(
       'Result: **pass**',

@@ -237,7 +237,7 @@ describe('rounds are safe to repeat', () => {
     expect(r2again.body).toEqual(r2.body);
     expect((await stored(id)).filter((i) => i.round === 2)).toHaveLength(12);
 
-    const changed = answers.map((x, i) => (i === 0 ? { ...x, choice: 4 - (x.choice ?? 0) } : x));
+    const changed = answers.map((x, i) => (i === 0 ? { ...x, choice: x.choice === 0 ? 1 : 0 } : x));
     const refused = await a.call('placement.answer', {
       params: { id },
       body: { round: 1, answers: changed },

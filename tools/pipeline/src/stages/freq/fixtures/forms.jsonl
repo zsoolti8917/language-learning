@@ -1,0 +1,2018 @@
+{"lemmaId":6,"form":"dom","tags":"s1 s4 s5"}
+{"lemmaId":6,"form":"domami","tags":"p7"}
+{"lemmaId":6,"form":"dome","tags":"s6"}
+{"lemmaId":6,"form":"domoch","tags":"p6"}
+{"lemmaId":6,"form":"domom","tags":"s7 p3"}
+{"lemmaId":6,"form":"domov","tags":"p2"}
+{"lemmaId":6,"form":"domu","tags":"s2 s3"}
+{"lemmaId":6,"form":"domy","tags":"p1 p4 p5"}
+{"lemmaId":11,"form":"žena","tags":"s1 s5"}
+{"lemmaId":11,"form":"ženami","tags":"p7"}
+{"lemmaId":11,"form":"žene","tags":"s3 s6"}
+{"lemmaId":11,"form":"ženou","tags":"s7"}
+{"lemmaId":11,"form":"ženu","tags":"s4"}
+{"lemmaId":11,"form":"ženy","tags":"s2 p1 p4 p5"}
+{"lemmaId":11,"form":"ženách","tags":"p6"}
+{"lemmaId":11,"form":"ženám","tags":"p3"}
+{"lemmaId":11,"form":"žien","tags":"p2"}
+{"lemmaId":12,"form":"kniha","tags":"s1 s5"}
+{"lemmaId":12,"form":"knihami","tags":"p7"}
+{"lemmaId":12,"form":"knihe","tags":"s3 s6"}
+{"lemmaId":12,"form":"knihou","tags":"s7"}
+{"lemmaId":12,"form":"knihu","tags":"s4"}
+{"lemmaId":12,"form":"knihy","tags":"s2 p1 p4 p5"}
+{"lemmaId":12,"form":"knihách","tags":"p6"}
+{"lemmaId":12,"form":"knihám","tags":"p3"}
+{"lemmaId":12,"form":"kníh","tags":"p2"}
+{"lemmaId":15,"form":"prác","tags":"p2"}
+{"lemmaId":15,"form":"práca","tags":"s1 s5"}
+{"lemmaId":15,"form":"prácach","tags":"p6"}
+{"lemmaId":15,"form":"prácam","tags":"p3"}
+{"lemmaId":15,"form":"prácami","tags":"p7"}
+{"lemmaId":15,"form":"práce","tags":"s2 p1 p4 p5"}
+{"lemmaId":15,"form":"práci","tags":"s3 s6"}
+{"lemmaId":15,"form":"prácou","tags":"s7"}
+{"lemmaId":15,"form":"prácu","tags":"s4"}
+{"lemmaId":20,"form":"mesta","tags":"s2"}
+{"lemmaId":20,"form":"mestami","tags":"p7"}
+{"lemmaId":20,"form":"meste","tags":"s6"}
+{"lemmaId":20,"form":"mesto","tags":"s1 s4 s5"}
+{"lemmaId":20,"form":"mestom","tags":"s7"}
+{"lemmaId":20,"form":"mestu","tags":"s3"}
+{"lemmaId":20,"form":"mestá","tags":"p1 p4 p5"}
+{"lemmaId":20,"form":"mestách","tags":"p6"}
+{"lemmaId":20,"form":"mestám","tags":"p3"}
+{"lemmaId":20,"form":"miest","tags":"p2"}
+{"lemmaId":27,"form":"človek","tags":"s1 s5"}
+{"lemmaId":27,"form":"človeka","tags":"s2 s4"}
+{"lemmaId":27,"form":"človekom","tags":"s7"}
+{"lemmaId":27,"form":"človekovi","tags":"s3 s6"}
+{"lemmaId":27,"form":"človeku","tags":"s3 s6"}
+{"lemmaId":27,"form":"človeče","tags":"s5"}
+{"lemmaId":28,"form":"ľudia","tags":"p1 p5"}
+{"lemmaId":28,"form":"ľudí","tags":"p2 p4"}
+{"lemmaId":28,"form":"ľuďmi","tags":"p7"}
+{"lemmaId":28,"form":"ľuďoch","tags":"p6"}
+{"lemmaId":28,"form":"ľuďom","tags":"p3"}
+{"lemmaId":30,"form":"deň","tags":"s1 s4 s5"}
+{"lemmaId":30,"form":"dni","tags":"s6 p1 p4 p5"}
+{"lemmaId":30,"form":"dní","tags":"p2"}
+{"lemmaId":30,"form":"dňa","tags":"s2"}
+{"lemmaId":30,"form":"dňami","tags":"p7"}
+{"lemmaId":30,"form":"dňoch","tags":"p6"}
+{"lemmaId":30,"form":"dňom","tags":"s7 p3"}
+{"lemmaId":30,"form":"dňu","tags":"s3"}
+{"lemmaId":32,"form":"peknej","tags":"s2f s3f s6f"}
+{"lemmaId":32,"form":"peknom","tags":"s6m s6i s6n"}
+{"lemmaId":32,"form":"peknou","tags":"s7f"}
+{"lemmaId":32,"form":"pekná","tags":"s1f s5f"}
+{"lemmaId":32,"form":"pekné","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":32,"form":"pekného","tags":"s2m s2i s2n s4m"}
+{"lemmaId":32,"form":"peknému","tags":"s3m s3i s3n"}
+{"lemmaId":32,"form":"pekní","tags":"p1m p5m"}
+{"lemmaId":32,"form":"peknú","tags":"s4f"}
+{"lemmaId":32,"form":"pekný","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":32,"form":"pekných","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":32,"form":"pekným","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":32,"form":"peknými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":33,"form":"novej","tags":"s2f s3f s6f"}
+{"lemmaId":33,"form":"novom","tags":"s6m s6i s6n"}
+{"lemmaId":33,"form":"novou","tags":"s7f"}
+{"lemmaId":33,"form":"nová","tags":"s1f s5f"}
+{"lemmaId":33,"form":"nové","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":33,"form":"nového","tags":"s2m s2i s2n s4m"}
+{"lemmaId":33,"form":"novému","tags":"s3m s3i s3n"}
+{"lemmaId":33,"form":"noví","tags":"p1m p5m"}
+{"lemmaId":33,"form":"novú","tags":"s4f"}
+{"lemmaId":33,"form":"nový","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":33,"form":"nových","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":33,"form":"novým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":33,"form":"novými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":34,"form":"dobrej","tags":"s2f s3f s6f"}
+{"lemmaId":34,"form":"dobrom","tags":"s6m s6i s6n"}
+{"lemmaId":34,"form":"dobrou","tags":"s7f"}
+{"lemmaId":34,"form":"dobrá","tags":"s1f s5f"}
+{"lemmaId":34,"form":"dobré","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":34,"form":"dobrého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":34,"form":"dobrému","tags":"s3m s3i s3n"}
+{"lemmaId":34,"form":"dobrí","tags":"p1m p5m"}
+{"lemmaId":34,"form":"dobrú","tags":"s4f"}
+{"lemmaId":34,"form":"dobrý","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":34,"form":"dobrých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":34,"form":"dobrým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":34,"form":"dobrými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":36,"form":"slovenskej","tags":"s2f s3f s6f"}
+{"lemmaId":36,"form":"slovenskom","tags":"s6m s6i s6n"}
+{"lemmaId":36,"form":"slovenskou","tags":"s7f"}
+{"lemmaId":36,"form":"slovenská","tags":"s1f s5f"}
+{"lemmaId":36,"form":"slovenské","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":36,"form":"slovenského","tags":"s2m s2i s2n s4m"}
+{"lemmaId":36,"form":"slovenskému","tags":"s3m s3i s3n"}
+{"lemmaId":36,"form":"slovenskí","tags":"p1m p5m"}
+{"lemmaId":36,"form":"slovenskú","tags":"s4f"}
+{"lemmaId":36,"form":"slovenský","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":36,"form":"slovenských","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":36,"form":"slovenským","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":36,"form":"slovenskými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":37,"form":"ja","tags":"x1 x5"}
+{"lemmaId":37,"form":"ma","tags":"x2 x4"}
+{"lemmaId":37,"form":"mi","tags":"x3"}
+{"lemmaId":37,"form":"mne","tags":"x3 x6"}
+{"lemmaId":37,"form":"mnou","tags":"x7"}
+{"lemmaId":37,"form":"mňa","tags":"x2 x4"}
+{"lemmaId":38,"form":"teba","tags":"x2 x4"}
+{"lemmaId":38,"form":"tebe","tags":"x3 x6"}
+{"lemmaId":38,"form":"tebou","tags":"x7"}
+{"lemmaId":38,"form":"ti","tags":"x3"}
+{"lemmaId":38,"form":"ty","tags":"x1 x5"}
+{"lemmaId":38,"form":"ťa","tags":"x2 x4"}
+{"lemmaId":39,"form":"ho","tags":"s2m s2i s4m s4i"}
+{"lemmaId":39,"form":"ich","tags":"p2m p2i p4m p4i"}
+{"lemmaId":39,"form":"im","tags":"p3m p3i"}
+{"lemmaId":39,"form":"jeho","tags":"s2m s2i s4m s4i"}
+{"lemmaId":39,"form":"jemu","tags":"s3m s3i"}
+{"lemmaId":39,"form":"mu","tags":"s3m s3i"}
+{"lemmaId":39,"form":"ne","tags":"p4i"}
+{"lemmaId":39,"form":"neho","tags":"s2m s2i s4m s4i"}
+{"lemmaId":39,"form":"nemu","tags":"s3m s3i"}
+{"lemmaId":39,"form":"nich","tags":"p2m p2i p4m p6m p6i"}
+{"lemmaId":39,"form":"nim","tags":"p3m p3i"}
+{"lemmaId":39,"form":"nimi","tags":"p7m p7i"}
+{"lemmaId":39,"form":"ním","tags":"s7m s7i"}
+{"lemmaId":39,"form":"on","tags":"s1m s1i s5m s5i"}
+{"lemmaId":39,"form":"oni","tags":"p1m p5m"}
+{"lemmaId":39,"form":"ony","tags":"p1i p5i"}
+{"lemmaId":39,"form":"ňom","tags":"s6m s6i"}
+{"lemmaId":40,"form":"ich","tags":"p2f p4f"}
+{"lemmaId":40,"form":"im","tags":"p3f"}
+{"lemmaId":40,"form":"jej","tags":"s2f s3f"}
+{"lemmaId":40,"form":"ju","tags":"s4f"}
+{"lemmaId":40,"form":"ne","tags":"p4f"}
+{"lemmaId":40,"form":"nej","tags":"s2f s3f s6f"}
+{"lemmaId":40,"form":"nich","tags":"p2f p6f"}
+{"lemmaId":40,"form":"nim","tags":"p3f"}
+{"lemmaId":40,"form":"nimi","tags":"p7f"}
+{"lemmaId":40,"form":"ona","tags":"s1f s5f"}
+{"lemmaId":40,"form":"ony","tags":"p1f p5f"}
+{"lemmaId":40,"form":"ňou","tags":"s7f"}
+{"lemmaId":40,"form":"ňu","tags":"s4f"}
+{"lemmaId":41,"form":"moja","tags":"s1f s5f"}
+{"lemmaId":41,"form":"moje","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":41,"form":"mojej","tags":"s2f s3f s6f"}
+{"lemmaId":41,"form":"moji","tags":"p1m p5m"}
+{"lemmaId":41,"form":"mojich","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":41,"form":"mojim","tags":"p3m p3i p3f p3n"}
+{"lemmaId":41,"form":"mojimi","tags":"p7m p7i p7f p7n"}
+{"lemmaId":41,"form":"mojom","tags":"s6m s6i s6n"}
+{"lemmaId":41,"form":"mojou","tags":"s7f"}
+{"lemmaId":41,"form":"moju","tags":"s4f"}
+{"lemmaId":41,"form":"mojím","tags":"s7m s7i s7n"}
+{"lemmaId":41,"form":"môj","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":41,"form":"môjho","tags":"s2m s2i s2n s4m"}
+{"lemmaId":41,"form":"môjmu","tags":"s3m s3i s3n"}
+{"lemmaId":42,"form":"tej","tags":"s2f s3f s6f"}
+{"lemmaId":42,"form":"ten","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":42,"form":"tie","tags":"p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":42,"form":"to","tags":"s1n s4n s5n"}
+{"lemmaId":42,"form":"toho","tags":"s2m s2i s2n s4m"}
+{"lemmaId":42,"form":"tom","tags":"s6m s6i s6n"}
+{"lemmaId":42,"form":"tomu","tags":"s3m s3i s3n"}
+{"lemmaId":42,"form":"tou","tags":"s7f"}
+{"lemmaId":42,"form":"tá","tags":"s1f s5f"}
+{"lemmaId":42,"form":"tí","tags":"p1m p5m"}
+{"lemmaId":42,"form":"tú","tags":"s4f"}
+{"lemmaId":42,"form":"tých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":42,"form":"tým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":42,"form":"tými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":43,"form":"koho","tags":"x2 x4"}
+{"lemmaId":43,"form":"kom","tags":"x6"}
+{"lemmaId":43,"form":"komu","tags":"x3"}
+{"lemmaId":43,"form":"kto","tags":"x1 x5"}
+{"lemmaId":43,"form":"kým","tags":"x7"}
+{"lemmaId":44,"form":"čo","tags":"x1 x4 x5"}
+{"lemmaId":44,"form":"čoho","tags":"x2"}
+{"lemmaId":44,"form":"čom","tags":"x6"}
+{"lemmaId":44,"form":"čomu","tags":"x3"}
+{"lemmaId":44,"form":"čím","tags":"x7"}
+{"lemmaId":45,"form":"do","tags":""}
+{"lemmaId":46,"form":"z","tags":""}
+{"lemmaId":46,"form":"zo","tags":""}
+{"lemmaId":47,"form":"od","tags":""}
+{"lemmaId":47,"form":"odo","tags":""}
+{"lemmaId":48,"form":"bez","tags":""}
+{"lemmaId":48,"form":"bezo","tags":""}
+{"lemmaId":49,"form":"k","tags":""}
+{"lemmaId":49,"form":"ku","tags":""}
+{"lemmaId":50,"form":"v","tags":""}
+{"lemmaId":50,"form":"vo","tags":""}
+{"lemmaId":51,"form":"na","tags":""}
+{"lemmaId":52,"form":"o","tags":""}
+{"lemmaId":53,"form":"pri","tags":""}
+{"lemmaId":54,"form":"po","tags":""}
+{"lemmaId":55,"form":"s","tags":""}
+{"lemmaId":55,"form":"so","tags":""}
+{"lemmaId":56,"form":"pre","tags":""}
+{"lemmaId":57,"form":"jeden","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":57,"form":"jedna","tags":"s1f s5f"}
+{"lemmaId":57,"form":"jednej","tags":"s2f s3f s6f"}
+{"lemmaId":57,"form":"jedni","tags":"p1m p5m"}
+{"lemmaId":57,"form":"jedno","tags":"s1n s4n s5n"}
+{"lemmaId":57,"form":"jednom","tags":"s6m s6i s6n"}
+{"lemmaId":57,"form":"jednou","tags":"s7f"}
+{"lemmaId":57,"form":"jednu","tags":"s4f"}
+{"lemmaId":57,"form":"jedny","tags":"p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":57,"form":"jedného","tags":"s2m s2i s2n s4m"}
+{"lemmaId":57,"form":"jednému","tags":"s3m s3i s3n"}
+{"lemmaId":57,"form":"jedných","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":57,"form":"jedným","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":57,"form":"jednými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":58,"form":"dva","tags":"p1i p4i p5i"}
+{"lemmaId":58,"form":"dvaja","tags":"p1m p5m"}
+{"lemmaId":58,"form":"dve","tags":"p1f p1n p4f p4n p5f p5n"}
+{"lemmaId":58,"form":"dvoch","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":58,"form":"dvom","tags":"p3m p3i p3f p3n"}
+{"lemmaId":58,"form":"dvoma","tags":"p7m p7i p7f p7n"}
+{"lemmaId":58,"form":"dvomi","tags":"p7m p7i p7f p7n"}
+{"lemmaId":60,"form":"bol","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":60,"form":"bola","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":60,"form":"boli","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":60,"form":"bolo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":60,"form":"bude","tags":"v:Besc+"}
+{"lemmaId":60,"form":"budem","tags":"v:Besa+"}
+{"lemmaId":60,"form":"budeme","tags":"v:Bepa+"}
+{"lemmaId":60,"form":"budete","tags":"v:Bepb+"}
+{"lemmaId":60,"form":"budeš","tags":"v:Besb+"}
+{"lemmaId":60,"form":"budú","tags":"v:Bepc+"}
+{"lemmaId":60,"form":"buď","tags":"v:Mesb+"}
+{"lemmaId":60,"form":"buďme","tags":"v:Mepa+"}
+{"lemmaId":60,"form":"buďte","tags":"v:Mepb+"}
+{"lemmaId":60,"form":"byť","tags":"v:Ie+"}
+{"lemmaId":60,"form":"je","tags":"v:Kesc+"}
+{"lemmaId":60,"form":"jest","tags":"v:Kesc+"}
+{"lemmaId":60,"form":"jesto","tags":"v:Kesc+"}
+{"lemmaId":60,"form":"si","tags":"v:Kesb+"}
+{"lemmaId":60,"form":"sme","tags":"v:Kepa+"}
+{"lemmaId":60,"form":"som","tags":"v:Kesa+"}
+{"lemmaId":60,"form":"ste","tags":"v:Kepb+"}
+{"lemmaId":60,"form":"sú","tags":"v:Kepc+"}
+{"lemmaId":60,"form":"súc","tags":"v:He+"}
+{"lemmaId":61,"form":"maj","tags":"v:Mesb+"}
+{"lemmaId":61,"form":"majme","tags":"v:Mepa+"}
+{"lemmaId":61,"form":"majte","tags":"v:Mepb+"}
+{"lemmaId":61,"form":"majú","tags":"v:Kepc+"}
+{"lemmaId":61,"form":"majúc","tags":"v:He+"}
+{"lemmaId":61,"form":"mal","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":61,"form":"mala","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":61,"form":"mali","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":61,"form":"malo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":61,"form":"mať","tags":"v:Ie+"}
+{"lemmaId":61,"form":"má","tags":"v:Kesc+"}
+{"lemmaId":61,"form":"mám","tags":"v:Kesa+"}
+{"lemmaId":61,"form":"máme","tags":"v:Kepa+"}
+{"lemmaId":61,"form":"máte","tags":"v:Kepb+"}
+{"lemmaId":61,"form":"máš","tags":"v:Kesb+"}
+{"lemmaId":62,"form":"choď","tags":"v:Mesb+"}
+{"lemmaId":62,"form":"choďme","tags":"v:Mepa+"}
+{"lemmaId":62,"form":"choďte","tags":"v:Mepb+"}
+{"lemmaId":62,"form":"ide","tags":"v:Kesc+"}
+{"lemmaId":62,"form":"idem","tags":"v:Kesa+"}
+{"lemmaId":62,"form":"ideme","tags":"v:Kepa+"}
+{"lemmaId":62,"form":"idete","tags":"v:Kepb+"}
+{"lemmaId":62,"form":"ideš","tags":"v:Kesb+"}
+{"lemmaId":62,"form":"idú","tags":"v:Kepc+"}
+{"lemmaId":62,"form":"idúc","tags":"v:He+"}
+{"lemmaId":62,"form":"iď","tags":"v:Mesb+"}
+{"lemmaId":62,"form":"iďme","tags":"v:Mepa+"}
+{"lemmaId":62,"form":"iďte","tags":"v:Mepb+"}
+{"lemmaId":62,"form":"išiel","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":62,"form":"išla","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":62,"form":"išli","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":62,"form":"išlo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":62,"form":"poď","tags":"v:Mesb+"}
+{"lemmaId":62,"form":"poďme","tags":"v:Mepa+"}
+{"lemmaId":62,"form":"poďte","tags":"v:Mepb+"}
+{"lemmaId":62,"form":"pôjde","tags":"v:Besc+"}
+{"lemmaId":62,"form":"pôjdem","tags":"v:Besa+"}
+{"lemmaId":62,"form":"pôjdeme","tags":"v:Bepa+"}
+{"lemmaId":62,"form":"pôjdete","tags":"v:Bepb+"}
+{"lemmaId":62,"form":"pôjdeš","tags":"v:Besb+"}
+{"lemmaId":62,"form":"pôjdu","tags":"v:Bepc+"}
+{"lemmaId":62,"form":"ísť","tags":"v:Ie+"}
+{"lemmaId":62,"form":"šiel","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":62,"form":"šla","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":62,"form":"šli","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":62,"form":"šlo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":63,"form":"videl","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":63,"form":"videla","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":63,"form":"videli","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":63,"form":"videlo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":63,"form":"vidia","tags":"v:Kepc+"}
+{"lemmaId":63,"form":"vidiac","tags":"v:He+"}
+{"lemmaId":63,"form":"vidieť","tags":"v:Ie+"}
+{"lemmaId":63,"form":"vidí","tags":"v:Kesc+"}
+{"lemmaId":63,"form":"vidím","tags":"v:Kesa+"}
+{"lemmaId":63,"form":"vidíme","tags":"v:Kepa+"}
+{"lemmaId":63,"form":"vidíte","tags":"v:Kepb+"}
+{"lemmaId":63,"form":"vidíš","tags":"v:Kesb+"}
+{"lemmaId":63,"form":"viď","tags":"v:Mesb+"}
+{"lemmaId":63,"form":"viďme","tags":"v:Mepa+"}
+{"lemmaId":63,"form":"viďte","tags":"v:Mepb+"}
+{"lemmaId":68,"form":"a","tags":""}
+{"lemmaId":69,"form":"nie","tags":""}
+{"lemmaId":70,"form":"veľmi","tags":""}
+{"lemmaId":71,"form":"dnes","tags":""}
+{"lemmaId":72,"form":"kde","tags":""}
+{"lemmaId":227,"form":"A","tags":""}
+{"lemmaId":236,"form":"BEZ","tags":""}
+{"lemmaId":474,"form":"Dáš","tags":"p2"}
+{"lemmaId":697,"form":"Ide","tags":"s3 s6"}
+{"lemmaId":727,"form":"I","tags":""}
+{"lemmaId":780,"form":"KDE","tags":""}
+{"lemmaId":798,"form":"KU","tags":""}
+{"lemmaId":861,"form":"K","tags":""}
+{"lemmaId":976,"form":"Mali","tags":"s1 s2 s3 s4 s5 s6 s7"}
+{"lemmaId":1039,"form":"Mi","tags":""}
+{"lemmaId":1096,"form":"Na","tags":""}
+{"lemmaId":1125,"form":"OD","tags":""}
+{"lemmaId":1159,"form":"Otca","tags":"s2 s4"}
+{"lemmaId":1159,"form":"Otcom","tags":"s7"}
+{"lemmaId":1159,"form":"Otcovi","tags":"s3 s6"}
+{"lemmaId":1159,"form":"Otcu","tags":"s3"}
+{"lemmaId":1159,"form":"Otec","tags":"s1 s5"}
+{"lemmaId":1159,"form":"Otče","tags":"s5"}
+{"lemmaId":1186,"form":"PO","tags":""}
+{"lemmaId":1346,"form":"SA","tags":""}
+{"lemmaId":1382,"form":"SME","tags":""}
+{"lemmaId":1401,"form":"SO","tags":""}
+{"lemmaId":1434,"form":"Samou","tags":"s4"}
+{"lemmaId":1464,"form":"Slovenskom","tags":"s7"}
+{"lemmaId":1487,"form":"S","tags":""}
+{"lemmaId":1508,"form":"TU","tags":""}
+{"lemmaId":1588,"form":"U","tags":""}
+{"lemmaId":1589,"form":"UŽ","tags":""}
+{"lemmaId":1663,"form":"V","tags":""}
+{"lemmaId":1739,"form":"Z","tags":""}
+{"lemmaId":1921,"form":"aby","tags":""}
+{"lemmaId":1922,"form":"aby","tags":""}
+{"lemmaId":2452,"form":"ahoj","tags":""}
+{"lemmaId":2475,"form":"aj","tags":""}
+{"lemmaId":2476,"form":"aj","tags":""}
+{"lemmaId":2477,"form":"aj","tags":""}
+{"lemmaId":2585,"form":"ako","tags":""}
+{"lemmaId":2586,"form":"ako","tags":""}
+{"lemmaId":2587,"form":"ako","tags":""}
+{"lemmaId":2751,"form":"ak","tags":""}
+{"lemmaId":2752,"form":"ak","tags":""}
+{"lemmaId":2762,"form":"akej","tags":"s2f s3f s6f"}
+{"lemmaId":2762,"form":"akom","tags":"s6m s6i s6n"}
+{"lemmaId":2762,"form":"akou","tags":"s7f"}
+{"lemmaId":2762,"form":"aká","tags":"s1f s5f"}
+{"lemmaId":2762,"form":"aké","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":2762,"form":"akého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":2762,"form":"akému","tags":"s3m s3i s3n"}
+{"lemmaId":2762,"form":"akí","tags":"p1m p5m"}
+{"lemmaId":2762,"form":"akú","tags":"s4f"}
+{"lemmaId":2762,"form":"aký","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":2762,"form":"akých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":2762,"form":"akým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":2762,"form":"akými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":2816,"form":"alebo","tags":""}
+{"lemmaId":2857,"form":"ale","tags":""}
+{"lemmaId":2858,"form":"ale","tags":""}
+{"lemmaId":2859,"form":"ale","tags":""}
+{"lemmaId":3520,"form":"ani","tags":""}
+{"lemmaId":3521,"form":"ani","tags":""}
+{"lemmaId":4577,"form":"asi","tags":""}
+{"lemmaId":4697,"form":"a","tags":""}
+{"lemmaId":5360,"form":"a","tags":""}
+{"lemmaId":5361,"form":"a","tags":"s1 s2 s3 s4 s5 s6 s7 p1 p2 p3 p4 p5 p6 p7"}
+{"lemmaId":5362,"form":"a","tags":""}
+{"lemmaId":5363,"form":"a","tags":""}
+{"lemmaId":5380,"form":"až","tags":""}
+{"lemmaId":5381,"form":"až","tags":""}
+{"lemmaId":5382,"form":"až","tags":""}
+{"lemmaId":8314,"form":"bol","tags":"p2"}
+{"lemmaId":8314,"form":"bola","tags":"s1 s5"}
+{"lemmaId":9328,"form":"buď","tags":"v:Mesb+"}
+{"lemmaId":9328,"form":"buďme","tags":"v:Mepa+"}
+{"lemmaId":9328,"form":"buďte","tags":"v:Mepb+"}
+{"lemmaId":9649,"form":"buď","tags":""}
+{"lemmaId":10201,"form":"celou","tags":"s7"}
+{"lemmaId":10219,"form":"celej","tags":"v:Mesb+"}
+{"lemmaId":10230,"form":"celí","tags":"v:Kesc+"}
+{"lemmaId":10353,"form":"celej","tags":"s2 s3 s6"}
+{"lemmaId":10353,"form":"celou","tags":"s7"}
+{"lemmaId":10353,"form":"celá","tags":"s1 s5"}
+{"lemmaId":10353,"form":"celé","tags":"p1 p4 p5"}
+{"lemmaId":10353,"form":"celú","tags":"s4"}
+{"lemmaId":10353,"form":"celých","tags":"p2 p6"}
+{"lemmaId":10353,"form":"celým","tags":"p3"}
+{"lemmaId":10353,"form":"celými","tags":"p7"}
+{"lemmaId":10355,"form":"celej","tags":"s2f s3f s6f"}
+{"lemmaId":10355,"form":"celom","tags":"s6m s6i s6n"}
+{"lemmaId":10355,"form":"celou","tags":"s7f"}
+{"lemmaId":10355,"form":"celá","tags":"s1f s5f"}
+{"lemmaId":10355,"form":"celé","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":10355,"form":"celého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":10355,"form":"celému","tags":"s3m s3i s3n"}
+{"lemmaId":10355,"form":"celí","tags":"p1m p5m"}
+{"lemmaId":10355,"form":"celú","tags":"s4f"}
+{"lemmaId":10355,"form":"celý","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":10355,"form":"celých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":10355,"form":"celým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":10355,"form":"celými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":10374,"form":"cena","tags":"s1 s5"}
+{"lemmaId":10374,"form":"cenami","tags":"p7"}
+{"lemmaId":10374,"form":"cene","tags":"s3 s6"}
+{"lemmaId":10374,"form":"cenou","tags":"s7"}
+{"lemmaId":10374,"form":"cenu","tags":"s4"}
+{"lemmaId":10374,"form":"ceny","tags":"s2 p1 p4 p5"}
+{"lemmaId":10374,"form":"cenách","tags":"p6"}
+{"lemmaId":10374,"form":"cenám","tags":"p3"}
+{"lemmaId":10374,"form":"cien","tags":"p2"}
+{"lemmaId":10568,"form":"cesta","tags":"s1 s5"}
+{"lemmaId":10568,"form":"cestami","tags":"p7"}
+{"lemmaId":10568,"form":"ceste","tags":"s3 s6"}
+{"lemmaId":10568,"form":"cestou","tags":"s7"}
+{"lemmaId":10568,"form":"cestu","tags":"s4"}
+{"lemmaId":10568,"form":"cesty","tags":"s2 p1 p4 p5"}
+{"lemmaId":10568,"form":"cestách","tags":"p6"}
+{"lemmaId":10568,"form":"cestám","tags":"p3"}
+{"lemmaId":10568,"form":"ciest","tags":"p2"}
+{"lemmaId":10579,"form":"cestou","tags":""}
+{"lemmaId":10580,"form":"cestou","tags":""}
+{"lemmaId":10597,"form":"cesta","tags":"s2"}
+{"lemmaId":10597,"form":"cestami","tags":"p7"}
+{"lemmaId":10597,"form":"ceste","tags":"s6"}
+{"lemmaId":10597,"form":"cestu","tags":"s3"}
+{"lemmaId":10597,"form":"cestách","tags":"p6"}
+{"lemmaId":10597,"form":"cestám","tags":"p3"}
+{"lemmaId":10597,"form":"ciest","tags":"p2"}
+{"lemmaId":10620,"form":"cez","tags":""}
+{"lemmaId":10620,"form":"cezo","tags":""}
+{"lemmaId":10725,"form":"chce","tags":"v:Kesc+"}
+{"lemmaId":10725,"form":"chcejúc","tags":"v:He+"}
+{"lemmaId":10725,"form":"chcel","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":10725,"form":"chcela","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":10725,"form":"chceli","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":10725,"form":"chcelo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":10725,"form":"chcem","tags":"v:Kesa+"}
+{"lemmaId":10725,"form":"chceme","tags":"v:Kepa+"}
+{"lemmaId":10725,"form":"chcete","tags":"v:Kepb+"}
+{"lemmaId":10725,"form":"chceš","tags":"v:Kesb+"}
+{"lemmaId":10725,"form":"chci","tags":"v:Mesb+"}
+{"lemmaId":10725,"form":"chcieť","tags":"v:Ie+"}
+{"lemmaId":10725,"form":"chcime","tags":"v:Mepa+"}
+{"lemmaId":10725,"form":"chcite","tags":"v:Mepb+"}
+{"lemmaId":10725,"form":"chcú","tags":"v:Kepc+"}
+{"lemmaId":10725,"form":"chcúc","tags":"v:He+"}
+{"lemmaId":10957,"form":"choď","tags":"v:Mesb+"}
+{"lemmaId":10957,"form":"choďme","tags":"v:Mepa+"}
+{"lemmaId":10957,"form":"choďte","tags":"v:Mepb+"}
+{"lemmaId":12608,"form":"daj","tags":"v:Mdsb+ v:Mjsb+"}
+{"lemmaId":12608,"form":"dajme","tags":"v:Mdpa+ v:Mjpa+"}
+{"lemmaId":12608,"form":"dajte","tags":"v:Mdpb+ v:Mjpb+"}
+{"lemmaId":12608,"form":"dajú","tags":"v:Kdpc+ v:Kjpc+"}
+{"lemmaId":12608,"form":"dajúc","tags":"v:Hd+ v:Hj+"}
+{"lemmaId":12608,"form":"dal","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+ v:Ljsai+ v:Ljsam+ v:Ljsbi+ v:Ljsbm+ v:Ljsci+ v:Ljscm+"}
+{"lemmaId":12608,"form":"dala","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+ v:Ljsaf+ v:Ljsbf+ v:Ljscf+"}
+{"lemmaId":12608,"form":"dali","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+ v:Ljpah+ v:Ljpbh+ v:Ljpcf+ v:Ljpci+ v:Ljpcm+ v:Ljpcn+ v:Ljpco+"}
+{"lemmaId":12608,"form":"dalo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+ v:Ljsan+ v:Ljsbn+ v:Ljscn+"}
+{"lemmaId":12608,"form":"dať","tags":"v:Id+ v:Ij+"}
+{"lemmaId":12608,"form":"dá","tags":"v:Kdsc+ v:Kjsc+"}
+{"lemmaId":12608,"form":"dám","tags":"v:Kdsa+ v:Kjsa+"}
+{"lemmaId":12608,"form":"dáme","tags":"v:Kdpa+ v:Kjpa+"}
+{"lemmaId":12608,"form":"dáte","tags":"v:Kdpb+ v:Kjpb+"}
+{"lemmaId":12608,"form":"dáš","tags":"v:Kdsb+ v:Kjsb+"}
+{"lemmaId":14231,"form":"deti","tags":"p1 p4 p5"}
+{"lemmaId":14231,"form":"detí","tags":"p2"}
+{"lemmaId":14231,"form":"deťmi","tags":"p7"}
+{"lemmaId":14231,"form":"deťoch","tags":"p6"}
+{"lemmaId":14231,"form":"deťom","tags":"p3"}
+{"lemmaId":14231,"form":"dieťa","tags":"s1 s4 s5"}
+{"lemmaId":14231,"form":"dieťati","tags":"s6"}
+{"lemmaId":14231,"form":"dieťaťa","tags":"s2"}
+{"lemmaId":14231,"form":"dieťaťom","tags":"s7"}
+{"lemmaId":14231,"form":"dieťaťu","tags":"s3"}
+{"lemmaId":14876,"form":"dni","tags":"v:Mesb+"}
+{"lemmaId":14876,"form":"dní","tags":"v:Kesc+"}
+{"lemmaId":14940,"form":"dobre","tags":""}
+{"lemmaId":14941,"form":"dobre","tags":""}
+{"lemmaId":15000,"form":"dobre","tags":"s6"}
+{"lemmaId":15000,"form":"dobrom","tags":"s7"}
+{"lemmaId":15000,"form":"dobrá","tags":"p1 p4 p5"}
+{"lemmaId":15025,"form":"dobrom","tags":"s6"}
+{"lemmaId":15025,"form":"dobré","tags":"s1 s4 s5"}
+{"lemmaId":15025,"form":"dobrého","tags":"s2"}
+{"lemmaId":15025,"form":"dobrému","tags":"s3"}
+{"lemmaId":15025,"form":"dobrým","tags":"s7"}
+{"lemmaId":15805,"form":"domov","tags":""}
+{"lemmaId":15806,"form":"domov","tags":"s1 s4 s5"}
+{"lemmaId":15821,"form":"dom","tags":""}
+{"lemmaId":16260,"form":"dostal","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":16260,"form":"dostala","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":16260,"form":"dostali","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":16260,"form":"dostalo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":16260,"form":"dostane","tags":"v:Kdsc+"}
+{"lemmaId":16260,"form":"dostanem","tags":"v:Kdsa+"}
+{"lemmaId":16260,"form":"dostaneme","tags":"v:Kdpa+"}
+{"lemmaId":16260,"form":"dostanete","tags":"v:Kdpb+"}
+{"lemmaId":16260,"form":"dostaneš","tags":"v:Kdsb+"}
+{"lemmaId":16260,"form":"dostanú","tags":"v:Kdpc+"}
+{"lemmaId":16260,"form":"dostanúc","tags":"v:Hd+"}
+{"lemmaId":16260,"form":"dostaň","tags":"v:Mdsb+"}
+{"lemmaId":16260,"form":"dostaňme","tags":"v:Mdpa+"}
+{"lemmaId":16260,"form":"dostaňte","tags":"v:Mdpb+"}
+{"lemmaId":16260,"form":"dostať","tags":"v:Id+"}
+{"lemmaId":16563,"form":"do","tags":""}
+{"lemmaId":16564,"form":"do","tags":""}
+{"lemmaId":17240,"form":"druhom","tags":"s7 p3"}
+{"lemmaId":17241,"form":"druhom","tags":"s7 p3"}
+{"lemmaId":17244,"form":"druhej","tags":"s2 s3 s6"}
+{"lemmaId":17244,"form":"druhou","tags":"s7"}
+{"lemmaId":17244,"form":"druhá","tags":"s1 s5"}
+{"lemmaId":17244,"form":"druhú","tags":"s4"}
+{"lemmaId":17248,"form":"druhej","tags":"s2f s3f s6f"}
+{"lemmaId":17248,"form":"druhom","tags":"s6m s6i s6n"}
+{"lemmaId":17248,"form":"druhou","tags":"s7f"}
+{"lemmaId":17248,"form":"druhá","tags":"s1f s5f"}
+{"lemmaId":17248,"form":"druhé","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":17248,"form":"druhého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":17248,"form":"druhému","tags":"s3m s3i s3n"}
+{"lemmaId":17248,"form":"druhí","tags":"p1m p5m"}
+{"lemmaId":17248,"form":"druhú","tags":"s4f"}
+{"lemmaId":17248,"form":"druhý","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":17248,"form":"druhých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":17248,"form":"druhým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":17248,"form":"druhými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":18621,"form":"dám","tags":"p2"}
+{"lemmaId":18621,"form":"dáme","tags":"s3 s6"}
+{"lemmaId":18657,"form":"dá","tags":""}
+{"lemmaId":20983,"form":"ešte","tags":""}
+{"lemmaId":20984,"form":"ešte","tags":""}
+{"lemmaId":25549,"form":"hej","tags":"s1m s1i s1f s1n s2m s2i s2f s2n s3m s3i s3f s3n s4m s4i s4f s4n s5m s5i s5f s5n s6m s6i s6f s6n s7m s7i s7f s7n p1m p1i p1f p1n p2m p2i p2f p2n p3m p3i p3f p3n p4m p4i p4f p4n p5m p5i p5f p5n p6m p6i p6f p6n p7m p7i p7f p7n"}
+{"lemmaId":25550,"form":"hej","tags":""}
+{"lemmaId":25551,"form":"hej","tags":""}
+{"lemmaId":25552,"form":"hej","tags":""}
+{"lemmaId":25832,"form":"hlavní","tags":"p2"}
+{"lemmaId":25844,"form":"hlavnej","tags":"s2 s3 s6"}
+{"lemmaId":25844,"form":"hlavnou","tags":"s7"}
+{"lemmaId":25844,"form":"hlavná","tags":"s1 s5"}
+{"lemmaId":25844,"form":"hlavné","tags":"p1 p4 p5"}
+{"lemmaId":25844,"form":"hlavnú","tags":"s4"}
+{"lemmaId":25844,"form":"hlavných","tags":"p2 p6"}
+{"lemmaId":25844,"form":"hlavným","tags":"p3"}
+{"lemmaId":25844,"form":"hlavnými","tags":"p7"}
+{"lemmaId":25845,"form":"hlavnej","tags":"s2f s3f s6f"}
+{"lemmaId":25845,"form":"hlavnom","tags":"s6m s6i s6n"}
+{"lemmaId":25845,"form":"hlavnou","tags":"s7f"}
+{"lemmaId":25845,"form":"hlavná","tags":"s1f s5f"}
+{"lemmaId":25845,"form":"hlavné","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":25845,"form":"hlavného","tags":"s2m s2i s2n s4m"}
+{"lemmaId":25845,"form":"hlavnému","tags":"s3m s3i s3n"}
+{"lemmaId":25845,"form":"hlavní","tags":"p1m p5m"}
+{"lemmaId":25845,"form":"hlavnú","tags":"s4f"}
+{"lemmaId":25845,"form":"hlavný","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":25845,"form":"hlavných","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":25845,"form":"hlavným","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":25845,"form":"hlavnými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":25846,"form":"hlavnom","tags":"s6"}
+{"lemmaId":25846,"form":"hlavného","tags":"s2 s4"}
+{"lemmaId":25846,"form":"hlavnému","tags":"s3"}
+{"lemmaId":25846,"form":"hlavní","tags":"p1 p5"}
+{"lemmaId":25846,"form":"hlavný","tags":"s1 s5"}
+{"lemmaId":25846,"form":"hlavných","tags":"p2 p4 p6"}
+{"lemmaId":25846,"form":"hlavným","tags":"s7 p3"}
+{"lemmaId":25846,"form":"hlavnými","tags":"p7"}
+{"lemmaId":26668,"form":"hovor","tags":"v:Mesb+"}
+{"lemmaId":26668,"form":"hovoria","tags":"v:Kepc+"}
+{"lemmaId":26668,"form":"hovoriac","tags":"v:He+"}
+{"lemmaId":26668,"form":"hovoril","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":26668,"form":"hovorila","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":26668,"form":"hovorili","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":26668,"form":"hovorilo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":26668,"form":"hovoriť","tags":"v:Ie+"}
+{"lemmaId":26668,"form":"hovorme","tags":"v:Mepa+"}
+{"lemmaId":26668,"form":"hovorte","tags":"v:Mepb+"}
+{"lemmaId":26668,"form":"hovorí","tags":"v:Kesc+"}
+{"lemmaId":26668,"form":"hovorím","tags":"v:Kesa+"}
+{"lemmaId":26668,"form":"hovoríme","tags":"v:Kepa+"}
+{"lemmaId":26668,"form":"hovoríte","tags":"v:Kepb+"}
+{"lemmaId":26668,"form":"hovoríš","tags":"v:Kesb+"}
+{"lemmaId":26675,"form":"hovor","tags":"s1 s4 s5"}
+{"lemmaId":26676,"form":"hovor","tags":""}
+{"lemmaId":26685,"form":"ho","tags":""}
+{"lemmaId":26686,"form":"ho","tags":""}
+{"lemmaId":27679,"form":"iba","tags":""}
+{"lemmaId":27680,"form":"iba","tags":""}
+{"lemmaId":27697,"form":"ich","tags":"s1m s1i s1f s1n s2m s2i s2f s2n s3m s3i s3f s3n s4m s4i s4f s4n s5m s5i s5f s5n s6m s6i s6f s6n s7m s7i s7f s7n p1m p1i p1f p1n p2m p2i p2f p2n p3m p3i p3f p3n p4m p4i p4f p4n p5m p5i p5f p5n p6m p6i p6f p6n p7m p7i p7f p7n"}
+{"lemmaId":28092,"form":"informácia","tags":"s1 s5"}
+{"lemmaId":28092,"form":"informáciami","tags":"p7"}
+{"lemmaId":28092,"form":"informácie","tags":"s2 p1 p4 p5"}
+{"lemmaId":28092,"form":"informácii","tags":"s3 s6"}
+{"lemmaId":28092,"form":"informáciou","tags":"s7"}
+{"lemmaId":28092,"form":"informáciu","tags":"s4"}
+{"lemmaId":28092,"form":"informáciách","tags":"p6"}
+{"lemmaId":28092,"form":"informáciám","tags":"p3"}
+{"lemmaId":28092,"form":"informácií","tags":"p2"}
+{"lemmaId":28428,"form":"inom","tags":"s6"}
+{"lemmaId":28428,"form":"iného","tags":"s2 s4"}
+{"lemmaId":28428,"form":"inému","tags":"s3"}
+{"lemmaId":28428,"form":"iní","tags":"p1 p5"}
+{"lemmaId":28428,"form":"iný","tags":"s1 s5"}
+{"lemmaId":28428,"form":"iných","tags":"p2 p4 p6"}
+{"lemmaId":28428,"form":"iným","tags":"s7 p3"}
+{"lemmaId":28428,"form":"inými","tags":"p7"}
+{"lemmaId":28429,"form":"inej","tags":"s2f s3f s6f"}
+{"lemmaId":28429,"form":"inom","tags":"s6m s6i s6n"}
+{"lemmaId":28429,"form":"inou","tags":"s7f"}
+{"lemmaId":28429,"form":"iná","tags":"s1f s5f"}
+{"lemmaId":28429,"form":"iné","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":28429,"form":"iného","tags":"s2m s2i s2n s4m"}
+{"lemmaId":28429,"form":"inému","tags":"s3m s3i s3n"}
+{"lemmaId":28429,"form":"iní","tags":"p1m p5m"}
+{"lemmaId":28429,"form":"inú","tags":"s4f"}
+{"lemmaId":28429,"form":"iný","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":28429,"form":"iných","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":28429,"form":"iným","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":28429,"form":"inými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":28663,"form":"i","tags":""}
+{"lemmaId":28664,"form":"i","tags":"s1 s2 s3 s4 s5 s6 s7 p1 p2 p3 p4 p5 p6 p7"}
+{"lemmaId":28665,"form":"i","tags":""}
+{"lemmaId":28666,"form":"i","tags":""}
+{"lemmaId":29012,"form":"ja","tags":""}
+{"lemmaId":29013,"form":"ja","tags":"s1 s2 s3 s4 s5 s6 s7 p1 p2 p3 p4 p5 p6 p7"}
+{"lemmaId":29211,"form":"jedno","tags":""}
+{"lemmaId":29240,"form":"jeho","tags":"s1 s2 s3 s4 s5 s6 s7"}
+{"lemmaId":29241,"form":"jeho","tags":"s1m s1i s1f s1n s2m s2i s2f s2n s3m s3i s3f s3n s4m s4i s4f s4n s5m s5i s5f s5n s6m s6i s6f s6n s7m s7i s7f s7n p1m p1i p1f p1n p2m p2i p2f p2n p3m p3i p3f p3n p4m p4i p4f p4n p5m p5i p5f p5n p6m p6i p6f p6n p7m p7i p7f p7n"}
+{"lemmaId":29242,"form":"jej","tags":""}
+{"lemmaId":29243,"form":"jej","tags":"s1 s2 s3 s4 s5 s6 s7"}
+{"lemmaId":29244,"form":"jej","tags":"s1m s1i s1f s1n s2m s2i s2f s2n s3m s3i s3f s3n s4m s4i s4f s4n s5m s5i s5f s5n s6m s6i s6f s6n s7m s7i s7f s7n p1m p1i p1f p1n p2m p2i p2f p2n p3m p3i p3f p3n p4m p4i p4f p4n p5m p5i p5f p5n p6m p6i p6f p6n p7m p7i p7f p7n"}
+{"lemmaId":29303,"form":"jest","tags":""}
+{"lemmaId":29304,"form":"je","tags":"v:Kesc+"}
+{"lemmaId":30415,"form":"každej","tags":"s2f s3f s6f"}
+{"lemmaId":30415,"form":"každom","tags":"s6m s6i s6n"}
+{"lemmaId":30415,"form":"každou","tags":"s7f"}
+{"lemmaId":30415,"form":"každá","tags":"s1f s5f"}
+{"lemmaId":30415,"form":"každé","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":30415,"form":"každého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":30415,"form":"každému","tags":"s3m s3i s3n"}
+{"lemmaId":30415,"form":"každí","tags":"p1m p5m"}
+{"lemmaId":30415,"form":"každú","tags":"s4f"}
+{"lemmaId":30415,"form":"každý","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":30415,"form":"každých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":30415,"form":"každým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":30415,"form":"každými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":30423,"form":"kde","tags":""}
+{"lemmaId":30429,"form":"keby","tags":""}
+{"lemmaId":30430,"form":"keby","tags":""}
+{"lemmaId":30502,"form":"keď","tags":""}
+{"lemmaId":30503,"form":"keď","tags":""}
+{"lemmaId":32559,"form":"krajina","tags":"s1 s5"}
+{"lemmaId":32559,"form":"krajinami","tags":"p7"}
+{"lemmaId":32559,"form":"krajine","tags":"s3 s6"}
+{"lemmaId":32559,"form":"krajinou","tags":"s7"}
+{"lemmaId":32559,"form":"krajinu","tags":"s4"}
+{"lemmaId":32559,"form":"krajiny","tags":"s2 p1 p4 p5"}
+{"lemmaId":32559,"form":"krajinách","tags":"p6"}
+{"lemmaId":32559,"form":"krajinám","tags":"p3"}
+{"lemmaId":32559,"form":"krajín","tags":"p2"}
+{"lemmaId":33268,"form":"ktorej","tags":"s2f s3f s6f"}
+{"lemmaId":33268,"form":"ktorom","tags":"s6m s6i s6n"}
+{"lemmaId":33268,"form":"ktorou","tags":"s7f"}
+{"lemmaId":33268,"form":"ktorá","tags":"s1f s5f"}
+{"lemmaId":33268,"form":"ktoré","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":33268,"form":"ktorého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":33268,"form":"ktorému","tags":"s3m s3i s3n"}
+{"lemmaId":33268,"form":"ktorí","tags":"p1m p5m"}
+{"lemmaId":33268,"form":"ktorú","tags":"s4f"}
+{"lemmaId":33268,"form":"ktorý","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":33268,"form":"ktorých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":33268,"form":"ktorým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":33268,"form":"ktorými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":33775,"form":"k","tags":"s1 s2 s3 s4 s5 s6 s7 p1 p2 p3 p4 p5 p6 p7"}
+{"lemmaId":33776,"form":"k","tags":""}
+{"lemmaId":33944,"form":"kým","tags":""}
+{"lemmaId":33953,"form":"kom","tags":"s6m s6i s6n"}
+{"lemmaId":33953,"form":"kým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":34552,"form":"len","tags":""}
+{"lemmaId":34553,"form":"len","tags":""}
+{"lemmaId":35882,"form":"mala","tags":""}
+{"lemmaId":36018,"form":"malo","tags":""}
+{"lemmaId":36046,"form":"mal","tags":""}
+{"lemmaId":36053,"form":"malej","tags":"s2 s3 s6"}
+{"lemmaId":36053,"form":"malou","tags":"s7"}
+{"lemmaId":36053,"form":"malá","tags":"s1 s5"}
+{"lemmaId":36053,"form":"malé","tags":"p1 p4 p5"}
+{"lemmaId":36053,"form":"malú","tags":"s4"}
+{"lemmaId":36053,"form":"malých","tags":"p2 p6"}
+{"lemmaId":36053,"form":"malým","tags":"p3"}
+{"lemmaId":36053,"form":"malými","tags":"p7"}
+{"lemmaId":36056,"form":"malom","tags":"s6"}
+{"lemmaId":36056,"form":"malé","tags":"s1 s4 s5 p1 p4 p5"}
+{"lemmaId":36056,"form":"malého","tags":"s2"}
+{"lemmaId":36056,"form":"malému","tags":"s3"}
+{"lemmaId":36056,"form":"malých","tags":"p2 p6"}
+{"lemmaId":36056,"form":"malým","tags":"s7 p3"}
+{"lemmaId":36056,"form":"malými","tags":"p7"}
+{"lemmaId":36061,"form":"malej","tags":"s2f s3f s6f"}
+{"lemmaId":36061,"form":"malom","tags":"s6m s6i s6n"}
+{"lemmaId":36061,"form":"malou","tags":"s7f"}
+{"lemmaId":36061,"form":"malá","tags":"s1f s5f"}
+{"lemmaId":36061,"form":"malé","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":36061,"form":"malého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":36061,"form":"malému","tags":"s3m s3i s3n"}
+{"lemmaId":36061,"form":"malí","tags":"p1m p5m"}
+{"lemmaId":36061,"form":"malú","tags":"s4f"}
+{"lemmaId":36061,"form":"malý","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":36061,"form":"malých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":36061,"form":"malým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":36061,"form":"malými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":36064,"form":"mama","tags":"s1 s5"}
+{"lemmaId":36064,"form":"mamami","tags":"p7"}
+{"lemmaId":36064,"form":"mame","tags":"s3 s6"}
+{"lemmaId":36064,"form":"mami","tags":"s5"}
+{"lemmaId":36064,"form":"mamou","tags":"s7"}
+{"lemmaId":36064,"form":"mamu","tags":"s4"}
+{"lemmaId":36064,"form":"mamy","tags":"s2 p1 p4 p5"}
+{"lemmaId":36064,"form":"mamách","tags":"p6"}
+{"lemmaId":36064,"form":"mamám","tags":"p3"}
+{"lemmaId":36064,"form":"mám","tags":"p2"}
+{"lemmaId":36086,"form":"mamami","tags":"p7"}
+{"lemmaId":36086,"form":"mame","tags":"s6"}
+{"lemmaId":36086,"form":"mamu","tags":"s2 s3"}
+{"lemmaId":36086,"form":"mamy","tags":"p1 p4 p5"}
+{"lemmaId":36598,"form":"mať","tags":"s1 s4 s5"}
+{"lemmaId":36722,"form":"medzi","tags":"s3 s6"}
+{"lemmaId":36754,"form":"medzi","tags":""}
+{"lemmaId":36935,"form":"mesiac","tags":"s1 s4 s5"}
+{"lemmaId":36935,"form":"mesiaca","tags":"s2"}
+{"lemmaId":36935,"form":"mesiace","tags":"p1 p4 p5"}
+{"lemmaId":36935,"form":"mesiaci","tags":"s6"}
+{"lemmaId":36935,"form":"mesiacmi","tags":"p7"}
+{"lemmaId":36935,"form":"mesiacoch","tags":"p6"}
+{"lemmaId":36935,"form":"mesiacom","tags":"s7 p3"}
+{"lemmaId":36935,"form":"mesiacov","tags":"p2"}
+{"lemmaId":36935,"form":"mesiacu","tags":"s3"}
+{"lemmaId":37118,"form":"mieste","tags":"v:Mepb+"}
+{"lemmaId":37120,"form":"miestami","tags":""}
+{"lemmaId":37133,"form":"miest","tags":"p2"}
+{"lemmaId":37133,"form":"miesta","tags":"s2 p1 p4 p5"}
+{"lemmaId":37133,"form":"miestach","tags":"p6"}
+{"lemmaId":37133,"form":"miestam","tags":"p3"}
+{"lemmaId":37133,"form":"miestami","tags":"p7"}
+{"lemmaId":37133,"form":"mieste","tags":"s6"}
+{"lemmaId":37133,"form":"miesto","tags":"s1 s4 s5"}
+{"lemmaId":37133,"form":"miestom","tags":"s7"}
+{"lemmaId":37133,"form":"miestu","tags":"s3"}
+{"lemmaId":37134,"form":"miesto","tags":""}
+{"lemmaId":37773,"form":"moja","tags":"s1 s5"}
+{"lemmaId":37773,"form":"mojej","tags":"s2 s3 s6"}
+{"lemmaId":37773,"form":"mojou","tags":"s7"}
+{"lemmaId":37773,"form":"moju","tags":"s4"}
+{"lemmaId":37774,"form":"moji","tags":"p1 p5"}
+{"lemmaId":37774,"form":"mojich","tags":"p2 p4 p6"}
+{"lemmaId":37774,"form":"mojim","tags":"p3"}
+{"lemmaId":37774,"form":"mojimi","tags":"p7"}
+{"lemmaId":38131,"form":"možnosti","tags":"s2 s3 s6 p1 p4 p5"}
+{"lemmaId":38131,"form":"možnostiach","tags":"p6"}
+{"lemmaId":38131,"form":"možnostiam","tags":"p3"}
+{"lemmaId":38131,"form":"možností","tags":"p2"}
+{"lemmaId":38131,"form":"možnosť","tags":"s1 s4 s5"}
+{"lemmaId":38131,"form":"možnosťami","tags":"p7"}
+{"lemmaId":38131,"form":"možnosťou","tags":"s7"}
+{"lemmaId":38135,"form":"možnej","tags":"s2f s3f s6f"}
+{"lemmaId":38135,"form":"možnom","tags":"s6m s6i s6n"}
+{"lemmaId":38135,"form":"možnou","tags":"s7f"}
+{"lemmaId":38135,"form":"možná","tags":"s1f s5f"}
+{"lemmaId":38135,"form":"možné","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":38135,"form":"možného","tags":"s2m s2i s2n s4m"}
+{"lemmaId":38135,"form":"možnému","tags":"s3m s3i s3n"}
+{"lemmaId":38135,"form":"možní","tags":"p1m p5m"}
+{"lemmaId":38135,"form":"možnú","tags":"s4f"}
+{"lemmaId":38135,"form":"možný","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":38135,"form":"možných","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":38135,"form":"možným","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":38135,"form":"možnými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":38338,"form":"musel","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":38338,"form":"musela","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":38338,"form":"museli","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":38338,"form":"muselo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":38338,"form":"musia","tags":"v:Kepc+"}
+{"lemmaId":38338,"form":"musiac","tags":"v:He+"}
+{"lemmaId":38338,"form":"musieť","tags":"v:Ie+"}
+{"lemmaId":38338,"form":"musí","tags":"v:Kesc+"}
+{"lemmaId":38338,"form":"musím","tags":"v:Kesa+"}
+{"lemmaId":38338,"form":"musíme","tags":"v:Kepa+"}
+{"lemmaId":38338,"form":"musíte","tags":"v:Kepb+"}
+{"lemmaId":38338,"form":"musíš","tags":"v:Kesb+"}
+{"lemmaId":38413,"form":"muž","tags":"s1 s5"}
+{"lemmaId":38413,"form":"muža","tags":"s2 s4"}
+{"lemmaId":38413,"form":"muži","tags":"p1 p5"}
+{"lemmaId":38413,"form":"mužmi","tags":"p7"}
+{"lemmaId":38413,"form":"mužoch","tags":"p6"}
+{"lemmaId":38413,"form":"mužom","tags":"s7 p3"}
+{"lemmaId":38413,"form":"mužov","tags":"p2 p4"}
+{"lemmaId":38413,"form":"mužovi","tags":"s3 s6"}
+{"lemmaId":38413,"form":"mužovia","tags":"p1 p5"}
+{"lemmaId":38443,"form":"mysli","tags":"s2 s3 s6"}
+{"lemmaId":38443,"form":"myslí","tags":"p2"}
+{"lemmaId":38446,"form":"myslel","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":38446,"form":"myslela","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":38446,"form":"mysleli","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":38446,"form":"myslelo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":38446,"form":"mysli","tags":"v:Mesb+"}
+{"lemmaId":38446,"form":"myslia","tags":"v:Kepc+"}
+{"lemmaId":38446,"form":"mysliac","tags":"v:He+"}
+{"lemmaId":38446,"form":"myslieť","tags":"v:Ie+"}
+{"lemmaId":38446,"form":"myslime","tags":"v:Mepa+"}
+{"lemmaId":38446,"form":"myslite","tags":"v:Mepb+"}
+{"lemmaId":38446,"form":"myslí","tags":"v:Kesc+"}
+{"lemmaId":38446,"form":"myslím","tags":"v:Kesa+"}
+{"lemmaId":38446,"form":"myslíme","tags":"v:Kepa+"}
+{"lemmaId":38446,"form":"myslíte","tags":"v:Kepb+"}
+{"lemmaId":38446,"form":"myslíš","tags":"v:Kesb+"}
+{"lemmaId":38470,"form":"my","tags":"x1 x5"}
+{"lemmaId":38470,"form":"nami","tags":"x7"}
+{"lemmaId":38470,"form":"nám","tags":"x3"}
+{"lemmaId":38470,"form":"nás","tags":"x2 x4 x6"}
+{"lemmaId":38522,"form":"mám","tags":"v:Mesb+"}
+{"lemmaId":38635,"form":"mohla","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":38635,"form":"mohli","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":38635,"form":"mohlo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":38635,"form":"mohol","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":38635,"form":"môcť","tags":"v:Ie+"}
+{"lemmaId":38635,"form":"môže","tags":"v:Kesc+"}
+{"lemmaId":38635,"form":"môžem","tags":"v:Kesa+"}
+{"lemmaId":38635,"form":"môžeme","tags":"v:Kepa+"}
+{"lemmaId":38635,"form":"môžete","tags":"v:Kepb+"}
+{"lemmaId":38635,"form":"môžeš","tags":"v:Kesb+"}
+{"lemmaId":38635,"form":"môžu","tags":"v:Kepc+"}
+{"lemmaId":38635,"form":"môžuc","tags":"v:He+"}
+{"lemmaId":38636,"form":"mojom","tags":"s6"}
+{"lemmaId":38636,"form":"mojím","tags":"s7"}
+{"lemmaId":38636,"form":"môj","tags":"s1 s5"}
+{"lemmaId":38636,"form":"môjho","tags":"s2 s4"}
+{"lemmaId":38636,"form":"môjmu","tags":"s3"}
+{"lemmaId":39046,"form":"nad","tags":""}
+{"lemmaId":39046,"form":"nado","tags":""}
+{"lemmaId":39236,"form":"najmä","tags":""}
+{"lemmaId":39485,"form":"naozaj","tags":""}
+{"lemmaId":39624,"form":"napríklad","tags":""}
+{"lemmaId":40114,"form":"na","tags":""}
+{"lemmaId":40115,"form":"na","tags":""}
+{"lemmaId":40176,"form":"naši","tags":"p1 p5"}
+{"lemmaId":40176,"form":"našich","tags":"p2 p4 p6"}
+{"lemmaId":40176,"form":"našim","tags":"p3"}
+{"lemmaId":40176,"form":"našimi","tags":"p7"}
+{"lemmaId":40177,"form":"naši","tags":"v:Mdsb+"}
+{"lemmaId":40621,"form":"nebuď","tags":"v:Mesb-"}
+{"lemmaId":40621,"form":"nebuďme","tags":"v:Mepa-"}
+{"lemmaId":40621,"form":"nebuďte","tags":"v:Mepb-"}
+{"lemmaId":40641,"form":"nebol","tags":"v:Lesai- v:Lesam- v:Lesbi- v:Lesbm- v:Lesci- v:Lescm-"}
+{"lemmaId":40641,"form":"nebola","tags":"v:Lesaf- v:Lesbf- v:Lescf-"}
+{"lemmaId":40641,"form":"neboli","tags":"v:Lepah- v:Lepbh- v:Lepcf- v:Lepci- v:Lepcm- v:Lepcn- v:Lepco-"}
+{"lemmaId":40641,"form":"nebolo","tags":"v:Lesan- v:Lesbn- v:Lescn-"}
+{"lemmaId":40641,"form":"nebude","tags":"v:Besc-"}
+{"lemmaId":40641,"form":"nebudem","tags":"v:Besa-"}
+{"lemmaId":40641,"form":"nebudeme","tags":"v:Bepa-"}
+{"lemmaId":40641,"form":"nebudete","tags":"v:Bepb-"}
+{"lemmaId":40641,"form":"nebudeš","tags":"v:Besb-"}
+{"lemmaId":40641,"form":"nebudú","tags":"v:Bepc-"}
+{"lemmaId":40641,"form":"nebuď","tags":"v:Mesb-"}
+{"lemmaId":40641,"form":"nebuďme","tags":"v:Mepa-"}
+{"lemmaId":40641,"form":"nebuďte","tags":"v:Mepb-"}
+{"lemmaId":40641,"form":"nebyť","tags":"v:Ie-"}
+{"lemmaId":40641,"form":"nesúc","tags":"v:He-"}
+{"lemmaId":40641,"form":"niet","tags":"v:Kesc-"}
+{"lemmaId":40641,"form":"nieto","tags":"v:Kesc-"}
+{"lemmaId":40734,"form":"nechaj","tags":"v:Mdsb+"}
+{"lemmaId":40734,"form":"nechajme","tags":"v:Mdpa+"}
+{"lemmaId":40734,"form":"nechajte","tags":"v:Mdpb+"}
+{"lemmaId":40734,"form":"nechajú","tags":"v:Kdpc+"}
+{"lemmaId":40734,"form":"nechajúc","tags":"v:Hd+"}
+{"lemmaId":40734,"form":"nechal","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":40734,"form":"nechala","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":40734,"form":"nechali","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":40734,"form":"nechalo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":40734,"form":"nechať","tags":"v:Id+"}
+{"lemmaId":40734,"form":"nechá","tags":"v:Kdsc+"}
+{"lemmaId":40734,"form":"nechám","tags":"v:Kdsa+"}
+{"lemmaId":40734,"form":"necháme","tags":"v:Kdpa+"}
+{"lemmaId":40734,"form":"necháte","tags":"v:Kdpb+"}
+{"lemmaId":40734,"form":"necháš","tags":"v:Kdsb+"}
+{"lemmaId":40735,"form":"nechce","tags":"v:Kesc-"}
+{"lemmaId":40735,"form":"nechcejúc","tags":"v:He-"}
+{"lemmaId":40735,"form":"nechcel","tags":"v:Lesai- v:Lesam- v:Lesbi- v:Lesbm- v:Lesci- v:Lescm-"}
+{"lemmaId":40735,"form":"nechcela","tags":"v:Lesaf- v:Lesbf- v:Lescf-"}
+{"lemmaId":40735,"form":"nechceli","tags":"v:Lepah- v:Lepbh- v:Lepcf- v:Lepci- v:Lepcm- v:Lepcn- v:Lepco-"}
+{"lemmaId":40735,"form":"nechcelo","tags":"v:Lesan- v:Lesbn- v:Lescn-"}
+{"lemmaId":40735,"form":"nechcem","tags":"v:Kesa-"}
+{"lemmaId":40735,"form":"nechceme","tags":"v:Kepa-"}
+{"lemmaId":40735,"form":"nechcete","tags":"v:Kepb-"}
+{"lemmaId":40735,"form":"nechceš","tags":"v:Kesb-"}
+{"lemmaId":40735,"form":"nechci","tags":"v:Mesb-"}
+{"lemmaId":40735,"form":"nechcieť","tags":"v:Ie-"}
+{"lemmaId":40735,"form":"nechcime","tags":"v:Mepa-"}
+{"lemmaId":40735,"form":"nechcite","tags":"v:Mepb-"}
+{"lemmaId":40735,"form":"nechcú","tags":"v:Kepc-"}
+{"lemmaId":40735,"form":"nechtiac","tags":"v:He-"}
+{"lemmaId":40796,"form":"nechtiac","tags":""}
+{"lemmaId":42915,"form":"nejakej","tags":"s2f s3f s6f"}
+{"lemmaId":42915,"form":"nejakom","tags":"s6m s6i s6n"}
+{"lemmaId":42915,"form":"nejakou","tags":"s7f"}
+{"lemmaId":42915,"form":"nejaká","tags":"s1f s5f"}
+{"lemmaId":42915,"form":"nejaké","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":42915,"form":"nejakého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":42915,"form":"nejakému","tags":"s3m s3i s3n"}
+{"lemmaId":42915,"form":"nejakí","tags":"p1m p5m"}
+{"lemmaId":42915,"form":"nejakú","tags":"s4f"}
+{"lemmaId":42915,"form":"nejaký","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":42915,"form":"nejakých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":42915,"form":"nejakým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":42915,"form":"nejakými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":43551,"form":"nemaj","tags":"v:Mesb-"}
+{"lemmaId":43551,"form":"nemajme","tags":"v:Mepa-"}
+{"lemmaId":43551,"form":"nemajte","tags":"v:Mepb-"}
+{"lemmaId":43551,"form":"nemajú","tags":"v:Kepc-"}
+{"lemmaId":43551,"form":"nemajúc","tags":"v:He-"}
+{"lemmaId":43551,"form":"nemal","tags":"v:Lesai- v:Lesam- v:Lesbi- v:Lesbm- v:Lesci- v:Lescm-"}
+{"lemmaId":43551,"form":"nemala","tags":"v:Lesaf- v:Lesbf- v:Lescf-"}
+{"lemmaId":43551,"form":"nemali","tags":"v:Lepah- v:Lepbh- v:Lepcf- v:Lepci- v:Lepcm- v:Lepcn- v:Lepco-"}
+{"lemmaId":43551,"form":"nemalo","tags":"v:Lesan- v:Lesbn- v:Lescn-"}
+{"lemmaId":43551,"form":"nemať","tags":"v:Ie-"}
+{"lemmaId":43551,"form":"nemá","tags":"v:Kesc-"}
+{"lemmaId":43551,"form":"nemám","tags":"v:Kesa-"}
+{"lemmaId":43551,"form":"nemáme","tags":"v:Kepa-"}
+{"lemmaId":43551,"form":"nemáte","tags":"v:Kepb-"}
+{"lemmaId":43551,"form":"nemáš","tags":"v:Kesb-"}
+{"lemmaId":43759,"form":"nemám","tags":"v:Mesb-"}
+{"lemmaId":43765,"form":"nemá","tags":"s1 s5"}
+{"lemmaId":43777,"form":"nemohla","tags":"v:Lesaf- v:Lesbf- v:Lescf-"}
+{"lemmaId":43777,"form":"nemohli","tags":"v:Lepah- v:Lepbh- v:Lepcf- v:Lepci- v:Lepcm- v:Lepcn- v:Lepco-"}
+{"lemmaId":43777,"form":"nemohlo","tags":"v:Lesan- v:Lesbn- v:Lescn-"}
+{"lemmaId":43777,"form":"nemohol","tags":"v:Lesai- v:Lesam- v:Lesbi- v:Lesbm- v:Lesci- v:Lescm-"}
+{"lemmaId":43777,"form":"nemôcť","tags":"v:Ie-"}
+{"lemmaId":43777,"form":"nemôže","tags":"v:Kesc-"}
+{"lemmaId":43777,"form":"nemôžem","tags":"v:Kesa-"}
+{"lemmaId":43777,"form":"nemôžeme","tags":"v:Kepa-"}
+{"lemmaId":43777,"form":"nemôžete","tags":"v:Kepb-"}
+{"lemmaId":43777,"form":"nemôžeš","tags":"v:Kesb-"}
+{"lemmaId":43777,"form":"nemôžu","tags":"v:Kepc-"}
+{"lemmaId":43777,"form":"nemôžuc","tags":"v:He-"}
+{"lemmaId":43782,"form":"nemá","tags":"s1f s5f"}
+{"lemmaId":52410,"form":"nevedel","tags":"v:Lesai- v:Lesam- v:Lesbi- v:Lesbm- v:Lesci- v:Lescm-"}
+{"lemmaId":52410,"form":"nevedela","tags":"v:Lesaf- v:Lesbf- v:Lescf-"}
+{"lemmaId":52410,"form":"nevedeli","tags":"v:Lepah- v:Lepbh- v:Lepcf- v:Lepci- v:Lepcm- v:Lepcn- v:Lepco-"}
+{"lemmaId":52410,"form":"nevedelo","tags":"v:Lesan- v:Lesbn- v:Lescn-"}
+{"lemmaId":52410,"form":"nevedia","tags":"v:Kepc-"}
+{"lemmaId":52410,"form":"nevediac","tags":"v:He-"}
+{"lemmaId":52410,"form":"nevedieť","tags":"v:Ie-"}
+{"lemmaId":52410,"form":"nevedz","tags":"v:Mesb-"}
+{"lemmaId":52410,"form":"nevedzme","tags":"v:Mepa-"}
+{"lemmaId":52410,"form":"nevedzte","tags":"v:Mepb-"}
+{"lemmaId":52410,"form":"nevie","tags":"v:Kesc-"}
+{"lemmaId":52410,"form":"neviem","tags":"v:Kesa-"}
+{"lemmaId":52410,"form":"nevieme","tags":"v:Kepa-"}
+{"lemmaId":52410,"form":"neviete","tags":"v:Kepb-"}
+{"lemmaId":52410,"form":"nevieš","tags":"v:Kesb-"}
+{"lemmaId":52504,"form":"neviem","tags":""}
+{"lemmaId":57433,"form":"niektorej","tags":"s2f s3f s6f"}
+{"lemmaId":57433,"form":"niektorom","tags":"s6m s6i s6n"}
+{"lemmaId":57433,"form":"niektorou","tags":"s7f"}
+{"lemmaId":57433,"form":"niektorá","tags":"s1f s5f"}
+{"lemmaId":57433,"form":"niektoré","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":57433,"form":"niektorého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":57433,"form":"niektorému","tags":"s3m s3i s3n"}
+{"lemmaId":57433,"form":"niektorí","tags":"p1m p5m"}
+{"lemmaId":57433,"form":"niektorú","tags":"s4f"}
+{"lemmaId":57433,"form":"niektorý","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":57433,"form":"niektorých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":57433,"form":"niektorým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":57433,"form":"niektorými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":57434,"form":"niekoho","tags":"x2 x4"}
+{"lemmaId":57434,"form":"niekom","tags":"x6"}
+{"lemmaId":57434,"form":"niekomu","tags":"x3"}
+{"lemmaId":57434,"form":"niekto","tags":"x1 x5"}
+{"lemmaId":57434,"form":"niekým","tags":"x7"}
+{"lemmaId":57439,"form":"nesúc","tags":"v:He+"}
+{"lemmaId":57441,"form":"nieto","tags":""}
+{"lemmaId":57443,"form":"niečo","tags":"x1 x4 x5"}
+{"lemmaId":57443,"form":"niečoho","tags":"x2"}
+{"lemmaId":57443,"form":"niečom","tags":"x6"}
+{"lemmaId":57443,"form":"niečomu","tags":"x3"}
+{"lemmaId":57443,"form":"niečím","tags":"x7"}
+{"lemmaId":57444,"form":"niečom","tags":"s6m s6i s6n"}
+{"lemmaId":57444,"form":"niečím","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":57466,"form":"nikdy","tags":""}
+{"lemmaId":57471,"form":"nikoho","tags":"s2 s4"}
+{"lemmaId":57471,"form":"nikom","tags":"s6"}
+{"lemmaId":57471,"form":"nikomu","tags":"s3"}
+{"lemmaId":57471,"form":"nikto","tags":"s1 s5"}
+{"lemmaId":57471,"form":"nikým","tags":"s7"}
+{"lemmaId":57472,"form":"nikoho","tags":"x2 x4"}
+{"lemmaId":57472,"form":"nikom","tags":"x6"}
+{"lemmaId":57472,"form":"nikomu","tags":"x3"}
+{"lemmaId":57472,"form":"nikto","tags":"x1 x5"}
+{"lemmaId":57472,"form":"nikým","tags":"x7"}
+{"lemmaId":57474,"form":"nikoho","tags":"x2 x4"}
+{"lemmaId":57474,"form":"nikom","tags":"x6"}
+{"lemmaId":57474,"form":"nikomu","tags":"x3"}
+{"lemmaId":57474,"form":"nikým","tags":"x7"}
+{"lemmaId":57539,"form":"nič","tags":"v:Mesb+"}
+{"lemmaId":57539,"form":"ničím","tags":"v:Kesa+"}
+{"lemmaId":57551,"form":"nič","tags":"s1 s2 s3 s4 s5 s6 s7 p1 p2 p3 p4 p5 p6 p7"}
+{"lemmaId":57552,"form":"nič","tags":""}
+{"lemmaId":57553,"form":"nič","tags":"x1 x4 x5"}
+{"lemmaId":57553,"form":"ničoho","tags":"x2"}
+{"lemmaId":57553,"form":"ničom","tags":"x6"}
+{"lemmaId":57553,"form":"ničomu","tags":"x3"}
+{"lemmaId":57553,"form":"ničím","tags":"x7"}
+{"lemmaId":57554,"form":"ničom","tags":"s6m s6i s6n"}
+{"lemmaId":57554,"form":"ničím","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":57868,"form":"novom","tags":"s7 p3"}
+{"lemmaId":57879,"form":"no","tags":""}
+{"lemmaId":57880,"form":"no","tags":""}
+{"lemmaId":57881,"form":"no","tags":""}
+{"lemmaId":58068,"form":"našiel","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":58068,"form":"našla","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":58068,"form":"našli","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":58068,"form":"našlo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":58068,"form":"nájde","tags":"v:Kdsc+"}
+{"lemmaId":58068,"form":"nájdem","tags":"v:Kdsa+"}
+{"lemmaId":58068,"form":"nájdeme","tags":"v:Kdpa+"}
+{"lemmaId":58068,"form":"nájdete","tags":"v:Kdpb+"}
+{"lemmaId":58068,"form":"nájdeš","tags":"v:Kdsb+"}
+{"lemmaId":58068,"form":"nájdi","tags":"v:Mdsb+"}
+{"lemmaId":58068,"form":"nájdime","tags":"v:Mdpa+"}
+{"lemmaId":58068,"form":"nájdite","tags":"v:Mdpb+"}
+{"lemmaId":58068,"form":"nájdu","tags":"v:Kdpc+"}
+{"lemmaId":58068,"form":"nájduc","tags":"v:Hd+"}
+{"lemmaId":58068,"form":"nájsť","tags":"v:Id+"}
+{"lemmaId":58152,"form":"nám","tags":""}
+{"lemmaId":58406,"form":"naša","tags":"s1f s5f"}
+{"lemmaId":58406,"form":"naše","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":58406,"form":"našej","tags":"s2f s3f s6f"}
+{"lemmaId":58406,"form":"naši","tags":"p1m p5m"}
+{"lemmaId":58406,"form":"našich","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":58406,"form":"našim","tags":"p3m p3i p3f p3n"}
+{"lemmaId":58406,"form":"našimi","tags":"p7m p7i p7f p7n"}
+{"lemmaId":58406,"form":"našom","tags":"s6m s6i s6n"}
+{"lemmaId":58406,"form":"našou","tags":"s7f"}
+{"lemmaId":58406,"form":"našu","tags":"s4f"}
+{"lemmaId":58406,"form":"naším","tags":"s7m s7i s7n"}
+{"lemmaId":58406,"form":"náš","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":58406,"form":"nášho","tags":"s2m s2i s2n s4m"}
+{"lemmaId":58406,"form":"nášmu","tags":"s3m s3i s3n"}
+{"lemmaId":58696,"form":"oblasti","tags":"s2 s3 s6 p1 p4 p5"}
+{"lemmaId":58696,"form":"oblastiach","tags":"p6"}
+{"lemmaId":58696,"form":"oblastiam","tags":"p3"}
+{"lemmaId":58696,"form":"oblastí","tags":"p2"}
+{"lemmaId":58696,"form":"oblasť","tags":"s1 s4 s5"}
+{"lemmaId":58696,"form":"oblasťami","tags":"p7"}
+{"lemmaId":58696,"form":"oblasťou","tags":"s7"}
+{"lemmaId":60582,"form":"okrem","tags":""}
+{"lemmaId":60879,"form":"ho","tags":"s2n s4n"}
+{"lemmaId":60879,"form":"ich","tags":"p2n p4n"}
+{"lemmaId":60879,"form":"im","tags":"p3n"}
+{"lemmaId":60879,"form":"jeho","tags":"s2n"}
+{"lemmaId":60879,"form":"jemu","tags":"s3n"}
+{"lemmaId":60879,"form":"mu","tags":"s3n"}
+{"lemmaId":60879,"form":"ne","tags":"p4n"}
+{"lemmaId":60879,"form":"neho","tags":"s2n"}
+{"lemmaId":60879,"form":"nemu","tags":"s3n"}
+{"lemmaId":60879,"form":"nich","tags":"p2n p6n"}
+{"lemmaId":60879,"form":"nim","tags":"p3n"}
+{"lemmaId":60879,"form":"nimi","tags":"p7n"}
+{"lemmaId":60879,"form":"ním","tags":"s7n"}
+{"lemmaId":60879,"form":"ony","tags":"p1n p5n"}
+{"lemmaId":60879,"form":"ňom","tags":"s6n"}
+{"lemmaId":61833,"form":"otcov","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":61833,"form":"otcovi","tags":"p1m p5m"}
+{"lemmaId":61834,"form":"otcu","tags":""}
+{"lemmaId":61836,"form":"otca","tags":"s2 s4"}
+{"lemmaId":61836,"form":"otcami","tags":"p7"}
+{"lemmaId":61836,"form":"otcoch","tags":"p6"}
+{"lemmaId":61836,"form":"otcom","tags":"s7 p3"}
+{"lemmaId":61836,"form":"otcov","tags":"p2 p4"}
+{"lemmaId":61836,"form":"otcovi","tags":"s3 s6"}
+{"lemmaId":61836,"form":"otcovia","tags":"p1 p5"}
+{"lemmaId":61836,"form":"otcu","tags":"s3"}
+{"lemmaId":61836,"form":"otec","tags":"s1 s5"}
+{"lemmaId":61836,"form":"otče","tags":"s5"}
+{"lemmaId":62134,"form":"o","tags":""}
+{"lemmaId":62135,"form":"o","tags":"s1 s2 s3 s4 s5 s6 s7 p1 p2 p3 p4 p5 p6 p7"}
+{"lemmaId":62136,"form":"o","tags":""}
+{"lemmaId":65089,"form":"pod","tags":""}
+{"lemmaId":65090,"form":"pod","tags":""}
+{"lemmaId":65090,"form":"podo","tags":""}
+{"lemmaId":65107,"form":"podľa","tags":""}
+{"lemmaId":66026,"form":"pomohla","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":66026,"form":"pomohli","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":66026,"form":"pomohlo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":66026,"form":"pomohol","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":66026,"form":"pomôcť","tags":"v:Id+"}
+{"lemmaId":66026,"form":"pomôž","tags":"v:Mdsb+"}
+{"lemmaId":66026,"form":"pomôže","tags":"v:Kdsc+"}
+{"lemmaId":66026,"form":"pomôžem","tags":"v:Kdsa+"}
+{"lemmaId":66026,"form":"pomôžeme","tags":"v:Kdpa+"}
+{"lemmaId":66026,"form":"pomôžete","tags":"v:Kdpb+"}
+{"lemmaId":66026,"form":"pomôžeš","tags":"v:Kdsb+"}
+{"lemmaId":66026,"form":"pomôžme","tags":"v:Mdpa+"}
+{"lemmaId":66026,"form":"pomôžte","tags":"v:Mdpb+"}
+{"lemmaId":66026,"form":"pomôžu","tags":"v:Kdpc+"}
+{"lemmaId":66026,"form":"pomôžuc","tags":"v:Hd+"}
+{"lemmaId":66452,"form":"poriadkami","tags":"p7"}
+{"lemmaId":66452,"form":"poriadkoch","tags":"p6"}
+{"lemmaId":66452,"form":"poriadkom","tags":"s7 p3"}
+{"lemmaId":66452,"form":"poriadkov","tags":"p2"}
+{"lemmaId":66452,"form":"poriadku","tags":"s2 s3 s6"}
+{"lemmaId":66452,"form":"poriadky","tags":"p1 p4 p5"}
+{"lemmaId":66452,"form":"poriadok","tags":"s1 s4 s5"}
+{"lemmaId":67018,"form":"potom","tags":""}
+{"lemmaId":67019,"form":"potom","tags":""}
+{"lemmaId":67040,"form":"potrebnej","tags":"s2f s3f s6f"}
+{"lemmaId":67040,"form":"potrebnom","tags":"s6m s6i s6n"}
+{"lemmaId":67040,"form":"potrebnou","tags":"s7f"}
+{"lemmaId":67040,"form":"potrebná","tags":"s1f s5f"}
+{"lemmaId":67040,"form":"potrebné","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":67040,"form":"potrebného","tags":"s2m s2i s2n s4m"}
+{"lemmaId":67040,"form":"potrebnému","tags":"s3m s3i s3n"}
+{"lemmaId":67040,"form":"potrební","tags":"p1m p5m"}
+{"lemmaId":67040,"form":"potrebnú","tags":"s4f"}
+{"lemmaId":67040,"form":"potrebný","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":67040,"form":"potrebných","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":67040,"form":"potrebným","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":67040,"form":"potrebnými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":67041,"form":"potreboval","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":67041,"form":"potrebovala","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":67041,"form":"potrebovali","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":67041,"form":"potrebovalo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":67041,"form":"potrebovať","tags":"v:Ie+"}
+{"lemmaId":67041,"form":"potrebuj","tags":"v:Mesb+"}
+{"lemmaId":67041,"form":"potrebuje","tags":"v:Kesc+"}
+{"lemmaId":67041,"form":"potrebujem","tags":"v:Kesa+"}
+{"lemmaId":67041,"form":"potrebujeme","tags":"v:Kepa+"}
+{"lemmaId":67041,"form":"potrebujete","tags":"v:Kepb+"}
+{"lemmaId":67041,"form":"potrebuješ","tags":"v:Kesb+"}
+{"lemmaId":67041,"form":"potrebujme","tags":"v:Mepa+"}
+{"lemmaId":67041,"form":"potrebujte","tags":"v:Mepb+"}
+{"lemmaId":67041,"form":"potrebujú","tags":"v:Kepc+"}
+{"lemmaId":67041,"form":"potrebujúc","tags":"v:He+"}
+{"lemmaId":67100,"form":"potom","tags":"s7 p3"}
+{"lemmaId":67207,"form":"povedal","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":67207,"form":"povedala","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":67207,"form":"povedali","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":67207,"form":"povedalo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":67207,"form":"povedať","tags":"v:Id+"}
+{"lemmaId":67207,"form":"povedia","tags":"v:Kdpc+"}
+{"lemmaId":67207,"form":"povediac","tags":"v:Hd+"}
+{"lemmaId":67207,"form":"povedz","tags":"v:Mdsb+"}
+{"lemmaId":67207,"form":"povedzme","tags":"v:Mdpa+"}
+{"lemmaId":67207,"form":"povedzte","tags":"v:Mdpb+"}
+{"lemmaId":67207,"form":"povie","tags":"v:Kdsc+"}
+{"lemmaId":67207,"form":"poviem","tags":"v:Kdsa+"}
+{"lemmaId":67207,"form":"povieme","tags":"v:Kdpa+"}
+{"lemmaId":67207,"form":"poviete","tags":"v:Kdpb+"}
+{"lemmaId":67207,"form":"povieš","tags":"v:Kdsb+"}
+{"lemmaId":67210,"form":"povedzme","tags":""}
+{"lemmaId":67661,"form":"pozrel","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":67661,"form":"pozrela","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":67661,"form":"pozreli","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":67661,"form":"pozrelo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":67661,"form":"pozri","tags":"v:Mdsb+"}
+{"lemmaId":67661,"form":"pozrie","tags":"v:Kdsc+"}
+{"lemmaId":67661,"form":"pozriem","tags":"v:Kdsa+"}
+{"lemmaId":67661,"form":"pozrieme","tags":"v:Kdpa+"}
+{"lemmaId":67661,"form":"pozriete","tags":"v:Kdpb+"}
+{"lemmaId":67661,"form":"pozrieš","tags":"v:Kdsb+"}
+{"lemmaId":67661,"form":"pozrieť","tags":"v:Id+"}
+{"lemmaId":67661,"form":"pozrime","tags":"v:Mdpa+"}
+{"lemmaId":67661,"form":"pozrite","tags":"v:Mdpb+"}
+{"lemmaId":67661,"form":"pozrú","tags":"v:Kdpc+"}
+{"lemmaId":67661,"form":"pozrúc","tags":"v:Hd+"}
+{"lemmaId":67686,"form":"po","tags":""}
+{"lemmaId":67687,"form":"po","tags":""}
+{"lemmaId":67700,"form":"počas","tags":""}
+{"lemmaId":67718,"form":"počkaj","tags":"v:Mdsb+"}
+{"lemmaId":67718,"form":"počkajme","tags":"v:Mdpa+"}
+{"lemmaId":67718,"form":"počkajte","tags":"v:Mdpb+"}
+{"lemmaId":67718,"form":"počkajú","tags":"v:Kdpc+"}
+{"lemmaId":67718,"form":"počkajúc","tags":"v:Hd+"}
+{"lemmaId":67718,"form":"počkal","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":67718,"form":"počkala","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":67718,"form":"počkali","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":67718,"form":"počkalo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":67718,"form":"počkať","tags":"v:Id+"}
+{"lemmaId":67718,"form":"počká","tags":"v:Kdsc+"}
+{"lemmaId":67718,"form":"počkám","tags":"v:Kdsa+"}
+{"lemmaId":67718,"form":"počkáme","tags":"v:Kdpa+"}
+{"lemmaId":67718,"form":"počkáte","tags":"v:Kdpb+"}
+{"lemmaId":67718,"form":"počkáš","tags":"v:Kdsb+"}
+{"lemmaId":67734,"form":"počuj","tags":"v:Mjsb+"}
+{"lemmaId":67734,"form":"počuje","tags":"v:Kjsc+"}
+{"lemmaId":67734,"form":"počujem","tags":"v:Kjsa+"}
+{"lemmaId":67734,"form":"počujeme","tags":"v:Kjpa+"}
+{"lemmaId":67734,"form":"počujete","tags":"v:Kjpb+"}
+{"lemmaId":67734,"form":"počuješ","tags":"v:Kjsb+"}
+{"lemmaId":67734,"form":"počujme","tags":"v:Mjpa+"}
+{"lemmaId":67734,"form":"počujte","tags":"v:Mjpb+"}
+{"lemmaId":67734,"form":"počujú","tags":"v:Kjpc+"}
+{"lemmaId":67734,"form":"počujúc","tags":"v:Hj+"}
+{"lemmaId":67734,"form":"počul","tags":"v:Ljsai+ v:Ljsam+ v:Ljsbi+ v:Ljsbm+ v:Ljsci+ v:Ljscm+"}
+{"lemmaId":67734,"form":"počula","tags":"v:Ljsaf+ v:Ljsbf+ v:Ljscf+"}
+{"lemmaId":67734,"form":"počuli","tags":"v:Ljpah+ v:Ljpbh+ v:Ljpcf+ v:Ljpci+ v:Ljpcm+ v:Ljpcn+ v:Ljpco+"}
+{"lemmaId":67734,"form":"počulo","tags":"v:Ljsan+ v:Ljsbn+ v:Ljscn+"}
+{"lemmaId":67734,"form":"počuť","tags":"v:Ij+"}
+{"lemmaId":67755,"form":"poď","tags":""}
+{"lemmaId":68118,"form":"pravda","tags":"s1 s5"}
+{"lemmaId":68118,"form":"pravdami","tags":"p7"}
+{"lemmaId":68118,"form":"pravde","tags":"s3 s6"}
+{"lemmaId":68118,"form":"pravdou","tags":"s7"}
+{"lemmaId":68118,"form":"pravdu","tags":"s4"}
+{"lemmaId":68118,"form":"pravdy","tags":"s2 p1 p4 p5"}
+{"lemmaId":68118,"form":"pravdách","tags":"p6"}
+{"lemmaId":68118,"form":"pravdám","tags":"p3"}
+{"lemmaId":68118,"form":"právd","tags":"p2"}
+{"lemmaId":68119,"form":"pravda","tags":""}
+{"lemmaId":68693,"form":"pred","tags":""}
+{"lemmaId":68693,"form":"predo","tags":""}
+{"lemmaId":69306,"form":"prepáč","tags":"v:Mdsb+"}
+{"lemmaId":69306,"form":"prepáči","tags":"v:Kdsc+"}
+{"lemmaId":69306,"form":"prepáčia","tags":"v:Kdpc+"}
+{"lemmaId":69306,"form":"prepáčiac","tags":"v:Hd+"}
+{"lemmaId":69306,"form":"prepáčil","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":69306,"form":"prepáčila","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":69306,"form":"prepáčili","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":69306,"form":"prepáčilo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":69306,"form":"prepáčim","tags":"v:Kdsa+"}
+{"lemmaId":69306,"form":"prepáčime","tags":"v:Kdpa+"}
+{"lemmaId":69306,"form":"prepáčite","tags":"v:Kdpb+"}
+{"lemmaId":69306,"form":"prepáčiš","tags":"v:Kdsb+"}
+{"lemmaId":69306,"form":"prepáčiť","tags":"v:Id+"}
+{"lemmaId":69306,"form":"prepáčme","tags":"v:Mdpa+"}
+{"lemmaId":69306,"form":"prepáčte","tags":"v:Mdpb+"}
+{"lemmaId":69570,"form":"preto","tags":""}
+{"lemmaId":69571,"form":"preto","tags":""}
+{"lemmaId":69572,"form":"preto","tags":""}
+{"lemmaId":69574,"form":"pretože","tags":""}
+{"lemmaId":69814,"form":"prečo","tags":""}
+{"lemmaId":69815,"form":"prečo","tags":"s1 s2 s3 s4 s5 s6 s7 p1 p2 p3 p4 p5 p6 p7"}
+{"lemmaId":70144,"form":"priestor","tags":"s1 s4 s5"}
+{"lemmaId":70144,"form":"priestore","tags":"s6"}
+{"lemmaId":70144,"form":"priestormi","tags":"p7"}
+{"lemmaId":70144,"form":"priestoroch","tags":"p6"}
+{"lemmaId":70144,"form":"priestorom","tags":"s7 p3"}
+{"lemmaId":70144,"form":"priestorov","tags":"p2"}
+{"lemmaId":70144,"form":"priestoru","tags":"s2 s3"}
+{"lemmaId":70144,"form":"priestory","tags":"p1 p4 p5"}
+{"lemmaId":70196,"form":"pri","tags":"v:Mesb+"}
+{"lemmaId":70789,"form":"problém","tags":"s1 s4 s5"}
+{"lemmaId":70789,"form":"problémami","tags":"p7"}
+{"lemmaId":70789,"form":"probléme","tags":"s6"}
+{"lemmaId":70789,"form":"problémoch","tags":"p6"}
+{"lemmaId":70789,"form":"problémom","tags":"s7 p3"}
+{"lemmaId":70789,"form":"problémov","tags":"p2"}
+{"lemmaId":70789,"form":"problému","tags":"s2 s3"}
+{"lemmaId":70789,"form":"problémy","tags":"p1 p4 p5"}
+{"lemmaId":70874,"form":"program","tags":"s1 s4 s5"}
+{"lemmaId":70874,"form":"programami","tags":"p7"}
+{"lemmaId":70874,"form":"programe","tags":"s6"}
+{"lemmaId":70874,"form":"programoch","tags":"p6"}
+{"lemmaId":70874,"form":"programom","tags":"s7 p3"}
+{"lemmaId":70874,"form":"programov","tags":"p2"}
+{"lemmaId":70874,"form":"programu","tags":"s2 s3"}
+{"lemmaId":70874,"form":"programy","tags":"p1 p4 p5"}
+{"lemmaId":70893,"form":"projekt","tags":"s1 s4 s5"}
+{"lemmaId":70893,"form":"projekte","tags":"s6"}
+{"lemmaId":70893,"form":"projektmi","tags":"p7"}
+{"lemmaId":70893,"form":"projektoch","tags":"p6"}
+{"lemmaId":70893,"form":"projektom","tags":"s7 p3"}
+{"lemmaId":70893,"form":"projektov","tags":"p2"}
+{"lemmaId":70893,"form":"projektu","tags":"s2 s3"}
+{"lemmaId":70893,"form":"projekty","tags":"p1 p4 p5"}
+{"lemmaId":70980,"form":"prosím","tags":"v:Kesa+"}
+{"lemmaId":71038,"form":"prosím","tags":""}
+{"lemmaId":71330,"form":"prvej","tags":"s2f s3f s6f"}
+{"lemmaId":71330,"form":"prvom","tags":"s6m s6i s6n"}
+{"lemmaId":71330,"form":"prvou","tags":"s7f"}
+{"lemmaId":71330,"form":"prvá","tags":"s1f s5f"}
+{"lemmaId":71330,"form":"prvé","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":71330,"form":"prvého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":71330,"form":"prvému","tags":"s3m s3i s3n"}
+{"lemmaId":71330,"form":"prví","tags":"p1m p5m"}
+{"lemmaId":71330,"form":"prvú","tags":"s4f"}
+{"lemmaId":71330,"form":"prvý","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":71330,"form":"prvých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":71330,"form":"prvým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":71330,"form":"prvými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":71356,"form":"práve","tags":""}
+{"lemmaId":71357,"form":"práve","tags":""}
+{"lemmaId":71370,"form":"práve","tags":"s6"}
+{"lemmaId":71502,"form":"prípad","tags":"s1 s4 s5"}
+{"lemmaId":71502,"form":"prípade","tags":"s6"}
+{"lemmaId":71502,"form":"prípadmi","tags":"p7"}
+{"lemmaId":71502,"form":"prípadoch","tags":"p6"}
+{"lemmaId":71502,"form":"prípadom","tags":"s7 p3"}
+{"lemmaId":71502,"form":"prípadov","tags":"p2"}
+{"lemmaId":71502,"form":"prípadu","tags":"s2 s3"}
+{"lemmaId":71502,"form":"prípady","tags":"p1 p4 p5"}
+{"lemmaId":71602,"form":"prišiel","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":71602,"form":"prišla","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":71602,"form":"prišli","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":71602,"form":"prišlo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":71602,"form":"príde","tags":"v:Kdsc+"}
+{"lemmaId":71602,"form":"prídem","tags":"v:Kdsa+"}
+{"lemmaId":71602,"form":"prídeme","tags":"v:Kdpa+"}
+{"lemmaId":71602,"form":"prídete","tags":"v:Kdpb+"}
+{"lemmaId":71602,"form":"prídeš","tags":"v:Kdsb+"}
+{"lemmaId":71602,"form":"prídu","tags":"v:Kdpc+"}
+{"lemmaId":71602,"form":"príduc","tags":"v:Hd+"}
+{"lemmaId":71602,"form":"prísť","tags":"v:Id+"}
+{"lemmaId":71602,"form":"príď","tags":"v:Mdsb+"}
+{"lemmaId":71602,"form":"príďme","tags":"v:Mdpa+"}
+{"lemmaId":71602,"form":"príďte","tags":"v:Mdpb+"}
+{"lemmaId":72020,"form":"pána","tags":""}
+{"lemmaId":72021,"form":"pána","tags":""}
+{"lemmaId":72033,"form":"pánov","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":72033,"form":"pánovi","tags":"p1m p5m"}
+{"lemmaId":72037,"form":"pane","tags":"s5"}
+{"lemmaId":72037,"form":"pán","tags":"s1 s5"}
+{"lemmaId":72037,"form":"pána","tags":"s2 s4"}
+{"lemmaId":72037,"form":"páni","tags":"p1 p5"}
+{"lemmaId":72037,"form":"pánmi","tags":"p7"}
+{"lemmaId":72037,"form":"pánoch","tags":"p6"}
+{"lemmaId":72037,"form":"pánom","tags":"s7 p3"}
+{"lemmaId":72037,"form":"pánov","tags":"p2 p4"}
+{"lemmaId":72037,"form":"pánovi","tags":"s3 s6"}
+{"lemmaId":72037,"form":"pánu","tags":"s3 s6"}
+{"lemmaId":72314,"form":"pôjde","tags":"s6"}
+{"lemmaId":72314,"form":"pôjdu","tags":"s3"}
+{"lemmaId":72315,"form":"pôjde","tags":"v:Kdsc+"}
+{"lemmaId":72315,"form":"pôjdem","tags":"v:Kdsa+"}
+{"lemmaId":72315,"form":"pôjdeme","tags":"v:Kdpa+"}
+{"lemmaId":72315,"form":"pôjdete","tags":"v:Kdpb+"}
+{"lemmaId":72315,"form":"pôjdeš","tags":"v:Kdsb+"}
+{"lemmaId":72315,"form":"pôjdu","tags":"v:Kdpc+"}
+{"lemmaId":72490,"form":"rada","tags":"s1 s5"}
+{"lemmaId":72490,"form":"rady","tags":"s2 p1 p4 p5"}
+{"lemmaId":72490,"form":"rád","tags":"p2"}
+{"lemmaId":72546,"form":"rady","tags":"p1 p4 p5"}
+{"lemmaId":73575,"form":"rob","tags":"v:Mesb+"}
+{"lemmaId":73575,"form":"robia","tags":"v:Kepc+"}
+{"lemmaId":73575,"form":"robiac","tags":"v:He+"}
+{"lemmaId":73575,"form":"robil","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":73575,"form":"robila","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":73575,"form":"robili","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":73575,"form":"robilo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":73575,"form":"robiť","tags":"v:Ie+"}
+{"lemmaId":73575,"form":"robme","tags":"v:Mepa+"}
+{"lemmaId":73575,"form":"robte","tags":"v:Mepb+"}
+{"lemmaId":73575,"form":"robí","tags":"v:Kesc+"}
+{"lemmaId":73575,"form":"robím","tags":"v:Kesa+"}
+{"lemmaId":73575,"form":"robíme","tags":"v:Kepa+"}
+{"lemmaId":73575,"form":"robíte","tags":"v:Kepb+"}
+{"lemmaId":73575,"form":"robíš","tags":"v:Kesb+"}
+{"lemmaId":73670,"form":"rok","tags":"s1 s4 s5"}
+{"lemmaId":73670,"form":"roka","tags":"s2"}
+{"lemmaId":73670,"form":"rokmi","tags":"p7"}
+{"lemmaId":73670,"form":"rokoch","tags":"p6"}
+{"lemmaId":73670,"form":"rokom","tags":"s7 p3"}
+{"lemmaId":73670,"form":"rokov","tags":"p2"}
+{"lemmaId":73670,"form":"roku","tags":"s2 s3 s6"}
+{"lemmaId":73670,"form":"roky","tags":"p1 p4 p5"}
+{"lemmaId":75368,"form":"rada","tags":"s1f"}
+{"lemmaId":75368,"form":"radi","tags":"p1m"}
+{"lemmaId":75368,"form":"rado","tags":"s1n"}
+{"lemmaId":75368,"form":"rady","tags":"p1i p1f p1n"}
+{"lemmaId":75368,"form":"rád","tags":"s1m s1i"}
+{"lemmaId":75369,"form":"rád","tags":""}
+{"lemmaId":75370,"form":"rád","tags":"s1 s4 s5"}
+{"lemmaId":75371,"form":"rád","tags":""}
+{"lemmaId":75455,"form":"rôzne","tags":""}
+{"lemmaId":75456,"form":"rôzni","tags":"v:Kesc+ v:Mesb+"}
+{"lemmaId":75477,"form":"rôzna","tags":"s1f s5f"}
+{"lemmaId":75477,"form":"rôzne","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":75477,"form":"rôzneho","tags":"s2m s2i s2n s4m"}
+{"lemmaId":75477,"form":"rôznej","tags":"s2f s3f s6f"}
+{"lemmaId":75477,"form":"rôznemu","tags":"s3m s3i s3n"}
+{"lemmaId":75477,"form":"rôzni","tags":"p1m p5m"}
+{"lemmaId":75477,"form":"rôznom","tags":"s6m s6i s6n"}
+{"lemmaId":75477,"form":"rôznou","tags":"s7f"}
+{"lemmaId":75477,"form":"rôznu","tags":"s4f"}
+{"lemmaId":75477,"form":"rôzny","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":75477,"form":"rôznych","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":75477,"form":"rôznym","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":75477,"form":"rôznymi","tags":"p7m p7i p7f p7n"}
+{"lemmaId":75851,"form":"samej","tags":"s2f s3f s6f"}
+{"lemmaId":75851,"form":"samom","tags":"s6m s6i s6n"}
+{"lemmaId":75851,"form":"samou","tags":"s7f"}
+{"lemmaId":75851,"form":"samého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":75851,"form":"samému","tags":"s3m s3i s3n"}
+{"lemmaId":75851,"form":"samých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":75851,"form":"samým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":75851,"form":"samými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":75955,"form":"sa","tags":""}
+{"lemmaId":75956,"form":"sa","tags":""}
+{"lemmaId":76147,"form":"seba","tags":"x2 x4 x5"}
+{"lemmaId":76147,"form":"sebe","tags":"x3 x6"}
+{"lemmaId":76147,"form":"sebou","tags":"x7"}
+{"lemmaId":76469,"form":"sem","tags":""}
+{"lemmaId":76950,"form":"si","tags":""}
+{"lemmaId":77867,"form":"služba","tags":"s1 s5"}
+{"lemmaId":77867,"form":"službami","tags":"p7"}
+{"lemmaId":77867,"form":"službe","tags":"s3 s6"}
+{"lemmaId":77867,"form":"službou","tags":"s7"}
+{"lemmaId":77867,"form":"službu","tags":"s4"}
+{"lemmaId":77867,"form":"služby","tags":"s2 p1 p4 p5"}
+{"lemmaId":77867,"form":"službách","tags":"p6"}
+{"lemmaId":77867,"form":"službám","tags":"p3"}
+{"lemmaId":77867,"form":"služieb","tags":"p2"}
+{"lemmaId":78699,"form":"spoločnosti","tags":"s2 s3 s6 p1 p4 p5"}
+{"lemmaId":78699,"form":"spoločnostiach","tags":"p6"}
+{"lemmaId":78699,"form":"spoločnostiam","tags":"p3"}
+{"lemmaId":78699,"form":"spoločností","tags":"p2"}
+{"lemmaId":78699,"form":"spoločnosť","tags":"s1 s4 s5"}
+{"lemmaId":78699,"form":"spoločnosťami","tags":"p7"}
+{"lemmaId":78699,"form":"spoločnosťou","tags":"s7"}
+{"lemmaId":78962,"form":"sprav","tags":"v:Mdsb+"}
+{"lemmaId":78962,"form":"spravia","tags":"v:Kdpc+"}
+{"lemmaId":78962,"form":"spraviac","tags":"v:Hd+"}
+{"lemmaId":78962,"form":"spravil","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":78962,"form":"spravila","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":78962,"form":"spravili","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":78962,"form":"spravilo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":78962,"form":"spraviť","tags":"v:Id+"}
+{"lemmaId":78962,"form":"spravme","tags":"v:Mdpa+"}
+{"lemmaId":78962,"form":"spravte","tags":"v:Mdpb+"}
+{"lemmaId":78962,"form":"spraví","tags":"v:Kdsc+"}
+{"lemmaId":78962,"form":"spravím","tags":"v:Kdsa+"}
+{"lemmaId":78962,"form":"spravíme","tags":"v:Kdpa+"}
+{"lemmaId":78962,"form":"spravíte","tags":"v:Kdpb+"}
+{"lemmaId":78962,"form":"spravíš","tags":"v:Kdsb+"}
+{"lemmaId":79221,"form":"spôsob","tags":"v:Mdsb+"}
+{"lemmaId":79227,"form":"spôsob","tags":"s1 s4 s5"}
+{"lemmaId":79227,"form":"spôsobe","tags":"s6"}
+{"lemmaId":79227,"form":"spôsobmi","tags":"p7"}
+{"lemmaId":79227,"form":"spôsoboch","tags":"p6"}
+{"lemmaId":79227,"form":"spôsobom","tags":"s7 p3"}
+{"lemmaId":79227,"form":"spôsobov","tags":"p2"}
+{"lemmaId":79227,"form":"spôsobu","tags":"s2 s3"}
+{"lemmaId":79227,"form":"spôsoby","tags":"p1 p4 p5"}
+{"lemmaId":79361,"form":"stane","tags":"s6"}
+{"lemmaId":79580,"form":"stať","tags":"s1 s4 s5"}
+{"lemmaId":79581,"form":"stal","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":79581,"form":"stala","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":79581,"form":"stali","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":79581,"form":"stalo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":79581,"form":"stane","tags":"v:Kdsc+"}
+{"lemmaId":79581,"form":"stanem","tags":"v:Kdsa+"}
+{"lemmaId":79581,"form":"staneme","tags":"v:Kdpa+"}
+{"lemmaId":79581,"form":"stanete","tags":"v:Kdpb+"}
+{"lemmaId":79581,"form":"staneš","tags":"v:Kdsb+"}
+{"lemmaId":79581,"form":"stanú","tags":"v:Kdpc+"}
+{"lemmaId":79581,"form":"stanúc","tags":"v:Hd+"}
+{"lemmaId":79581,"form":"staň","tags":"v:Mdsb+"}
+{"lemmaId":79581,"form":"staňme","tags":"v:Mdpa+"}
+{"lemmaId":79581,"form":"staňte","tags":"v:Mdpb+"}
+{"lemmaId":79581,"form":"stať","tags":"v:Id+"}
+{"lemmaId":79845,"form":"ste","tags":"s6n"}
+{"lemmaId":79875,"form":"strana","tags":"s1 s5"}
+{"lemmaId":79875,"form":"stranami","tags":"p7"}
+{"lemmaId":79875,"form":"strane","tags":"s3 s6"}
+{"lemmaId":79875,"form":"stranou","tags":"s7"}
+{"lemmaId":79875,"form":"stranu","tags":"s4"}
+{"lemmaId":79875,"form":"strany","tags":"s2 p1 p4 p5"}
+{"lemmaId":79875,"form":"stranách","tags":"p6"}
+{"lemmaId":79875,"form":"stranám","tags":"p3"}
+{"lemmaId":79875,"form":"strán","tags":"p2"}
+{"lemmaId":79878,"form":"stranou","tags":""}
+{"lemmaId":80410,"form":"stále","tags":""}
+{"lemmaId":80417,"form":"stále","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":80898,"form":"svet","tags":"s1 s4 s5"}
+{"lemmaId":80898,"form":"sveta","tags":"s2"}
+{"lemmaId":80898,"form":"svete","tags":"s5 s6"}
+{"lemmaId":80898,"form":"svetmi","tags":"p7"}
+{"lemmaId":80898,"form":"svetoch","tags":"p6"}
+{"lemmaId":80898,"form":"svetom","tags":"s7 p3"}
+{"lemmaId":80898,"form":"svetov","tags":"p2"}
+{"lemmaId":80898,"form":"svetu","tags":"s3"}
+{"lemmaId":80898,"form":"svety","tags":"p1 p4 p5"}
+{"lemmaId":80970,"form":"svoja","tags":"s1 s5"}
+{"lemmaId":80970,"form":"svojej","tags":"s2 s3 s6"}
+{"lemmaId":80970,"form":"svojou","tags":"s7"}
+{"lemmaId":80970,"form":"svoju","tags":"s4"}
+{"lemmaId":80974,"form":"svoje","tags":"s1 s4 s5"}
+{"lemmaId":80974,"form":"svojho","tags":"s2"}
+{"lemmaId":80974,"form":"svojmu","tags":"s3"}
+{"lemmaId":80974,"form":"svojom","tags":"s6"}
+{"lemmaId":80974,"form":"svojím","tags":"s7"}
+{"lemmaId":80979,"form":"svoji","tags":"p1 p5"}
+{"lemmaId":80979,"form":"svojich","tags":"p2 p4 p6"}
+{"lemmaId":80979,"form":"svojim","tags":"p3"}
+{"lemmaId":80979,"form":"svojimi","tags":"p7"}
+{"lemmaId":80999,"form":"svoj","tags":"s1 s5"}
+{"lemmaId":80999,"form":"svojho","tags":"s2 s4"}
+{"lemmaId":80999,"form":"svojmu","tags":"s3"}
+{"lemmaId":80999,"form":"svojom","tags":"s6"}
+{"lemmaId":80999,"form":"svojím","tags":"s7"}
+{"lemmaId":81000,"form":"svoj","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":81000,"form":"svoja","tags":"s1f s5f"}
+{"lemmaId":81000,"form":"svoje","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":81000,"form":"svojej","tags":"s2f s3f s6f"}
+{"lemmaId":81000,"form":"svojho","tags":"s2m s2i s2n s4m"}
+{"lemmaId":81000,"form":"svoji","tags":"p1m p5m"}
+{"lemmaId":81000,"form":"svojich","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":81000,"form":"svojim","tags":"p3m p3i p3f p3n"}
+{"lemmaId":81000,"form":"svojimi","tags":"p7m p7i p7f p7n"}
+{"lemmaId":81000,"form":"svojmu","tags":"s3m s3i s3n"}
+{"lemmaId":81000,"form":"svojom","tags":"s6m s6i s6n"}
+{"lemmaId":81000,"form":"svojou","tags":"s7f"}
+{"lemmaId":81000,"form":"svoju","tags":"s4f"}
+{"lemmaId":81000,"form":"svojím","tags":"s7m s7i s7n"}
+{"lemmaId":81241,"form":"systém","tags":"s1 s4 s5"}
+{"lemmaId":81241,"form":"systémami","tags":"p7"}
+{"lemmaId":81241,"form":"systéme","tags":"s6"}
+{"lemmaId":81241,"form":"systémoch","tags":"p6"}
+{"lemmaId":81241,"form":"systémom","tags":"s7 p3"}
+{"lemmaId":81241,"form":"systémov","tags":"p2"}
+{"lemmaId":81241,"form":"systému","tags":"s2 s3"}
+{"lemmaId":81241,"form":"systémy","tags":"p1 p4 p5"}
+{"lemmaId":81246,"form":"s","tags":"s1 s2 s3 s4 s5 s6 s7 p1 p2 p3 p4 p5 p6 p7"}
+{"lemmaId":81247,"form":"s","tags":""}
+{"lemmaId":81264,"form":"sama","tags":"s1f s5f"}
+{"lemmaId":81264,"form":"samej","tags":"s2f s3f s6f"}
+{"lemmaId":81264,"form":"sami","tags":"p1m p5m"}
+{"lemmaId":81264,"form":"samo","tags":"s1n s4n s5n"}
+{"lemmaId":81264,"form":"samom","tags":"s6m s6i s6n"}
+{"lemmaId":81264,"form":"samou","tags":"s7f"}
+{"lemmaId":81264,"form":"samu","tags":"s4f"}
+{"lemmaId":81264,"form":"samy","tags":"p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":81264,"form":"samého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":81264,"form":"samému","tags":"s3m s3i s3n"}
+{"lemmaId":81264,"form":"samých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":81264,"form":"samým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":81264,"form":"samými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":81264,"form":"sám","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":81736,"form":"tak","tags":""}
+{"lemmaId":81737,"form":"tak","tags":""}
+{"lemmaId":81738,"form":"tak","tags":""}
+{"lemmaId":81739,"form":"tak","tags":""}
+{"lemmaId":81740,"form":"takejto","tags":"s2f s3f s6f"}
+{"lemmaId":81740,"form":"takomto","tags":"s6m s6i s6n"}
+{"lemmaId":81740,"form":"takouto","tags":"s7f"}
+{"lemmaId":81740,"form":"takáto","tags":"s1f s5f"}
+{"lemmaId":81740,"form":"takéhoto","tags":"s2m s2i s2n s4m"}
+{"lemmaId":81740,"form":"takémuto","tags":"s3m s3i s3n"}
+{"lemmaId":81740,"form":"takéto","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":81740,"form":"takíto","tags":"p1m p5m"}
+{"lemmaId":81740,"form":"takúto","tags":"s4f"}
+{"lemmaId":81740,"form":"takýchto","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":81740,"form":"takýmito","tags":"p7m p7i p7f p7n"}
+{"lemmaId":81740,"form":"takýmto","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":81740,"form":"takýto","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":81741,"form":"takej","tags":"s2f s3f s6f"}
+{"lemmaId":81741,"form":"takom","tags":"s6m s6i s6n"}
+{"lemmaId":81741,"form":"takou","tags":"s7f"}
+{"lemmaId":81741,"form":"taká","tags":"s1f s5f"}
+{"lemmaId":81741,"form":"také","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":81741,"form":"takého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":81741,"form":"takému","tags":"s3m s3i s3n"}
+{"lemmaId":81741,"form":"takí","tags":"p1m p5m"}
+{"lemmaId":81741,"form":"takú","tags":"s4f"}
+{"lemmaId":81741,"form":"taký","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":81741,"form":"takých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":81741,"form":"takým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":81741,"form":"takými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":81742,"form":"takže","tags":""}
+{"lemmaId":81743,"form":"takže","tags":""}
+{"lemmaId":81785,"form":"tam","tags":""}
+{"lemmaId":81786,"form":"tam","tags":""}
+{"lemmaId":82137,"form":"tento","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":82137,"form":"tieto","tags":"p1i p4i p5i"}
+{"lemmaId":82137,"form":"tohto","tags":"s2m s2i s4m"}
+{"lemmaId":82137,"form":"tomto","tags":"s6m s6i"}
+{"lemmaId":82137,"form":"tomuto","tags":"s3m s3i"}
+{"lemmaId":82137,"form":"títo","tags":"p1m p5m"}
+{"lemmaId":82137,"form":"týchto","tags":"p2m p2i p4m p6m p6i"}
+{"lemmaId":82137,"form":"týmito","tags":"p7m p7i"}
+{"lemmaId":82137,"form":"týmto","tags":"s7m s7i p3m p3i"}
+{"lemmaId":82232,"form":"teraz","tags":""}
+{"lemmaId":82468,"form":"tiež","tags":""}
+{"lemmaId":82808,"form":"toto","tags":""}
+{"lemmaId":82809,"form":"tieto","tags":"p1n p4n p5n"}
+{"lemmaId":82809,"form":"tohto","tags":"s2n"}
+{"lemmaId":82809,"form":"tomto","tags":"s6n"}
+{"lemmaId":82809,"form":"tomuto","tags":"s3n"}
+{"lemmaId":82809,"form":"toto","tags":"s1n s4n s5n"}
+{"lemmaId":82809,"form":"týchto","tags":"p2n p6n"}
+{"lemmaId":82809,"form":"týmito","tags":"p7n"}
+{"lemmaId":82809,"form":"týmto","tags":"s7n p3n"}
+{"lemmaId":82845,"form":"to","tags":""}
+{"lemmaId":82846,"form":"to","tags":""}
+{"lemmaId":83277,"form":"tri","tags":"v:Mesb+"}
+{"lemmaId":83326,"form":"traja","tags":"p1m p5m"}
+{"lemmaId":83326,"form":"tri","tags":"p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":83326,"form":"troch","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":83326,"form":"trom","tags":"p3m p3i p3f p3n"}
+{"lemmaId":83326,"form":"troma","tags":"p7m p7i p7f p7n"}
+{"lemmaId":83326,"form":"tromi","tags":"p7m p7i p7f p7n"}
+{"lemmaId":83822,"form":"tu","tags":""}
+{"lemmaId":83823,"form":"tu","tags":""}
+{"lemmaId":83824,"form":"tu","tags":""}
+{"lemmaId":83873,"form":"tvoja","tags":"s1 s5"}
+{"lemmaId":83873,"form":"tvojej","tags":"s2 s3 s6"}
+{"lemmaId":83873,"form":"tvojou","tags":"s7"}
+{"lemmaId":83873,"form":"tvoju","tags":"s4"}
+{"lemmaId":83874,"form":"tvoji","tags":"p1 p5"}
+{"lemmaId":83874,"form":"tvojich","tags":"p2 p4 p6"}
+{"lemmaId":83874,"form":"tvojim","tags":"p3"}
+{"lemmaId":83874,"form":"tvojimi","tags":"p7"}
+{"lemmaId":83875,"form":"tvoj","tags":"s1 s5"}
+{"lemmaId":83875,"form":"tvojho","tags":"s2 s4"}
+{"lemmaId":83875,"form":"tvojmu","tags":"s3"}
+{"lemmaId":83875,"form":"tvojom","tags":"s6"}
+{"lemmaId":83875,"form":"tvojím","tags":"s7"}
+{"lemmaId":83876,"form":"tvoj","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":83876,"form":"tvoja","tags":"s1f s5f"}
+{"lemmaId":83876,"form":"tvoje","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":83876,"form":"tvojej","tags":"s2f s3f s6f"}
+{"lemmaId":83876,"form":"tvojho","tags":"s2m s2i s2n s4m"}
+{"lemmaId":83876,"form":"tvoji","tags":"p1m p5m"}
+{"lemmaId":83876,"form":"tvojich","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":83876,"form":"tvojim","tags":"p3m p3i p3f p3n"}
+{"lemmaId":83876,"form":"tvojimi","tags":"p7m p7i p7f p7n"}
+{"lemmaId":83876,"form":"tvojmu","tags":"s3m s3i s3n"}
+{"lemmaId":83876,"form":"tvojom","tags":"s6m s6i s6n"}
+{"lemmaId":83876,"form":"tvojou","tags":"s7f"}
+{"lemmaId":83876,"form":"tvoju","tags":"s4f"}
+{"lemmaId":83876,"form":"tvojím","tags":"s7m s7i s7n"}
+{"lemmaId":84015,"form":"tejto","tags":"s2f s3f s6f"}
+{"lemmaId":84015,"form":"tieto","tags":"p1f p4f p5f"}
+{"lemmaId":84015,"form":"touto","tags":"s7f"}
+{"lemmaId":84015,"form":"táto","tags":"s1f s5f"}
+{"lemmaId":84015,"form":"túto","tags":"s4f"}
+{"lemmaId":84015,"form":"týchto","tags":"p2f p6f"}
+{"lemmaId":84015,"form":"týmito","tags":"p7f"}
+{"lemmaId":84015,"form":"týmto","tags":"p3f"}
+{"lemmaId":84078,"form":"tú","tags":""}
+{"lemmaId":84091,"form":"tým","tags":""}
+{"lemmaId":84801,"form":"urob","tags":"v:Mdsb+"}
+{"lemmaId":84801,"form":"urobia","tags":"v:Kdpc+"}
+{"lemmaId":84801,"form":"urobiac","tags":"v:Hd+"}
+{"lemmaId":84801,"form":"urobil","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":84801,"form":"urobila","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":84801,"form":"urobili","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":84801,"form":"urobilo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":84801,"form":"urobiť","tags":"v:Id+"}
+{"lemmaId":84801,"form":"urobme","tags":"v:Mdpa+"}
+{"lemmaId":84801,"form":"urobte","tags":"v:Mdpb+"}
+{"lemmaId":84801,"form":"urobí","tags":"v:Kdsc+"}
+{"lemmaId":84801,"form":"urobím","tags":"v:Kdsa+"}
+{"lemmaId":84801,"form":"urobíme","tags":"v:Kdpa+"}
+{"lemmaId":84801,"form":"urobíte","tags":"v:Kdpb+"}
+{"lemmaId":84801,"form":"urobíš","tags":"v:Kdsb+"}
+{"lemmaId":85280,"form":"u","tags":"s1 s2 s3 s4 s5 s6 s7 p1 p2 p3 p4 p5 p6 p7"}
+{"lemmaId":85281,"form":"u","tags":""}
+{"lemmaId":85388,"form":"už","tags":""}
+{"lemmaId":85389,"form":"už","tags":""}
+{"lemmaId":85390,"form":"už","tags":""}
+{"lemmaId":85623,"form":"vaša","tags":"s1 s5"}
+{"lemmaId":85623,"form":"vašej","tags":"s2 s3 s6"}
+{"lemmaId":85623,"form":"vašou","tags":"s7"}
+{"lemmaId":85623,"form":"vašu","tags":"s4"}
+{"lemmaId":85624,"form":"vaši","tags":"p1 p5"}
+{"lemmaId":85624,"form":"vašich","tags":"p2 p4 p6"}
+{"lemmaId":85624,"form":"vašim","tags":"p3"}
+{"lemmaId":85624,"form":"vašimi","tags":"p7"}
+{"lemmaId":85665,"form":"vec","tags":"s1 s4 s5"}
+{"lemmaId":85665,"form":"vecami","tags":"p7"}
+{"lemmaId":85665,"form":"veci","tags":"s2 s3 s6 p1 p4 p5"}
+{"lemmaId":85665,"form":"veciach","tags":"p6"}
+{"lemmaId":85665,"form":"veciam","tags":"p3"}
+{"lemmaId":85665,"form":"vecou","tags":"s7"}
+{"lemmaId":85665,"form":"vecí","tags":"p2"}
+{"lemmaId":85676,"form":"vedel","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":85676,"form":"vedela","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":85676,"form":"vedeli","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":85676,"form":"vedelo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":85676,"form":"vedia","tags":"v:Kepc+"}
+{"lemmaId":85676,"form":"vediac","tags":"v:He+"}
+{"lemmaId":85676,"form":"vedieť","tags":"v:Ie+"}
+{"lemmaId":85676,"form":"vedz","tags":"v:Mesb+"}
+{"lemmaId":85676,"form":"vedzme","tags":"v:Mepa+"}
+{"lemmaId":85676,"form":"vedzte","tags":"v:Mepb+"}
+{"lemmaId":85676,"form":"vie","tags":"v:Kesc+"}
+{"lemmaId":85676,"form":"viem","tags":"v:Kesa+"}
+{"lemmaId":85676,"form":"vieme","tags":"v:Kepa+"}
+{"lemmaId":85676,"form":"viete","tags":"v:Kepb+"}
+{"lemmaId":85676,"form":"vieš","tags":"v:Kesb+"}
+{"lemmaId":86178,"form":"veľkej","tags":"s2f s3f s6f"}
+{"lemmaId":86178,"form":"veľkom","tags":"s6m s6i s6n"}
+{"lemmaId":86178,"form":"veľkou","tags":"s7f"}
+{"lemmaId":86178,"form":"veľká","tags":"s1f s5f"}
+{"lemmaId":86178,"form":"veľké","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":86178,"form":"veľkého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":86178,"form":"veľkému","tags":"s3m s3i s3n"}
+{"lemmaId":86178,"form":"veľkí","tags":"p1m p5m"}
+{"lemmaId":86178,"form":"veľkú","tags":"s4f"}
+{"lemmaId":86178,"form":"veľký","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":86178,"form":"veľkých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":86178,"form":"veľkým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":86178,"form":"veľkými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":86280,"form":"viac","tags":""}
+{"lemmaId":86281,"form":"viac","tags":""}
+{"lemmaId":86282,"form":"viac","tags":"s1n s4n p1m p1i p1f p1n p2m p2i p2f p2n p3m p3i p3f p3n p4m p4i p4f p4n p5m p5i p5f p5n p6m p6i p6f p6n p7m p7i p7f p7n"}
+{"lemmaId":86283,"form":"viac","tags":""}
+{"lemmaId":86404,"form":"vezme","tags":"v:Mepa+"}
+{"lemmaId":86627,"form":"vlastní","tags":"v:Kesc+"}
+{"lemmaId":86636,"form":"vlastnej","tags":"s2f s3f s6f"}
+{"lemmaId":86636,"form":"vlastnom","tags":"s6m s6i s6n"}
+{"lemmaId":86636,"form":"vlastnou","tags":"s7f"}
+{"lemmaId":86636,"form":"vlastná","tags":"s1f s5f"}
+{"lemmaId":86636,"form":"vlastné","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":86636,"form":"vlastného","tags":"s2m s2i s2n s4m"}
+{"lemmaId":86636,"form":"vlastnému","tags":"s3m s3i s3n"}
+{"lemmaId":86636,"form":"vlastní","tags":"p1m p5m"}
+{"lemmaId":86636,"form":"vlastnú","tags":"s4f"}
+{"lemmaId":86636,"form":"vlastný","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":86636,"form":"vlastných","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":86636,"form":"vlastným","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":86636,"form":"vlastnými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":86829,"form":"voda","tags":"s1 s5"}
+{"lemmaId":86829,"form":"vodami","tags":"p7"}
+{"lemmaId":86829,"form":"vode","tags":"s3 s6"}
+{"lemmaId":86829,"form":"vodou","tags":"s7"}
+{"lemmaId":86829,"form":"vodu","tags":"s4"}
+{"lemmaId":86829,"form":"vody","tags":"s2 p1 p4 p5"}
+{"lemmaId":86829,"form":"vodách","tags":"p6"}
+{"lemmaId":86829,"form":"vodám","tags":"p3"}
+{"lemmaId":86829,"form":"vôd","tags":"p2"}
+{"lemmaId":86962,"form":"volaj","tags":"v:Mesb+"}
+{"lemmaId":86962,"form":"volajme","tags":"v:Mepa+"}
+{"lemmaId":86962,"form":"volajte","tags":"v:Mepb+"}
+{"lemmaId":86962,"form":"volajú","tags":"v:Kepc+"}
+{"lemmaId":86962,"form":"volajúc","tags":"v:He+"}
+{"lemmaId":86962,"form":"volal","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":86962,"form":"volala","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":86962,"form":"volali","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":86962,"form":"volalo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":86962,"form":"volať","tags":"v:Ie+"}
+{"lemmaId":86962,"form":"volá","tags":"v:Kesc+"}
+{"lemmaId":86962,"form":"volám","tags":"v:Kesa+"}
+{"lemmaId":86962,"form":"voláme","tags":"v:Kepa+"}
+{"lemmaId":86962,"form":"voláte","tags":"v:Kepb+"}
+{"lemmaId":86962,"form":"voláš","tags":"v:Kesb+"}
+{"lemmaId":87354,"form":"vráti","tags":"v:Kdsc+"}
+{"lemmaId":87354,"form":"vrátia","tags":"v:Kdpc+"}
+{"lemmaId":87354,"form":"vrátiac","tags":"v:Hd+"}
+{"lemmaId":87354,"form":"vrátil","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":87354,"form":"vrátila","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":87354,"form":"vrátili","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":87354,"form":"vrátilo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":87354,"form":"vrátim","tags":"v:Kdsa+"}
+{"lemmaId":87354,"form":"vrátime","tags":"v:Kdpa+"}
+{"lemmaId":87354,"form":"vrátite","tags":"v:Kdpb+"}
+{"lemmaId":87354,"form":"vrátiš","tags":"v:Kdsb+"}
+{"lemmaId":87354,"form":"vrátiť","tags":"v:Id+"}
+{"lemmaId":87354,"form":"vráť","tags":"v:Mdsb+"}
+{"lemmaId":87354,"form":"vráťme","tags":"v:Mdpa+"}
+{"lemmaId":87354,"form":"vráťte","tags":"v:Mdpb+"}
+{"lemmaId":88604,"form":"vysokej","tags":"s2 s3 s6"}
+{"lemmaId":88604,"form":"vysokou","tags":"s7"}
+{"lemmaId":88604,"form":"vysoká","tags":"s1 s5"}
+{"lemmaId":88604,"form":"vysoké","tags":"p1 p4 p5"}
+{"lemmaId":88604,"form":"vysokú","tags":"s4"}
+{"lemmaId":88604,"form":"vysokých","tags":"p2 p6"}
+{"lemmaId":88604,"form":"vysokým","tags":"p3"}
+{"lemmaId":88604,"form":"vysokými","tags":"p7"}
+{"lemmaId":88605,"form":"vysokej","tags":"s2f s3f s6f"}
+{"lemmaId":88605,"form":"vysokom","tags":"s6m s6i s6n"}
+{"lemmaId":88605,"form":"vysokou","tags":"s7f"}
+{"lemmaId":88605,"form":"vysoká","tags":"s1f s5f"}
+{"lemmaId":88605,"form":"vysoké","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":88605,"form":"vysokého","tags":"s2m s2i s2n s4m"}
+{"lemmaId":88605,"form":"vysokému","tags":"s3m s3i s3n"}
+{"lemmaId":88605,"form":"vysokí","tags":"p1m p5m"}
+{"lemmaId":88605,"form":"vysokú","tags":"s4f"}
+{"lemmaId":88605,"form":"vysoký","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":88605,"form":"vysokých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":88605,"form":"vysokým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":88605,"form":"vysokými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":88931,"form":"vyzeraj","tags":"v:Mesb+"}
+{"lemmaId":88931,"form":"vyzerajme","tags":"v:Mepa+"}
+{"lemmaId":88931,"form":"vyzerajte","tags":"v:Mepb+"}
+{"lemmaId":88931,"form":"vyzerajú","tags":"v:Kepc+"}
+{"lemmaId":88931,"form":"vyzerajúc","tags":"v:He+"}
+{"lemmaId":88931,"form":"vyzeral","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":88931,"form":"vyzerala","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":88931,"form":"vyzerali","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":88931,"form":"vyzeralo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":88931,"form":"vyzerať","tags":"v:Ie+"}
+{"lemmaId":88931,"form":"vyzerá","tags":"v:Kesc+"}
+{"lemmaId":88931,"form":"vyzerám","tags":"v:Kesa+"}
+{"lemmaId":88931,"form":"vyzeráme","tags":"v:Kepa+"}
+{"lemmaId":88931,"form":"vyzeráte","tags":"v:Kepb+"}
+{"lemmaId":88931,"form":"vyzeráš","tags":"v:Kesb+"}
+{"lemmaId":88983,"form":"vami","tags":"x7"}
+{"lemmaId":88983,"form":"vy","tags":"x1 x5"}
+{"lemmaId":88983,"form":"vám","tags":"x3"}
+{"lemmaId":88983,"form":"vás","tags":"x2 x4 x6"}
+{"lemmaId":89194,"form":"vy","tags":"v:Mesb+"}
+{"lemmaId":89297,"form":"vezme","tags":"v:Kdsc+"}
+{"lemmaId":89297,"form":"vezmem","tags":"v:Kdsa+"}
+{"lemmaId":89297,"form":"vezmeme","tags":"v:Kdpa+"}
+{"lemmaId":89297,"form":"vezmete","tags":"v:Kdpb+"}
+{"lemmaId":89297,"form":"vezmeš","tags":"v:Kdsb+"}
+{"lemmaId":89297,"form":"vezmi","tags":"v:Mdsb+"}
+{"lemmaId":89297,"form":"vezmime","tags":"v:Mdpa+"}
+{"lemmaId":89297,"form":"vezmite","tags":"v:Mdpb+"}
+{"lemmaId":89297,"form":"vezmú","tags":"v:Kdpc+"}
+{"lemmaId":89297,"form":"vezmúc","tags":"v:Hd+"}
+{"lemmaId":89297,"form":"vzal","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":89297,"form":"vzala","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":89297,"form":"vzali","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":89297,"form":"vzalo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":89297,"form":"vziať","tags":"v:Id+"}
+{"lemmaId":89413,"form":"v","tags":""}
+{"lemmaId":89473,"form":"vašom","tags":"s6"}
+{"lemmaId":89473,"form":"vaším","tags":"s7"}
+{"lemmaId":89473,"form":"váš","tags":"s1 s5"}
+{"lemmaId":89473,"form":"vášho","tags":"s2 s4"}
+{"lemmaId":89473,"form":"vášmu","tags":"s3"}
+{"lemmaId":89474,"form":"vaša","tags":"s1f s5f"}
+{"lemmaId":89474,"form":"vaše","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":89474,"form":"vašej","tags":"s2f s3f s6f"}
+{"lemmaId":89474,"form":"vaši","tags":"p1m p5m"}
+{"lemmaId":89474,"form":"vašich","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":89474,"form":"vašim","tags":"p3m p3i p3f p3n"}
+{"lemmaId":89474,"form":"vašimi","tags":"p7m p7i p7f p7n"}
+{"lemmaId":89474,"form":"vašom","tags":"s6m s6i s6n"}
+{"lemmaId":89474,"form":"vašou","tags":"s7f"}
+{"lemmaId":89474,"form":"vašu","tags":"s4f"}
+{"lemmaId":89474,"form":"vaším","tags":"s7m s7i s7n"}
+{"lemmaId":89474,"form":"váš","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":89474,"form":"vášho","tags":"s2m s2i s2n s4m"}
+{"lemmaId":89474,"form":"vášmu","tags":"s3m s3i s3n"}
+{"lemmaId":89912,"form":"výsledkami","tags":"p7"}
+{"lemmaId":89912,"form":"výsledkoch","tags":"p6"}
+{"lemmaId":89912,"form":"výsledkom","tags":"s7 p3"}
+{"lemmaId":89912,"form":"výsledkov","tags":"p2"}
+{"lemmaId":89912,"form":"výsledku","tags":"s2 s3 s6"}
+{"lemmaId":89912,"form":"výsledky","tags":"p1 p4 p5"}
+{"lemmaId":89912,"form":"výsledok","tags":"s1 s4 s5"}
+{"lemmaId":90128,"form":"vďaka","tags":"s1 s5"}
+{"lemmaId":90129,"form":"vďaka","tags":""}
+{"lemmaId":90170,"form":"však","tags":""}
+{"lemmaId":90171,"form":"však","tags":""}
+{"lemmaId":90209,"form":"všetci","tags":"p1m p5m"}
+{"lemmaId":90209,"form":"všetka","tags":"s1f s5f"}
+{"lemmaId":90209,"form":"všetkej","tags":"s2f s3f s6f"}
+{"lemmaId":90209,"form":"všetko","tags":"s1n s4n s5n"}
+{"lemmaId":90209,"form":"všetkom","tags":"s6m s6i s6n"}
+{"lemmaId":90209,"form":"všetkou","tags":"s7f"}
+{"lemmaId":90209,"form":"všetku","tags":"s4f"}
+{"lemmaId":90209,"form":"všetky","tags":"p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":90209,"form":"všetkého","tags":"s2m s2i s2n"}
+{"lemmaId":90209,"form":"všetkému","tags":"s3m s3i s3n"}
+{"lemmaId":90209,"form":"všetkých","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":90209,"form":"všetkým","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":90209,"form":"všetkými","tags":"p7m p7i p7f p7n"}
+{"lemmaId":90209,"form":"všetok","tags":"s1m s1i s4m s4i s5m s5i"}
+{"lemmaId":90238,"form":"vždy","tags":""}
+{"lemmaId":90361,"form":"zabi","tags":"v:Mdsb+"}
+{"lemmaId":90361,"form":"zabije","tags":"v:Kdsc+"}
+{"lemmaId":90361,"form":"zabijem","tags":"v:Kdsa+"}
+{"lemmaId":90361,"form":"zabijeme","tags":"v:Kdpa+"}
+{"lemmaId":90361,"form":"zabijete","tags":"v:Kdpb+"}
+{"lemmaId":90361,"form":"zabiješ","tags":"v:Kdsb+"}
+{"lemmaId":90361,"form":"zabijú","tags":"v:Kdpc+"}
+{"lemmaId":90361,"form":"zabijúc","tags":"v:Hd+"}
+{"lemmaId":90361,"form":"zabil","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":90361,"form":"zabila","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":90361,"form":"zabili","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":90361,"form":"zabilo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":90361,"form":"zabime","tags":"v:Mdpa+"}
+{"lemmaId":90361,"form":"zabite","tags":"v:Mdpb+"}
+{"lemmaId":90361,"form":"zabiť","tags":"v:Id+"}
+{"lemmaId":92002,"form":"za","tags":""}
+{"lemmaId":92016,"form":"začal","tags":"v:Ldsai+ v:Ldsam+ v:Ldsbi+ v:Ldsbm+ v:Ldsci+ v:Ldscm+"}
+{"lemmaId":92016,"form":"začala","tags":"v:Ldsaf+ v:Ldsbf+ v:Ldscf+"}
+{"lemmaId":92016,"form":"začali","tags":"v:Ldpah+ v:Ldpbh+ v:Ldpcf+ v:Ldpci+ v:Ldpcm+ v:Ldpcn+ v:Ldpco+"}
+{"lemmaId":92016,"form":"začalo","tags":"v:Ldsan+ v:Ldsbn+ v:Ldscn+"}
+{"lemmaId":92016,"form":"začať","tags":"v:Id+"}
+{"lemmaId":92016,"form":"začne","tags":"v:Kdsc+"}
+{"lemmaId":92016,"form":"začnem","tags":"v:Kdsa+"}
+{"lemmaId":92016,"form":"začneme","tags":"v:Kdpa+"}
+{"lemmaId":92016,"form":"začnete","tags":"v:Kdpb+"}
+{"lemmaId":92016,"form":"začneš","tags":"v:Kdsb+"}
+{"lemmaId":92016,"form":"začni","tags":"v:Mdsb+"}
+{"lemmaId":92016,"form":"začnime","tags":"v:Mdpa+"}
+{"lemmaId":92016,"form":"začnite","tags":"v:Mdpb+"}
+{"lemmaId":92016,"form":"začnú","tags":"v:Kdpc+"}
+{"lemmaId":92016,"form":"začnúc","tags":"v:Hd+"}
+{"lemmaId":93199,"form":"zmena","tags":"s1 s5"}
+{"lemmaId":93199,"form":"zmenami","tags":"p7"}
+{"lemmaId":93199,"form":"zmene","tags":"s3 s6"}
+{"lemmaId":93199,"form":"zmenou","tags":"s7"}
+{"lemmaId":93199,"form":"zmenu","tags":"s4"}
+{"lemmaId":93199,"form":"zmeny","tags":"s2 p1 p4 p5"}
+{"lemmaId":93199,"form":"zmenách","tags":"p6"}
+{"lemmaId":93199,"form":"zmenám","tags":"p3"}
+{"lemmaId":93199,"form":"zmien","tags":"p2"}
+{"lemmaId":93878,"form":"zo","tags":""}
+{"lemmaId":94625,"form":"z","tags":"s1 s2 s3 s4 s5 s6 s7 p1 p2 p3 p4 p5 p6 p7"}
+{"lemmaId":94626,"form":"z","tags":""}
+{"lemmaId":95306,"form":"áno","tags":""}
+{"lemmaId":95307,"form":"áno","tags":""}
+{"lemmaId":96119,"form":"čas","tags":"v:Mesb+"}
+{"lemmaId":96131,"form":"časom","tags":""}
+{"lemmaId":96178,"form":"častí","tags":"p1m p5m"}
+{"lemmaId":96180,"form":"čas","tags":"s1 s4 s5"}
+{"lemmaId":96180,"form":"čase","tags":"s6"}
+{"lemmaId":96180,"form":"časmi","tags":"p7"}
+{"lemmaId":96180,"form":"časoch","tags":"p6"}
+{"lemmaId":96180,"form":"časom","tags":"s7 p3"}
+{"lemmaId":96180,"form":"časov","tags":"p2"}
+{"lemmaId":96180,"form":"času","tags":"s2 s3"}
+{"lemmaId":96180,"form":"časy","tags":"p1 p4 p5"}
+{"lemmaId":96180,"form":"čias","tags":"p2"}
+{"lemmaId":96182,"form":"časti","tags":"s2 s3 s6 p1 p4 p5"}
+{"lemmaId":96182,"form":"častiach","tags":"p6"}
+{"lemmaId":96182,"form":"častiam","tags":"p3"}
+{"lemmaId":96182,"form":"častí","tags":"p2"}
+{"lemmaId":96182,"form":"časť","tags":"s1 s4 s5"}
+{"lemmaId":96182,"form":"časťami","tags":"p7"}
+{"lemmaId":96182,"form":"časťou","tags":"s7"}
+{"lemmaId":97021,"form":"či","tags":""}
+{"lemmaId":97022,"form":"či","tags":""}
+{"lemmaId":97023,"form":"či","tags":""}
+{"lemmaId":97102,"form":"človekovi","tags":"p1m p5m"}
+{"lemmaId":97191,"form":"čo","tags":""}
+{"lemmaId":97192,"form":"čo","tags":""}
+{"lemmaId":97193,"form":"čo","tags":""}
+{"lemmaId":97415,"form":"čím","tags":""}
+{"lemmaId":97416,"form":"čím","tags":""}
+{"lemmaId":97489,"form":"čom","tags":"s6m s6i s6n"}
+{"lemmaId":97489,"form":"čím","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":97538,"form":"ďakoval","tags":"v:Lesai+ v:Lesam+ v:Lesbi+ v:Lesbm+ v:Lesci+ v:Lescm+"}
+{"lemmaId":97538,"form":"ďakovala","tags":"v:Lesaf+ v:Lesbf+ v:Lescf+"}
+{"lemmaId":97538,"form":"ďakovali","tags":"v:Lepah+ v:Lepbh+ v:Lepcf+ v:Lepci+ v:Lepcm+ v:Lepcn+ v:Lepco+"}
+{"lemmaId":97538,"form":"ďakovalo","tags":"v:Lesan+ v:Lesbn+ v:Lescn+"}
+{"lemmaId":97538,"form":"ďakovať","tags":"v:Ie+"}
+{"lemmaId":97538,"form":"ďakuj","tags":"v:Mesb+"}
+{"lemmaId":97538,"form":"ďakuje","tags":"v:Kesc+"}
+{"lemmaId":97538,"form":"ďakujem","tags":"v:Kesa+"}
+{"lemmaId":97538,"form":"ďakujeme","tags":"v:Kepa+"}
+{"lemmaId":97538,"form":"ďakujete","tags":"v:Kepb+"}
+{"lemmaId":97538,"form":"ďakuješ","tags":"v:Kesb+"}
+{"lemmaId":97538,"form":"ďakujme","tags":"v:Mepa+"}
+{"lemmaId":97538,"form":"ďakujte","tags":"v:Mepb+"}
+{"lemmaId":97538,"form":"ďakujú","tags":"v:Kepc+"}
+{"lemmaId":97538,"form":"ďakujúc","tags":"v:He+"}
+{"lemmaId":97563,"form":"ďalšej","tags":"s2f s3f s6f"}
+{"lemmaId":97563,"form":"ďalšia","tags":"s1f s5f"}
+{"lemmaId":97563,"form":"ďalšie","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":97563,"form":"ďalšieho","tags":"s2m s2i s2n s4m"}
+{"lemmaId":97563,"form":"ďalšiemu","tags":"s3m s3i s3n"}
+{"lemmaId":97563,"form":"ďalšiu","tags":"s4f"}
+{"lemmaId":97563,"form":"ďalšom","tags":"s6m s6i s6n"}
+{"lemmaId":97563,"form":"ďalšou","tags":"s7f"}
+{"lemmaId":97563,"form":"ďalší","tags":"s1m s1i s4i s5m s5i p1m p5m"}
+{"lemmaId":97563,"form":"ďalších","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":97563,"form":"ďalším","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":97563,"form":"ďalšími","tags":"p7m p7i p7f p7n"}
+{"lemmaId":98469,"form":"škola","tags":"s1 s5"}
+{"lemmaId":98469,"form":"školami","tags":"p7"}
+{"lemmaId":98469,"form":"škole","tags":"s3 s6"}
+{"lemmaId":98469,"form":"školou","tags":"s7"}
+{"lemmaId":98469,"form":"školu","tags":"s4"}
+{"lemmaId":98469,"form":"školy","tags":"s2 p1 p4 p5"}
+{"lemmaId":98469,"form":"školách","tags":"p6"}
+{"lemmaId":98469,"form":"školám","tags":"p3"}
+{"lemmaId":98469,"form":"škôl","tags":"p2"}
+{"lemmaId":100256,"form":"že","tags":""}
+{"lemmaId":100257,"form":"že","tags":""}
+{"lemmaId":100274,"form":"žiaden","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":100274,"form":"žiadna","tags":"s1f s5f"}
+{"lemmaId":100274,"form":"žiadne","tags":"s1n s4n s5n p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
+{"lemmaId":100274,"form":"žiadneho","tags":"s2m s2i s2n s4m"}
+{"lemmaId":100274,"form":"žiadnej","tags":"s2f s3f s6f"}
+{"lemmaId":100274,"form":"žiadnemu","tags":"s3m s3i s3n"}
+{"lemmaId":100274,"form":"žiadni","tags":"p1m p5m"}
+{"lemmaId":100274,"form":"žiadnom","tags":"s6m s6i s6n"}
+{"lemmaId":100274,"form":"žiadnou","tags":"s7f"}
+{"lemmaId":100274,"form":"žiadnu","tags":"s4f"}
+{"lemmaId":100274,"form":"žiadny","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":100274,"form":"žiadnych","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
+{"lemmaId":100274,"form":"žiadnym","tags":"s7m s7i s7n p3m p3i p3f p3n"}
+{"lemmaId":100274,"form":"žiadnymi","tags":"p7m p7i p7f p7n"}
+{"lemmaId":100429,"form":"život","tags":"s1 s4 s5"}
+{"lemmaId":100429,"form":"života","tags":"s2"}
+{"lemmaId":100429,"form":"živote","tags":"s6"}
+{"lemmaId":100429,"form":"životmi","tags":"p7"}
+{"lemmaId":100429,"form":"životoch","tags":"p6"}
+{"lemmaId":100429,"form":"životom","tags":"s7 p3"}
+{"lemmaId":100429,"form":"životov","tags":"p2"}
+{"lemmaId":100429,"form":"životu","tags":"s3"}
+{"lemmaId":100429,"form":"životy","tags":"p1 p4 p5"}

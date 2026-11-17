@@ -134,11 +134,12 @@ export function NoteScreen() {
     try {
       await api.notes.delete({ params: { id: noteId } });
       await dropFromQueue(noteId);
-      queryClient.removeQueries({ queryKey: apiKey('notes.get', input) });
       await queryClient.invalidateQueries({ queryKey: ['api', 'notes.list'] });
       toast({ title: m.messages.note.deleted, tone: 'success' });
       setConfirmOpen(false);
       await navigate({ to: '/deck' });
+      // Dropped only after leaving: while this screen is mounted its query would fetch again.
+      queryClient.removeQueries({ queryKey: apiKey('notes.get', input) });
     } catch {
       toast({ title: m.messages.note.failed, tone: 'error' });
     } finally {

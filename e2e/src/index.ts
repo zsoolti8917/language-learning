@@ -1,2 +1,2 @@
-// @app/e2e. Filled by its owning work package.
-export {};
+// @app/e2e: browser tests of the whole app against the real API in local mode (I1).
+export { checkResponse, endpointOf, parseEventStream } from './contract';

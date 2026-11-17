@@ -1,0 +1,94 @@
+# Question words of each case (stage `triggers`, package C4). The answer to a question takes
+# the case of the question word: Koho vidíš? Brata. Ids keep the mini dataset's names.
+kind: question
+triggers:
+  - id: q-kto-nom
+    lemma: kto
+    case: nom
+    meaningEn: who?
+    exampleSk: Kto je to? To je môj brat.
+    exampleEn: Who is that? That is my brother.
+  - id: q-co-nom
+    lemma: čo
+    case: nom
+    meaningEn: what? (subject)
+    exampleSk: Čo je to? To je kniha.
+    exampleEn: What is that? That is a book.
+  - id: q-koho-gen
+    lemma: kto
+    case: gen
+    meaningEn: whose? of whom?
+    noteEn: Koho asks for a person in the genitive or the accusative, the verb decides.
+    exampleSk: Koho sa bojíš? Psa.
+    exampleEn: Who are you afraid of? The dog.
+  - id: q-coho-gen
+    lemma: čo
+    case: gen
+    meaningEn: of what?
+    exampleSk: Čoho sa bojíš? Búrky.
+    exampleEn: What are you afraid of? The storm.
+  - id: q-komu
+    lemma: kto
+    case: dat
+    meaningEn: to whom?
+    exampleSk: Komu pomáhaš? Pomáham bratovi.
+    exampleEn: Whom are you helping? I am helping my brother.
+  - id: q-comu
+    lemma: čo
+    case: dat
+    meaningEn: to what?
+    exampleSk: Čomu nerozumieš? Úlohe.
+    exampleEn: What do you not understand? The exercise.
+  - id: q-koho-acc
+    lemma: kto
+    case: acc
+    meaningEn: whom?
+    noteEn: Asks for a person in the accusative.
+    exampleSk: Koho vidíš? Vidím brata.
+    exampleEn: Whom do you see? I see my brother.
+  - id: q-co-acc
+    lemma: čo
+    case: acc
+    meaningEn: what? (object)
+    exampleSk: Čo kupuješ? Kupujem kávu.
+    exampleEn: What are you buying? I am buying coffee.
+  - id: q-o-kom
+    lemma: kto
+    case: loc
+    meaningEn: about whom?
+    exampleSk: O kom hovoríš? O sestre.
+    exampleEn: Who are you talking about? About my sister.
+  - id: q-o-com
+    lemma: čo
+    case: loc
+    meaningEn: about what?
+    exampleSk: O čom je tá kniha? O vojne.
+    exampleEn: What is the book about? About the war.
+  - id: q-s-kym
+    lemma: kto
+    case: ins
+    meaningEn: with whom?
+    exampleSk: S kým ideš do kina? S kamarátom.
+    exampleEn: Who are you going to the cinema with? With a friend.
+  - id: q-cim
+    lemma: čo
+    case: ins
+    meaningEn: by what? with what?
+    exampleSk: Čím cestuješ? Vlakom.
+    exampleEn: How do you travel? By train.
+  - id: q-kde
+    lemma: kde
+    case: loc
+    meaningEn: where?
+    noteEn: The answer uses v or na with the locative.
+    forms: [kde]
+    exampleSk: Kde bývaš? Bývam v Bratislave.
+    exampleEn: Where do you live? I live in Bratislava.
+  - id: q-kolko
+    lemma: koľko
+    case: gen
+    meaningEn: how many? how much?
+    noteEn: The noun after koľko is in the genitive, plural for things you count.
+    forms: [koľko]
+    exampleSk: Koľko máš rokov?
+    exampleEn: How old are you?

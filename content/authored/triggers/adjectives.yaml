@@ -1,0 +1,39 @@
+# Adjectives that govern a case (stage `triggers`, package C4).
+kind: adjective
+triggers:
+  - id: adj-plny
+    lemma: plný
+    case: gen
+    meaningEn: full of
+    exampleSk: Pohár je plný vody.
+    exampleEn: The glass is full of water.
+  - id: adj-podobny
+    lemma: podobný
+    case: dat
+    meaningEn: similar to, like
+    exampleSk: Je podobný otcovi.
+    exampleEn: He is like his father.
+  - id: adj-vdacny
+    lemma: vďačný
+    case: dat
+    meaningEn: grateful to
+    exampleSk: Som vďačný kamarátovi.
+    exampleEn: I am grateful to my friend.
+  - id: adj-verny
+    lemma: verný
+    case: dat
+    meaningEn: faithful, loyal to
+    exampleSk: Pes je verný pánovi.
+    exampleEn: The dog is loyal to its master.
+  - id: adj-hodny
+    lemma: hodný
+    case: gen
+    meaningEn: worthy of
+    exampleSk: Je hodný dôvery.
+    exampleEn: He is worthy of trust.
+  - id: adj-schopny
+    lemma: schopný
+    case: gen
+    meaningEn: capable of
+    exampleSk: Je schopný všetkého.
+    exampleEn: He is capable of anything.
