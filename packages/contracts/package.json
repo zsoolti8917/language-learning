@@ -9,7 +9,7 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "openapi": "node ../../scripts/pending.mjs F2 openapi"
+    "openapi": "tsx scripts/openapi.ts > ../../docs/openapi.json.tmp && mv ../../docs/openapi.json.tmp ../../docs/openapi.json"
   },
   "dependencies": {
     "zod": "catalog:"
