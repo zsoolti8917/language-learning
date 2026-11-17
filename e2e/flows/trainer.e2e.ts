@@ -4,7 +4,7 @@
 // the course grid.
 import type { BucketMastery, ExerciseItem } from '@app/contracts';
 import { solve } from '../src/exercises';
-import { expect, noSidewaysScroll, onboard, test } from '../src/fixtures';
+import { expect, noSidewaysScroll, onboard, test, uuidv7 } from '../src/fixtures';
 
 const key = (b: BucketMastery) => `${b.case}.${b.number}.${b.gender}`;
 
@@ -63,6 +63,11 @@ test('a trainer session moves mastery', async ({ page, api }) => {
   );
   expect(moved.some((b) => b.level !== 'unseen' && b.mastery > 0)).toBe(true);
 
+  // The item answered wrong became a review card.
+  const cards = await api.call('notes.list', { query: { kind: 'case_sentence' } });
+  expect(cards.body.items).toHaveLength(1);
+  expect(cards.body.items[0]?.source).toBe('declension');
+
   // The grid of the course shows a practised cell with its level.
   await page.getByRole('link', { name: 'Back to the course' }).click();
   await expect(page.getByRole('heading', { name: 'Case course', level: 1 })).toBeVisible();
@@ -70,4 +75,35 @@ test('a trainer session moves mastery', async ({ page, api }) => {
   const cell = page.locator(`[data-cell="${practised?.case}.${practised?.number}"]`);
   await expect(cell).toBeVisible();
   await expect(cell).not.toContainText('Not yet');
+});
+
+test('wrong trainer answers become at most five new cards a day', async ({ api }) => {
+  await onboard(api);
+  const wrongSession = async () => {
+    const session = await api.call('declension.createSession', {
+      body: { mode: 'mixed', size: 10 },
+    });
+    const attempts = session.body.items.map((item) => ({
+      id: uuidv7(),
+      sessionId: session.body.sessionId,
+      source: 'trainer' as const,
+      exerciseId: item.exerciseId,
+      typed: 'zzz',
+      correct: false,
+      retry: false,
+      clientDiagnosis: 'not_a_form' as const,
+      occurredAt: new Date().toISOString(),
+      durationMs: 3000,
+    }));
+    return (await api.call('declension.submitAttempts', { body: { attempts } })).body;
+  };
+  const first = await wrongSession();
+  expect(first.accepted).toBe(10);
+  expect(first.cardsCreated).toBe(5);
+  const second = await wrongSession();
+  expect(second.cardsCreated).toBe(0);
+  // The cap counts the notes the real notes port stored, with their source.
+  const notes = await api.call('notes.list', { query: { kind: 'case_sentence' } });
+  expect(notes.body.items).toHaveLength(5);
+  expect(notes.body.items.every((n) => n.source === 'declension')).toBe(true);
 });

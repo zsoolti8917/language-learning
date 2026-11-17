@@ -3,7 +3,7 @@
 // "do mesto", the reply is a fixed line. Everything else is the real tutor module: verification
 // against the dictionary, the decision table, the stream, the stored conversation and the card.
 import type { Locator, Page } from '@playwright/test';
-import { expect, noSidewaysScroll, onboard, test } from '../src/fixtures';
+import { expect, noSidewaysScroll, onboard, test, uuidv7 } from '../src/fixtures';
 
 const field = (page: Page) => page.getByRole('textbox', { name: 'Your message in Slovak' });
 const list = (page: Page) => page.getByRole('list', { name: 'Messages' });
@@ -55,6 +55,14 @@ test('tutor scenario: one error fixed by the learner, one corrected, a card in r
     page.getByText('Check “kamarát”. Something about this word is off; try writing it again.'),
   ).toBeVisible();
   await expect(list(page).getByText('kamarátom')).toHaveCount(0);
+  // A hint from the tutor (peek), without the answer.
+  const peek = page.waitForResponse((r) => r.url().endsWith('/peek'));
+  await list(page).getByRole('button', { name: 'Hint' }).click();
+  const hint = await peek;
+  expect(hint.status()).toBe(200);
+  expect(hint.request().postDataJSON()).toMatchObject({ kind: 'hint' });
+  const hintText = ((await hint.json()) as { text: string }).text;
+  await expect(list(page).getByText(hintText, { exact: false }).first()).toBeVisible();
 
   // 2. The learner fixes it; "do mesto" is the next prompted error.
   await send(page, 'Idem s kamarátom. Potom ideme do mesto.', 3);
@@ -92,4 +100,34 @@ test('tutor scenario: one error fixed by the learner, one corrected, a card in r
   await summary.getByRole('link', { name: 'Go to review' }).click();
   await expect(page.getByRole('heading', { name: 'Review', level: 1 })).toBeVisible();
   await expect(page.getByTestId('left')).toHaveText('1 left');
+});
+
+test('tutor: a disputed correction is reported and its card paused', async ({ page, api }) => {
+  await onboard(api);
+  const scenarioId = 'scn-city-walk';
+  const conversationId = uuidv7();
+  await api.call('tutor.startConversation', { body: { id: conversationId, scenarioId } });
+  await page.goto(`/tutor/${conversationId}`);
+  await expect(page.getByRole('heading', { name: 'Conversation', level: 1 })).toBeVisible();
+  await expect(replies(page)).toHaveCount(1);
+  await send(page, 'Ideme do mesto.', 2);
+  await send(page, 'Ideme do mesto.', 3);
+  const corrected = list(page).locator('[data-mark="corrected"]');
+  await expect(corrected).toHaveCount(1);
+  await expect(page.locator('[data-card-chip]')).toHaveCount(1);
+  expect((await api.call('review.queue', { query: { limit: 50 } })).body.items).toHaveLength(1);
+
+  await list(page).getByRole('button', { name: 'This looks wrong' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Report this correction' });
+  await sheet.getByLabel('Comment (optional)').fill('I meant the town as a name.');
+  const disputed = page.waitForResponse((r) => r.url().endsWith('/dispute'));
+  await sheet.getByRole('button', { name: 'Report' }).click();
+  expect((await disputed).status()).toBe(200);
+  await expect(list(page).locator('[data-mark="disputed"]')).toHaveCount(1);
+  await expect(page.getByText('You reported “mesto”. We will check it.').first()).toBeVisible();
+
+  // The server stored the dispute and paused the card made from the correction.
+  const detail = await api.call('tutor.getConversation', { params: { id: conversationId } });
+  expect(detail.body.errors.map((e) => e.status)).toContain('disputed');
+  expect((await api.call('review.queue', { query: { limit: 50 } })).body.items).toHaveLength(0);
 });

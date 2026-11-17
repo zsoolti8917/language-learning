@@ -116,3 +116,72 @@ test('review session: answers graded on the phone, sent through the outbox, stor
   expect(queue.body.counts.new).toBe(0);
   expect(queue.body.items.every((i) => i.state !== 'new')).toBe(true);
 });
+
+test('deck: search, report from a card, suspend, edit and delete a note', async ({
+  page,
+  api,
+}) => {
+  await onboard(api);
+  const words = await api.call('words.list', { query: { band: 0, status: 'unknown', limit: 3 } });
+  await api.call('words.triage', {
+    body: { decisions: words.body.items.map((w) => ({ lemmaId: w.lemmaId, decision: 'learn' })) },
+  });
+  const notes = (await api.call('notes.list', { query: { kind: 'word' } })).body.items;
+  expect(notes).toHaveLength(3);
+
+  // A report from the review card goes to the API.
+  await page.goto('/review');
+  await expect(page.getByTestId('left')).toHaveText('3 left');
+  await page.getByRole('button', { name: 'Report a problem' }).click();
+  await page.getByLabel('What is wrong?').fill('The English sentence reads oddly.');
+  const reported = page.waitForResponse((r) => r.url().endsWith('/api/v1/reports'));
+  await page.getByRole('button', { name: 'Send report' }).click();
+  expect((await reported).status()).toBe(201);
+
+  // The deck lists the three notes; a search narrows it.
+  await page.getByRole('link', { name: 'Deck' }).click();
+  await expect(page.getByRole('heading', { name: 'Deck', level: 1 })).toBeVisible();
+  const list = page.getByRole('list', { name: 'Deck' });
+  await expect(list.getByRole('link')).toHaveCount(3);
+  const target = notes[0];
+  const label = target?.label ?? '';
+  await page.getByLabel('Search notes').fill(label);
+  await expect(list.getByRole('link').first()).toContainText(label);
+  await noSidewaysScroll(page);
+
+  // The note: suspend, then resume.
+  await page.goto(`/deck/${target?.id}`);
+  await expect(page.getByRole('heading', { name: 'Note', level: 1 })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Schedule' })).toBeVisible();
+  await page.getByRole('button', { name: 'Suspend' }).click();
+  await expect(page.getByText('Suspended. This note stays out of the review queue.')).toBeVisible();
+  let detail = await api.call('notes.get', { params: { id: target?.id ?? '' } });
+  expect(detail.body.note.suspended).toBe(true);
+  expect((await api.call('review.queue', { query: { limit: 50 } })).body.items).toHaveLength(2);
+  await page.getByRole('button', { name: 'Resume' }).click();
+  await expect(page.getByRole('button', { name: 'Suspend' })).toBeVisible();
+  detail = await api.call('notes.get', { params: { id: target?.id ?? '' } });
+  expect(detail.body.note.suspended).toBe(false);
+
+  // Edit the meaning.
+  await page.getByRole('button', { name: 'Edit' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Edit note' });
+  await sheet.getByLabel('Meaning in English').fill('my own meaning');
+  const patched = page.waitForResponse(
+    (r) => r.url().includes(`/api/v1/notes/${target?.id}`) && r.request().method() === 'PATCH',
+  );
+  await sheet.getByRole('button', { name: 'Save' }).click();
+  expect((await patched).status()).toBe(200);
+  await expect(page.getByText('my own meaning').first()).toBeVisible();
+
+  // Delete it: it leaves the deck and the queue.
+  await page.getByRole('button', { name: 'Delete' }).click();
+  const deleted = page.waitForResponse(
+    (r) => r.url().includes(`/api/v1/notes/${target?.id}`) && r.request().method() === 'DELETE',
+  );
+  await page.getByRole('button', { name: 'Delete note' }).click();
+  expect((await deleted).status()).toBe(204);
+  await expect(page.getByRole('heading', { name: 'Deck', level: 1 })).toBeVisible();
+  expect((await api.call('notes.list', { query: { kind: 'word' } })).body.items).toHaveLength(2);
+  expect((await api.call('review.queue', { query: { limit: 50 } })).body.items).toHaveLength(2);
+});

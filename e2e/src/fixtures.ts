@@ -69,7 +69,11 @@ function watchPage(page: Page): { watch: Watch; settle: () => Promise<void> } {
     },
   };
   page.on('console', (msg) => {
-    if (msg.type() === 'error') watch.consoleErrors.push(msg.text());
+    // A failed request logs only its status; the location names the address.
+    if (msg.type() === 'error')
+      watch.consoleErrors.push(
+        msg.location().url ? `${msg.text()} (${msg.location().url})` : msg.text(),
+      );
   });
   page.on('pageerror', (err) => watch.consoleErrors.push(`pageerror: ${err.message}`));
   page.on('response', (res) => {

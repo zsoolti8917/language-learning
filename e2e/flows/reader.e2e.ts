@@ -112,3 +112,61 @@ test('import a text, read it, save a word, and review it', async ({ page, api })
   await expect(page.getByText('Correct', { exact: true })).toBeVisible();
   await noSidewaysScroll(page);
 });
+
+test('a starter text from the library, with a saved phrase', async ({ page, api }) => {
+  await onboard(api);
+  const library = (await api.call('library.list')).body.items;
+  const starter = library[0];
+  expect(starter).toBeDefined();
+
+  await page.goto('/read');
+  await expect(page.getByRole('heading', { name: 'Library', level: 1 })).toBeVisible();
+  const added = page.waitForResponse(
+    (r) => /\/api\/v1\/library\/[^/]+\/add$/.test(r.url()) && r.request().method() === 'POST',
+  );
+  await page.getByRole('button', { name: 'Add' }).first().click();
+  expect((await added).status()).toBe(200);
+  // Adding opens the text in the reader.
+  await expect(page.getByRole('heading', { name: starter?.title ?? '', level: 2 })).toBeVisible({
+    timeout: 60_000,
+  });
+  const textId = new URL(page.url()).pathname.split('/').pop() ?? '';
+
+  // The first two words of the second sentence as a phrase, with an edited meaning.
+  const first = page.locator('[data-sentence="1"] [data-token="0"]');
+  const second = page.locator('[data-sentence="1"] [data-token="1"]');
+  const firstWord = (await first.textContent()) ?? '';
+  const phraseText = `${firstWord} ${await second.textContent()}`;
+  await first.click();
+  await page
+    .getByRole('dialog', { name: firstWord })
+    .getByRole('button', { name: 'Select a phrase' })
+    .click();
+  const bar = page.getByTestId('phrase-bar');
+  await expect(bar).toContainText('Tap the last word of the phrase.');
+  await second.click();
+  await expect(bar).toContainText(`2 words: ${phraseText}`);
+  await bar.getByRole('button', { name: 'Save phrase' }).click();
+  const phraseSheet = page.getByRole('dialog', { name: 'Save phrase' });
+  await phraseSheet.getByLabel('Meaning').fill('today is');
+  const saved = page.waitForResponse(
+    (r) => r.url().endsWith('/api/v1/notes') && r.request().method() === 'POST',
+  );
+  await phraseSheet.getByRole('button', { name: 'Save phrase' }).click();
+  const res = await saved;
+  expect(res.status()).toBe(200);
+  expect(res.request().postDataJSON()).toMatchObject({
+    kind: 'phrase',
+    source: 'reader',
+    textId,
+    content: { textSk: phraseText, glossEn: 'today is' },
+  });
+  await expect(bar).toBeHidden();
+
+  // The text lists the phrase; the deck holds it.
+  const detail = await api.call('texts.get', { params: { id: textId } });
+  expect(detail.body.phrases.map((p) => p.textSk)).toEqual([phraseText]);
+  const phrases = await api.call('notes.list', { query: { kind: 'phrase' } });
+  expect(phrases.body.items).toHaveLength(1);
+  await noSidewaysScroll(page);
+});
