@@ -1,0 +1,38 @@
+# Lesson 8 of the declension course (stage `lessons`, package C4).
+id: gen-pl
+ord: 8
+titleEn: Genitive plural
+titleSk: Genitív množného čísla
+case: gen
+number: pl
+prerequisites: [loc-ins-dat-pl]
+buckets: [gen.pl.f, gen.pl.n, gen.pl.m_inan, gen.pl.m_anim]
+triggerIds:
+  - num-pat
+  - num-sest
+  - num-desat
+  - quant-vela
+  - quant-niekolko
+  - quant-malo
+  - q-kolko
+  - prep-do
+  - prep-z
+  - prep-bez
+  - noun-kilo
+summaryMd: After five and more, and after *veľa* and *koľko*. *päť kníh, veľa ľudí.*
+explain:
+  md: |-
+    The genitive plural follows numbers from five up and words of quantity: *päť kníh*, *veľa ľudí*, *koľko rokov*. It also follows the genitive prepositions: *do škôl*, *z miest*.
+
+    - Masculine nouns take *-ov*: *päť domov*, *veľa bratov*.
+    - Feminine nouns in *-a* and neuter nouns in *-o* lose their ending, and the last syllable often gets longer: *žena → žien*, *škola → škôl*, *kniha → kníh*, *mesto → miest*, *auto → áut*.
+    - Nouns in a consonant and in *-ie* take *-í*: *miestností*, *námestí*.
+
+    This case has the most exceptions, so learn each common word with its genitive plural.
+  examples:
+    - sk: Mám päť [kníh].
+      en: I have five books.
+    - sk: Je tu veľa [ľudí].
+      en: There are a lot of people here.
+    - sk: Koľko máš [rokov]?
+      en: How old are you?

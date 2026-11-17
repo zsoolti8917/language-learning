@@ -1,0 +1,37 @@
+# Lesson 4 of the declension course (stage `lessons`, package C4).
+id: ins-sg
+ord: 4
+titleEn: Instrumental singular
+titleSk: Inštrumentál jednotného čísla
+case: ins
+number: sg
+prerequisites: [gen-sg]
+buckets: [ins.sg.m_anim, ins.sg.f, ins.sg.m_inan, ins.sg.n]
+triggerIds:
+  - prep-s-ins
+  - prep-pred-ins
+  - prep-za-ins
+  - prep-nad-ins
+  - prep-pod-ins
+  - prep-medzi-ins
+  - verb-stat
+  - verb-cestovat
+  - verb-ist
+  - q-s-kym
+  - q-cim
+summaryMd: The instrumental means *with* or *by*, and follows *s*, *pred*, *za*, *nad* and *pod*. *Idem s kamarátom.*
+explain:
+  md: |-
+    The instrumental says **with whom** or **by what**. It follows *s* (with) and the place words *pred* (in front of), *za* (behind), *nad* (above), *pod* (under) and *medzi* (between). Without a preposition it names the means of transport: *cestujem vlakom*.
+
+    - Masculine and neuter nouns take *-om*: *s bratom*, *vlakom*, *pred domom*, *s autom*. Nouns in *-ie* take *-ím*: *pred námestím*.
+    - Feminine nouns take *-ou*: *so ženou*, *s mamou*, *pred školou*. Nouns in a consonant also take *-ou*: *s miestnosťou*.
+
+    *S* becomes *so* before *s*, *z*, *š* and *ž*: *so sestrou*.
+  examples:
+    - sk: Idem do kina s [kamarátom].
+      en: I am going to the cinema with a friend.
+    - sk: Cestujem [vlakom].
+      en: I travel by train.
+    - sk: Čakám pred [školou].
+      en: I am waiting in front of the school.

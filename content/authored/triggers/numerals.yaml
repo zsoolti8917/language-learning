@@ -1,0 +1,68 @@
+# Numerals (stage `triggers`, package C4). Two, three and four take the nominative plural;
+# from five on, the counted noun is in the genitive plural whenever the group is a subject
+# or an object.
+kind: numeral
+triggers:
+  - id: num-dva
+    lemma: dva
+    case: nom
+    meaningEn: two
+    noteEn: Two, three and four take the nominative plural. Dva is for masculine nouns, dve for feminine and neuter ones.
+    exampleSk: Mám dva domy.
+    exampleEn: I have two houses.
+  - id: num-tri
+    lemma: tri
+    case: nom
+    meaningEn: three
+    noteEn: Three takes the nominative plural.
+    exampleSk: Mám tri sestry.
+    exampleEn: I have three sisters.
+  - id: num-styri
+    lemma: štyri
+    case: nom
+    meaningEn: four
+    noteEn: Four takes the nominative plural.
+    exampleSk: Kúpil som štyri jablká.
+    exampleEn: I bought four apples.
+  - id: num-pat
+    lemma: päť
+    case: gen
+    meaningEn: five
+    noteEn: From five on, the counted noun is in the genitive plural.
+    exampleSk: Mám päť kníh.
+    exampleEn: I have five books.
+  - id: num-sest
+    lemma: šesť
+    case: gen
+    meaningEn: six
+    noteEn: The counted noun is in the genitive plural.
+    exampleSk: Čakám šesť týždňov.
+    exampleEn: I have been waiting six weeks.
+  - id: num-sedem
+    lemma: sedem
+    case: gen
+    meaningEn: seven
+    noteEn: The counted noun is in the genitive plural.
+    exampleSk: Týždeň má sedem dní.
+    exampleEn: A week has seven days.
+  - id: num-osem
+    lemma: osem
+    case: gen
+    meaningEn: eight
+    noteEn: The counted noun is in the genitive plural.
+    exampleSk: Pracujem osem hodín.
+    exampleEn: I work eight hours.
+  - id: num-desat
+    lemma: desať
+    case: gen
+    meaningEn: ten
+    noteEn: The counted noun is in the genitive plural.
+    exampleSk: Stojí to desať eur.
+    exampleEn: It costs ten euros.
+  - id: num-sto
+    lemma: sto
+    case: gen
+    meaningEn: a hundred
+    noteEn: The counted noun is in the genitive plural.
+    exampleSk: V sále je sto ľudí.
+    exampleEn: There are a hundred people in the hall.

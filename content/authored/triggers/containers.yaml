@@ -1,0 +1,40 @@
+# Containers and measures (stage `triggers`, package C4): what they hold is in the genitive.
+kind: noun
+triggers:
+  - id: noun-pohar
+    lemma: pohár
+    case: gen
+    meaningEn: a glass of
+    noteEn: What the container holds is in the genitive.
+    exampleSk: Dám si pohár vody.
+    exampleEn: I will have a glass of water.
+  - id: noun-salka
+    lemma: šálka
+    case: gen
+    meaningEn: a cup of
+    exampleSk: Vypil som šálku kávy.
+    exampleEn: I drank a cup of coffee.
+  - id: noun-flasa
+    lemma: fľaša
+    case: gen
+    meaningEn: a bottle of
+    exampleSk: Kúpil som fľašu vína.
+    exampleEn: I bought a bottle of wine.
+  - id: noun-kilo
+    lemma: kilo
+    case: gen
+    meaningEn: a kilo of
+    exampleSk: Prosím si kilo jabĺk.
+    exampleEn: A kilo of apples, please.
+  - id: noun-kus
+    lemma: kus
+    case: gen
+    meaningEn: a piece of
+    exampleSk: Daj mi kus chleba.
+    exampleEn: Give me a piece of bread.
+  - id: noun-polovica
+    lemma: polovica
+    case: gen
+    meaningEn: half of
+    exampleSk: Polovica ľudí nepríde.
+    exampleEn: Half of the people will not come.

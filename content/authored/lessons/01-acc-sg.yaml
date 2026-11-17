@@ -1,0 +1,39 @@
+# Lesson 1 of the declension course (stage `lessons`, package C4).
+# Square brackets in an example mark the highlighted words. The bucket weights and the
+# exercises of steps 3 to 5 are filled in by the pipeline (lessons and exercises stages).
+id: acc-sg
+ord: 1
+titleEn: Accusative singular
+titleSk: Akuzatív jednotného čísla
+case: acc
+number: sg
+buckets: [acc.sg.f, acc.sg.m_anim, acc.sg.m_inan, acc.sg.n]
+triggerIds:
+  - verb-vidiet
+  - verb-mat
+  - verb-chciet
+  - verb-hladat
+  - verb-poznat
+  - prep-pre
+  - prep-na-acc
+  - prep-cez
+  - prep-za-acc
+  - q-koho-acc
+  - q-co-acc
+summaryMd: The accusative marks the direct object, the person or thing a verb acts on. *Vidím ženu.*
+explain:
+  md: |-
+    The accusative is the case of the **direct object**: the person or thing a verb acts on. *Vidím ženu* means *I see a woman*. It also follows *pre* (for), *cez* (through) and *na* when it means *onto* or *to*.
+
+    - Feminine nouns in *-a* change it to *-u*: *žena → ženu*, *práca → prácu*. Feminine nouns that end in a consonant stay the same: *miestnosť*.
+    - Masculine nouns for people and animals take *-a*: *brat → brata*. Those that end in *-a* take *-u*: *kolega → kolegu*.
+    - Masculine nouns for things and all neuter nouns look like the nominative: *Vidím dom. Vidím mesto.*
+
+    Adjectives agree with the noun: *Mám novú prácu. Poznáš môjho brata?*
+  examples:
+    - sk: Vidím [ženu].
+      en: I see a woman.
+    - sk: Mám [brata].
+      en: I have a brother.
+    - sk: Idem na [námestie].
+      en: I am going to the square.

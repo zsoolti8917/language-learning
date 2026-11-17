@@ -1,0 +1,35 @@
+# Adjective declension patterns (stage `lessons`, package C4). The endings come from the real
+# forms of the model word, keyed by number, case and gender (s2f, p4m ...).
+# páví is left out: in the morphology data its forms equal cudzí's, so no lemma gets it.
+patterns:
+  - id: pekny
+    labelSk: pekný
+    pos: adj
+    model: pekný
+    everyday: nový
+    stem: pekn
+    notesEn: >-
+      Adjectives that end in -ý, -á, -é, like nový, dobrý and veľký. The ending agrees with
+      the noun in gender, number and case: nový dom, nová škola, v novom meste.
+
+  - id: cudzi
+    labelSk: cudzí
+    pos: adj
+    model: cudzí
+    everyday: domáci
+    stem: cudz
+    notesEn: >-
+      Adjectives that end in -í, -ia, -ie, like domáci, cudzí and ďalší. They are like pekný,
+      with a soft i in the ending: cudzieho, cudzia, cudzie. After a long syllable the vowel
+      is short: domáceho, domáca.
+
+  - id: otcov
+    labelSk: otcov
+    pos: adj
+    model: otcov
+    everyday: bratov
+    stem: otcov
+    notesEn: >-
+      Possessive adjectives made from masculine nouns, like bratov (my brother's) and otcov.
+      Feminine nouns give -in: mamin. The nominative has short endings (otcov dom, otcova
+      kniha), the other cases take endings like pekný: otcovho, otcovej.

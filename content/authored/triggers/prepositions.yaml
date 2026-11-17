@@ -1,0 +1,415 @@
+# Prepositions and the case each one demands (stage `triggers`, package C4).
+# A preposition that takes two or three cases has one row per case, and the rows share a
+# contrast group, so the trainer can drill "na stole" against "na stôl".
+# Every case here must agree with flags.cases of the preposition in the morphology data;
+# the triggers stage and the check c4.trigger-cases fail the build otherwise.
+# Ids follow docs/contracts.md ("Ids"): prep-<word>, plus the case when a word has two.
+# prep-s-ins keeps the mini dataset's id, although s governs only the instrumental.
+kind: preposition
+triggers:
+  # --- Primary prepositions ---------------------------------------------------------------
+  - id: prep-bez
+    lemma: bez
+    case: gen
+    meaningEn: without
+    exampleSk: Bez kávy nie som človek.
+    exampleEn: Without coffee I am not human.
+  - id: prep-cez
+    lemma: cez
+    case: acc
+    meaningEn: through, across, via
+    noteEn: Also "during" with time words, cez víkend.
+    exampleSk: Idem cez park.
+    exampleEn: I am walking through the park.
+  - id: prep-do
+    lemma: do
+    case: gen
+    meaningEn: to, into
+    noteEn: Do is used for towns, countries and closed spaces you enter.
+    exampleSk: Idem do mesta.
+    exampleEn: I am going to town.
+  - id: prep-k
+    lemma: k
+    case: dat
+    meaningEn: towards, to (a person)
+    noteEn: Written ku before k and g, ku kamarátovi.
+    exampleSk: Idem k bratovi.
+    exampleEn: I am going to my brother's.
+  - id: prep-medzi-acc
+    lemma: medzi
+    case: acc
+    meaningEn: in between (movement)
+    noteEn: Accusative for where something goes, instrumental for where it is.
+    exampleSk: Postavil stoličku medzi okná.
+    exampleEn: He put the chair between the windows.
+    contrastGroup: medzi
+  - id: prep-medzi-ins
+    lemma: medzi
+    case: ins
+    meaningEn: between, among
+    noteEn: Instrumental for where something is, accusative for where it goes.
+    exampleSk: Stolička stojí medzi oknami.
+    exampleEn: The chair stands between the windows.
+    contrastGroup: medzi
+  - id: prep-na-acc
+    lemma: na
+    case: acc
+    meaningEn: onto, to (a place or an event)
+    noteEn: Accusative for where to, locative for where.
+    exampleSk: Idem na námestie.
+    exampleEn: I am going to the square.
+    contrastGroup: na
+  - id: prep-na-loc
+    lemma: na
+    case: loc
+    meaningEn: on, at
+    noteEn: Locative for where, accusative for where to.
+    exampleSk: Som na námestí.
+    exampleEn: I am on the square.
+    contrastGroup: na
+  - id: prep-nad-acc
+    lemma: nad
+    case: acc
+    meaningEn: above, over (movement)
+    noteEn: Accusative for movement to a place above, instrumental for the place itself.
+    exampleSk: Lampu zavesím nad stôl.
+    exampleEn: I will hang the lamp over the table.
+    contrastGroup: nad
+  - id: prep-nad-ins
+    lemma: nad
+    case: ins
+    meaningEn: above, over
+    noteEn: Instrumental for where something is, accusative for where it goes.
+    exampleSk: Lampa visí nad stolom.
+    exampleEn: The lamp hangs over the table.
+    contrastGroup: nad
+  - id: prep-o-acc
+    lemma: o
+    case: acc
+    meaningEn: against; in (a time span)
+    noteEn: With the accusative, o means touching against something, or later by an amount, o hodinu.
+    exampleSk: Opieram sa o stenu.
+    exampleEn: I am leaning against the wall.
+    contrastGroup: o
+  - id: prep-o-loc
+    lemma: o
+    case: loc
+    meaningEn: about
+    noteEn: The common meaning. Hovoriť o, písať o, vedieť o all take the locative.
+    exampleSk: Hovoríme o meste.
+    exampleEn: We are talking about the town.
+    contrastGroup: o
+  - id: prep-od
+    lemma: od
+    case: gen
+    meaningEn: from (a person), since
+    exampleSk: Mám knihu od kamaráta.
+    exampleEn: I have a book from a friend.
+  - id: prep-po-acc
+    lemma: po
+    case: acc
+    meaningEn: up to; to fetch
+    noteEn: With the accusative, po means as far as, po kolená, or going to get something, ísť po chlieb.
+    exampleSk: Idem po chlieb.
+    exampleEn: I am going to get bread.
+    contrastGroup: po
+  - id: prep-po-loc
+    lemma: po
+    case: loc
+    meaningEn: after; along, around
+    noteEn: The common meaning. Po práci, po meste.
+    exampleSk: Po práci idem domov.
+    exampleEn: After work I am going home.
+    contrastGroup: po
+  - id: prep-pod-acc
+    lemma: pod
+    case: acc
+    meaningEn: under (movement)
+    noteEn: Accusative for where something goes, instrumental for where it is.
+    exampleSk: Mačka vliezla pod posteľ.
+    exampleEn: The cat crawled under the bed.
+    contrastGroup: pod
+  - id: prep-pod-ins
+    lemma: pod
+    case: ins
+    meaningEn: under, below
+    noteEn: Instrumental for where something is, accusative for where it goes.
+    exampleSk: Mačka spí pod posteľou.
+    exampleEn: The cat is sleeping under the bed.
+    contrastGroup: pod
+  - id: prep-pre
+    lemma: pre
+    case: acc
+    meaningEn: for
+    exampleSk: Kúpim kávu pre brata.
+    exampleEn: I will buy coffee for my brother.
+  - id: prep-pred-acc
+    lemma: pred
+    case: acc
+    meaningEn: in front of (movement)
+    noteEn: Accusative for where something goes, instrumental for where it is.
+    exampleSk: Auto zaparkoval pred dom.
+    exampleEn: He parked the car in front of the house.
+    contrastGroup: pred
+  - id: prep-pred-ins
+    lemma: pred
+    case: ins
+    meaningEn: in front of; before, ago
+    noteEn: The common meaning. Pred domom, pred rokom.
+    exampleSk: Čakám pred domom.
+    exampleEn: I am waiting in front of the house.
+    contrastGroup: pred
+  - id: prep-pri
+    lemma: pri
+    case: loc
+    meaningEn: by, near, at
+    exampleSk: Dom je pri námestí.
+    exampleEn: The house is by the square.
+  - id: prep-s-ins
+    lemma: s
+    case: ins
+    meaningEn: with
+    noteEn: Written so before s, z, š, ž and before mnou, so mnou.
+    exampleSk: Idem do kina s kamarátom.
+    exampleEn: I am going to the cinema with a friend.
+  - id: prep-u
+    lemma: u
+    case: gen
+    meaningEn: at (someone's place), by
+    exampleSk: Bývam u kamaráta.
+    exampleEn: I am staying at my friend's.
+  - id: prep-v-acc
+    lemma: v
+    case: acc
+    meaningEn: on (a day of the week); in (believe in)
+    noteEn: With the accusative, v marks days, v sobotu, and what you believe in, veriť v Boha.
+    exampleSk: Prídem v sobotu.
+    exampleEn: I will come on Saturday.
+    contrastGroup: v
+  - id: prep-v-loc
+    lemma: v
+    case: loc
+    meaningEn: in, at
+    noteEn: Written vo before v and f, vo vode.
+    exampleSk: Bývam v Bratislave.
+    exampleEn: I live in Bratislava.
+    contrastGroup: v
+  - id: prep-z
+    lemma: z
+    case: gen
+    meaningEn: from, out of, off
+    noteEn: Written zo before s, z, š, ž and some clusters, zo školy.
+    exampleSk: Som z Bratislavy.
+    exampleEn: I am from Bratislava.
+  - id: prep-za-gen
+    lemma: za
+    case: gen
+    meaningEn: during (a period or a reign)
+    noteEn: Rare with the genitive, za socializmu, za mlada.
+    exampleSk: Narodil sa za vojny.
+    exampleEn: He was born during the war.
+    contrastGroup: za
+  - id: prep-za-acc
+    lemma: za
+    case: acc
+    meaningEn: for (in exchange); in (a time); behind (movement)
+    noteEn: Ďakujem za darček, za hodinu, ísť za dom.
+    exampleSk: Ďakujem za darček.
+    exampleEn: Thank you for the present.
+    contrastGroup: za
+  - id: prep-za-ins
+    lemma: za
+    case: ins
+    meaningEn: behind; to see (someone)
+    noteEn: Za domom is where something is, ísť za kamarátom means going to see a friend.
+    exampleSk: Záhrada je za domom.
+    exampleEn: The garden is behind the house.
+    contrastGroup: za
+  # --- Compound prepositions ---------------------------------------------------------------
+  - id: prep-pomedzi
+    lemma: pomedzi
+    case: acc
+    meaningEn: between, among (moving through)
+    exampleSk: Šli sme pomedzi stromy.
+    exampleEn: We walked between the trees.
+  - id: prep-ponad
+    lemma: ponad
+    case: acc
+    meaningEn: over, above (moving across)
+    exampleSk: Lietadlo letí ponad mesto.
+    exampleEn: The plane is flying over the town.
+  - id: prep-popod
+    lemma: popod
+    case: acc
+    meaningEn: under (moving along)
+    exampleSk: Prešli sme popod most.
+    exampleEn: We passed under the bridge.
+  - id: prep-popred
+    lemma: popred
+    case: acc
+    meaningEn: past the front of
+    exampleSk: Prešiel popred dom.
+    exampleEn: He walked past the front of the house.
+  - id: prep-popri
+    lemma: popri
+    case: loc
+    meaningEn: alongside, past; besides
+    exampleSk: Ideme popri rieke.
+    exampleEn: We are walking along the river.
+  - id: prep-poza
+    lemma: poza
+    case: acc
+    meaningEn: behind, round the back of (moving)
+    exampleSk: Prešla poza dom.
+    exampleEn: She went round the back of the house.
+  - id: prep-spod
+    lemma: spod
+    case: gen
+    meaningEn: from under
+    exampleSk: Vytiahol kufor spod postele.
+    exampleEn: He pulled the suitcase out from under the bed.
+  - id: prep-spoza
+    lemma: spoza
+    case: gen
+    meaningEn: from behind
+    exampleSk: Slnko vyšlo spoza mraku.
+    exampleEn: The sun came out from behind the cloud.
+  - id: prep-sponad
+    lemma: sponad
+    case: gen
+    meaningEn: from above
+    exampleSk: Pozrel sa sponad novín.
+    exampleEn: He looked up from over his newspaper.
+  - id: prep-spomedzi
+    lemma: spomedzi
+    case: gen
+    meaningEn: from among
+    exampleSk: Vybral si spomedzi kníh.
+    exampleEn: He chose from among the books.
+  - id: prep-spred
+    lemma: spred
+    case: gen
+    meaningEn: from in front of
+    exampleSk: Auto odišlo spred domu.
+    exampleEn: The car drove away from in front of the house.
+  # --- Common secondary prepositions -------------------------------------------------------
+  - id: prep-blizko
+    lemma: blízko
+    case: gen
+    meaningEn: near, close to
+    exampleSk: Bývam blízko školy.
+    exampleEn: I live near the school.
+  - id: prep-kvoli
+    lemma: kvôli
+    case: dat
+    meaningEn: because of
+    exampleSk: Nešli sme von kvôli dažďu.
+    exampleEn: We did not go out because of the rain.
+  - id: prep-mimo
+    lemma: mimo
+    case: gen
+    meaningEn: outside, out of
+    exampleSk: Bývame mimo mesta.
+    exampleEn: We live outside the town.
+  - id: prep-namiesto
+    lemma: namiesto
+    case: gen
+    meaningEn: instead of
+    exampleSk: Pijem čaj namiesto kávy.
+    exampleEn: I drink tea instead of coffee.
+  - id: prep-napriek
+    lemma: napriek
+    case: dat
+    meaningEn: despite
+    exampleSk: Išli sme von napriek dažďu.
+    exampleEn: We went out despite the rain.
+  - id: prep-naproti
+    lemma: naproti
+    case: dat
+    meaningEn: opposite, across from
+    exampleSk: Obchod je naproti škole.
+    exampleEn: The shop is opposite the school.
+  - id: prep-okolo
+    lemma: okolo
+    case: gen
+    meaningEn: around, past
+    exampleSk: Ideme okolo jazera.
+    exampleEn: We are walking around the lake.
+  - id: prep-okrem
+    lemma: okrem
+    case: gen
+    meaningEn: except, apart from
+    exampleSk: Prišli všetci okrem brata.
+    exampleEn: Everyone came except my brother.
+  - id: prep-oproti
+    lemma: oproti
+    case: dat
+    meaningEn: opposite; compared with
+    exampleSk: Sedel oproti mame.
+    exampleEn: He sat opposite my mother.
+  - id: prep-pocas
+    lemma: počas
+    case: gen
+    meaningEn: during
+    exampleSk: Počas leta pracujem.
+    exampleEn: During the summer I work.
+  - id: prep-podla
+    lemma: podľa
+    case: gen
+    meaningEn: according to, by
+    exampleSk: Varím podľa receptu.
+    exampleEn: I cook according to a recipe.
+  - id: prep-pomocou
+    lemma: pomocou
+    case: gen
+    meaningEn: with the help of, by means of
+    exampleSk: Otvoril dvere pomocou kľúča.
+    exampleEn: He opened the door with a key.
+  - id: prep-pozdlz
+    lemma: pozdĺž
+    case: gen
+    meaningEn: along
+    exampleSk: Cesta vedie pozdĺž rieky.
+    exampleEn: The road runs along the river.
+  - id: prep-proti
+    lemma: proti
+    case: dat
+    meaningEn: against
+    exampleSk: Mám niečo proti chrípke.
+    exampleEn: I have something for the flu.
+  - id: prep-uprostred
+    lemma: uprostred
+    case: gen
+    meaningEn: in the middle of
+    exampleSk: Stojí uprostred námestia.
+    exampleEn: It stands in the middle of the square.
+  - id: prep-vdaka
+    lemma: vďaka
+    case: dat
+    meaningEn: thanks to
+    exampleSk: Vďaka kamarátovi mám prácu.
+    exampleEn: Thanks to my friend I have a job.
+  - id: prep-vedla
+    lemma: vedľa
+    case: gen
+    meaningEn: next to, beside
+    exampleSk: Sedím vedľa brata.
+    exampleEn: I am sitting next to my brother.
+  - id: prep-voci
+    lemma: voči
+    case: dat
+    meaningEn: towards, in relation to
+    exampleSk: Je milý voči susedom.
+    exampleEn: He is kind towards the neighbours.
+  - id: prep-vratane
+    lemma: vrátane
+    case: gen
+    meaningEn: including
+    exampleSk: Cena je vrátane raňajok.
+    exampleEn: The price includes breakfast.
+  - id: prep-vyse
+    lemma: vyše
+    case: gen
+    meaningEn: over, more than
+    exampleSk: Čakal som vyše hodiny.
+    exampleEn: I waited for over an hour.
