@@ -17,6 +17,7 @@ import type { NotesPort } from '../../ports';
 import { createTestApp, type TestApp, type TestClient } from '../../testing/app';
 import {
   type AttemptsRecorder,
+  createAttemptsRecorder,
   createNotesRecorder,
   type NotesRecorder,
 } from '../../testing/recorders';
@@ -69,7 +70,10 @@ beforeAll(async () => {
     },
   };
   notes = createNotesRecorder({ uuid: uuidv7 });
-  t = await createTestApp({ db: counted, ports: { notes: notesWithRows(notes) } });
+  t = await createTestApp({
+    db: counted,
+    ports: { notes: notesWithRows(notes), attempts: createAttemptsRecorder() },
+  });
   const gw = t.gateway;
   const structured = gw.structured.bind(gw);
   const stream = gw.stream.bind(gw);

@@ -13,7 +13,7 @@ import { uuidv7 } from '@app/testkit';
 import { and, eq } from 'drizzle-orm';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { createTestApp, type TestApp, type TestClient } from '../../testing/app';
-import type { AttemptsRecorder } from '../../testing/recorders';
+import { type AttemptsRecorder, createAttemptsRecorder } from '../../testing/recorders';
 import { BRATA_CASE_SENTENCE, V_MESTE_PHRASE } from '../../testing/suites/notes';
 
 const T0 = '2026-11-17T08:30:00.000Z';
@@ -22,7 +22,7 @@ const DAY = 24 * 60 * MIN;
 
 let t: TestApp;
 beforeAll(async () => {
-  t = await createTestApp();
+  t = await createTestApp({ ports: { attempts: createAttemptsRecorder() } });
 });
 afterAll(() => t.close());
 beforeEach(() => t.clock.set(T0));
