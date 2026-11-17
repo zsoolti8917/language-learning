@@ -1,7 +1,7 @@
 // The model step of the analyzer (route `reader.disambiguate`): words the rules left open are
 // sent in batches, each word with its candidate readings by index. The answer can only name
 // indexes; anything else is ignored and the word falls back to its most frequent reading.
-import { currentVersion, PROMPTS } from '@app/ai';
+import { systemFor } from '@app/ai';
 import { z } from 'zod';
 import type { Option } from './rules';
 
@@ -120,7 +120,7 @@ export function contextOf(sentence: string, s: number, e: number): string {
 
 /** The system prompt of the route in use. */
 export function systemPrompt() {
-  return [...currentVersion(PROMPTS['reader.disambiguate']).system];
+  return systemFor('reader.disambiguate');
 }
 
 /** The reading index per word of a batch; words the answer leaves open are missing. */
