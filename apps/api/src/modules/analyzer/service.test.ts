@@ -1,13 +1,27 @@
 // The analyzer on in-memory ports (mini dataset) and the mock gateway: rules, the model step,
 // fallbacks, chunking and offsets. No database, no network.
-import { createMockGateway, type MockGateway, promptMockDefaults } from '@app/ai';
+import {
+  buildRequest,
+  createMockGateway,
+  type MockGateway,
+  promptMockDefaults,
+  ROUTE_DEFAULTS,
+  routeOverridesFromEnv,
+  routeSettings,
+} from '@app/ai';
 import { type TextAnalysis, TextAnalysisSchema } from '@app/contracts';
 import { tokenize } from '@app/ling';
 import { loadMini } from '@app/testkit/mini';
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
 import { createMiniDictionary, createMiniMorphology } from '../../testing/lexicon';
-import { MAX_CALLS_PER_TEXT, MAX_CHARS_PER_CALL, MAX_WORDS_PER_CALL } from './model';
+import {
+  answerTokens,
+  MAX_CALLS_PER_TEXT,
+  MAX_CHARS_PER_CALL,
+  MAX_WORDS_PER_CALL,
+  THINKING_ROOM_TOKENS,
+} from './model';
 import type { LemmaFacts, TriggerFacts } from './repo';
 import { type AnalyzerDeps, analyzeText } from './service';
 
@@ -360,6 +374,8 @@ describe('chunking', () => {
       const content = c.messages[0]?.content ?? '';
       expect(content.length).toBeLessThanOrEqual(MAX_CHARS_PER_CALL);
       expect(JSON.parse(content).words.length).toBeLessThanOrEqual(MAX_WORDS_PER_CALL);
+      // The route's limit applies, not one sized to the answer alone.
+      expect(c.maxTokens).toBeUndefined();
     }
     expect(tokenCount).toBeGreaterThan(2_000);
     // Every known word has a reading; those beyond the call limit are guesses.
@@ -377,6 +393,26 @@ describe('chunking', () => {
       for (const ctx of msg.contexts) expect(ctx.length).toBeLessThanOrEqual(402);
     }
     expect(ai.calls.length).toBeLessThanOrEqual(MAX_CALLS_PER_TEXT);
+  });
+});
+
+describe('token limit', () => {
+  it('the largest batch has its answer and room for adaptive thinking', () => {
+    // The longest possible answer: every word picked, with three place word and two place
+    // reading indexes. Even at 1.5 characters per token it fits answerTokens.
+    const picks = Array.from({ length: MAX_WORDS_PER_CALL }, (_, i) => ({ w: 100 + i, c: 99 }));
+    expect(JSON.stringify({ picks }).length / 1.5).toBeLessThan(answerTokens(MAX_WORDS_PER_CALL));
+    const need = answerTokens(MAX_WORDS_PER_CALL) + THINKING_ROOM_TOKENS;
+    expect(ROUTE_DEFAULTS['reader.disambiguate'].maxTokens).toBeGreaterThanOrEqual(need);
+    // What reaches the API: the route's limit, which AI_MAX_TOKENS_READER_DISAMBIGUATE changes.
+    const body = (env: Record<string, string>) =>
+      buildRequest(routeSettings('reader.disambiguate', {}, routeOverridesFromEnv(env)), {
+        system: [{ text: 'x' }],
+        messages: [{ role: 'user', content: '{}' }],
+      });
+    expect(body({}).max_tokens).toBe(ROUTE_DEFAULTS['reader.disambiguate'].maxTokens);
+    expect(body({}).output_config?.effort).toBe('low');
+    expect(body({ AI_MAX_TOKENS_READER_DISAMBIGUATE: '12000' }).max_tokens).toBe(12_000);
   });
 });
 

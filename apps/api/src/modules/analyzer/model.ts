@@ -134,7 +134,19 @@ export function picksOf(batch: Batch, answer: Disambiguation): Map<number, numbe
   return out;
 }
 
-/** Token limit of a call: a short pick per word. */
-export function maxTokensFor(batch: Batch): number {
-  return Math.min(8_000, 256 + batch.words.length * 16);
+/**
+ * Output tokens of the answer alone for `words` picks: about ten per pick (`{"w":149,"c":12},`)
+ * plus the frame, with some slack.
+ */
+export function answerTokens(words: number): number {
+  return 32 + 12 * words;
 }
+
+/**
+ * The thinking room a call needs above its answer. Claude Opus 5.5 thinks adaptively inside
+ * `max_tokens` (effort `low` on this route), so a limit sized to the answer alone can cut a
+ * batch off and turn all its words into guesses. The calls therefore send no `maxTokens` of
+ * their own: the route's limit applies (`ROUTE_DEFAULTS`, 8,000, or
+ * `AI_MAX_TOKENS_READER_DISAMBIGUATE`), and it must cover the largest batch's answer plus this.
+ */
+export const THINKING_ROOM_TOKENS = 4_096;

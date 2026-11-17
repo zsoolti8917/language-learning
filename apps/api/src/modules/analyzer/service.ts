@@ -14,7 +14,6 @@ import {
 import {
   contextOf,
   DisambiguationSchema,
-  maxTokensFor,
   type OpenWord,
   packBatches,
   picksOf,
@@ -205,7 +204,7 @@ export async function analyzeText(
         system: systemPrompt(),
         messages: [{ role: 'user', content: batch.message }],
         schema: DisambiguationSchema,
-        maxTokens: maxTokensFor(batch),
+        // No maxTokens: the route's limit leaves room for thinking (THINKING_ROOM_TOKENS).
       });
       picks = picksOf(batch, data);
     } catch (e) {
