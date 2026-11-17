@@ -11,7 +11,7 @@ How well the model finds case errors in a learner's message and reads Slovak for
 | Tutor | 300 correct sentences + 300 sentences with one injected case error | `analyzeMessage` (`tutor.analyze`) → `verifyErrors` (morphology check) → `decideTurn` → `tutor.reply` → `checkReply` | `tutor.analyze`, `tutor.reply` |
 | Analyzer | 500 sentences with the treebank's checked lemma and case of every word | `analyzeText` of `modules/analyzer/service.ts`, ten sentences per imported text | `reader.disambiguate` |
 
-The runners import the steps from `apps/api` (`modules/tutor/pipeline.ts`, `modules/analyzer/service.ts`); nothing is reimplemented. The morphology port, lemma facts and trigger list come from memory (`tools/evals/src/lexicon.ts`), built from the pipeline's morphology output with the lexicon module's own functions; it passes the shared `MorphologyPort` suite, so lookups order and filter as the real port does. Glosses are not scored, so the analyzer runs with a dictionary that never calls `reader.gloss`.
+The runners import the steps from `apps/api` (`modules/tutor/pipeline.ts`, `modules/analyzer/service.ts`); nothing is reimplemented. The morphology port, lemma facts and trigger list come from memory (`tools/evals/src/lexicon.ts`), built from the pipeline's morphology output with the lexicon module's own functions, and C4's full trigger list (`content/build/triggers/triggers.jsonl`, 221 rows, the rows `ling.trigger` holds); it passes the shared `MorphologyPort` suite, so lookups order and filter as the real port does. Glosses are not scored, so the analyzer runs with a dictionary that never calls `reader.gloss`.
 
 Each tutor sentence is the learner's first message in a free conversation scenario (`EVAL_SCENARIO`, level B1, all six cases as targets), after the tutor's opening line.
 
@@ -149,6 +149,7 @@ All commands from the repository root. None sends a request unless `--mode live`
 pnpm run pipeline fetch --source snk-morphology,ud-slovak-snk,araneum-arf,frequencywords
 pnpm run pipeline morph
 pnpm run pipeline freq            # ranks; optional, but the analyzer orders readings by them
+pnpm run pipeline triggers        # C4's trigger list (required)
 
 # Datasets (committed; rebuild only after changing the injection or the selection)
 pnpm --filter @app/evals run evals build
