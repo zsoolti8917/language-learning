@@ -2,6 +2,8 @@
 //   pnpm e2e                         every flow
 //   pnpm e2e -- --repeat-each=3      every flow three times
 //   pnpm e2e -- flows/review         one file (any Playwright argument works)
+//   pnpm e2e:offline                 the offline, sync and install suite (I4): E2E_CONFIG
+//                                    names another config, relative to e2e/
 // Each run gets two free ports (API and web) and a build folder of its own, passed through
 // E2E_API_PORT, E2E_WEB_PORT and E2E_DIST_DIR, so parallel runs and other checkouts never
 // collide (the same approach as apps/web/scripts/e2e-all.mjs).
@@ -41,7 +43,7 @@ const env = {
 console.log(`e2e: api on ${apiPort}, web on ${webPort}, build in ${env.E2E_DIST_DIR}`);
 const run = spawnSync(
   'pnpm',
-  ['exec', 'playwright', 'test', '-c', 'playwright.config.ts', ...argv],
+  ['exec', 'playwright', 'test', '-c', process.env.E2E_CONFIG ?? 'playwright.config.ts', ...argv],
   {
     cwd: e2eRoot,
     env,

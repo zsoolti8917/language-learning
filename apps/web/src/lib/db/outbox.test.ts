@@ -243,6 +243,77 @@ describe('outbox', () => {
     await waitFor(() => srv.log.length === 3);
     stop();
   });
+
+  it('tries again by itself when the network fails although the device is online', async () => {
+    const srv = fakeServer();
+    box = testOutbox({ isOnline: () => true, networkRetry: () => 20 });
+    await submit([answer()]);
+    srv.fail('network');
+    const stop = box.start(window);
+    // The first run fails on the network; no event comes, the retry timer sends it.
+    await waitFor(() => srv.log.length === 1);
+    await waitFor(() => box.getState().pending === 0);
+    expect(await box.list()).toEqual([]);
+    stop();
+  });
+
+  it('waits while nobody is signed in, and sends once a login is back', async () => {
+    const srv = fakeServer();
+    let signedIn = false;
+    box = testOutbox({
+      isOnline: () => online,
+      now: () => clock,
+      backoff: () => 10_000,
+      canSend: async () => signedIn,
+    });
+    await submit([answer()]);
+    expect(await box.flush()).toMatchObject({ sent: 0, stopped: 'signedOut' });
+    expect(srv.log).toEqual([]);
+    expect((await box.list()).map((r) => [r.status, r.attempts])).toEqual([['pending', 0]]);
+    signedIn = true;
+    expect(await box.flush()).toMatchObject({ sent: 1 });
+  });
+
+  it('retries or discards one refused item, listed with its reason', async () => {
+    const srv = fakeServer();
+    await box.enqueue('lemmas.setStatus', { params: { id: 404 }, body: { status: 'known' } });
+    await box.enqueue('lemmas.setStatus', { params: { id: 20 }, body: { status: 'known' } });
+    await box.flush();
+    const failed = await box.failedItems();
+    expect(failed.map((r) => [r.name, r.lastError?.code])).toEqual([
+      ['lemmas.setStatus', 'not_found'],
+    ]);
+    const seq = failed[0]?.seq as number;
+
+    expect(await box.retry(seq)).toMatchObject({ sent: 0, failed: 1 });
+    expect(srv.log.map((l) => l.name)).toEqual([
+      'lemmas.setStatus:404',
+      'lemmas.setStatus:20',
+      'lemmas.setStatus:404',
+    ]);
+    expect((await box.failedItems())[0]?.attempts).toBe(2);
+
+    await box.discard(seq);
+    expect(await box.list()).toEqual([]);
+    expect(box.getState()).toMatchObject({ pending: 0, failed: 0 });
+  });
+
+  it('sends again an item a closed page left half sent', async () => {
+    const srv = fakeServer();
+    const x = answer();
+    await submit([x]);
+    // The page closed while the request was out: the row is still `sending`.
+    const [row] = await box.list();
+    await box.db.outbox.update(row?.seq as number, { status: 'sending' });
+    srv.stored.set(x.id, x);
+
+    const stop = box.start(window);
+    await waitFor(() => srv.log.length === 1);
+    await waitFor(() => box.getState().pending === 0);
+    expect(await box.list()).toEqual([]);
+    expect(srv.stored.size).toBe(1);
+    stop();
+  });
 });
 
 async function waitFor(check: () => boolean, ms = 2000) {

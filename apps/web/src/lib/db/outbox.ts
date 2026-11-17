@@ -3,7 +3,7 @@
 // returning, the app coming to the foreground, each new write, and a manual sync.
 // iOS has no background sync, so nothing relies on one.
 import type { EndpointName } from '@app/contracts';
-import type { ApiClient, ApiInput, ApiResult } from '../api/client';
+import type { ApiClient, ApiInput, ApiResult, CallOptions } from '../api/client';
 import { ApiError } from '../api/errors';
 import { newId } from '../ids';
 import { type AppDb, db as defaultDb, type OutboxRow } from './db';
@@ -78,8 +78,11 @@ export interface FlushReport {
   sent: number;
   retrying: number;
   failed: number;
-  /** Why the run stopped early: offline, the network failed, or the login needs a refresh. */
-  stopped?: 'offline' | 'network' | 'unauthorized';
+  /**
+   * Why the run stopped early: offline, the network failed, the login needs a refresh, or
+   * nobody is signed in.
+   */
+  stopped?: 'offline' | 'network' | 'unauthorized' | 'signedOut';
 }
 
 export interface OutboxOptions {
@@ -90,6 +93,16 @@ export interface OutboxOptions {
   isOnline?: () => boolean;
   /** Delay before retry number `attempts` (1, 2, …), in ms. */
   backoff?: (attempts: number) => number;
+  /**
+   * False while nobody is signed in: the items wait (a login that expired keeps them) instead
+   * of going out without a token. Default: always true.
+   */
+  canSend?: () => boolean | Promise<boolean>;
+  /**
+   * Delay before trying again after `failures` runs in a row stopped by a network error while
+   * the device says it is online (the `online` event can come before the connection works).
+   */
+  networkRetry?: (failures: number) => number;
 }
 
 export interface EnqueueOptions {
@@ -98,6 +111,7 @@ export interface EnqueueOptions {
 }
 
 const defaultBackoff = (attempts: number) => Math.min(5 * 60_000, 2_000 * 2 ** (attempts - 1));
+const defaultNetworkRetry = (failures: number) => Math.min(60_000, 2_000 * 2 ** (failures - 1));
 
 export class Outbox {
   readonly db: AppDb;
@@ -105,6 +119,9 @@ export class Outbox {
   private readonly now: () => number;
   private readonly isOnline: () => boolean;
   private readonly backoff: (attempts: number) => number;
+  private readonly canSend: () => boolean | Promise<boolean>;
+  private readonly networkRetry: (failures: number) => number;
+  private networkFailures = 0;
   private running: Promise<FlushReport> | null = null;
   private again = false;
   private started = false;
@@ -119,6 +136,8 @@ export class Outbox {
     this.isOnline =
       options.isOnline ?? (() => typeof navigator === 'undefined' || navigator.onLine !== false);
     this.backoff = options.backoff ?? defaultBackoff;
+    this.canSend = options.canSend ?? (() => true);
+    this.networkRetry = options.networkRetry ?? defaultNetworkRetry;
   }
 
   /** Puts a write in the outbox and (once started) sends it at once if possible. */
@@ -180,6 +199,8 @@ export class Outbox {
           };
           // A trigger that fired during the run (the connection came back) earns another run.
         } while (this.again);
+        if (total.stopped === 'network') this.networkFailures++;
+        else this.networkFailures = 0;
       } finally {
         this.running = null;
         this.setState({ syncing: false });
@@ -199,6 +220,7 @@ export class Outbox {
       (r) => r.nextAttemptAt <= this.now(),
     );
     if (due.length === 0) return report;
+    if (!(await this.canSend())) return { ...report, stopped: 'signedOut' };
     this.setState({ syncing: true });
     for (const candidate of due) {
       const seq = candidate.seq as number;
@@ -211,8 +233,13 @@ export class Outbox {
       });
       if (!item) continue;
       try {
-        const call = this.api.call as (name: EndpointName, input: unknown) => Promise<unknown>;
-        const res = await call(item.name, item.input);
+        const call = this.api.call as (
+          name: EndpointName,
+          input: unknown,
+          options: CallOptions,
+        ) => Promise<unknown>;
+        // Never without a login: the login may expire while this run goes on.
+        const res = await call(item.name, item.input, { requireLogin: true });
         const apply = appliers[item.name] as Applier<EndpointName> | undefined;
         await apply?.(res as never, item.input, this.db);
         await table.delete(seq);
@@ -291,6 +318,20 @@ export class Outbox {
     return this.flush();
   }
 
+  /** Sends one refused item again (the retry of the sync problems notice). */
+  async retry(seq: number): Promise<FlushReport> {
+    await this.db.outbox.update(seq, { status: 'pending', nextAttemptAt: 0 });
+    await this.refresh();
+    return this.flush();
+  }
+
+  /** Items the server refused for good, oldest first. */
+  async failedItems(): Promise<OutboxRow[]> {
+    return (await this.db.outbox.where('status').equals('failed').toArray()).sort(
+      (a, b) => (a.seq ?? 0) - (b.seq ?? 0),
+    );
+  }
+
   /** Drops one item for good (a refused write the learner gives up on). */
   async discard(seq: number): Promise<void> {
     await this.db.outbox.delete(seq);
@@ -318,9 +359,15 @@ export class Outbox {
       .equals('pending')
       .toArray()
       .then((rows) => {
+        if (!this.started || rows.length === 0) return;
         const next = Math.min(...rows.map((r) => r.nextAttemptAt));
-        if (!Number.isFinite(next) || !this.started) return;
-        const delay = Math.max(0, next - this.now());
+        let delay = Math.max(0, next - this.now());
+        // The network failed although the device is online: try again soon, as no event may
+        // come to trigger it.
+        if (this.networkFailures > 0 && this.isOnline()) {
+          const wait = this.networkRetry(this.networkFailures);
+          delay = delay > 0 ? Math.min(delay, wait) : wait;
+        }
         if (delay > 0) this.retryTimer = setTimeout(() => this.kick(), delay);
       })
       .catch(() => {});
