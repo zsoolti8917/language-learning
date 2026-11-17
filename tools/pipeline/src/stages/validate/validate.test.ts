@@ -122,7 +122,9 @@ describe('the validate stage', () => {
 
   it('assembles the set from the stages, writes its manifest, passes, and keeps it on a rerun', async () => {
     await runStage(morphStage, t.ctx({ input: SAMPLE, mini: MINI_DIR, measure: 'off' }));
-    const first = await runStage(validateStage, t.ctx());
+    // Only morph has run: later stages (freq, dict, …) would ask for parts that do not exist.
+    const upToMorph = [STAGES[0] as Stage, morphStage, validateStage];
+    const first = await runStage(validateStage, t.ctx({}, upToMorph));
     expect(first.result).toMatchObject({ version: '2026-11-17.1' });
     const manifestPath = join(t.paths.set, 'manifest.json');
     const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
@@ -134,7 +136,7 @@ describe('the validate stage', () => {
       }),
     ]);
     const before = await readFile(manifestPath, 'utf8');
-    await runStage(validateStage, t.ctx(), { force: true });
+    await runStage(validateStage, t.ctx({}, upToMorph), { force: true });
     expect(await readFile(manifestPath, 'utf8')).toBe(before);
     expect(await readFile(join(t.paths.build, 'validate', 'report.md'), 'utf8')).toContain(
       'Result: **pass**',
