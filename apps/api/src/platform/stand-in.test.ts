@@ -40,7 +40,10 @@ describe('start up port check', () => {
       dictionary,
       notes: createNotesRecorder(uuidV7Ids),
       attempts: createAttemptsRecorder(),
-      analyzer: createSimpleAnalyzer({ morphology: () => morphology, dictionary: () => dictionary }),
+      analyzer: createSimpleAnalyzer({
+        morphology: () => morphology,
+        dictionary: () => dictionary,
+      }),
     };
     for (const port of Object.values(standIns)) expect(isStandIn(port)).toBe(true);
     for (const port of Object.values(runtime.deps.ports)) expect(isStandIn(port)).toBe(false);

@@ -3,6 +3,7 @@
 // transaction, because they read the learner from it. B1 and B5 replace them.
 import type { BucketMastery, LemmaStatus, LemmaStatusSource, MasteryLevel } from '@app/contracts';
 import { ALL_BUCKETS, bucketKey, bucketOf } from '@app/ling';
+import { markStandIn } from '../platform/stand-in';
 import { currentUserId } from '../platform/tx';
 import type {
   AttemptRecord,
@@ -14,7 +15,6 @@ import type {
   Tx,
   WordNoteInput,
 } from '../ports';
-import { markStandIn } from '../platform/stand-in';
 
 export type RecordedNote =
   | { noteId: string; userId: string; kind: 'word'; input: WordNoteInput; suspended: boolean }

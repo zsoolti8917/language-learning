@@ -4,8 +4,8 @@ import type { FormCandidate, Lemma, Pos, Sense } from '@app/contracts';
 import { foldAscii } from '@app/contracts';
 import { readTags } from '@app/ling';
 import { loadMini } from '@app/testkit/mini';
-import type { DictionaryPort, MorphologyPort } from '../ports';
 import { markStandIn } from '../platform/stand-in';
+import type { DictionaryPort, MorphologyPort } from '../ports';
 
 const lower = (s: string) => s.normalize('NFC').toLowerCase();
 

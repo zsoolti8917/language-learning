@@ -4,8 +4,8 @@
 import type { AnalysisToken, TextAnalysis } from '@app/contracts';
 import { foldAscii } from '@app/contracts';
 import { splitSentences, tokenize } from '@app/ling';
-import type { AnalyzerPort, DictionaryPort, MorphologyPort } from '../ports';
 import { markStandIn } from '../platform/stand-in';
+import type { AnalyzerPort, DictionaryPort, MorphologyPort } from '../ports';
 
 export function createSimpleAnalyzer(deps: {
   morphology: () => MorphologyPort;
