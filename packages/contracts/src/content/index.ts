@@ -91,7 +91,7 @@ export const LemmaSentenceLinkSchema = z.object({
 
 /** `sentences.jsonl` → `ling.sentence` and `ling.lemma_sentence` */
 export const SentenceRowSchema = z.object({
-  id: z.string().regex(/^(?:tat|ud|gen)-[\w-]+$/u, "an id like 'tat-482913' or 'gen-9f2c1a7b'"),
+  id: z.string().regex(/^(?:tat|ud|gen)-[\w-]+$/u, "an id like 'tat-8214994' or 'gen-9f2c1a7b'"),
   textSk: z.string().min(1),
   textEn: z.string().min(1),
   tokens: z.array(SentenceTokenSchema),

@@ -8,7 +8,7 @@
     "jsx": "react-jsx",
     "types": ["vite/client", "node"]
   },
-  "include": ["src", "vite.config.ts"],
+  "include": ["src", "scripts/*.ts", "e2e-app", "e2e-ui", "vite.config.ts"],
   "references": [
     {
       "path": "../../packages/contracts"

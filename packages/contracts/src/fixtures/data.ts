@@ -266,7 +266,7 @@ export const NOTE_MESTO_DETAIL: z.input<typeof NoteDetailSchema> = {
       glossEn: 'town, city',
       variants: [
         {
-          sentenceId: 'tat-482913',
+          sentenceId: 'tat-8214994',
           sentenceSk: IDEM_DO_MESTA,
           sentenceEn: 'I am going to town.',
           blank: spanOf(IDEM_DO_MESTA, 'mesta'),

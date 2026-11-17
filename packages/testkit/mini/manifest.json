@@ -1,0 +1,42 @@
+{
+  "version": "2026-11-17.1",
+  "builtAt": "2026-11-17T00:00:00.000Z",
+  "sources": [
+    {
+      "name": "SNK morphology database 2015-02-05",
+      "url": "https://korpus.sk/en/corpora-and-databases/databases/morphology-database/",
+      "checksum": "sha256:1367796465abb0262019fb2c112d33ed45584efd3e8fc989a93dbd4efb388753",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "name": "Tatoeba",
+      "url": "https://tatoeba.org/en/downloads",
+      "checksum": "sha256:f4d052420454de72c636a048b61212a0852e05416f8388baeb38c2da8a74117f",
+      "license": "CC BY 2.0 FR"
+    },
+    {
+      "name": "FrequencyWords sk 2018 full list (OpenSubtitles)",
+      "url": "https://github.com/hermitdave/FrequencyWords",
+      "checksum": "sha256:83e57bd891ba644afee82cddcb8cdc209df2b69bdb6c6771a83907f490348632",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "name": "Mini dataset, hand written (F9)",
+      "url": "",
+      "checksum": "",
+      "license": "CC BY 4.0"
+    }
+  ],
+  "counts": {
+    "lemmas": 72,
+    "forms": 601,
+    "senses": 87,
+    "sentences": 40,
+    "triggers": 22,
+    "patterns": 16,
+    "lessons": 9,
+    "exercises": 89,
+    "scenarios": 2,
+    "library": 1
+  }
+}

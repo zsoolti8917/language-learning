@@ -613,7 +613,7 @@ export const examples: ExampleTable = {
             })),
             sentences: [
               {
-                id: 'tat-482913',
+                id: 'tat-8214994',
                 textSk: IDEM_DO_MESTA,
                 textEn: 'I am going to town.',
                 form: 'mesta',
