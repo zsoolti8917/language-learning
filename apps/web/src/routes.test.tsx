@@ -74,9 +74,11 @@ describe('route table', () => {
     },
   );
 
-  it('shows route params to the screen', async () => {
-    renderRoute('/lemma/20');
-    expect(await screen.findByText('lemmaId: 20')).toBeInTheDocument();
+  it('passes route params to the screen', async () => {
+    // The placeholder printed its params; M5 replaced it, so read them from the router.
+    const { router } = renderRoute('/lemma/20');
+    expect(await screen.findByRole('heading', { name: en.screens.lemma })).toBeInTheDocument();
+    expect(router.state.matches.at(-1)?.params).toEqual({ lemmaId: '20' });
   });
 
   it('switches tabs from the tab bar', async () => {
