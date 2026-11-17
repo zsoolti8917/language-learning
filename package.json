@@ -1,0 +1,33 @@
+{
+  "name": "slovak-app",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.21.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @app/api run dev",
+    "check": "pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run deps:check",
+    "typecheck": "tsc -b",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "test": "node scripts/test.mjs",
+    "deps:check": "node scripts/check-deps.mjs",
+    "e2e": "pnpm --filter @app/e2e run e2e",
+    "db:generate": "pnpm --filter @app/db run db:generate",
+    "db:migrate": "pnpm --filter @app/db run db:migrate",
+    "pipeline": "pnpm --filter @app/pipeline run pipeline",
+    "openapi": "pnpm --filter @app/contracts run openapi",
+    "seed:demo": "pnpm --filter @app/e2e run seed:demo",
+    "smoke": "node scripts/pending.mjs F8 smoke"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "fast-check": "catalog:",
+    "tsx": "catalog:"
+  }
+}

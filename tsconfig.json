@@ -1,0 +1,38 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/api"
+    },
+    {
+      "path": "./apps/web"
+    },
+    {
+      "path": "./packages/ai"
+    },
+    {
+      "path": "./packages/contracts"
+    },
+    {
+      "path": "./packages/db"
+    },
+    {
+      "path": "./packages/ling"
+    },
+    {
+      "path": "./packages/srs"
+    },
+    {
+      "path": "./packages/testkit"
+    },
+    {
+      "path": "./tools/evals"
+    },
+    {
+      "path": "./tools/pipeline"
+    },
+    {
+      "path": "./e2e"
+    }
+  ]
+}

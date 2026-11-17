@@ -1,0 +1,19 @@
+{
+  "name": "@app/ling",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@app/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "fast-check": "catalog:"
+  }
+}

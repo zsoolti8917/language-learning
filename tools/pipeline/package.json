@@ -1,0 +1,27 @@
+{
+  "name": "@app/pipeline",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "pipeline": "node ../../scripts/pending.mjs C1 pipeline"
+  },
+  "dependencies": {
+    "@app/contracts": "workspace:*",
+    "@app/db": "workspace:*",
+    "@app/ling": "workspace:*",
+    "@app/ai": "workspace:*",
+    "@anthropic-ai/sdk": "catalog:",
+    "zod": "catalog:",
+    "yaml": "catalog:"
+  },
+  "devDependencies": {
+    "@app/testkit": "workspace:*",
+    "tsx": "catalog:"
+  }
+}
