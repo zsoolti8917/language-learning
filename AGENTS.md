@@ -34,6 +34,7 @@ If the specification and the repository disagree, follow the repository and reco
 | `pnpm test --filter <package>` | Tests of one package, e.g. `pnpm test --filter ling` |
 | `pnpm format` | Biome format and safe fixes |
 | `pnpm dev` | API and client in local mode (F5, F6) |
+| `pnpm run pipeline <stage>` | One content pipeline stage. Use `run`: pnpm 12 has a built-in `pipeline` command that hides the bare form. |
 
 ## Finish
 - Branch `wp/<id>-<slug>`, one pull request, CI green.
