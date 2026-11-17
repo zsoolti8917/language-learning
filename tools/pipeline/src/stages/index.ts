@@ -9,6 +9,7 @@ import { libraryStage } from './library';
 import { loadStage } from './load';
 import { morphStage } from './morph';
 import { scenariosStage } from './scenarios';
+import { sentencesStage } from './sentences';
 import { validateStage } from './validate';
 
 export const STAGES: readonly Stage[] = [
@@ -16,7 +17,8 @@ export const STAGES: readonly Stage[] = [
   morphStage,
   freqStage,
   dictStage,
-  // C3: sentences · C4: triggers, lessons, exercises
+  sentencesStage,
+  // C4: triggers, lessons, exercises
   scenariosStage,
   libraryStage,
   validateStage,

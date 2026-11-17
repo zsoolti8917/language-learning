@@ -53,6 +53,7 @@ describe('validate on a set folder', () => {
       registry: await miniRegistry(),
       complete: true,
     });
+    // MINI_STAGES stops at dict, so sentences.coverage is not checked here (see sentences.test.ts).
     expect(Object.keys(full.issueCounts)).toEqual(['morph.prep-cases']);
   });
 
