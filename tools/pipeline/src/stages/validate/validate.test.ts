@@ -45,7 +45,8 @@ describe('validate on a set folder', () => {
       registry: await miniRegistry(),
       complete: true,
     });
-    expect(Object.keys(full.issueCounts)).toEqual(['morph.prep-cases']);
+    // Nor do most mini lemmas have two example sentences: also an issue only in a full build.
+    expect(Object.keys(full.issueCounts)).toEqual(['morph.prep-cases', 'sentences.coverage']);
   });
 
   it('reports broken links, duplicates, bad tags and registry mismatches', async () => {

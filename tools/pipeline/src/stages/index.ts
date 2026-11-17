@@ -7,6 +7,7 @@ import { fetchStage } from './fetch';
 import { freqStage } from './freq';
 import { loadStage } from './load';
 import { morphStage } from './morph';
+import { sentencesStage } from './sentences';
 import { validateStage } from './validate';
 
 export const STAGES: readonly Stage[] = [
@@ -14,7 +15,8 @@ export const STAGES: readonly Stage[] = [
   morphStage,
   freqStage,
   dictStage,
-  // C3: sentences · C4: triggers, lessons, exercises · C5: scenarios, library
+  sentencesStage,
+  // C4: triggers, lessons, exercises · C5: scenarios, library
   validateStage,
   loadStage,
 ];
