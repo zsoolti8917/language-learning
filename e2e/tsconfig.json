@@ -6,7 +6,7 @@
     "tsBuildInfoFile": "dist/.tsbuildinfo",
     "lib": ["ES2024", "DOM", "DOM.Iterable"]
   },
-  "include": ["src", "flows", "playwright.config.ts"],
+  "include": ["src", "flows", "offline", "playwright.config.ts"],
   "references": [
     {
       "path": "../packages/contracts"

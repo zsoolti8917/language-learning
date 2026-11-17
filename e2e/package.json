@@ -9,6 +9,7 @@
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "e2e": "node scripts/run.mjs",
+    "e2e:offline": "E2E_CONFIG=offline/playwright.config.ts node scripts/run.mjs",
     "seed:demo": "pnpm --filter @app/api exec tsx src/testing/demo-seed.ts"
   },
   "dependencies": {},
