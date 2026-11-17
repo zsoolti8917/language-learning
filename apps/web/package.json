@@ -10,8 +10,14 @@
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "dev": "vite",
+    "dev:mock": "vite --mode mock",
     "build": "vite build",
+    "build:mock": "vite build --mode mock --outDir dist-mock",
     "preview": "vite preview",
+    "size": "node scripts/size-budget.mjs",
+    "gen:endpoints": "tsx scripts/endpoints-gen.ts",
+    "icons": "node scripts/icons.mjs",
+    "e2e": "playwright test -c e2e-app/playwright.config.ts",
     "test:ui": "playwright test -c e2e-ui/playwright.config.ts"
   },
   "dependencies": {
