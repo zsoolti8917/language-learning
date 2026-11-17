@@ -3,10 +3,13 @@
 // The order also decides how validate assembles the parts of the set.
 import type { Stage } from '../lib/runner';
 import { dictStage } from './dict';
+import { exercisesStage } from './exercises';
 import { fetchStage } from './fetch';
 import { freqStage } from './freq';
+import { lessonsStage } from './lessons';
 import { loadStage } from './load';
 import { morphStage } from './morph';
+import { triggersStage } from './triggers';
 import { validateStage } from './validate';
 
 export const STAGES: readonly Stage[] = [
@@ -14,7 +17,11 @@ export const STAGES: readonly Stage[] = [
   morphStage,
   freqStage,
   dictStage,
-  // C3: sentences · C4: triggers, lessons, exercises · C5: scenarios, library
+  // C3: sentences
+  triggersStage,
+  lessonsStage,
+  exercisesStage,
+  // C5: scenarios, library
   validateStage,
   loadStage,
 ];

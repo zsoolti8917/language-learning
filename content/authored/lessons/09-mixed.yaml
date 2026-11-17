@@ -1,0 +1,37 @@
+# Lesson 9 of the declension course (stage `lessons`, package C4). `buckets: all` means
+# every bucket of lessons 1 to 8; the exercises stage gives it a share of each bucket's
+# exercises.
+id: mixed
+ord: 9
+titleEn: All cases together
+titleSk: Všetky pády spolu
+prerequisites: [gen-pl]
+buckets: all
+triggerIds:
+  - prep-na-acc
+  - prep-na-loc
+  - prep-v-acc
+  - prep-v-loc
+  - prep-za-acc
+  - prep-za-ins
+  - prep-pred-acc
+  - prep-pred-ins
+  - prep-o-acc
+  - prep-o-loc
+  - prep-po-acc
+  - prep-po-loc
+summaryMd: Every case at once, with the prepositions that take two cases. *Idem na poštu. Som na pošte.*
+explain:
+  md: |-
+    Now mix everything. For each gap ask two questions: **which word decides the case**, and **what does the sentence mean**?
+
+    - The preposition or the verb usually decides: *do* takes the genitive, *k* the dative, *s* the instrumental, *pomáhať* the dative.
+    - Some prepositions take two cases, and the meaning decides. *Na*, *v*, *pod*, *nad*, *pred* and *za* take the accusative for **where to**, and the locative or the instrumental for **where**: *idem na poštu*, but *som na pošte*.
+    - After a number, check the number: *dva domy*, but *päť domov*.
+  examples:
+    - sk: Idem na [poštu].
+      en: I am going to the post office.
+    - sk: Som na [pošte].
+      en: I am at the post office.
+    - sk: Dám kľúč pod [rohožku].
+      en: I will put the key under the mat.

@@ -1,0 +1,47 @@
+# Quantity words and containers (stage `triggers`, package C4). They take the genitive:
+# the plural for things you count, the singular for things you do not.
+kind: quantifier
+triggers:
+  - id: quant-vela
+    lemma: veľa
+    case: gen
+    meaningEn: a lot of, many, much
+    noteEn: Genitive plural for things you count, veľa ľudí; genitive singular for the rest, veľa práce.
+    exampleSk: Mám veľa práce.
+    exampleEn: I have a lot of work.
+  - id: quant-malo
+    lemma: málo
+    case: gen
+    meaningEn: little, few
+    exampleSk: Mám málo času.
+    exampleEn: I have little time.
+  - id: quant-niekolko
+    lemma: niekoľko
+    case: gen
+    meaningEn: several, a few
+    exampleSk: Ostali sme niekoľko dní.
+    exampleEn: We stayed a few days.
+  - id: quant-trochu
+    lemma: trochu
+    case: gen
+    meaningEn: a little, some
+    exampleSk: Daj mi trochu vody.
+    exampleEn: Give me a little water.
+  - id: quant-dost
+    lemma: dosť
+    case: gen
+    meaningEn: enough
+    exampleSk: Máme dosť chleba.
+    exampleEn: We have enough bread.
+  - id: quant-viac
+    lemma: viac
+    case: gen
+    meaningEn: more
+    exampleSk: Potrebujem viac času.
+    exampleEn: I need more time.
+  - id: quant-menej
+    lemma: menej
+    case: gen
+    meaningEn: less, fewer
+    exampleSk: Jem menej mäsa.
+    exampleEn: I eat less meat.

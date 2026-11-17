@@ -1,0 +1,749 @@
+# Common verbs and the case of their object (stage `triggers`, package C4).
+# A reflexive verb is listed under its base lemma, as the morphology has it: báť sa → báť.
+# A verb with two common objects has one row per case and a contrast group (volať).
+kind: verb
+triggers:
+  # --- Accusative: the direct object --------------------------------------------------------
+  - id: verb-vidiet
+    lemma: vidieť
+    case: acc
+    meaningEn: to see
+    noteEn: What you see is in the accusative.
+    exampleSk: Vidím ženu.
+    exampleEn: I see a woman.
+  - id: verb-mat
+    lemma: mať
+    case: acc
+    meaningEn: to have
+    exampleSk: Mám sestru.
+    exampleEn: I have a sister.
+  - id: verb-chciet
+    lemma: chcieť
+    case: acc
+    meaningEn: to want
+    exampleSk: Chcem kávu.
+    exampleEn: I want a coffee.
+  - id: verb-potrebovat
+    lemma: potrebovať
+    case: acc
+    meaningEn: to need
+    exampleSk: Potrebujem lekára.
+    exampleEn: I need a doctor.
+  - id: verb-hladat
+    lemma: hľadať
+    case: acc
+    meaningEn: to look for
+    exampleSk: Hľadám prácu.
+    exampleEn: I am looking for a job.
+  - id: verb-poznat
+    lemma: poznať
+    case: acc
+    meaningEn: to know (a person or a place)
+    exampleSk: Poznáš môjho brata?
+    exampleEn: Do you know my brother?
+  - id: verb-kupit
+    lemma: kúpiť
+    case: acc
+    meaningEn: to buy
+    exampleSk: Kúpim chlieb.
+    exampleEn: I will buy bread.
+  - id: verb-pit
+    lemma: piť
+    case: acc
+    meaningEn: to drink
+    exampleSk: Pijem vodu.
+    exampleEn: I am drinking water.
+  - id: verb-jest
+    lemma: jesť
+    case: acc
+    meaningEn: to eat
+    exampleSk: Jem polievku.
+    exampleEn: I am eating soup.
+  - id: verb-robit
+    lemma: robiť
+    case: acc
+    meaningEn: to do, to make
+    exampleSk: Robím večeru.
+    exampleEn: I am making dinner.
+  - id: verb-citat
+    lemma: čítať
+    case: acc
+    meaningEn: to read
+    exampleSk: Čítam knihu.
+    exampleEn: I am reading a book.
+  - id: verb-pisat
+    lemma: písať
+    case: acc
+    meaningEn: to write
+    exampleSk: Píšem list.
+    exampleEn: I am writing a letter.
+  - id: verb-pocut
+    lemma: počuť
+    case: acc
+    meaningEn: to hear
+    exampleSk: Počujem hudbu.
+    exampleEn: I hear music.
+  - id: verb-milovat
+    lemma: milovať
+    case: acc
+    meaningEn: to love
+    exampleSk: Milujem mamu.
+    exampleEn: I love my mum.
+  - id: verb-navstivit
+    lemma: navštíviť
+    case: acc
+    meaningEn: to visit
+    exampleSk: Zajtra navštívim babku.
+    exampleEn: Tomorrow I will visit my grandma.
+  - id: verb-stretnut
+    lemma: stretnúť
+    case: acc
+    meaningEn: to meet
+    exampleSk: Stretol som kamaráta.
+    exampleEn: I met a friend.
+  - id: verb-dostat
+    lemma: dostať
+    case: acc
+    meaningEn: to get, to receive
+    exampleSk: Dostal som list.
+    exampleEn: I got a letter.
+  - id: verb-urobit
+    lemma: urobiť
+    case: acc
+    meaningEn: to do, to make (once)
+    exampleSk: Urobím úlohu.
+    exampleEn: I will do the homework.
+  - id: verb-najst
+    lemma: nájsť
+    case: acc
+    meaningEn: to find
+    exampleSk: Našiel som kľúč.
+    exampleEn: I found the key.
+  - id: verb-predat
+    lemma: predať
+    case: acc
+    meaningEn: to sell
+    exampleSk: Predal som auto.
+    exampleEn: I sold the car.
+  - id: verb-otvorit
+    lemma: otvoriť
+    case: acc
+    meaningEn: to open
+    exampleSk: Otvorím okno.
+    exampleEn: I will open the window.
+  - id: verb-zavriet
+    lemma: zavrieť
+    case: acc
+    meaningEn: to close
+    exampleSk: Zavriem dvere.
+    exampleEn: I will close the door.
+  - id: verb-nosit
+    lemma: nosiť
+    case: acc
+    meaningEn: to carry, to wear
+    exampleSk: Nosím tašku.
+    exampleEn: I carry a bag.
+  - id: verb-studovat
+    lemma: študovať
+    case: acc
+    meaningEn: to study
+    exampleSk: Študujem medicínu.
+    exampleEn: I study medicine.
+  - id: verb-ucit
+    lemma: učiť
+    case: acc
+    meaningEn: to teach; učiť sa, to learn
+    noteEn: Učiť sa takes the accusative too, učím sa slovenčinu.
+    exampleSk: Učím sa slovenčinu.
+    exampleEn: I am learning Slovak.
+  - id: verb-volat-acc
+    lemma: volať
+    case: acc
+    meaningEn: to call (for) someone
+    noteEn: Volať + accusative calls someone over or summons them. Phoning someone takes the dative.
+    exampleSk: Volám políciu.
+    exampleEn: I am calling the police.
+    contrastGroup: volat
+  - id: verb-pozvat
+    lemma: pozvať
+    case: acc
+    meaningEn: to invite
+    exampleSk: Pozval som kolegu na obed.
+    exampleEn: I invited a colleague to lunch.
+  - id: verb-pocuvat
+    lemma: počúvať
+    case: acc
+    meaningEn: to listen to
+    exampleSk: Počúvam rádio.
+    exampleEn: I am listening to the radio.
+  - id: verb-pozerat
+    lemma: pozerať
+    case: acc
+    meaningEn: to watch
+    exampleSk: Pozerám film.
+    exampleEn: I am watching a film.
+  - id: verb-platit
+    lemma: platiť
+    case: acc
+    meaningEn: to pay (for)
+    exampleSk: Platím nájom.
+    exampleEn: I am paying the rent.
+  - id: verb-objednat
+    lemma: objednať
+    case: acc
+    meaningEn: to order
+    exampleSk: Objednám si pizzu.
+    exampleEn: I will order a pizza.
+  - id: verb-varit
+    lemma: variť
+    case: acc
+    meaningEn: to cook
+    exampleSk: Varím obed.
+    exampleEn: I am cooking lunch.
+  - id: verb-umyvat
+    lemma: umývať
+    case: acc
+    meaningEn: to wash
+    exampleSk: Umývam auto.
+    exampleEn: I am washing the car.
+  - id: verb-prosit
+    lemma: prosiť
+    case: acc
+    meaningEn: to ask for, to please
+    exampleSk: Prosím si kávu.
+    exampleEn: A coffee, please.
+  - id: verb-zabudnut
+    lemma: zabudnúť
+    case: acc
+    meaningEn: to forget
+    exampleSk: Zabudol som kľúč.
+    exampleEn: I forgot the key.
+  - id: verb-opravit
+    lemma: opraviť
+    case: acc
+    meaningEn: to repair
+    exampleSk: Opravím bicykel.
+    exampleEn: I will repair the bike.
+  - id: verb-poslat
+    lemma: poslať
+    case: acc
+    meaningEn: to send
+    exampleSk: Pošlem správu.
+    exampleEn: I will send a message.
+  - id: verb-priniest
+    lemma: priniesť
+    case: acc
+    meaningEn: to bring
+    exampleSk: Prinesiem víno.
+    exampleEn: I will bring wine.
+  - id: verb-zobrat
+    lemma: zobrať
+    case: acc
+    meaningEn: to take
+    exampleSk: Zoberiem taxík.
+    exampleEn: I will take a taxi.
+  - id: verb-hrat
+    lemma: hrať
+    case: acc
+    meaningEn: to play
+    exampleSk: Hrám futbal.
+    exampleEn: I play football.
+  - id: verb-spoznat
+    lemma: spoznať
+    case: acc
+    meaningEn: to recognise, to get to know
+    exampleSk: Spoznal som suseda.
+    exampleEn: I recognised the neighbour.
+  - id: verb-cakat
+    lemma: čakať
+    case: acc
+    meaningEn: to expect; čakať na, to wait for
+    noteEn: Waiting for someone is čakať na with the accusative, čakám na autobus.
+    exampleSk: Čakám na autobus.
+    exampleEn: I am waiting for the bus.
+  - id: verb-obliect
+    lemma: obliecť
+    case: acc
+    meaningEn: to put on (clothes)
+    exampleSk: Oblečiem si kabát.
+    exampleEn: I will put on my coat.
+  - id: verb-pripravit
+    lemma: pripraviť
+    case: acc
+    meaningEn: to prepare
+    exampleSk: Pripravím večeru.
+    exampleEn: I will prepare dinner.
+  - id: verb-navrhnut
+    lemma: navrhnúť
+    case: acc
+    meaningEn: to suggest, to design
+    exampleSk: Navrhol som výlet.
+    exampleEn: I suggested a trip.
+  - id: verb-stratit
+    lemma: stratiť
+    case: acc
+    meaningEn: to lose
+    exampleSk: Stratil som peňaženku.
+    exampleEn: I lost my wallet.
+  - id: verb-nechat
+    lemma: nechať
+    case: acc
+    meaningEn: to leave (behind), to let
+    exampleSk: Nechal som tašku doma.
+    exampleEn: I left the bag at home.
+  - id: verb-pouzivat
+    lemma: používať
+    case: acc
+    meaningEn: to use
+    exampleSk: Používam počítač.
+    exampleEn: I use a computer.
+  - id: verb-vybrat
+    lemma: vybrať
+    case: acc
+    meaningEn: to choose, to take out
+    exampleSk: Vybral som darček.
+    exampleEn: I chose a present.
+  - id: verb-podporovat
+    lemma: podporovať
+    case: acc
+    meaningEn: to support
+    exampleSk: Podporujem rodinu.
+    exampleEn: I support my family.
+  # --- Dative: the person something is for ------------------------------------------------
+  - id: verb-pomahat
+    lemma: pomáhať
+    case: dat
+    meaningEn: to help (someone)
+    noteEn: The person you help is in the dative.
+    exampleSk: Pomáham bratovi.
+    exampleEn: I help my brother.
+  - id: verb-pomoct
+    lemma: pomôcť
+    case: dat
+    meaningEn: to help (once)
+    exampleSk: Pomôžem susedovi.
+    exampleEn: I will help the neighbour.
+  - id: verb-dakovat
+    lemma: ďakovať
+    case: dat
+    meaningEn: to thank
+    noteEn: The person you thank is in the dative, what for takes za with the accusative.
+    exampleSk: Ďakujem mame.
+    exampleEn: I thank my mum.
+  - id: verb-podakovat
+    lemma: poďakovať
+    case: dat
+    meaningEn: to thank (once)
+    exampleSk: Poďakoval som učiteľovi.
+    exampleEn: I thanked the teacher.
+  - id: verb-rozumiet
+    lemma: rozumieť
+    case: dat
+    meaningEn: to understand
+    noteEn: The person or thing you understand is in the dative.
+    exampleSk: Rozumiem učiteľke.
+    exampleEn: I understand the teacher.
+  - id: verb-verit
+    lemma: veriť
+    case: dat
+    meaningEn: to believe, to trust
+    exampleSk: Verím priateľovi.
+    exampleEn: I trust my friend.
+  - id: verb-doverovat
+    lemma: dôverovať
+    case: dat
+    meaningEn: to trust
+    exampleSk: Dôverujem lekárovi.
+    exampleEn: I trust the doctor.
+  - id: verb-volat-dat
+    lemma: volať
+    case: dat
+    meaningEn: to phone someone
+    noteEn: Phoning someone takes the dative, volám mame. Calling someone over takes the accusative.
+    exampleSk: Volám mame.
+    exampleEn: I am phoning my mum.
+    contrastGroup: volat
+  - id: verb-telefonovat
+    lemma: telefonovať
+    case: dat
+    meaningEn: to phone
+    exampleSk: Telefonujem sestre.
+    exampleEn: I am phoning my sister.
+  - id: verb-zavolat
+    lemma: zavolať
+    case: dat
+    meaningEn: to give someone a call
+    exampleSk: Zavolám babke.
+    exampleEn: I will call my grandma.
+  - id: verb-pacit
+    lemma: páčiť
+    case: dat
+    meaningEn: to please (páčiť sa, to like)
+    noteEn: The person who likes something is in the dative, the thing they like is the subject.
+    exampleSk: Ten film sa páči bratovi.
+    exampleEn: My brother likes that film.
+  - id: verb-patrit
+    lemma: patriť
+    case: dat
+    meaningEn: to belong to
+    exampleSk: Ten dom patrí susedovi.
+    exampleEn: That house belongs to the neighbour.
+  - id: verb-radit
+    lemma: radiť
+    case: dat
+    meaningEn: to advise
+    exampleSk: Radím kamarátke.
+    exampleEn: I am advising my friend.
+  - id: verb-poradit
+    lemma: poradiť
+    case: dat
+    meaningEn: to advise (once), to give advice
+    exampleSk: Poradil som kolegovi.
+    exampleEn: I gave my colleague some advice.
+  - id: verb-odpovedat
+    lemma: odpovedať
+    case: dat
+    meaningEn: to answer, to reply to
+    exampleSk: Odpovedám učiteľovi.
+    exampleEn: I am answering the teacher.
+  - id: verb-gratulovat
+    lemma: gratulovať
+    case: dat
+    meaningEn: to congratulate
+    exampleSk: Gratulujem sestre.
+    exampleEn: I congratulate my sister.
+  - id: verb-blahozelat
+    lemma: blahoželať
+    case: dat
+    meaningEn: to congratulate, to wish well
+    exampleSk: Blahoželám kolegovi.
+    exampleEn: I congratulate my colleague.
+  - id: verb-chybat
+    lemma: chýbať
+    case: dat
+    meaningEn: to be missed by (someone misses)
+    noteEn: The person who misses something is in the dative, chýbaš mi, I miss you.
+    exampleSk: Chýbaš mame.
+    exampleEn: Mum misses you.
+  - id: verb-ublizit
+    lemma: ublížiť
+    case: dat
+    meaningEn: to hurt, to harm
+    exampleSk: Nechcem ublížiť psovi.
+    exampleEn: I do not want to hurt the dog.
+  - id: verb-skodit
+    lemma: škodiť
+    case: dat
+    meaningEn: to harm, to be bad for
+    exampleSk: Fajčenie škodí zdraviu.
+    exampleEn: Smoking is bad for your health.
+  - id: verb-dat
+    lemma: dať
+    case: dat
+    meaningEn: to give (to someone)
+    noteEn: The person who gets something is in the dative, the thing given in the accusative.
+    exampleSk: Dám mame kvety.
+    exampleEn: I will give my mum flowers.
+  - id: verb-povedat
+    lemma: povedať
+    case: dat
+    meaningEn: to tell (someone)
+    exampleSk: Poviem to otcovi.
+    exampleEn: I will tell my father.
+  - id: verb-ukazat
+    lemma: ukázať
+    case: dat
+    meaningEn: to show (someone)
+    exampleSk: Ukážem kamarátovi mesto.
+    exampleEn: I will show my friend the town.
+  - id: verb-venovat
+    lemma: venovať
+    case: dat
+    meaningEn: to give, to dedicate; venovať sa, to devote oneself to
+    exampleSk: Venujem sa rodine.
+    exampleEn: I devote my time to my family.
+  - id: verb-vyhovovat
+    lemma: vyhovovať
+    case: dat
+    meaningEn: to suit
+    exampleSk: Ten termín vyhovuje šéfovi.
+    exampleEn: That date suits the boss.
+  - id: verb-smiat
+    lemma: smiať
+    case: dat
+    meaningEn: to laugh at (smiať sa)
+    exampleSk: Smejeme sa vtipu.
+    exampleEn: We are laughing at the joke.
+  - id: verb-predstavit
+    lemma: predstaviť
+    case: dat
+    meaningEn: to introduce (to someone)
+    exampleSk: Predstavím priateľa rodičom.
+    exampleEn: I will introduce my boyfriend to my parents.
+  - id: verb-pozicat
+    lemma: požičať
+    case: dat
+    meaningEn: to lend
+    exampleSk: Požičiam bratovi auto.
+    exampleEn: I will lend my brother the car.
+  - id: verb-slubit
+    lemma: sľúbiť
+    case: dat
+    meaningEn: to promise (someone)
+    exampleSk: Sľúbil som to mame.
+    exampleEn: I promised my mum.
+  - id: verb-zavidiet
+    lemma: závidieť
+    case: dat
+    meaningEn: to envy
+    exampleSk: Závidím susedovi.
+    exampleEn: I envy the neighbour.
+  - id: verb-vyhnut
+    lemma: vyhnúť
+    case: dat
+    meaningEn: to avoid (vyhnúť sa)
+    exampleSk: Vyhnem sa problému.
+    exampleEn: I will avoid the problem.
+  - id: verb-podobat
+    lemma: podobať
+    case: dat
+    meaningEn: to resemble (podobať sa)
+    exampleSk: Podobá sa otcovi.
+    exampleEn: He looks like his father.
+  - id: verb-vysvetlit
+    lemma: vysvetliť
+    case: dat
+    meaningEn: to explain (to someone)
+    exampleSk: Vysvetlím to študentovi.
+    exampleEn: I will explain it to the student.
+  # --- Genitive -------------------------------------------------------------------------------
+  - id: verb-bat
+    lemma: báť
+    case: gen
+    meaningEn: to be afraid of (báť sa)
+    noteEn: What you fear is in the genitive.
+    exampleSk: Bojím sa psa.
+    exampleEn: I am afraid of the dog.
+  - id: verb-obavat
+    lemma: obávať
+    case: gen
+    meaningEn: to fear, to worry about (obávať sa)
+    exampleSk: Obávam sa búrky.
+    exampleEn: I am worried about the storm.
+  - id: verb-dotknut
+    lemma: dotknúť
+    case: gen
+    meaningEn: to touch (dotknúť sa)
+    exampleSk: Dotkol sa stola.
+    exampleEn: He touched the table.
+  - id: verb-zucastnit
+    lemma: zúčastniť
+    case: gen
+    meaningEn: to take part in (zúčastniť sa)
+    exampleSk: Zúčastnil som sa súťaže.
+    exampleEn: I took part in the competition.
+  - id: verb-tykat
+    lemma: týkať
+    case: gen
+    meaningEn: to concern (týkať sa)
+    exampleSk: Tá otázka sa týka školy.
+    exampleEn: That question concerns the school.
+  - id: verb-vzdat
+    lemma: vzdať
+    case: gen
+    meaningEn: to give up (vzdať sa)
+    exampleSk: Vzdal sa cigariet.
+    exampleEn: He gave up cigarettes.
+  - id: verb-zbavit
+    lemma: zbaviť
+    case: gen
+    meaningEn: to get rid of (zbaviť sa)
+    exampleSk: Zbavil som sa starého auta.
+    exampleEn: I got rid of the old car.
+  - id: verb-napit
+    lemma: napiť
+    case: gen
+    meaningEn: to have a drink of (napiť sa)
+    exampleSk: Napijem sa vody.
+    exampleEn: I will have a drink of water.
+  - id: verb-dozit
+    lemma: dožiť
+    case: gen
+    meaningEn: to live to see (dožiť sa)
+    exampleSk: Dožil sa sto rokov.
+    exampleEn: He lived to be a hundred.
+  - id: verb-chytit
+    lemma: chytiť
+    case: gen
+    meaningEn: to take hold of (chytiť sa)
+    noteEn: Without sa, chytiť takes the accusative, chytiť loptu.
+    exampleSk: Chyť sa zábradlia.
+    exampleEn: Hold on to the railing.
+  - id: verb-drzat
+    lemma: držať
+    case: gen
+    meaningEn: to hold on to, to stick to (držať sa)
+    noteEn: Without sa, držať takes the accusative, držím tašku.
+    exampleSk: Držím sa plánu.
+    exampleEn: I am sticking to the plan.
+  - id: verb-spytat
+    lemma: spýtať
+    case: gen
+    meaningEn: to ask (someone) (spýtať sa)
+    noteEn: The person you ask is in the genitive.
+    exampleSk: Spýtam sa učiteľa.
+    exampleEn: I will ask the teacher.
+  - id: verb-opytat
+    lemma: opýtať
+    case: gen
+    meaningEn: to ask (someone) (opýtať sa)
+    exampleSk: Opýtam sa lekára.
+    exampleEn: I will ask the doctor.
+  - id: verb-pytat
+    lemma: pýtať
+    case: gen
+    meaningEn: to ask (someone) (pýtať sa)
+    exampleSk: Pýtam sa mamy.
+    exampleEn: I am asking my mum.
+  - id: verb-zlaknut
+    lemma: zľaknúť
+    case: gen
+    meaningEn: to get a fright from (zľaknúť sa)
+    exampleSk: Zľakol sa psa.
+    exampleEn: He got a fright from the dog.
+  - id: verb-dockat
+    lemma: dočkať
+    case: gen
+    meaningEn: to live to see, to get at last (dočkať sa)
+    exampleSk: Dočkali sme sa leta.
+    exampleEn: Summer has come at last.
+  - id: verb-nabrat
+    lemma: nabrať
+    case: gen
+    meaningEn: to take some of
+    exampleSk: Naber si polievky.
+    exampleEn: Help yourself to some soup.
+  # --- Instrumental ----------------------------------------------------------------------
+  - id: verb-stat
+    lemma: stať
+    case: ins
+    meaningEn: to become (stať sa)
+    noteEn: What you become is in the instrumental.
+    exampleSk: Stal sa lekárom.
+    exampleEn: He became a doctor.
+  - id: verb-byt-ins
+    lemma: byť
+    case: ins
+    meaningEn: to be (a job or a role)
+    noteEn: A job or a role after byť can be in the instrumental, som učiteľom, or in the nominative, som učiteľ.
+    exampleSk: Otec je lekárom.
+    exampleEn: My father is a doctor.
+    contrastGroup: byt
+  - id: verb-zaoberat
+    lemma: zaoberať
+    case: ins
+    meaningEn: to deal with (zaoberať sa)
+    exampleSk: Zaoberám sa históriou.
+    exampleEn: I deal with history.
+  - id: verb-cestovat
+    lemma: cestovať
+    case: ins
+    meaningEn: to travel (by)
+    noteEn: The means of transport is in the instrumental, cestujem vlakom.
+    exampleSk: Cestujem vlakom.
+    exampleEn: I travel by train.
+  - id: verb-ist
+    lemma: ísť
+    case: ins
+    meaningEn: to go (by)
+    noteEn: The means of transport is in the instrumental, idem autobusom.
+    exampleSk: Idem autobusom.
+    exampleEn: I am going by bus.
+  - id: verb-pohybovat
+    lemma: pohybovať
+    case: ins
+    meaningEn: to move (something)
+    exampleSk: Pohybujem rukou.
+    exampleEn: I am moving my hand.
+  - id: verb-hybat
+    lemma: hýbať
+    case: ins
+    meaningEn: to move (a part of the body)
+    exampleSk: Hýbem nohou.
+    exampleEn: I am moving my leg.
+  - id: verb-mavat
+    lemma: mávať
+    case: ins
+    meaningEn: to wave
+    exampleSk: Máva rukou.
+    exampleEn: He is waving his hand.
+  - id: verb-krutit
+    lemma: krútiť
+    case: ins
+    meaningEn: to shake, to turn
+    exampleSk: Krúti hlavou.
+    exampleEn: He is shaking his head.
+  - id: verb-riadit
+    lemma: riadiť
+    case: ins
+    meaningEn: to follow (riadiť sa)
+    exampleSk: Riadim sa radou lekára.
+    exampleEn: I follow the doctor's advice.
+  - id: verb-pysit
+    lemma: pýšiť
+    case: ins
+    meaningEn: to be proud of (pýšiť sa)
+    exampleSk: Pýši sa synom.
+    exampleEn: She is proud of her son.
+  - id: verb-chvalit
+    lemma: chváliť
+    case: ins
+    meaningEn: to boast about (chváliť sa)
+    noteEn: Without sa, chváliť takes the accusative, chválim žiaka.
+    exampleSk: Chváli sa autom.
+    exampleEn: He is boasting about his car.
+  - id: verb-trpiet
+    lemma: trpieť
+    case: ins
+    meaningEn: to suffer from
+    exampleSk: Trpí migrénou.
+    exampleEn: She suffers from migraines.
+  - id: verb-vladnut
+    lemma: vládnuť
+    case: ins
+    meaningEn: to rule, to govern
+    exampleSk: Kráľ vládne krajinou.
+    exampleEn: The king rules the country.
+  - id: verb-hodit
+    lemma: hodiť
+    case: ins
+    meaningEn: to throw (something)
+    exampleSk: Hodil kameňom.
+    exampleEn: He threw a stone.
+  - id: verb-kyvat
+    lemma: kývať
+    case: ins
+    meaningEn: to nod, to wave
+    exampleSk: Kýva hlavou.
+    exampleEn: He is nodding.
+  - id: verb-vonat
+    lemma: voňať
+    case: ins
+    meaningEn: to smell of
+    exampleSk: Kuchyňa vonia kávou.
+    exampleEn: The kitchen smells of coffee.
+  - id: verb-zostat
+    lemma: zostať
+    case: ins
+    meaningEn: to stay, to remain (a role)
+    exampleSk: Zostali sme priateľmi.
+    exampleEn: We stayed friends.
+  # --- Nominative ---------------------------------------------------------------------------
+  - id: verb-byt-nom
+    lemma: byť
+    case: nom
+    meaningEn: to be
+    noteEn: The subject is in the nominative, and so is a noun after to je and to sú.
+    exampleSk: To sú moji rodičia.
+    exampleEn: These are my parents.
+    contrastGroup: byt

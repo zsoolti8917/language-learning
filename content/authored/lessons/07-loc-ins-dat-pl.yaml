@@ -1,0 +1,44 @@
+# Lesson 7 of the declension course (stage `lessons`, package C4).
+id: loc-ins-dat-pl
+ord: 7
+titleEn: Locative, instrumental and dative plural
+titleSk: Lokál, inštrumentál a datív množného čísla
+number: pl
+prerequisites: [nom-acc-pl]
+buckets:
+  - loc.pl.m_inan
+  - loc.pl.f
+  - loc.pl.n
+  - loc.pl.m_anim
+  - ins.pl.m_anim
+  - ins.pl.f
+  - ins.pl.m_inan
+  - ins.pl.n
+  - dat.pl.m_anim
+  - dat.pl.f
+  - dat.pl.n
+  - dat.pl.m_inan
+triggerIds:
+  - prep-v-loc
+  - prep-na-loc
+  - prep-o-loc
+  - prep-s-ins
+  - prep-medzi-ins
+  - prep-k
+  - verb-pomahat
+  - verb-dakovat
+summaryMd: Three plural cases with regular endings. *v mestách, s kamarátmi, k susedom.*
+explain:
+  md: |-
+    These three plural cases are the most regular in Slovak. Learn the endings by gender family.
+
+    - **Locative**: masculine *-och* (*v obchodoch*, *o bratoch*), feminine and neuter *-ách*, *-iach* (*v školách*, *na uliciach*, *v mestách*).
+    - **Instrumental**: masculine *-mi* or *-ami* (*s bratmi*, *s kolegami*), feminine and neuter *-ami*, *-iami* (*so ženami*, *s autami*, *s miestnosťami*).
+    - **Dative**: masculine *-om* (*bratom*), feminine and neuter *-ám*, *-iam* (*ženám*, *mestám*, *uliciam*).
+  examples:
+    - sk: Bývame v [mestách].
+      en: We live in towns.
+    - sk: Idem von s [kamarátmi].
+      en: I am going out with friends.
+    - sk: Pomáham [susedom].
+      en: I help the neighbours.
