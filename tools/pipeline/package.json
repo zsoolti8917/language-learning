@@ -9,7 +9,7 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "pipeline": "node ../../scripts/pending.mjs C1 pipeline"
+    "pipeline": "tsx src/cli.ts"
   },
   "dependencies": {
     "@app/contracts": "workspace:*",
