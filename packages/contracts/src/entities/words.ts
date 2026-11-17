@@ -12,6 +12,7 @@ import {
 } from '../common';
 import {
   AspectSchema,
+  CaseSchema,
   GenderSchema,
   LemmaStatusSchema,
   PosSchema,
@@ -27,6 +28,8 @@ export const LemmaFlagsSchema = z.object({
   indeclinable: z.boolean().optional(),
   /** Set instead of deleting a lemma that a card may point at. */
   retired: z.boolean().optional(),
+  /** Prepositions only: the cases the preposition governs, from the morphology data. */
+  cases: z.array(CaseSchema).optional(),
 });
 export type LemmaFlags = z.infer<typeof LemmaFlagsSchema>;
 
