@@ -18,10 +18,8 @@ import {
   TUTOR_STREAM_EXAMPLE,
   type TutorStreamEvent,
 } from '@app/contracts';
-import { type HttpHandler, HttpResponse, http } from 'msw';
-import { ENDPOINT_META } from '../../lib/api/endpoints.gen';
-import { env } from '../../lib/env';
-import { sseResponse } from '../../mocks/handlers';
+import type { HttpHandler } from 'msw';
+import { mockEndpoint, sseResponse } from '../../mocks/endpoint';
 
 export const MOCK_IDS = {
   errorKamarat: '0193a1b2-c3d4-7e5f-8a6b-00000000e001',
@@ -166,14 +164,6 @@ export function scriptedTurn(clientId: string, content: string): TutorStreamEven
   );
 }
 
-// src/mocks/handlers.ts loads this file while it is still loading itself (an eager glob), so
-// nothing from it may run at module load here: `mockEndpoint` would hit its uninitialised
-// imports. The handlers are plain MSW handlers; `sseResponse` runs only when a request comes.
-function pattern(path: string): string {
-  const base = env.apiBase.replace(/\/$/, '');
-  return /^https?:\/\//.test(base) ? `${base}${path}` : `*${base}${path}`;
-}
-
 /** The end summary of the scripted conversation: one error fixed, one corrected, one card. */
 export const MOCK_END_SUMMARY: ResponseOf<'tutor.end'> = {
   summary: {
@@ -226,18 +216,16 @@ export const MOCK_END_SUMMARY: ResponseOf<'tutor.end'> = {
 /** Conversations that played a scripted turn; their end answers with the scripted summary. */
 const scripted = new Set<string>();
 
-// The contract's own example requests keep their example answers (src/lib/api/client.test.ts
-// checks every endpoint of the mock server against them).
+// The contract's own example request keeps its example answer.
 export const handlers: HttpHandler[] = [
-  http.post(pattern(ENDPOINT_META['tutor.sendMessage'].path), async ({ request, params }) => {
-    const body = (await request.json()) as { clientId: string; content: string };
+  mockEndpoint('tutor.sendMessage', ({ params, body }) => {
     if (body.clientId === EXAMPLE_IDS.learnerMessage1) return sseResponse(TUTOR_STREAM_EXAMPLE);
     scripted.add(String(params.id));
     return sseResponse(scriptedTurn(body.clientId, body.content), { delayMs: STREAM_DELAY_MS });
   }),
-  http.post(pattern(ENDPOINT_META['tutor.end'].path), ({ params }) =>
+  mockEndpoint('tutor.end', ({ params }) =>
     scripted.has(String(params.id))
-      ? HttpResponse.json(MOCK_END_SUMMARY)
-      : HttpResponse.json(examples['tutor.end'].ok[0]?.response.body as never),
+      ? MOCK_END_SUMMARY
+      : (examples['tutor.end'].ok[0]?.response.body as ResponseOf<'tutor.end'>),
   ),
 ];

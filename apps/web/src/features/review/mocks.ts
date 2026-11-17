@@ -10,13 +10,10 @@ import {
   type QueueCounts,
   type ReviewItem,
   type ReviewQueue,
-  type SubmitAnswers,
   type SubmitAnswersResult,
 } from '@app/contracts';
 import { newState, type SchedulerState, schedule } from '@app/srs';
-import { HttpResponse, http } from 'msw';
-import { ENDPOINT_META } from '../../lib/api/endpoints.gen';
-import { env } from '../../lib/env';
+import { mockEndpoint } from '../../mocks/endpoint';
 
 const NOW = '2026-11-17T08:30:00.000Z';
 
@@ -106,25 +103,13 @@ export function mockQueue(now = new Date(NOW)): ReviewQueue {
 
 let counts: QueueCounts | null = null;
 
-/**
- * `mockEndpoint` of src/mocks/handlers cannot be called here: that module imports this one
- * through its glob before its own imports are ready (an import cycle), so the two handlers are
- * built with msw directly, on the same URL pattern.
- */
-function pattern(name: 'review.queue' | 'review.submitAnswers'): string {
-  const base = env.apiBase.replace(/\/$/, '');
-  const path = `${base}${ENDPOINT_META[name].path}`;
-  return /^https?:\/\//.test(base) ? path : `*${path}`;
-}
-
 const reviewHandlers = [
-  http.get(pattern('review.queue'), () => {
+  mockEndpoint('review.queue', () => {
     const q = mockQueue(new Date());
     counts = q.counts;
-    return HttpResponse.json(q);
+    return q;
   }),
-  http.post(pattern('review.submitAnswers'), async ({ request }) => {
-    const body = (await request.json()) as SubmitAnswers;
+  mockEndpoint('review.submitAnswers', ({ body }) => {
     const results = body.answers.map((a) => {
       const at = new Date(a.answeredAt);
       const { state, snapshot } = schedule(newState(at), a.rating, at, { desiredRetention: 0.9 });
@@ -135,15 +120,14 @@ const reviewHandlers = [
       results,
       counts: counts ?? { due: 0, new: 0, learning: 0 },
     };
-    return HttpResponse.json(reply);
+    return reply;
   }),
 ];
 
 /**
- * In the browser (dev:mock, the mock build, Playwright) these replace the defaults. Under
- * Vitest they stay off: src/lib/api/client.test.ts (F6) expects every endpoint of the shared
- * mock server to answer with its contract example. The review tests install them per test
- * with `server.use(...reviewMockHandlers)` or their own answers.
+ * These replace the defaults in the browser (dev:mock, the mock build, Playwright) and under
+ * Vitest. `reviewMockHandlers` stays exported for tests that install them again after their
+ * own `server.use(...)`.
  */
 export const reviewMockHandlers = reviewHandlers;
-export const handlers = import.meta.env.MODE === 'test' ? [] : reviewHandlers;
+export const handlers = reviewHandlers;

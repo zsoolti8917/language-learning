@@ -9,7 +9,8 @@ import {
   type TutorStreamEvent,
 } from '@app/contracts';
 import { HttpResponse } from 'msw';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { defaultHandlers } from '../../mocks/endpoint';
 import { mockEndpoint, mockError, mockNetworkError, server } from '../../test/utils';
 import { createApiClient, type TutorStream } from './client';
 import { ApiError } from './errors';
@@ -17,6 +18,13 @@ import { parseResponse } from './validate';
 
 describe('typed client against the mock server', () => {
   const client = createApiClient({ getToken: () => 'dev:test' });
+
+  // The contract example handlers only: features may override endpoints in their mocks.ts
+  // (also under Vitest), and this test checks the defaults, not those overrides. Runtime
+  // handlers come first; the global afterEach resets them.
+  beforeEach(() => {
+    server.use(...defaultHandlers);
+  });
 
   it('has one typed function per endpoint', () => {
     expect(endpointList).toHaveLength(ENDPOINT_COUNT);

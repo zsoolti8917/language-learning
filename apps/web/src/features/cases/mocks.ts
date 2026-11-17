@@ -5,7 +5,6 @@
 import type {
   BucketMastery,
   Course,
-  EndpointName,
   ExerciseItem,
   LessonDetail,
   LessonProgress,
@@ -14,38 +13,12 @@ import type {
 } from '@app/contracts';
 import { bucketKey, bucketOf } from '@app/ling';
 import { type HttpHandler, HttpResponse, http } from 'msw';
-import type { ApiInput } from '../../lib/api/client';
-import { ENDPOINT_META } from '../../lib/api/endpoints.gen';
-import { env } from '../../lib/env';
 import { newId } from '../../lib/ids';
+import { endpointPattern, mockEndpoint } from '../../mocks/endpoint';
 import { COURSE, LESSON_ACC_SG, TRAINER_POOL } from './fixtures';
 import { levelOf } from './mastery';
 import { DATASET_LESSONS } from './mock-data/lessons.gen';
 import { DATASET_PATTERNS as PATTERNS } from './mock-data/patterns.gen';
-
-// src/mocks/handlers.ts imports this module (by glob) before its own imports are ready, so
-// `mockEndpoint` from there cannot run at load time here. This is the same helper, kept small.
-function endpointPattern(name: EndpointName): string {
-  const base = env.apiBase.replace(/\/$/, '');
-  const path = `${base}${ENDPOINT_META[name].path}`;
-  return /^https?:\/\//.test(base) ? path : `*${path}`;
-}
-
-type BodyOf<N extends EndpointName> = ApiInput<N> extends { body: infer B } ? B : undefined;
-
-function mockEndpoint<N extends EndpointName>(
-  name: N,
-  reply: (info: { params: Record<string, string>; body: BodyOf<N> }) => ResponseOf<N> | Response,
-): HttpHandler {
-  const method = ENDPOINT_META[name].method.toLowerCase() as 'get' | 'post' | 'put';
-  return http[method](endpointPattern(name), async ({ request, params }) => {
-    const text = await request.text();
-    const body = (text ? JSON.parse(text) : undefined) as BodyOf<N>;
-    const value = reply({ params: params as Record<string, string>, body });
-    if (value instanceof Response) return value;
-    return HttpResponse.json(value as never, { status: ENDPOINT_META[name].status });
-  });
-}
 
 const LESSONS: Record<string, LessonDetail> = {
   ...DATASET_LESSONS,
@@ -207,9 +180,5 @@ export const casesHandlers: HttpHandler[] = [
   }),
 ];
 
-/**
- * Picked up by src/mocks/handlers in the browser (mock mode). Under Vitest the shared server
- * keeps the contract examples, because src/lib/api/client.test.ts expects every endpoint to
- * replay its example; this feature's tests add `casesHandlers` with `server.use`.
- */
-export const handlers: HttpHandler[] = import.meta.env.MODE === 'test' ? [] : casesHandlers;
+/** Picked up by src/mocks/handlers in the browser (mock mode) and under Vitest. */
+export const handlers: HttpHandler[] = casesHandlers;
