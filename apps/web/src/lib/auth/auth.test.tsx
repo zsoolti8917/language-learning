@@ -128,6 +128,76 @@ describe('AuthStore and useAuth', () => {
     });
     expect(result.current.status).toBe('signedOut');
   });
+
+  function localData() {
+    const calls: string[] = [];
+    return {
+      calls,
+      hooks: {
+        clear: async () => void calls.push('clear'),
+        claim: async (userId: string) => void calls.push(`claim:${userId}`),
+        signedIn: (userId: string) => void calls.push(`signedIn:${userId}`),
+      },
+    };
+  }
+
+  it('an expired login signs out of the page but keeps the rows on the device', async () => {
+    const storage = memoryStorage();
+    const client = createDevAuth({ storage });
+    const local = localData();
+    let cacheCleared = 0;
+    const store = new AuthStore(client, {
+      localData: local.hooks,
+      onSignOut: () => void cacheCleared++,
+    });
+    await store.ready();
+    // No session: a 401 is no expiry, nothing happens.
+    expect(await store.refreshAfterUnauthorized()).toBe(false);
+    expect(local.calls).toEqual([]);
+
+    await store.signIn('a@b.test', 'pw');
+    // Claimed before the switch (the change event and the call may both claim), then one sign in.
+    expect(new Set(local.calls)).toEqual(
+      new Set([`claim:${DEV_USER_ID}`, `signedIn:${DEV_USER_ID}`]),
+    );
+    expect(local.calls.at(-1)).toBe(`signedIn:${DEV_USER_ID}`);
+    expect(local.calls.filter((c) => c.startsWith('signedIn'))).toHaveLength(1);
+    expect(await store.refreshAfterUnauthorized()).toBe(false);
+    expect(store.getSnapshot().status).toBe('signedOut');
+    expect(cacheCleared).toBe(1);
+    // Nothing was cleared: the outbox waits for the next sign in.
+    expect(local.calls).not.toContain('clear');
+    expect(storage.getItem('app.devSession')).toBeNull();
+
+    // A sign out on purpose removes the rows.
+    await store.signIn('a@b.test', 'pw');
+    await store.signOut();
+    expect(local.calls.at(-1)).toBe('clear');
+  });
+
+  it('claims the rows for the session found at start, without a sign in', async () => {
+    const local = localData();
+    const store = new AuthStore(createDevAuth({ storage: null, signedIn: true }), {
+      localData: local.hooks,
+    });
+    await store.ready();
+    expect(store.getSnapshot().status).toBe('signedIn');
+    expect(local.calls).toEqual([`claim:${DEV_USER_ID}`]);
+  });
+
+  it('a database that fails to open does not stop a sign in', async () => {
+    const store = new AuthStore(createDevAuth({ storage: null }), {
+      localData: {
+        clear: async () => {},
+        claim: async () => {
+          throw new Error('IndexedDB blocked');
+        },
+      },
+    });
+    await store.ready();
+    await store.signIn('a@b.test', 'pw');
+    expect(store.getSnapshot().status).toBe('signedIn');
+  });
 });
 
 describe('first run', () => {

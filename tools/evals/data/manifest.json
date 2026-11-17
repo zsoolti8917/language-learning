@@ -1,0 +1,11 @@
+{
+  "seed": 20261117,
+  "sources": ["UD Slovak SNK (CC BY-SA 4.0)", "SNK morphological database"],
+  "morphology": "content/build (100681 lemmas, 5000 ranked)",
+  "counts": {
+    "correct": 300,
+    "injected": 300,
+    "analyzer": 500
+  },
+  "injectionSkipped": 37
+}

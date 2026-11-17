@@ -33,10 +33,19 @@ export function configureApi(next: Hooks): void {
   Object.assign(hooks, next);
 }
 
+/**
+ * Whether a call would carry a login: false once the app is wired to the login and nobody is
+ * signed in. The outbox waits while it is false. True when nothing is wired (tests, tools).
+ */
+export async function hasLogin(): Promise<boolean> {
+  if (!hooks.getToken) return true;
+  return (await hooks.getToken()) !== null;
+}
+
 /** The app's one API client. Features call `api.<module>.<action>(input)`. */
 export const api: ApiClient = createApiClient({
   base: env.apiBase,
-  getToken: () => hooks.getToken?.() ?? null,
+  getToken: () => (hooks.getToken ? hooks.getToken() : undefined),
   onUnauthorized: () => hooks.onUnauthorized?.() ?? Promise.resolve(false),
   onResponse: (name, data) => hooks.onResponse?.(name, data),
 });

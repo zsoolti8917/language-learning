@@ -34,6 +34,11 @@ export type ApiResult<N extends EndpointName> = Meta[N]['stream'] extends true
 
 export interface CallOptions {
   signal?: AbortSignal;
+  /**
+   * Fail with a local 401 instead of sending the call without a token when nobody is signed in
+   * (the outbox: a write must never go out without its learner's login).
+   */
+  requireLogin?: boolean;
 }
 
 export type ApiArgs<N extends EndpointName> =
@@ -63,8 +68,11 @@ export interface ApiClient extends ApiFunctions {
 export interface ApiClientOptions {
   /** Base path or URL, default `/api/v1`. */
   base?: string;
-  /** The current access token, or null when signed out. */
-  getToken?: () => Promise<string | null> | string | null;
+  /**
+   * The current access token, or null when signed out. Undefined means no login is wired (tests,
+   * tools): then `requireLogin` does not apply.
+   */
+  getToken?: () => Promise<string | null | undefined> | string | null | undefined;
   /** Called once on a 401. Return true when the token was refreshed, and the call is repeated. */
   onUnauthorized?: () => Promise<boolean>;
   /** Called with every JSON response; dev mode validates it against the contract here. */
@@ -126,6 +134,8 @@ export function createApiClient(options: ApiClientOptions = {}): ApiClient {
     if (meta.auth && options.getToken) {
       const token = await options.getToken();
       if (token) headers.Authorization = `Bearer ${token}`;
+      else if (token === null && opts?.requireLogin)
+        throw new ApiError(401, 'unauthorized', 'Not signed in.');
     }
     const init: RequestInit = { method: meta.method, headers };
     if (input?.body !== undefined) {

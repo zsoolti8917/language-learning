@@ -167,4 +167,23 @@ describe('errors', () => {
     ).rejects.toMatchObject({ status: 409, code: 'conflict' });
     expect(TUTOR_STREAM_EXAMPLE.length).toBeGreaterThan(0);
   });
+
+  it('does not send a call that requires a login while signed out', async () => {
+    let calls = 0;
+    server.use(
+      mockEndpoint('profile.get', () => {
+        calls++;
+        return examples['profile.get'].ok[0]?.response.body as never;
+      }),
+    );
+    const signedOut = createApiClient({ getToken: () => null });
+    await expect(signedOut.profile.get(undefined, { requireLogin: true })).rejects.toMatchObject({
+      status: 401,
+      code: 'unauthorized',
+    });
+    expect(calls).toBe(0);
+    // Without the option the call goes out (and the server decides).
+    await signedOut.profile.get();
+    expect(calls).toBe(1);
+  });
 });

@@ -1,0 +1,564 @@
+{
+  "mode": "mock",
+  "mockModel": true,
+  "datasets": {
+    "correct": 300,
+    "injected": 300,
+    "analyzer": 500,
+    "seed": 20261117,
+    "morphology": "content/build (100681 lemmas, 5000 ranked, 221 triggers)"
+  },
+  "promptVersions": {
+    "tutor.analyze": 1,
+    "tutor.reply": 1,
+    "reader.disambiguate": 1
+  },
+  "models": {
+    "tutor.analyze": "claude-opus-5-5",
+    "tutor.reply": "claude-opus-5-5",
+    "reader.disambiguate": "claude-opus-5-5"
+  },
+  "tutor": {
+    "cases": {
+      "correct": 300,
+      "injected": 300,
+      "failed": 0
+    },
+    "recall": {
+      "n": 300,
+      "of": 300,
+      "value": 1
+    },
+    "recallBeforeVerify": {
+      "n": 300,
+      "of": 300,
+      "value": 1
+    },
+    "precision": {
+      "n": 300,
+      "of": 300,
+      "value": 1
+    },
+    "precisionBeforeVerify": {
+      "n": 300,
+      "of": 300,
+      "value": 1
+    },
+    "exactOfFound": {
+      "n": 300,
+      "of": 300,
+      "value": 1
+    },
+    "exactOfAll": {
+      "n": 300,
+      "of": 300,
+      "value": 1
+    },
+    "falseCorrections": {
+      "n": 0,
+      "of": 300,
+      "value": 0
+    },
+    "falseCorrectionsBeforeVerify": {
+      "n": 0,
+      "of": 300,
+      "value": 0
+    },
+    "verification": {
+      "falseReports": 0,
+      "falseRemoved": {
+        "n": 0,
+        "of": 0,
+        "value": null
+      },
+      "trueLost": {
+        "n": 0,
+        "of": 300,
+        "value": 0
+      },
+      "reasons": {}
+    },
+    "byCase": [
+      {
+        "key": "nom",
+        "recall": {
+          "n": 76,
+          "of": 76,
+          "value": 1
+        },
+        "exact": {
+          "n": 76,
+          "of": 76,
+          "value": 1
+        }
+      },
+      {
+        "key": "gen",
+        "recall": {
+          "n": 58,
+          "of": 58,
+          "value": 1
+        },
+        "exact": {
+          "n": 58,
+          "of": 58,
+          "value": 1
+        }
+      },
+      {
+        "key": "dat",
+        "recall": {
+          "n": 5,
+          "of": 5,
+          "value": 1
+        },
+        "exact": {
+          "n": 5,
+          "of": 5,
+          "value": 1
+        }
+      },
+      {
+        "key": "acc",
+        "recall": {
+          "n": 92,
+          "of": 92,
+          "value": 1
+        },
+        "exact": {
+          "n": 92,
+          "of": 92,
+          "value": 1
+        }
+      },
+      {
+        "key": "loc",
+        "recall": {
+          "n": 45,
+          "of": 45,
+          "value": 1
+        },
+        "exact": {
+          "n": 45,
+          "of": 45,
+          "value": 1
+        }
+      },
+      {
+        "key": "ins",
+        "recall": {
+          "n": 24,
+          "of": 24,
+          "value": 1
+        },
+        "exact": {
+          "n": 24,
+          "of": 24,
+          "value": 1
+        }
+      }
+    ],
+    "byTrigger": [
+      {
+        "key": "preposition",
+        "recall": {
+          "n": 109,
+          "of": 109,
+          "value": 1
+        },
+        "exact": {
+          "n": 109,
+          "of": 109,
+          "value": 1
+        }
+      },
+      {
+        "key": "verb",
+        "recall": {
+          "n": 66,
+          "of": 66,
+          "value": 1
+        },
+        "exact": {
+          "n": 66,
+          "of": 66,
+          "value": 1
+        }
+      },
+      {
+        "key": "numeral",
+        "recall": {
+          "n": 5,
+          "of": 5,
+          "value": 1
+        },
+        "exact": {
+          "n": 5,
+          "of": 5,
+          "value": 1
+        }
+      },
+      {
+        "key": "subject",
+        "recall": {
+          "n": 57,
+          "of": 57,
+          "value": 1
+        },
+        "exact": {
+          "n": 57,
+          "of": 57,
+          "value": 1
+        }
+      },
+      {
+        "key": "noun",
+        "recall": {
+          "n": 35,
+          "of": 35,
+          "value": 1
+        },
+        "exact": {
+          "n": 35,
+          "of": 35,
+          "value": 1
+        }
+      },
+      {
+        "key": "other",
+        "recall": {
+          "n": 28,
+          "of": 28,
+          "value": 1
+        },
+        "exact": {
+          "n": 28,
+          "of": 28,
+          "value": 1
+        }
+      }
+    ],
+    "falseByCase": {},
+    "falseByType": {},
+    "replies": {
+      "checked": 600,
+      "clean": {
+        "n": 600,
+        "of": 600,
+        "value": 1
+      },
+      "tooLong": {
+        "n": 0,
+        "of": 600,
+        "value": 0
+      },
+      "noQuestion": {
+        "n": 0,
+        "of": 600,
+        "value": 0
+      },
+      "leaked": {
+        "n": 0,
+        "of": 600,
+        "value": 0
+      },
+      "markdown": {
+        "n": 0,
+        "of": 600,
+        "value": 0
+      },
+      "empty": {
+        "n": 0,
+        "of": 600,
+        "value": 0
+      }
+    }
+  },
+  "analyzer": {
+    "sentences": 500,
+    "words": 4558,
+    "unaligned": 0,
+    "known": {
+      "n": 4439,
+      "of": 4558,
+      "value": 0.9738920579201404
+    },
+    "lemmaAccuracy": {
+      "n": 4394,
+      "of": 4439,
+      "value": 0.9898625816625366
+    },
+    "caseAccuracy": {
+      "n": 2121,
+      "of": 2150,
+      "value": 0.9865116279069768
+    },
+    "caseAccuracyAll": {
+      "n": 2121,
+      "of": 2261,
+      "value": 0.9380804953560371
+    },
+    "byMethod": [
+      {
+        "method": "single",
+        "words": 962,
+        "lemma": {
+          "n": 944,
+          "of": 962,
+          "value": 0.9812889812889813
+        },
+        "case": {
+          "n": 378,
+          "of": 392,
+          "value": 0.9642857142857143
+        }
+      },
+      {
+        "method": "rule",
+        "words": 952,
+        "lemma": {
+          "n": 944,
+          "of": 952,
+          "value": 0.9915966386554622
+        },
+        "case": {
+          "n": 524,
+          "of": 529,
+          "value": 0.9905482041587902
+        }
+      },
+      {
+        "method": "model",
+        "words": 2525,
+        "lemma": {
+          "n": 2506,
+          "of": 2525,
+          "value": 0.9924752475247525
+        },
+        "case": {
+          "n": 1219,
+          "of": 1229,
+          "value": 0.9918633034987795
+        }
+      },
+      {
+        "method": "none",
+        "words": 119,
+        "lemma": {
+          "n": 0,
+          "of": 119,
+          "value": 0
+        },
+        "case": {
+          "n": 0,
+          "of": 111,
+          "value": 0
+        }
+      }
+    ],
+    "byCase": [
+      {
+        "key": "nom",
+        "case": {
+          "n": 560,
+          "of": 580,
+          "value": 0.9655172413793104
+        }
+      },
+      {
+        "key": "gen",
+        "case": {
+          "n": 446,
+          "of": 448,
+          "value": 0.9955357142857143
+        }
+      },
+      {
+        "key": "dat",
+        "case": {
+          "n": 117,
+          "of": 119,
+          "value": 0.9831932773109243
+        }
+      },
+      {
+        "key": "acc",
+        "case": {
+          "n": 550,
+          "of": 553,
+          "value": 0.9945750452079566
+        }
+      },
+      {
+        "key": "voc",
+        "case": {
+          "n": 1,
+          "of": 1,
+          "value": 1
+        }
+      },
+      {
+        "key": "loc",
+        "case": {
+          "n": 251,
+          "of": 252,
+          "value": 0.996031746031746
+        }
+      },
+      {
+        "key": "ins",
+        "case": {
+          "n": 196,
+          "of": 197,
+          "value": 0.9949238578680203
+        }
+      }
+    ],
+    "confusions": [
+      {
+        "gold": "nom",
+        "chosen": "gen",
+        "n": 10
+      },
+      {
+        "gold": "nom",
+        "chosen": "none",
+        "n": 4
+      },
+      {
+        "gold": "nom",
+        "chosen": "acc",
+        "n": 4
+      },
+      {
+        "gold": "acc",
+        "chosen": "nom",
+        "n": 1
+      },
+      {
+        "gold": "acc",
+        "chosen": "loc",
+        "n": 1
+      },
+      {
+        "gold": "acc",
+        "chosen": "gen",
+        "n": 1
+      },
+      {
+        "gold": "dat",
+        "chosen": "loc",
+        "n": 1
+      },
+      {
+        "gold": "dat",
+        "chosen": "nom",
+        "n": 1
+      },
+      {
+        "gold": "gen",
+        "chosen": "dat",
+        "n": 1
+      },
+      {
+        "gold": "gen",
+        "chosen": "acc",
+        "n": 1
+      }
+    ]
+  },
+  "costs": [
+    {
+      "route": "reader.disambiguate",
+      "model": "claude-opus-5-5",
+      "calls": 57,
+      "cached": 0,
+      "estimated": 0,
+      "failed": 0,
+      "inputTokens": 276512,
+      "outputTokens": 9382,
+      "cacheReadTokens": 0,
+      "cacheWriteTokens": 0,
+      "costUsd": 0,
+      "sentCostUsd": 0,
+      "worstUsd": 0,
+      "costPerCallUsd": 0,
+      "latencyMeanMs": null,
+      "latencyP95Ms": null
+    },
+    {
+      "route": "tutor.analyze",
+      "model": "claude-opus-5-5",
+      "calls": 600,
+      "cached": 0,
+      "estimated": 0,
+      "failed": 0,
+      "inputTokens": 1026492,
+      "outputTokens": 30577,
+      "cacheReadTokens": 0,
+      "cacheWriteTokens": 0,
+      "costUsd": 0,
+      "sentCostUsd": 0,
+      "worstUsd": 0,
+      "costPerCallUsd": 0,
+      "latencyMeanMs": null,
+      "latencyP95Ms": null
+    },
+    {
+      "route": "tutor.reply",
+      "model": "claude-opus-5-5",
+      "calls": 600,
+      "cached": 0,
+      "estimated": 0,
+      "failed": 0,
+      "inputTokens": 549259,
+      "outputTokens": 3221,
+      "cacheReadTokens": 0,
+      "cacheWriteTokens": 0,
+      "costUsd": 0,
+      "sentCostUsd": 0,
+      "worstUsd": 0,
+      "costPerCallUsd": 0,
+      "latencyMeanMs": null,
+      "latencyP95Ms": null
+    }
+  ],
+  "totals": {
+    "calls": 1257,
+    "cached": 0,
+    "costUsd": 0,
+    "worstUsd": 0
+  },
+  "targets": [
+    {
+      "name": "False corrections on correct sentences, after verification",
+      "target": "at most 2 %",
+      "value": {
+        "n": 0,
+        "of": 300,
+        "value": 0
+      },
+      "met": true
+    },
+    {
+      "name": "Injected errors found",
+      "target": "at least 85 %",
+      "value": {
+        "n": 300,
+        "of": 300,
+        "value": 1
+      },
+      "met": true
+    },
+    {
+      "name": "Analyzer case accuracy (words the data knows)",
+      "target": "at least 95 %",
+      "value": {
+        "n": 2121,
+        "of": 2150,
+        "value": 0.9865116279069768
+      },
+      "met": true
+    }
+  ]
+}
