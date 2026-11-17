@@ -7060,6 +7060,12 @@
           },
           "retired": {
             "type": "boolean"
+          },
+          "cases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Case"
+            }
           }
         }
       },
