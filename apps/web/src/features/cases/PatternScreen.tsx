@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from '@tanstack/react-router';
 import { apiQuery } from '../../lib/api';
 import { t } from '../../messages';
-import { Card, CaseBadge } from '../../ui';
+import { Card, CaseBadge, cn } from '../../ui';
 import { ALL_CASES, GENDERS, NUMBERS } from './grammar';
 import { m } from './messages';
 import { QueryState } from './QueryState';
@@ -44,7 +44,9 @@ function EndingsTable({
   cells,
   columns,
   caption,
+  compact = false,
 }: {
+  compact?: boolean;
   cells: Cell[];
   columns: { key: string; label: string; match: (c: Cell) => boolean }[];
   caption: string;
@@ -55,7 +57,13 @@ function EndingsTable({
       <caption className="mb-2 text-left text-sm font-medium text-fg-muted">{caption}</caption>
       <thead>
         <tr>
-          <th scope="col" className="w-[40%] py-2 text-left text-sm font-medium text-fg-muted">
+          <th
+            scope="col"
+            className={cn(
+              compact ? 'w-[24%]' : 'w-[40%]',
+              'py-2 text-left text-sm font-medium text-fg-muted',
+            )}
+          >
             {m.t('pattern.caseCol')}
           </th>
           {columns.map((col) => (
@@ -73,7 +81,11 @@ function EndingsTable({
         {cases.map((c) => (
           <tr key={c} className="border-t border-border">
             <th scope="row" className="py-2 text-left">
-              <CaseBadge case={c} label={m.t(`caseTitle.${c}`)} />
+              {compact ? (
+                <CaseBadge case={c} variant="short" label={m.t(`caseShort.${c}`)} />
+              ) : (
+                <CaseBadge case={c} label={m.t(`caseTitle.${c}`)} />
+              )}
             </th>
             {columns.map((col) => (
               <td key={col.key} className="py-2">
@@ -127,6 +139,7 @@ function Pattern({ p }: { p: PatternDetail }) {
           NUMBERS.map((n) => (
             <EndingsTable
               key={n}
+              compact
               caption={m.t(`numberTitle.${n}`)}
               cells={cells.filter((c) => c.number === n)}
               columns={GENDERS.filter((g) => cells.some((c) => c.gender === g)).map((g) => ({
