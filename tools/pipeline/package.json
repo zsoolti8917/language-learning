@@ -9,7 +9,8 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "pipeline": "tsx src/cli.ts"
+    "pipeline": "tsx src/cli.ts",
+    "offline": "tsx src/offline/cli.ts"
   },
   "dependencies": {
     "@app/contracts": "workspace:*",
