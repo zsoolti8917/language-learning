@@ -16,7 +16,7 @@ import { createTestDb, type TestDb, uuidv7 } from '@app/testkit';
 import { and, eq, sql } from 'drizzle-orm';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createTestApp, type TestApp, type TestClient } from '../../testing/app';
-import type { AttemptsRecorder } from '../../testing/recorders';
+import { type AttemptsRecorder, createAttemptsRecorder } from '../../testing/recorders';
 import {
   CASE_ROUND,
   isCase,
@@ -40,7 +40,7 @@ beforeAll(async () => {
   db = await createTestDb({ content: 'mini' });
   await addRankedLemmas(db, 73, 3000);
   notes = createDbNotes();
-  t = await createTestApp({ db, ports: { notes } });
+  t = await createTestApp({ db, ports: { notes, attempts: createAttemptsRecorder() } });
   attempts = t.ports.attempts as AttemptsRecorder;
   const [row] = await queryRows<{ n: number }>(
     db.db,
