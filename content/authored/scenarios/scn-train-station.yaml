@@ -1,0 +1,28 @@
+id: scn-train-station
+mode: scenario
+ord: 6
+level: A2
+titleEn: At the train station
+titleSk: Na stanici
+goalEn: Buy a train ticket to another town and find out when and from where the train leaves.
+settingSk: Si na hlavnej stanici v Bratislave. Chceš ísť vlakom do Košíc a stojíš pri pokladni.
+tutorRole: A ticket seller at the main station. Friendly but busy, speaks clear A2 Slovak and asks short questions.
+targetCases: [gen, acc, loc]
+targetTriggers: [prep-do, prep-z, prep-na-acc, prep-v-acc, prep-na-loc]
+openingSk: Dobrý deň, kam to bude?
+successCriteria:
+  - id: c1
+    textEn: Say where you are going and on which day.
+  - id: c2
+    textEn: Say whether you want a single or a return ticket.
+  - id: c3
+    textEn: Ask when the train leaves and from which platform.
+  - id: c4
+    textEn: Pay and thank the seller.
+vocabHint:
+  - { sk: lístok, en: ticket }
+  - { sk: vlak, en: train }
+  - { sk: spiatočný, en: return }
+  - { sk: koľaj, en: "track, platform" }
+  - { sk: odchod, en: departure }
+  - { sk: zajtra, en: tomorrow }

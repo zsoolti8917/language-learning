@@ -1,0 +1,26 @@
+id: scn-coach-ins
+mode: case_coach
+ord: 12
+level: A2
+titleEn: With whom? The instrumental
+titleSk: S kým?
+goalEn: Practise the instrumental after s when you say whom you live, work and spend time with, and what you eat or drink something with.
+settingSk: Kamarát sa ťa pýta, s kým bývaš, s kým chodíš von a s čím piješ kávu.
+tutorRole: A friendly Slovak friend who asks short questions with s kým and s čím and waits for full answers.
+targetCases: [ins]
+targetTriggers: [prep-s-ins, q-s-kym]
+openingSk: Ahoj! S kým bývaš?
+successCriteria:
+  - id: c1
+    textEn: Say whom you live with.
+  - id: c2
+    textEn: Say whom you go out with at the weekend.
+  - id: c3
+    textEn: Say what you drink your coffee or tea with.
+vocabHint:
+  - { sk: rodičia, en: parents }
+  - { sk: sestra, en: sister }
+  - { sk: kamarát, en: friend }
+  - { sk: mlieko, en: milk }
+  - { sk: cukor, en: sugar }
+  - { sk: s kým, en: with whom }

@@ -1,0 +1,26 @@
+id: scn-neighbour
+mode: scenario
+ord: 7
+level: A2
+titleEn: The new neighbour
+titleSk: Nová suseda
+goalEn: Introduce yourself to your neighbour, tell her a little about yourself and ask her for a small favour.
+settingSk: Bývaš v novom byte iba druhý deň. Na chodbe stretneš susedu, ktorá býva hneď vedľa.
+tutorRole: A talkative retired neighbour who has lived in the building for thirty years. Speaks simple A2 Slovak and is curious about the new tenant.
+targetCases: [dat, ins, loc]
+targetTriggers: [verb-pomahat, q-komu, prep-k, prep-s-ins, prep-v-loc]
+openingSk: Dobrý deň! Vy tu asi bývate len krátko, však? Ja bývam hneď vedľa.
+successCriteria:
+  - id: c1
+    textEn: Say your name and where you come from.
+  - id: c2
+    textEn: Say who you live with.
+  - id: c3
+    textEn: Ask the neighbour to help you with something.
+vocabHint:
+  - { sk: sused, en: neighbour (man) }
+  - { sk: suseda, en: neighbour (woman) }
+  - { sk: pomôcť, en: to help }
+  - { sk: kľúč, en: key }
+  - { sk: kvety, en: flowers }
+  - { sk: chodba, en: corridor }

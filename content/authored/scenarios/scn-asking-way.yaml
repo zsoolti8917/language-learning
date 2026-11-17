@@ -1,0 +1,28 @@
+id: scn-asking-way
+mode: scenario
+ord: 2
+level: A2
+titleEn: Asking the way
+titleSk: Pýtame sa na cestu
+goalEn: Find out how to get to the station and repeat the way back to check you understood.
+settingSk: Si v meste prvý raz a nevieš, kde je stanica. Na ulici stretneš pána, ktorý tu býva.
+tutorRole: A helpful local man on the street who knows the town well. Speaks simple A2 Slovak, gives short directions and checks that you understood.
+targetCases: [gen, acc, dat, loc]
+targetTriggers: [prep-do, prep-na-acc, prep-k, prep-pri, q-kde]
+openingSk: Dobrý deň! Môžem vám nejako pomôcť?
+successCriteria:
+  - id: c1
+    textEn: Ask how to get to the station.
+  - id: c2
+    textEn: Repeat the way back in your own words.
+  - id: c3
+    textEn: Ask how long it takes on foot.
+  - id: c4
+    textEn: Thank him and say goodbye.
+vocabHint:
+  - { sk: stanica, en: station }
+  - { sk: ulica, en: street }
+  - { sk: rovno, en: straight on }
+  - { sk: doľava, en: to the left }
+  - { sk: doprava, en: to the right }
+  - { sk: most, en: bridge }

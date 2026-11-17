@@ -1,0 +1,11 @@
+# sent_id = sme:13801:.p.
+# text = "Na to je veľmi skoro.
+# orig_file_sentence 001#75
+1	"	"	PUNCT	ZIP	_	4	punct	4:punct	SpaceAfter=No
+2	Na	na	ADP	Eu4	AdpType=Prep|Case=Acc	3	case	3:case	_
+3	to	to	DET	PFns4	Case=Acc|Gender=Neut|Number=Sing|PronType=Dem	4	obl:arg	4:obl:arg:na:acc	_
+4	je	byť	VERB	VKesc+	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Pres|VerbForm=Fin	0	root	0:root	_
+5	veľmi	veľmi	ADV	Dx	Degree=Pos	6	advmod	6:advmod	_
+6	skoro	skoro	ADV	Dx	Degree=Pos	4	advmod	4:advmod	SpaceAfter=No
+7	.	.	PUNCT	ZIP	_	4	punct	4:punct	_
+

@@ -1,0 +1,26 @@
+id: scn-coach-gen
+mode: case_coach
+ord: 11
+level: A2
+titleEn: From where and to where? The genitive
+titleSk: Odkiaľ a kam?
+goalEn: Practise the genitive after do, z and od when you say where you come from, where you are going and whom you got something from.
+settingSk: Učiteľka sa ťa pýta, odkiaľ si, kam dnes ideš a od koho máš veci, ktoré máš pri sebe.
+tutorRole: A patient Slovak teacher who asks short questions with odkiaľ, kam and od koho and waits for full answers.
+targetCases: [gen]
+targetTriggers: [prep-do, prep-z, prep-od]
+openingSk: Dobrý deň! Odkiaľ ste?
+successCriteria:
+  - id: c1
+    textEn: Say which town or country you come from, with z.
+  - id: c2
+    textEn: Say where you are going today, with do.
+  - id: c3
+    textEn: Say whom you got a present or a letter from, with od.
+vocabHint:
+  - { sk: mesto, en: town }
+  - { sk: práca, en: work }
+  - { sk: škola, en: school }
+  - { sk: kamarát, en: friend }
+  - { sk: darček, en: present }
+  - { sk: odkiaľ, en: where from }

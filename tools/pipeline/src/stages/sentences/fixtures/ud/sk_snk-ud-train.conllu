@@ -1,0 +1,337 @@
+# sent_id = inzine:inzine1821-01:.i.
+# text = A buďte veľmi hladní.
+# orig_file_sentence 002#90
+1	A	a	PART	T	_	4	advmod	4:advmod	_
+2	buďte	byť	AUX	VMepb+	Aspect=Imp|Mood=Imp|Number=Plur|Person=2|Polarity=Pos|VerbForm=Fin	4	cop	4:cop	_
+3	veľmi	veľmi	ADV	Dx	Degree=Pos	4	advmod	4:advmod	_
+4	hladní	hladný	ADJ	AAmp1x	Animacy=Anim|Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	0:root	SpaceAfter=No
+5	.	.	PUNCT	ZIP	_	4	punct	4:punct	_
+
+# sent_id = inzine:inzine7860:inzine7860-p3s4
+# text = Ja som zazrela na ňu, ona na mňa.
+# orig_file_sentence 004#97
+1	Ja	ja	PRON	PPhs1	Case=Nom|Number=Sing|Person=1|PronType=Prs	3	nsubj	3:nsubj	_
+2	som	byť	AUX	VKesa+	Aspect=Imp|Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Pres|VerbForm=Fin	3	aux	3:aux	_
+3	zazrela	zazrieť	VERB	VLdsaf+	Aspect=Perf|Gender=Fem|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	0	root	0:root	_
+4	na	na	ADP	Eu4	AdpType=Prep|Case=Acc	5	case	5:case	_
+5	ňu	ona	PRON	PFfs4	Case=Acc|Gender=Fem|Number=Sing|Person=3|PronType=Prs	3	obl:arg	3:obl:arg:na:acc	SpaceAfter=No
+6	,	,	PUNCT	Z	_	7	punct	7.1:punct	_
+7	ona	ona	PRON	PFfs1	Case=Nom|Gender=Fem|Number=Sing|Person=3|PronType=Prs	3	conj	7.1:dep	_
+7.1	zazrela	zazrieť	VERB	VLdsaf+	Aspect=Perf|Gender=Fem|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	_	_	0:root|3:conj	_
+8	na	na	ADP	Eu4	AdpType=Prep|Case=Acc	9	case	9:case	_
+9	mňa	ja	PRON	PPhs4	Case=Acc|Number=Sing|Person=1|PronType=Prs	7	orphan	7.1:dep	SpaceAfter=No
+10	.	.	PUNCT	Z	_	3	punct	3:punct	_
+
+# sent_id = mojaprvalaska:laa010:laska010-p5s2
+# text = “ Na mňa?“ vyjachtala som.
+# orig_file_sentence 010#31
+1	“	“	PUNCT	Z	_	6	punct	6:punct	_
+2	Na	na	ADP	Eu4	AdpType=Prep|Case=Acc	3	case	3:case	_
+3	mňa	ja	PRON	PPhs4	Case=Acc|Number=Sing|Person=1|PronType=Prs	6	dep	6:dep	SpaceAfter=No
+4	?	?	PUNCT	Z	_	6	punct	6:punct	SpaceAfter=No
+5	“	“	PUNCT	Z	_	6	punct	6:punct	_
+6	vyjachtala	vyjachtať	VERB	VLdsaf+	Aspect=Perf|Gender=Fem|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	0	root	0:root	_
+7	som	byť	AUX	VKesa+	Aspect=Imp|Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Pres|VerbForm=Fin	6	aux	6:aux	SpaceAfter=No
+8	.	.	PUNCT	Z	_	6	punct	6:punct	_
+
+# sent_id = mojaprvalaska:laa013:laska013-p5s2
+# text = “ Videla som ju zblízka.
+# orig_file_sentence 010#65
+1	“	“	PUNCT	Z	_	2	punct	2:punct	_
+2	Videla	vidieť	VERB	VLesaf+	Aspect=Imp|Gender=Fem|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	0	root	0:root	_
+3	som	byť	AUX	VKesa+	Aspect=Imp|Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Pres|VerbForm=Fin	2	aux	2:aux	_
+4	ju	ona	PRON	PFfs4	Case=Acc|Gender=Fem|Number=Sing|Person=3|PronType=Prs	2	obj	2:obj	_
+5	zblízka	zblízka	ADV	Dx	Degree=Pos	2	advmod	2:advmod	SpaceAfter=No
+6	.	.	PUNCT	Z	_	2	punct	2:punct	_
+
+# sent_id = mojaprvalaska:laa021:laska021-p7s3
+# text = Bolo to niečo nové.
+# orig_file_sentence 011#51
+1	Bolo	byť	AUX	VLescn+	Aspect=Imp|Gender=Neut|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	3	cop	3:cop	_
+2	to	to	DET	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	3	nsubj	3:nsubj	_
+3	niečo	niečo	PRON	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Ind	0	root	0:root	_
+4	nové	nový	ADJ	AAns1x	Case=Nom|Degree=Pos|Gender=Neut|Number=Sing	3	amod	3:amod	SpaceAfter=No
+5	.	.	PUNCT	Z	_	3	punct	3:punct	_
+
+# sent_id = mojaprvalaska:laa039:laska039-p9s2
+# text = “ Čo je s tebou, Amy?
+# orig_file_sentence 013#20
+1	“	“	PUNCT	Z	_	3	punct	3:punct	_
+2	Čo	čo	PRON	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Int,Rel	3	nsubj	3:nsubj	_
+3	je	byť	VERB	VKesc+	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Pres|VerbForm=Fin	0	root	0:root	_
+4	s	s	ADP	Eu7	AdpType=Prep|Case=Ins	5	case	5:case	_
+5	tebou	ty	PRON	PPhs7	Case=Ins|Number=Sing|Person=2|PronType=Prs	3	obl:arg	3:obl:arg:s:ins	SpaceAfter=No
+6	,	,	PUNCT	Z	_	3	punct	3:punct	_
+7	Amy	amy	PROPN	SUfs1:r	Case=Nom|Gender=Fem|Number=Sing	3	dep	3:dep	SpaceAfter=No
+8	?	?	PUNCT	Z	_	3	punct	3:punct	_
+
+# sent_id = mojaprvalaska:laa055:laska055-p5s4
+# text = Videla som to na tebe!“
+# orig_file_sentence 014#63
+1	Videla	vidieť	VERB	VLesaf+	Aspect=Imp|Gender=Fem|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	0	root	0:root	_
+2	som	byť	AUX	VKesa+	Aspect=Imp|Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Pres|VerbForm=Fin	1	aux	1:aux	_
+3	to	to	DET	PFns4	Case=Acc|Gender=Neut|Number=Sing|PronType=Dem	1	obj	1:obj	_
+4	na	na	ADP	Eu6	AdpType=Prep|Case=Loc	5	case	5:case	_
+5	tebe	ty	PRON	PPhs6	Case=Loc|Number=Sing|Person=2|PronType=Prs	1	obl	1:obl:na:loc	SpaceAfter=No
+6	!	!	PUNCT	Z	_	1	punct	1:punct	SpaceAfter=No
+7	“	“	PUNCT	Z	_	1	punct	1:punct	_
+
+# sent_id = mojaprvalaska:laa060:laska060-p4s2
+# text = “ Musel som ťa vidieť.“
+# orig_file_sentence 015#3
+1	“	“	PUNCT	Z	_	2	punct	2:punct	_
+2	Musel	musieť	VERB	VLesam+	Animacy=Anim|Aspect=Imp|Gender=Masc|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	0	root	0:root	_
+3	som	byť	AUX	VKesa+	Aspect=Imp|Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Pres|VerbForm=Fin	2	aux	2:aux	_
+4	ťa	ty	PRON	PPhs4	Case=Acc|Number=Sing|Person=2|PronType=Prs	5	obj	5:obj	_
+5	vidieť	vidieť	VERB	VIe+	Aspect=Imp|Polarity=Pos|VerbForm=Inf	2	xcomp	2:xcomp	SpaceAfter=No
+6	.	.	PUNCT	Z	_	2	punct	2:punct	SpaceAfter=No
+7	“	“	PUNCT	Z	_	2	punct	2:punct	_
+
+# sent_id = mojaprvalaska:laa069:laska069-p1s1
+# text = “ Čo je?“ zopakovala som.
+# orig_file_sentence 015#87
+1	“	“	PUNCT	Z	_	3	punct	3:punct	_
+2	Čo	čo	PRON	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Int,Rel	3	nsubj	3:nsubj	_
+3	je	byť	VERB	VKesc+	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Pres|VerbForm=Fin	6	ccomp	6:ccomp	SpaceAfter=No
+4	?	?	PUNCT	Z	_	3	punct	3:punct	SpaceAfter=No
+5	“	“	PUNCT	Z	_	3	punct	3:punct	_
+6	zopakovala	zopakovať	VERB	VLdsaf+	Aspect=Perf|Gender=Fem|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	0	root	0:root	_
+7	som	byť	AUX	VKesa+	Aspect=Imp|Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Pres|VerbForm=Fin	6	aux	6:aux	SpaceAfter=No
+8	.	.	PUNCT	Z	_	6	punct	6:punct	_
+
+# sent_id = mojaprvalaska:laa074:laska074-p4s1
+# text = Na rozdiel odo mňa.
+# orig_file_sentence 016#40
+1	Na	na	ADP	Eu4	AdpType=Prep|Case=Acc|ExtPos=ADP	4	case	4:case	_
+2	rozdiel	rozdiel	NOUN	SSis4	Animacy=Inan|Case=Acc|Gender=Masc|Number=Sing	1	fixed	1:fixed	_
+3	odo	od	ADP	Ev2	AdpType=Voc|Case=Gen	1	fixed	1:fixed	_
+4	mňa	ja	PRON	PPhs2	Case=Gen|Number=Sing|Person=1|PronType=Prs	0	root	0:root	SpaceAfter=No
+5	.	.	PUNCT	Z	_	4	punct	4:punct	_
+
+# sent_id = mojaprvalaska:laa095:laska095-p2s4
+# text = Vrelo to vo mne.
+# orig_file_sentence 018#30
+1	Vrelo	vrieť	VERB	VLescn+	Aspect=Imp|Gender=Neut|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	0	root	0:root	_
+2	to	to	DET	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	1	nsubj	1:nsubj	_
+3	vo	v	ADP	Ev6	AdpType=Voc|Case=Loc	4	case	4:case	_
+4	mne	ja	PRON	PPhs6	Case=Loc|Number=Sing|Person=1|PronType=Prs	1	obl	1:obl:v:loc	SpaceAfter=No
+5	.	.	PUNCT	Z	_	1	punct	1:punct	_
+
+# sent_id = mojaprvalaska:laa107:laska107-p2s2
+# text = Túžila som ho vidieť.
+# orig_file_sentence 019#37
+1	Túžila	túžiť	VERB	VLesaf+	Aspect=Imp|Gender=Fem|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	0	root	0:root	_
+2	som	byť	AUX	VKesa+	Aspect=Imp|Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Pres|VerbForm=Fin	1	aux	1:aux	_
+3	ho	on	PRON	PFms4	Animacy=Anim|Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	4	obj	4:obj	_
+4	vidieť	vidieť	VERB	VIe+	Aspect=Imp|Polarity=Pos|VerbForm=Inf	1	xcomp	1:xcomp	SpaceAfter=No
+5	.	.	PUNCT	Z	_	1	punct	1:punct	_
+
+# sent_id = orwell1984:bsnk205:.e.
+# text = "To nič nie je.
+# orig_file_sentence 022#76
+1	"	"	PUNCT	Z	_	3	punct	3:punct	SpaceAfter=No
+2	To	to	DET	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	3	nsubj	3:nsubj	_
+3	nič	nič	PRON	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Neg	0	root	0:root	_
+4	nie	nie	PART	T	_	3	advmod	3:advmod	_
+5	je	byť	AUX	VKesc-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Neg|Tense=Pres|VerbForm=Fin	3	cop	3:cop	SpaceAfter=No
+6	.	.	PUNCT	Z	_	3	punct	3:punct	_
+
+# sent_id = orwell1984:bsnk221:.f.
+# text = A nehľaď na mňa.
+# orig_file_sentence 023#9
+1	A	a	CCONJ	O	_	2	cc	2:cc	_
+2	nehľaď	hľadieť	VERB	VMesb-	Aspect=Imp|Mood=Imp|Number=Sing|Person=2|Polarity=Neg|VerbForm=Fin	0	root	0:root	_
+3	na	na	ADP	Eu4	AdpType=Prep|Case=Acc	4	case	4:case	_
+4	mňa	ja	PRON	PPhs4	Case=Acc|Number=Sing|Person=1|PronType=Prs	2	obl	2:obl:na:acc	SpaceAfter=No
+5	.	.	PUNCT	Z	_	2	punct	2:punct	_
+
+# sent_id = orwell1984:bsnk224:.c.
+# text = Bol pri dievčati.
+# orig_file_sentence 023#11
+1	Bol	byť	VERB	VLescm+	Animacy=Anim|Aspect=Imp|Gender=Masc|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	0	root	0:root	_
+2	pri	pri	ADP	Eu6	AdpType=Prep|Case=Loc	3	case	3:case	_
+3	dievčati	dievča	NOUN	SSns6	Case=Loc|Gender=Neut|Number=Sing	1	obl	1:obl:pri:loc	SpaceAfter=No
+4	.	.	PUNCT	Z	_	1	punct	1:punct	_
+
+# sent_id = orwell1984:bsnk316:.e.
+# text = Nie je to môj odbor.
+# orig_file_sentence 024#61
+1	Nie	nie	PART	T	_	5	advmod	5:advmod	_
+2	je	byť	AUX	VKesc-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Neg|Tense=Pres|VerbForm=Fin	5	cop	5:cop	_
+3	to	to	DET	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	5	nsubj	5:nsubj	_
+4	môj	môj	DET	PFis1	Animacy=Inan|Case=Nom|Gender=Masc|Number=Sing|Number[psor]=Sing|Person=1|Poss=Yes|PronType=Prs	5	det	5:det	_
+5	odbor	odbor	NOUN	SSis1	Animacy=Inan|Case=Nom|Gender=Masc|Number=Sing	0	root	0:root	SpaceAfter=No
+6	.	.	PUNCT	Z	_	5	punct	5:punct	_
+
+# sent_id = orwell1984:bsnk318:.d.
+# text = Ja jeden mám.
+# orig_file_sentence 024#66
+1	Ja	ja	PRON	PPhs1	Case=Nom|Number=Sing|Person=1|PronType=Prs	3	nsubj	3:nsubj	_
+2	jeden	jeden	NUM	NFis4	Animacy=Inan|Case=Acc|Gender=Masc|Number=Sing	3	obj	3:obj	_
+3	mám	mať	VERB	VKesa+	Aspect=Imp|Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Pres|VerbForm=Fin	0	root	0:root	SpaceAfter=No
+4	.	.	PUNCT	Z	_	3	punct	3:punct	_
+
+# sent_id = orwell1984:bsnk83:.e.
+# text = Je to vzrušujúca práca."
+# orig_file_sentence 025#100
+1	Je	byť	AUX	VKesc+	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Pres|VerbForm=Fin	4	cop	4:cop	_
+2	to	to	DET	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	4	nsubj	4:nsubj	_
+3	vzrušujúca	vzrušujúci	ADJ	Gtfs1x	Case=Nom|Degree=Pos|Gender=Fem|Number=Sing|Polarity=Pos|VerbForm=Part|Voice=Pass	4	amod	4:amod	_
+4	práca	práca	NOUN	SSfs1	Case=Nom|Gender=Fem|Number=Sing	0	root	0:root	SpaceAfter=No
+5	.	.	PUNCT	Z	_	4	punct	4:punct	SpaceAfter=No
+6	"	"	PUNCT	Z	_	4	punct	4:punct	_
+
+# sent_id = orwell1984:b2100aa2:.al.
+# text = Dva a dva sú štyri."
+# orig_file_sentence 026#51
+1	Dva	dva	NUM	NX	_	5	nsubj	5:nsubj	_
+2	a	a	CCONJ	O	_	3	cc	3:cc	_
+3	dva	dva	NUM	NX	_	1	conj	1:conj|5:nsubj	_
+4	sú	byť	AUX	VKepc+	Aspect=Imp|Mood=Ind|Number=Plur|Person=3|Polarity=Pos|Tense=Pres|VerbForm=Fin	5	cop	5:cop	_
+5	štyri	štyri	NUM	NX	_	0	root	0:root	SpaceAfter=No
+6	.	.	PUNCT	ZIP	_	5	punct	5:punct	SpaceAfter=No
+7	"	"	PUNCT	ZIP	_	5	punct	5:punct	_
+
+# sent_id = orwell1984:b2104aa2:.as.
+# text = Spomínaš si na to?"
+# orig_file_sentence 027#4
+1	Spomínaš	spomínať	VERB	VKesb+	Aspect=Imp|Mood=Ind|Number=Sing|Person=2|Polarity=Pos|Tense=Pres|VerbForm=Fin	0	root	0:root	_
+2	si	si	PRON	R	PronType=Prs|Reflex=Yes	1	expl:pass	1:expl:pass	_
+3	na	na	ADP	Eu4	AdpType=Prep|Case=Acc	4	case	4:case	_
+4	to	to	DET	PFns4	Case=Acc|Gender=Neut|Number=Sing|PronType=Dem	1	obl:arg	1:obl:arg:na:acc	SpaceAfter=No
+5	?	?	PUNCT	ZIP	_	1	punct	1:punct	SpaceAfter=No
+6	"	"	PUNCT	ZIP	_	1	punct	1:punct	_
+
+# sent_id = orwell1984:b2108aa2:.ah.
+# text = "To nie je dôležité.
+# orig_file_sentence 027#23
+1	"	"	PUNCT	ZIP	_	5	punct	5:punct	SpaceAfter=No
+2	To	to	DET	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	5	nsubj	5:nsubj	_
+3	nie	nie	PART	T	_	5	advmod	5:advmod	_
+4	je	byť	AUX	VKesc-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Neg|Tense=Pres|VerbForm=Fin	5	cop	5:cop	_
+5	dôležité	dôležitý	ADJ	AAns1x	Case=Nom|Degree=Pos|Gender=Neut|Number=Sing	0	root	0:root	SpaceAfter=No
+6	.	.	PUNCT	ZIP	_	5	punct	5:punct	_
+
+# sent_id = orwell1984:b2111aa2:.y.
+# text = "Mne je to jedno.
+# orig_file_sentence 027#55
+1	"	"	PUNCT	ZIP	_	3	punct	3:punct	SpaceAfter=No
+2	Mne	ja	PRON	PPhs3	Case=Dat|Number=Sing|Person=1|PronType=Prs	3	obl:arg	3:obl:arg:dat	_
+3	je	byť	VERB	VKesc+	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Pres|VerbForm=Fin	0	root	0:root	_
+4	to	to	DET	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	3	nsubj	3:nsubj	_
+5	jedno	jeden	NUM	NFns1	Case=Nom|Gender=Neut|Number=Sing	3	obl	3:obl:nom	SpaceAfter=No
+6	.	.	PUNCT	ZIP	_	3	punct	3:punct	_
+
+# sent_id = orwell1984:b2113aa2:.j.
+# text = Je to posledný človek.
+# orig_file_sentence 027#88
+1	Je	byť	AUX	VKesc+	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Pres|VerbForm=Fin	4	cop	4:cop	_
+2	to	to	DET	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	4	nsubj	4:nsubj	_
+3	posledný	posledný	ADJ	AAms1x	Animacy=Anim|Case=Nom|Degree=Pos|Gender=Masc|Number=Sing	4	amod	4:amod	_
+4	človek	človek	NOUN	SSms1	Animacy=Anim|Case=Nom|Gender=Masc|Number=Sing	0	root	0:root	SpaceAfter=No
+5	.	.	PUNCT	ZIP	_	4	punct	4:punct	_
+
+# sent_id = orwell1984:b2115aa2:.r.
+# text = DVA A DVA JE PÄŤ
+# orig_file_sentence 028#17
+1	DVA	dva	NUM	NX	_	5	nsubj	5:nsubj	_
+2	A	a	CCONJ	O	_	3	cc	3:cc	_
+3	DVA	dva	NUM	NX	_	1	conj	1:conj|5:nsubj	_
+4	JE	byť	AUX	VKesc+	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Pres|VerbForm=Fin	5	cop	5:cop	_
+5	PÄŤ	päť	NUM	NUns1	Case=Nom|Gender=Neut|Number=Sing	0	root	0:root	_
+
+# sent_id = orwell1984:b241aa2:.as.
+# text = "To nič nie je.
+# orig_file_sentence 030#53
+1	"	"	PUNCT	ZIP	_	3	punct	3:punct	SpaceAfter=No
+2	To	to	DET	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	3	nsubj	3:nsubj	_
+3	nič	nič	PRON	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Neg	0	root	0:root	_
+4	nie	nie	PART	T	_	3	advmod	3:advmod	_
+5	je	byť	AUX	VKesc-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Neg|Tense=Pres|VerbForm=Fin	3	cop	3:cop	SpaceAfter=No
+6	.	.	PUNCT	ZIP	_	3	punct	3:punct	_
+
+# sent_id = orwell1984:b245aa2:.ag.
+# text = Bol pri dievčati.
+# orig_file_sentence 030#93
+1	Bol	byť	VERB	VLescm+	Animacy=Anim|Aspect=Imp|Gender=Masc|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	0	root	0:root	_
+2	pri	pri	ADP	Eu6	AdpType=Prep|Case=Loc	3	case	3:case	_
+3	dievčati	dievča	NOUN	SSns6	Case=Loc|Gender=Neut|Number=Sing	1	obl	1:obl:pri:loc	SpaceAfter=No
+4	.	.	PUNCT	ZIP	_	1	punct	1:punct	_
+
+# sent_id = orwell1984:b247aa2:.m.
+# text = Bola to ona.
+# orig_file_sentence 031#11
+1	Bola	byť	AUX	VLescf+	Aspect=Imp|Gender=Fem|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	3	cop	3:cop	_
+2	to	to	DET	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	3	nsubj	3:nsubj	_
+3	ona	ona	PRON	PFfs1	Case=Nom|Gender=Fem|Number=Sing|Person=3|PronType=Prs	0	root	0:root	SpaceAfter=No
+4	.	.	PUNCT	ZIP	_	3	punct	3:punct	_
+
+# sent_id = orwell1984:b251aa2:.aw.
+# text = Nie je to na porazenie?!
+# orig_file_sentence 031#79
+1	Nie	nie	PART	T	_	2	advmod	2:advmod	_
+2	je	byť	VERB	VKesc-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Neg|Tense=Pres|VerbForm=Fin	0	root	0:root	_
+3	to	to	DET	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	2	nsubj	2:nsubj	_
+4	na	na	ADP	Eu4	AdpType=Prep|Case=Acc	5	case	5:case	_
+5	porazenie	porazenie	NOUN	SSns4	Case=Acc|Gender=Neut|Number=Sing	2	obl	2:obl:na:acc	SpaceAfter=No
+6	?	?	PUNCT	ZIP	_	2	punct	2:punct	SpaceAfter=No
+7	!	!	PUNCT	ZIP	_	2	punct	2:punct	_
+
+# sent_id = patmos:patmos-002:patmos_002-p5s3
+# text = Nie je to ľahké.
+# orig_file_sentence 035#2
+1	Nie	nie	PART	T	_	4	advmod	4:advmod	_
+2	je	byť	AUX	VKesc-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Neg|Tense=Pres|VerbForm=Fin	4	cop	4:cop	_
+3	to	to	DET	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	4	nsubj	4:nsubj	_
+4	ľahké	ľahký	ADJ	AAns1x	Case=Nom|Degree=Pos|Gender=Neut|Number=Sing	0	root	0:root	SpaceAfter=No
+5	.	.	PUNCT	Z	_	4	punct	4:punct	_
+
+# sent_id = psiakoza:Psia-koza-013:Psia_koza_013-p2s2
+# text = Nezáleží na tom, kto si.
+# orig_file_sentence 041#1
+1	Nezáleží	záležať	VERB	VKesc-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Neg|Tense=Pres|VerbForm=Fin	0	root	0:root	_
+2	na	na	ADP	Eu6	AdpType=Prep|Case=Loc	3	case	3:case	_
+3	tom	to	DET	PFns6	Case=Loc|Gender=Neut|Number=Sing|PronType=Dem	1	obl:arg	1:obl:arg:na:loc|6:nsubj	SpaceAfter=No
+4	,	,	PUNCT	Z	_	6	punct	6:punct	_
+5	kto	kto	PRON	PFms1	Animacy=Anim|Case=Nom|Gender=Masc|Number=Sing|PronType=Int,Rel	6	nsubj	3:ref	_
+6	si	byť	VERB	VKesb+	Aspect=Imp|Mood=Ind|Number=Sing|Person=2|Polarity=Pos|Tense=Pres|VerbForm=Fin	3	acl:relcl	3:acl:relcl	SpaceAfter=No
+7	.	.	PUNCT	Z	_	1	punct	1:punct	_
+
+# sent_id = psiakoza:Psia-koza-017:Psia_koza_017-p3s23
+# text = Bola to moja učiteľka.
+# orig_file_sentence 041#71
+1	Bola	byť	AUX	VLescf+	Aspect=Imp|Gender=Fem|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	4	cop	4:cop	_
+2	to	to	DET	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	4	nsubj	4:nsubj	_
+3	moja	môj	DET	PFfs1	Case=Nom|Gender=Fem|Number=Sing|Number[psor]=Sing|Person=1|Poss=Yes|PronType=Prs	4	det	4:det	_
+4	učiteľka	učiteľka	NOUN	SSfs1	Case=Nom|Gender=Fem|Number=Sing	0	root	0:root	SpaceAfter=No
+5	.	.	PUNCT	Z	_	4	punct	4:punct	_
+
+# sent_id = psiakoza:Psia-koza-021:Psia_koza_021-p4s14
+# text = Bola mladá a veľmi pekná.
+# orig_file_sentence 042#16
+1	Bola	byť	AUX	VLescf+	Aspect=Imp|Gender=Fem|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	2	cop	2:cop	_
+2	mladá	mladý	ADJ	AAfs1x	Case=Nom|Degree=Pos|Gender=Fem|Number=Sing	0	root	0:root	_
+3	a	a	CCONJ	O	_	5	cc	5:cc	_
+4	veľmi	veľmi	ADV	Dx	Degree=Pos	5	advmod	5:advmod	_
+5	pekná	pekný	ADJ	AAfs1x	Case=Nom|Degree=Pos|Gender=Fem|Number=Sing	2	conj	0:root|2:conj	SpaceAfter=No
+6	.	.	PUNCT	Z	_	2	punct	2:punct	_
+
+# sent_id = psiakoza:Psia-koza-120:Psia_koza_120-p1s3
+# text = Ja som mal kávu.
+# orig_file_sentence 054#26
+1	Ja	ja	PRON	PPhs1	Case=Nom|Number=Sing|Person=1|PronType=Prs	3	nsubj	3:nsubj	_
+2	som	byť	AUX	VKesa+	Aspect=Imp|Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Pres|VerbForm=Fin	3	aux	3:aux	_
+3	mal	mať	VERB	VLesam+	Animacy=Anim|Aspect=Imp|Gender=Masc|Number=Sing|Polarity=Pos|Tense=Past|VerbForm=Part	0	root	0:root	_
+4	kávu	káva	NOUN	SSfs4	Case=Acc|Gender=Fem|Number=Sing	3	obj	3:obj	SpaceAfter=No
+5	.	.	PUNCT	Z	_	3	punct	3:punct	_
+
+# sent_id = rozpravky:kd12:kd12-p15s2
+# text = “ Ide ti to!“
+# orig_file_sentence 068#66
+1	“	“	PUNCT	Z	_	2	punct	2:punct	_
+2	Ide	ísť	VERB	VKesc+	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Pres|VerbForm=Fin	0	root	0:root	_
+3	ti	ty	PRON	PPhs3	Case=Dat|Number=Sing|Person=2|PronType=Prs	2	obl:arg	2:obl:arg:dat	_
+4	to	ten	DET	PFns1	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	2	nsubj	2:nsubj	SpaceAfter=No
+5	!	!	PUNCT	Z	_	2	punct	2:punct	SpaceAfter=No
+6	“	“	PUNCT	Z	_	2	punct	2:punct	_
+

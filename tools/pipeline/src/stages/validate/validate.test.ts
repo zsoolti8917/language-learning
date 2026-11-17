@@ -12,6 +12,12 @@ import { STAGES } from '..';
 import { morphStage } from '../morph';
 import { allChecks, validateStage } from '.';
 
+// The stages whose checks the mini dataset is held to: later stages (scenarios, library, …)
+// check content targets the mini dataset does not aim at.
+const MINI_STAGES = STAGES.filter((s) =>
+  ['fetch', 'morph', 'freq', 'dict', 'validate', 'load'].includes(s.name),
+);
+
 const SAMPLE = fileURLToPath(new URL('../morph/fixtures/snk-sample.txt', import.meta.url));
 
 async function miniRegistry(): Promise<LemmaRegistry> {
@@ -36,15 +42,18 @@ describe('validate on a set folder', () => {
   afterAll(() => t.remove());
 
   it('passes the mini dataset, with every core check and the morph checks', async () => {
-    const r = await validateSet(MINI_DIR, allChecks(STAGES), { registry: await miniRegistry() });
+    const r = await validateSet(MINI_DIR, allChecks(MINI_STAGES), {
+      registry: await miniRegistry(),
+    });
     expect(r.issues).toEqual([]);
     expect(r.ok).toBe(true);
     // The mini prepositions carry no flags.cases: a warning here, an issue in a full build.
     expect(r.warnings.filter((w) => w.check === 'morph.prep-cases')).toHaveLength(12);
-    const full = await validateSet(MINI_DIR, allChecks(STAGES), {
+    const full = await validateSet(MINI_DIR, allChecks(MINI_STAGES), {
       registry: await miniRegistry(),
       complete: true,
     });
+    // MINI_STAGES stops at dict, so sentences.coverage is not checked here (see sentences.test.ts).
     expect(Object.keys(full.issueCounts)).toEqual(['morph.prep-cases']);
   });
 
