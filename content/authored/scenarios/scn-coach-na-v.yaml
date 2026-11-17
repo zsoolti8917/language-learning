@@ -1,0 +1,28 @@
+id: scn-coach-na-v
+mode: case_coach
+ord: 10
+level: A2
+titleEn: Where and where to? Na and v
+titleSk: Kde si a kam ideš?
+goalEn: Tell apart where you are (na and v with the locative) and where you are going (na and v with the accusative).
+settingSk: Učiteľ sa ťa pýta, kde si teraz, kde bývaš a kam pôjdeš. Na každú otázku odpovedáš celou vetou.
+tutorRole: A patient Slovak teacher who alternates questions with kde and kam, so the answer switches between the locative and the accusative.
+targetCases: [loc, acc]
+targetTriggers: [prep-v-loc, prep-na-loc, prep-na-acc, prep-v-acc, q-kde]
+openingSk: Ahoj! Kde si teraz a kam pôjdeš potom?
+successCriteria:
+  - id: c1
+    textEn: Say where you are now, with v or na and the locative.
+  - id: c2
+    textEn: Say where you are going, with na and the accusative.
+  - id: c3
+    textEn: Say on which day you are going, with v and the accusative.
+  - id: c4
+    textEn: Answer a kde question and a kam question about the same place.
+vocabHint:
+  - { sk: pošta, en: post office }
+  - { sk: koncert, en: concert }
+  - { sk: námestie, en: square }
+  - { sk: obchod, en: shop }
+  - { sk: kde, en: where }
+  - { sk: kam, en: where to }

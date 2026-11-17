@@ -1,0 +1,28 @@
+id: scn-groceries
+mode: scenario
+ord: 4
+level: A2
+titleEn: At the market
+titleSk: Na trhu
+goalEn: Buy three things in the amounts you need, ask what they cost and pay.
+settingSk: Je sobota a si na trhu. Pred tebou je stánok s ovocím, so zeleninou a so syrom. Máš pri sebe zoznam.
+tutorRole: A cheerful market seller who likes to chat. Speaks simple A2 Slovak and names prices clearly.
+targetCases: [gen, acc]
+targetTriggers: [num-pat, q-co-acc, prep-bez]
+openingSk: Dobré ráno! Čo to bude dnes?
+successCriteria:
+  - id: c1
+    textEn: Ask for three things, each with an amount.
+  - id: c2
+    textEn: Use a number of five or more with a plural noun.
+  - id: c3
+    textEn: Ask how much it costs.
+  - id: c4
+    textEn: Pay and say goodbye.
+vocabHint:
+  - { sk: jablko, en: apple }
+  - { sk: zemiak, en: potato }
+  - { sk: syr, en: cheese }
+  - { sk: kilo, en: kilogram }
+  - { sk: koľko to stojí, en: how much is it }
+  - { sk: euro, en: euro }

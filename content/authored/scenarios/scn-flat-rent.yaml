@@ -1,0 +1,28 @@
+id: scn-flat-rent
+mode: scenario
+ord: 5
+level: B1
+titleEn: Renting a flat
+titleSk: Hľadám byt
+goalEn: Call about a flat for rent, find out what it is like and where it is, and arrange a visit.
+settingSk: Hľadáš byt v meste. Na internete je pekný byt a ty voláš majiteľke, lebo chceš vedieť viac.
+tutorRole: The owner of a two room flat for rent. Polite and businesslike, speaks natural B1 Slovak with the formal vy and answers questions about the flat.
+targetCases: [loc, ins, acc]
+targetTriggers: [prep-v-loc, prep-na-loc, prep-pri, prep-o-loc, prep-s-ins, prep-v-acc]
+openingSk: Dobrý deň, voláte kvôli bytu? Čo by ste chceli vedieť?
+successCriteria:
+  - id: c1
+    textEn: Ask how much the rent is and what it includes.
+  - id: c2
+    textEn: Ask where the flat is and what is near it.
+  - id: c3
+    textEn: Ask about the rooms and the floor.
+  - id: c4
+    textEn: Agree on a day and time to see the flat.
+vocabHint:
+  - { sk: nájom, en: rent }
+  - { sk: izba, en: room }
+  - { sk: poschodie, en: floor }
+  - { sk: balkón, en: balcony }
+  - { sk: zastávka, en: stop }
+  - { sk: pozrieť si byt, en: to view the flat }

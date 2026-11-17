@@ -1,0 +1,26 @@
+id: scn-coach-acc
+mode: case_coach
+ord: 9
+level: A2
+titleEn: What do you see? The accusative
+titleSk: Čo vidíš?
+goalEn: Practise the accusative of things and people as the object of a verb and after pre.
+settingSk: Učiteľka sa ťa pýta, čo vidíš, koho poznáš, čo sa ti páči a čo kupuješ pre iných.
+tutorRole: A patient Slovak teacher who asks short questions with čo, koho and pre koho and waits for full answers.
+targetCases: [acc]
+targetTriggers: [verb-vidiet, q-co-acc, q-koho-acc, prep-pre]
+openingSk: Ahoj! Pozri sa z okna. Čo vidíš?
+successCriteria:
+  - id: c1
+    textEn: Name three things you see, each in the accusative.
+  - id: c2
+    textEn: Say whom you see or know, using a person in the accusative.
+  - id: c3
+    textEn: Say what you are buying and for whom, with pre.
+vocabHint:
+  - { sk: strom, en: tree }
+  - { sk: auto, en: car }
+  - { sk: žena, en: woman }
+  - { sk: brat, en: brother }
+  - { sk: darček, en: present }
+  - { sk: kupovať, en: to buy }

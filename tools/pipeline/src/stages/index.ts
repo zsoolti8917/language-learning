@@ -5,8 +5,10 @@ import type { Stage } from '../lib/runner';
 import { dictStage } from './dict';
 import { fetchStage } from './fetch';
 import { freqStage } from './freq';
+import { libraryStage } from './library';
 import { loadStage } from './load';
 import { morphStage } from './morph';
+import { scenariosStage } from './scenarios';
 import { validateStage } from './validate';
 
 export const STAGES: readonly Stage[] = [
@@ -14,7 +16,9 @@ export const STAGES: readonly Stage[] = [
   morphStage,
   freqStage,
   dictStage,
-  // C3: sentences · C4: triggers, lessons, exercises · C5: scenarios, library
+  // C3: sentences · C4: triggers, lessons, exercises
+  scenariosStage,
+  libraryStage,
   validateStage,
   loadStage,
 ];
