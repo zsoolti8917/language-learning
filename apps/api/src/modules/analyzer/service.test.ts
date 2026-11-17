@@ -13,7 +13,9 @@ import { type AnalyzerDeps, analyzeText } from './service';
 
 const USER = '0192f0c1-0000-7000-8000-000000000001';
 
-function miniDeps(ai: MockGateway): AnalyzerDeps {
+type TriggerEdit = (rows: TriggerFacts[]) => TriggerFacts[];
+
+function miniDeps(ai: MockGateway, edit: TriggerEdit = (rows) => rows): AnalyzerDeps {
   const mini = loadMini();
   return {
     morphology: createMiniMorphology(),
@@ -37,14 +39,16 @@ function miniDeps(ai: MockGateway): AnalyzerDeps {
       });
     },
     async triggers() {
-      return mini.triggers.map(
-        (t): TriggerFacts => ({
-          id: t.id,
-          kind: t.kind,
-          lemma: t.lemma,
-          lemmaId: t.lemmaId ?? null,
-          case: t.case,
-        }),
+      return edit(
+        mini.triggers.map(
+          (t): TriggerFacts => ({
+            id: t.id,
+            kind: t.kind,
+            lemma: t.lemma,
+            lemmaId: t.lemmaId ?? null,
+            case: t.case,
+          }),
+        ),
       );
     },
   };
@@ -55,8 +59,8 @@ const strict = () => createMockGateway();
 /** The local mode gateway: the first reading of every word. */
 const local = () => createMockGateway({ defaults: promptMockDefaults() });
 
-async function analyze(body: string, ai: MockGateway = strict()) {
-  const r = await analyzeText(miniDeps(ai), body, { userId: USER });
+async function analyze(body: string, ai: MockGateway = strict(), edit?: TriggerEdit) {
+  const r = await analyzeText(miniDeps(ai, edit), body, { userId: USER });
   TextAnalysisSchema.parse(r.analysis);
   return r;
 }
@@ -141,6 +145,56 @@ describe('rules decide without the model', () => {
       tag: 'p7',
       trig: { kind: 'preposition', id: 'prep-s-ins' },
     });
+  });
+
+  it('dva, tri, štyri agree with the counted noun instead of making it nominative', async () => {
+    // C4's trigger list gives dva the nominative; dve ženy is also the accusative.
+    const withDva: TriggerEdit = (rows) => [
+      ...rows,
+      { id: 'num-dva', kind: 'numeral', lemma: 'dva', lemmaId: 58, case: 'nom' },
+    ];
+    const body = 'Vidím dve ženy.';
+    const ai = local();
+    const { analysis } = await analyze(body, ai, withDva);
+    expect(askedWords(ai)).toContain('ženy');
+    const asked = JSON.parse(ai.callsFor('reader.disambiguate')[0]?.messages[0]?.content ?? '{}');
+    const zeny = asked.words.find((w: { word: string }) => w.word === 'ženy') as {
+      readings: { case: string; number: string }[];
+    };
+    // Plural nominative, accusative (and vocative) are left to the model; the singular
+    // genitive is gone.
+    expect(zeny.readings.map((r) => `${r.case}.${r.number}`).sort()).toEqual([
+      'acc.pl',
+      'nom.pl',
+      'voc.pl',
+    ]);
+    expect(tok(body, analysis, 'ženy')).toMatchObject({ m: 'model' });
+  });
+
+  it('a numeral in the accusative stays accusative before a genitive plural', async () => {
+    // päť without a trigger row (as zopár, mnoho): the agreement rule used to make it p2.
+    const noPat: TriggerEdit = (rows) => rows.filter((t) => t.id !== 'num-pat');
+    const body = 'Mám päť žien.';
+    const { analysis } = await analyze(body, local(), noPat);
+    expect(tok(body, analysis, 'žien')).toMatchObject({ tag: 'p2' });
+    expect(tok(body, analysis, 'žien').trig).toBeUndefined();
+    expect(tok(body, analysis, 'päť').tag).toMatch(/^[sp][14]/u);
+    // With the trigger row it is the plural nominative or accusative and marks the noun.
+    const listed = await analyze(body, local());
+    expect(tok(body, listed.analysis, 'päť').tag).toMatch(/^p[14]/u);
+    expect(tok(body, listed.analysis, 'žien').trig).toMatchObject({ id: 'num-pat' });
+  });
+
+  it('a name inside a sentence is never a common word with other accents', async () => {
+    // "Zenu" after another word is a name the data lacks, not "ženu"; at the start of a
+    // sentence it may be "ženu" typed without accents, so the fallback stays.
+    const body = 'Videl som Zenu. Zenu som videl.';
+    const { analysis } = await analyze(body, local());
+    expect(tok(body, analysis, 'Zenu').l).toBeUndefined();
+    expect(tok(body, analysis, 'Zenu', 1)).toMatchObject({ l: 11, tag: 's4', m: 'single' });
+    // Exact spellings are unaffected, and so are proper names the data has.
+    const v = 'Som v Bratislave.';
+    expect(tok(v, (await analyze(v)).analysis, 'Bratislave')).toMatchObject({ l: 31 });
   });
 
   it('a rule never removes the last reading', async () => {
