@@ -81,55 +81,30 @@ function readJsonl<T>(path: string): T[] {
   return out;
 }
 
-/**
- * Preposition triggers made from the cases the morphology records on each preposition
- * (`flags.cases`), named as the mini dataset names them (`prep-do`, `prep-v-loc`). The
- * authored trigger list (C4) is not built yet; until it is, this fills the gap for
- * prepositions. Triggers already in `known` win.
- */
-export function prepositionTriggers(
-  lemmas: readonly LexLemma[],
-  known: readonly LexTrigger[],
-): LexTrigger[] {
-  const have = new Set(known.map((t) => `${foldAscii(t.lemma)}|${t.case}`));
-  const ids = new Set(known.map((t) => t.id));
-  const out: LexTrigger[] = [];
-  for (const l of lemmas) {
-    const cases = l.pos === 'prep' ? (l.flags?.cases ?? []) : [];
-    for (const c of cases) {
-      if (have.has(`${foldAscii(l.lemma)}|${c}`)) continue;
-      const id = cases.length === 1 ? `prep-${l.lemma}` : `prep-${l.lemma}-${c}`;
-      if (ids.has(id)) continue;
-      ids.add(id);
-      out.push({ id, kind: 'preposition', lemma: l.lemma, lemmaId: l.id, case: c });
-    }
-  }
-  return out;
-}
-
 /** A content folder with `lemmas.jsonl`, `forms.jsonl` and `triggers.jsonl` (the mini dataset). */
 export function sourceFromContentDir(dir: string): LexiconSource {
-  const lemmas = readJsonl<LexLemma>(join(dir, 'lemmas.jsonl'));
-  const triggers = readJsonl<LexTrigger>(join(dir, 'triggers.jsonl'));
   return {
-    lemmas,
+    lemmas: readJsonl<LexLemma>(join(dir, 'lemmas.jsonl')),
     forms: readJsonl<LexForm>(join(dir, 'forms.jsonl')),
-    triggers: [...triggers, ...prepositionTriggers(lemmas, triggers)],
+    triggers: readJsonl<LexTrigger>(join(dir, 'triggers.jsonl')),
     label: shortName(dir),
   };
 }
 
 /**
  * The pipeline's build output: `<build>/morph/{lemmas,forms}.jsonl`, ranks and top forms from
- * `<build>/freq/lemmas.jsonl` when `freq` has run, and the triggers of `triggersDir` (the mini
- * dataset until C4 builds the full list) plus the preposition triggers of the morphology.
+ * `<build>/freq/lemmas.jsonl` when `freq` has run, and the full trigger list of the `triggers`
+ * stage (C4, `<build>/triggers/triggers.jsonl`), the rows `ling.trigger` holds in production.
  */
-export function sourceFromBuild(buildDir: string, triggersDir: string): LexiconSource {
+export function sourceFromBuild(buildDir: string): LexiconSource {
   const morph = join(buildDir, 'morph');
   if (!existsSync(join(morph, 'forms.jsonl')))
     throw new Error(
       `${morph}/forms.jsonl is missing: run "pnpm run pipeline fetch --source snk-morphology" and "pnpm run pipeline morph" first.`,
     );
+  const triggersFile = join(buildDir, 'triggers', 'triggers.jsonl');
+  if (!existsSync(triggersFile))
+    throw new Error(`${triggersFile} is missing: run "pnpm run pipeline triggers" first.`);
   const lemmas = readJsonl<LexLemma>(join(morph, 'lemmas.jsonl'));
   const freqFile = join(buildDir, 'freq', 'lemmas.jsonl');
   let ranked = 0;
@@ -143,12 +118,12 @@ export function sourceFromBuild(buildDir: string, triggersDir: string): LexiconS
       ranked++;
     }
   }
-  const authored = readJsonl<LexTrigger>(join(triggersDir, 'triggers.jsonl'));
+  const triggers = readJsonl<LexTrigger>(triggersFile);
   return {
     lemmas,
     forms: readJsonl<LexForm>(join(morph, 'forms.jsonl')),
-    triggers: [...authored, ...prepositionTriggers(lemmas, authored)],
-    label: `${shortName(buildDir)} (${lemmas.length} lemmas, ${ranked} ranked)`,
+    triggers,
+    label: `${shortName(buildDir)} (${lemmas.length} lemmas, ${ranked} ranked, ${triggers.length} triggers)`,
   };
 }
 

@@ -55,6 +55,7 @@ export interface WorkSentence {
 /** The trigger list, indexed by the lemma of the trigger word. */
 export interface TriggerIndex {
   preposition: Map<number, TriggerFacts[]>;
+  /** Numerals and quantity words (*päť*, *dva*, *veľa*). */
   numeral: Map<number, TriggerFacts[]>;
   verb: Map<number, TriggerFacts[]>;
 }
@@ -66,7 +67,7 @@ export function indexTriggers(rows: readonly TriggerFacts[]): TriggerIndex {
     const map =
       r.kind === 'preposition'
         ? out.preposition
-        : r.kind === 'numeral'
+        : r.kind === 'numeral' || r.kind === 'quantifier'
           ? out.numeral
           : r.kind === 'verb'
             ? out.verb
@@ -87,11 +88,14 @@ export interface Phrase {
   members: number[];
   /** The case the trigger asks for, for a numeral; prepositions look it up per member. */
   triggers: TriggerFacts[];
+  /** A number written in digits. */
+  digits?: boolean;
 }
 
 const NOMINAL_POS: ReadonlySet<Pos> = new Set(['noun', 'adj', 'pron', 'num']);
 const isNominal = (o: Option) => o.case !== undefined && NOMINAL_POS.has(o.pos);
 const NUMERAL_FROM = 5;
+const nomAcc = (o: Option) => o.case === 'nom' || o.case === 'acc';
 
 /** Keeps the readings that pass `keep`, unless none would be left. Returns true on a change. */
 export function narrow(w: Word, keep: (o: Option) => boolean): boolean {
@@ -128,6 +132,15 @@ function prepositionReadings(w: Word, idx: TriggerIndex): Option[] {
   return w.options.filter((o) => o.pos === 'prep' && idx.preposition.has(o.lemmaId));
 }
 
+/**
+ * A word that counts in the genitive when it is itself in the nominative or accusative
+ * (*päť žien*, *mnoho generácií*, *zopár otázok*): a numeral with the neuter singular
+ * nominative or accusative reading that such words have in the data.
+ */
+function isQuantityWord(w: Word): boolean {
+  return w.options.some((o) => o.pos === 'num' && (o.tag === 's1n' || o.tag === 's4n'));
+}
+
 /** The value of a number token written in digits, or null. */
 function integerOf(text: string): number | null {
   return /^\d+$/u.test(text) ? Number(text) : null;
@@ -155,7 +168,9 @@ export function applyRules(s: WorkSentence, idx: TriggerIndex): Phrase[] {
     phrases.push({ trigger: j, kind: 'preposition', members, triggers: [] });
   }
 
-  // 2. Numerals from five up, in the nominative or accusative, take the genitive plural.
+  // 2. Numerals. Numerals from five up and quantity words, in the nominative or accusative,
+  //    take the genitive (the plural after a numeral of the trigger list); dva, tri, štyri
+  //    (trigger case nominative) agree with the counted noun in case instead.
   const inPrepPhrase = new Map<number, Phrase>();
   for (const p of phrases) for (const m of p.members) inPrepPhrase.set(m, p);
   for (let j = 0; j < s.tokens.length; j++) {
@@ -163,6 +178,8 @@ export function applyRules(s: WorkSentence, idx: TriggerIndex): Phrase[] {
     if (!tok) continue;
     const w = s.words[j];
     let triggers: TriggerFacts[] = [];
+    let nums: Option[] = [];
+    let plural = true;
     if (tok.t === 'num') {
       const n = integerOf(s.texts[j] ?? '');
       if (n === null || n < NUMERAL_FROM) continue;
@@ -171,25 +188,49 @@ export function applyRules(s: WorkSentence, idx: TriggerIndex): Phrase[] {
       const governing = inPrepPhrase.get(j);
       if (governing && !prepAllowsNomAcc(s, governing, idx)) continue;
     } else if (w) {
-      const nums = w.options.filter((o) => idx.numeral.has(o.lemmaId));
-      if (nums.length === 0) continue;
-      const nomAcc = (o: Option) => o.case === 'nom' || o.case === 'acc';
-      if (!nums.some(nomAcc)) continue;
-      narrow(w, (o) => nums.includes(o) && nomAcc(o));
-      narrow(w, (o) => o.number === 'pl');
+      nums = w.options.filter((o) => idx.numeral.has(o.lemmaId));
       for (const o of nums) triggers.push(...(idx.numeral.get(o.lemmaId) ?? []));
       triggers = [...new Map(triggers.map((t) => [t.id, t])).values()];
+      if (triggers.length > 0 && triggers.every((t) => t.case !== 'gen')) {
+        const p = agreeingNumeral(s, j, w, nums, triggers);
+        if (p) phrases.push(p);
+        continue;
+      }
+      if (nums.length === 0 && isQuantityWord(w)) {
+        // Not in the trigger list (zopár, jedenásť): the same rule, any number after it.
+        nums = w.options.filter((o) => o.pos === 'num');
+        plural = false;
+      }
+      if (triggers.some((t) => t.kind === 'quantifier')) plural = false;
+      if (!nums.some(nomAcc)) continue;
+      // Quantity words are also adverbs (viac ho priťahoval, viac diferencovane): only a noun
+      // or adjective in the genitive right after one makes it count.
+      const next = s.words[j + 1];
+      if (
+        !plural &&
+        !next?.options.some((o) => (o.pos === 'noun' || o.pos === 'adj') && o.case === 'gen')
+      )
+        continue;
     } else continue;
-    const want: Case = triggers[0]?.case ?? 'gen';
-    const members = walkPhrase(s, j + 1, (o) => o.case === want && o.number === 'pl');
+    const members = walkPhrase(s, j + 1, (o) => o.case === 'gen' && (!plural || o.number === 'pl'));
     if (members.length === 0) continue;
+    if (w && tok.t !== 'num') {
+      narrow(w, (o) => nums.includes(o) && nomAcc(o));
+      if (plural) narrow(w, (o) => o.number === 'pl');
+    }
     // The numeral takes the gender of the counted noun.
     const head = s.words[members[members.length - 1] as number];
     if (w && head) {
       const genders = new Set(head.options.map((o) => o.gender));
       narrow(w, (o) => o.gender === undefined || genders.has(o.gender));
     }
-    phrases.push({ trigger: j, kind: 'numeral', members, triggers });
+    phrases.push({
+      trigger: j,
+      kind: 'numeral',
+      members,
+      triggers,
+      ...(tok.t === 'num' ? { digits: true } : {}),
+    });
   }
 
   // 3. Adjectives (and agreeing pronouns) agree with the noun after them.
@@ -200,7 +241,8 @@ export function applyRules(s: WorkSentence, idx: TriggerIndex): Phrase[] {
     const mods: Word[] = [];
     for (let k = h - 1; k >= 0; k--) {
       const m = s.words[k];
-      if (!m?.options.some((o) => o.agrees && !idx.numeral.has(o.lemmaId))) break;
+      if (!m || isQuantityWord(m)) break;
+      if (!m.options.some((o) => o.agrees && !idx.numeral.has(o.lemmaId))) break;
       mods.push(m);
     }
     if (mods.length === 0) continue;
@@ -219,6 +261,36 @@ export function applyRules(s: WorkSentence, idx: TriggerIndex): Phrase[] {
   }
 
   return phrases;
+}
+
+/**
+ * dva, tri, štyri: the counted phrase is plural and in the numeral's own case (*dva roky*,
+ * *dvoch chlapov*, *dvom ženám*); the numeral keeps the cases and genders the head allows.
+ */
+function agreeingNumeral(
+  s: WorkSentence,
+  j: number,
+  w: Word,
+  nums: readonly Option[],
+  triggers: TriggerFacts[],
+): Phrase | undefined {
+  const cases = new Set(nums.map((o) => o.case));
+  const members = walkPhrase(
+    s,
+    j + 1,
+    (o) => o.number === 'pl' && o.case !== undefined && cases.has(o.case),
+  );
+  const head = s.words[members[members.length - 1] as number];
+  if (!head) return undefined;
+  narrow(
+    w,
+    (o) =>
+      nums.includes(o) &&
+      head.options.some(
+        (h) => h.case === o.case && (o.gender === undefined || h.gender === o.gender),
+      ),
+  );
+  return { trigger: j, kind: 'numeral', members, triggers };
 }
 
 function prepAllowsNomAcc(s: WorkSentence, p: Phrase, idx: TriggerIndex): boolean {
@@ -246,10 +318,11 @@ export function assignTriggers(s: WorkSentence, phrases: readonly Phrase[], idx:
         const prep = chosen(p.trigger);
         const t = prep && idx.preposition.get(prep.lemmaId)?.find((x) => x.case === c.case);
         if (t) w.trig = { i: p.trigger, kind: 'preposition', id: t.id };
-      } else if (c.number === 'pl') {
+      } else {
         const t = p.triggers.find((x) => x.case === c.case);
-        if (t) w.trig = { i: p.trigger, kind: 'numeral', id: t.id };
-        else if (c.case === 'gen' && p.triggers.length === 0)
+        if (t && (t.kind === 'quantifier' || c.number === 'pl'))
+          w.trig = { i: p.trigger, kind: t.kind, id: t.id };
+        else if (p.digits && c.case === 'gen' && c.number === 'pl')
           w.trig = { i: p.trigger, kind: 'numeral' };
       }
     }

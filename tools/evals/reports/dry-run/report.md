@@ -4,7 +4,7 @@
 
 > Dry run: no request was sent. Costs are estimates from request sizes and expected output (see `EXPECTED_OUTPUT` in `tools/evals/src/gateway.ts`).
 
-Datasets: 300 correct sentences, 300 with an injected case error, 500 analyzer sentences (seed 20261117). Morphology: content/build (100681 lemmas, 5000 ranked).
+Datasets: 300 correct sentences, 300 with an injected case error, 500 analyzer sentences (seed 20261117). Morphology: content/build (100681 lemmas, 5000 ranked, 221 triggers).
 
 Prompt versions and models:
 
@@ -20,7 +20,7 @@ Prompt versions and models:
 |---|---|---|---|
 | False corrections on correct sentences, after verification | at most 2 % | 0.0 % (0/300) | yes |
 | Injected errors found | at least 85 % | 100.0 % (300/300) | yes |
-| Analyzer case accuracy (words the data knows) | at least 95 % | 96.6 % (2085/2158) | yes |
+| Analyzer case accuracy (words the data knows) | at least 95 % | 98.7 % (2121/2150) | yes |
 
 ## Tutor
 
@@ -77,53 +77,53 @@ False reports (case errors that are not the injected one): 0. Removed by verific
 
 | Metric | Value |
 |---|---|
-| Words the morphology data knows | 97.6 % (4447/4558) |
-| Lemma accuracy (known words) | 98.8 % (4394/4447) |
-| Case accuracy (known words) | 96.6 % (2085/2158) |
-| Case accuracy (all words, unknown ones wrong) | 92.2 % (2085/2261) |
+| Words the morphology data knows | 97.4 % (4439/4558) |
+| Lemma accuracy (known words) | 99.0 % (4394/4439) |
+| Case accuracy (known words) | 98.7 % (2121/2150) |
+| Case accuracy (all words, unknown ones wrong) | 93.8 % (2121/2261) |
 
 ### By how the reading was chosen
 
 | Method | Words | Lemma | Case |
 |---|---|---|---|
-| single | 967 | 97.6 % (944/967) | 95.5 % (379/397) |
-| rule | 966 | 99.1 % (957/966) | 98.1 % (527/537) |
-| model | 2514 | 99.2 % (2493/2514) | 96.3 % (1179/1224) |
-| none | 111 | 0.0 % (0/111) | 0.0 % (0/103) |
+| single | 962 | 98.1 % (944/962) | 96.4 % (378/392) |
+| rule | 952 | 99.2 % (944/952) | 99.1 % (524/529) |
+| model | 2525 | 99.2 % (2506/2525) | 99.2 % (1219/1229) |
+| none | 119 | 0.0 % (0/119) | 0.0 % (0/111) |
 
 ### Case accuracy by gold case
 
 | Case | Accuracy |
 |---|---|
-| nom | 92.6 % (539/582) |
+| nom | 96.6 % (560/580) |
 | gen | 99.6 % (446/448) |
-| dat | 96.6 % (115/119) |
-| acc | 96.1 % (536/558) |
+| dat | 98.3 % (117/119) |
+| acc | 99.5 % (550/553) |
 | voc | 100.0 % (1/1) |
 | loc | 99.6 % (251/252) |
-| ins | 99.5 % (197/198) |
+| ins | 99.5 % (196/197) |
 
 ### Most frequent case confusions
 
 | Gold | Chosen | Words |
 |---|---|---|
-| nom | none | 27 |
-| nom | gen | 11 |
-| acc | gen | 9 |
-| acc | none | 9 |
-| nom | acc | 3 |
-| acc | nom | 2 |
-| dat | nom | 2 |
+| nom | gen | 10 |
+| nom | none | 4 |
+| nom | acc | 4 |
+| acc | nom | 1 |
 | acc | loc | 1 |
-| acc | dat | 1 |
+| acc | gen | 1 |
 | dat | loc | 1 |
+| dat | nom | 1 |
+| gen | dat | 1 |
+| gen | acc | 1 |
 
 ## Cost and delay per route
 
 | Route | Model | Calls | Cached | Input tok | Output tok | Cache read tok | Cost | Per call | Mean delay | p95 delay |
 |---|---|---|---|---|---|---|---|---|---|---|
-| `reader.disambiguate` | claude-opus-5-5 | 57 | 0 | 382115 | 53686 | 0 | $2.60 | $0.05 | n/a | n/a |
+| `reader.disambiguate` | claude-opus-5-5 | 57 | 0 | 384122 | 58350 | 0 | $2.70 | $0.05 | n/a | n/a |
 | `tutor.analyze` | claude-opus-5-5 | 600 | 0 | 1751326 | 540000 | 0 | $17.81 | $0.03 | n/a | n/a |
-| `tutor.reply` | claude-opus-5-5 | 600 | 0 | 782197 | 150000 | 0 | $6.13 | $0.01 | n/a | n/a |
+| `tutor.reply` | claude-opus-5-5 | 600 | 0 | 781962 | 150000 | 0 | $6.13 | $0.01 | n/a | n/a |
 
-Total: 1257 calls, 0 from the cache, $26.54 (at most $84.75 if every call used its whole token limit).
+Total: 1257 calls, 0 from the cache, $26.64 (at most $92.79 if every call used its whole token limit).

@@ -14,7 +14,6 @@ import {
 import {
   contextOf,
   DisambiguationSchema,
-  maxTokensFor,
   type OpenWord,
   packBatches,
   picksOf,
@@ -48,17 +47,40 @@ export interface AnalyzerResult {
 }
 
 const lower = (s: string) => s.normalize('NFC').toLowerCase();
+const capitalised = (s: string) => /^\p{Lu}/u.test(s);
 
-/** The readings of one word, the most frequent first. */
+/**
+ * True for a word written as a name inside a sentence: a capital, then small letters, after
+ * another word or number of the same sentence. Slovak capitalises such a word only when it is
+ * a name (*že Maja*, *podal mi Colu*); a word in capitals throughout is left alone.
+ */
+export function isNameInSentence(text: string, previous: 'word' | 'num' | 'punct' | undefined) {
+  return (
+    (previous === 'word' || previous === 'num') &&
+    capitalised(text) &&
+    /\p{Ll}/u.test(text.slice(1))
+  );
+}
+
+/**
+ * The readings of one word, the most frequent first. With `asName` (see `isNameInSentence`)
+ * the accent fallback keeps only forms the data writes with a capital (*Zilina* → *Žilina*),
+ * so a name the data lacks is not read as a common word with other accents (*Maja* is not
+ * *mája*, a form of *máj*): it stays unknown rather than wrong. Readings of the exact
+ * spelling are all kept (*Španielska občianska vojna* is the adjective, not *Španielsko*).
+ */
 export function optionsOf(
   text: string,
   candidates: readonly FormCandidate[],
   lemmas: ReadonlyMap<number, LemmaFacts>,
+  asName = false,
 ): Option[] {
   // Prefer the forms written exactly so (capitals aside); fall back to forms that differ only
   // in accents, for text typed without them.
   const exact = candidates.filter((c) => lower(c.form) === lower(text));
-  const pool = exact.length > 0 ? exact : candidates;
+  let pool = exact.length > 0 ? exact : candidates;
+  // A name is never a common word spelled with other accents.
+  if (asName && exact.length === 0) pool = pool.filter((c) => capitalised(c.form));
   const scored: { o: Option; rank: number; share: number; n: number }[] = [];
   const seen = new Set<string>();
   for (const c of pool) {
@@ -137,7 +159,8 @@ export async function analyzeText(
     s.tokens.forEach((t, i) => {
       if (t.t !== 'word') return;
       const text = s.texts[i] as string;
-      const options = optionsOf(text, found.get(foldAscii(text)) ?? [], lemmas);
+      const asName = isNameInSentence(text, s.tokens[i - 1]?.t);
+      const options = optionsOf(text, found.get(foldAscii(text)) ?? [], lemmas, asName);
       s.words[i] = { options, initial: options.length };
     });
     phrases.push(applyRules(s, triggers));
@@ -181,7 +204,7 @@ export async function analyzeText(
         system: systemPrompt(),
         messages: [{ role: 'user', content: batch.message }],
         schema: DisambiguationSchema,
-        maxTokens: maxTokensFor(batch),
+        // No maxTokens: the route's limit leaves room for thinking (THINKING_ROOM_TOKENS).
       });
       picks = picksOf(batch, data);
     } catch (e) {

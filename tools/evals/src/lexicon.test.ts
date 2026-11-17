@@ -1,6 +1,10 @@
+import { copyFileSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { runMorphologySuite } from '@app/api/testing/suites/morphology';
+import { MINI_DIR } from '@app/testkit/mini';
 import { describe, expect, it } from 'vitest';
-import { prepositionTriggers } from './lexicon';
+import { Lexicon, sourceFromBuild } from './lexicon';
 import { miniLexicon } from './testing/fixtures';
 
 // The in-memory port passes the same suite as the lexicon module's real port, so the evals'
@@ -10,47 +14,50 @@ runMorphologySuite('evals in memory (mini dataset)', () => miniLexicon().morphol
 describe('Lexicon', () => {
   const lexicon = miniLexicon();
 
-  it('keeps the authored triggers and adds the preposition triggers of the data', () => {
+  it('keeps the trigger rows of the content folder as they are', () => {
     const ids = lexicon.triggers.map((t) => t.id);
     expect(ids).toContain('prep-do');
     expect(ids).toContain('verb-vidiet');
-    // The mini prepositions carry no flags.cases, so nothing is added there.
-    expect(ids.filter((id) => id === 'prep-do')).toHaveLength(1);
+    expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it('names derived triggers as the mini dataset does and never repeats a known one', () => {
-    const lemmas = [
-      {
-        id: 45,
-        key: 'do|prep||1',
-        lemma: 'do',
-        pos: 'prep' as const,
-        flags: { cases: ['gen' as const] },
-      },
-      {
-        id: 50,
-        key: 'v|prep||1',
-        lemma: 'v',
-        pos: 'prep' as const,
-        flags: { cases: ['acc' as const, 'loc' as const] },
-      },
-      {
-        id: 90,
-        key: 'medzi|prep||1',
-        lemma: 'medzi',
-        pos: 'prep' as const,
-        flags: { cases: ['acc' as const, 'ins' as const] },
-      },
-    ];
-    const known = [
-      { id: 'prep-v-loc', kind: 'preposition' as const, lemma: 'v', case: 'loc' as const },
-    ];
-    expect(prepositionTriggers(lemmas, known).map((t) => `${t.id}:${t.case}`)).toEqual([
-      'prep-do:gen',
-      'prep-v-acc:acc',
-      'prep-medzi-acc:acc',
-      'prep-medzi-ins:ins',
-    ]);
+  it('reads the full trigger list of the triggers stage (C4) from a pipeline build', () => {
+    const build = mkdtempSync(join(tmpdir(), 'evals-build-'));
+    try {
+      mkdirSync(join(build, 'morph'));
+      for (const f of ['lemmas.jsonl', 'forms.jsonl'])
+        copyFileSync(join(MINI_DIR, f), join(build, 'morph', f));
+      expect(() => sourceFromBuild(build)).toThrow(/pipeline triggers/u);
+      mkdirSync(join(build, 'triggers'));
+      const rows = [
+        {
+          id: 'prep-do',
+          kind: 'preposition',
+          lemma: 'do',
+          lemmaId: 45,
+          case: 'gen',
+          meaningEn: 'to',
+        },
+        { id: 'quant-vela', kind: 'quantifier', lemma: 'veľa', case: 'gen', meaningEn: 'a lot of' },
+      ];
+      writeFileSync(
+        join(build, 'triggers', 'triggers.jsonl'),
+        `${rows.map((r) => JSON.stringify(r)).join('\n')}\n`,
+      );
+      const source = sourceFromBuild(build);
+      // Exactly the stage's rows: nothing from the mini dataset, nothing derived.
+      expect(source.triggers.map((t) => t.id)).toEqual(['prep-do', 'quant-vela']);
+      expect(source.label).toMatch(/2 triggers/u);
+      expect(new Lexicon(source).triggerInfos()[1]).toEqual({
+        id: 'quant-vela',
+        kind: 'quantifier',
+        lemma: 'veľa',
+        case: 'gen',
+        meaningEn: 'a lot of',
+      });
+    } finally {
+      rmSync(build, { recursive: true, force: true });
+    }
   });
 
   it('serves lemma facts and triggers in the shapes the analyzer reads from ling', () => {

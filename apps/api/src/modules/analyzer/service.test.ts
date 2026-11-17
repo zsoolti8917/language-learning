@@ -1,19 +1,35 @@
 // The analyzer on in-memory ports (mini dataset) and the mock gateway: rules, the model step,
 // fallbacks, chunking and offsets. No database, no network.
-import { createMockGateway, type MockGateway, promptMockDefaults } from '@app/ai';
+import {
+  buildRequest,
+  createMockGateway,
+  type MockGateway,
+  promptMockDefaults,
+  ROUTE_DEFAULTS,
+  routeOverridesFromEnv,
+  routeSettings,
+} from '@app/ai';
 import { type TextAnalysis, TextAnalysisSchema } from '@app/contracts';
 import { tokenize } from '@app/ling';
 import { loadMini } from '@app/testkit/mini';
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
 import { createMiniDictionary, createMiniMorphology } from '../../testing/lexicon';
-import { MAX_CALLS_PER_TEXT, MAX_CHARS_PER_CALL, MAX_WORDS_PER_CALL } from './model';
+import {
+  answerTokens,
+  MAX_CALLS_PER_TEXT,
+  MAX_CHARS_PER_CALL,
+  MAX_WORDS_PER_CALL,
+  THINKING_ROOM_TOKENS,
+} from './model';
 import type { LemmaFacts, TriggerFacts } from './repo';
 import { type AnalyzerDeps, analyzeText } from './service';
 
 const USER = '0192f0c1-0000-7000-8000-000000000001';
 
-function miniDeps(ai: MockGateway): AnalyzerDeps {
+type TriggerEdit = (rows: TriggerFacts[]) => TriggerFacts[];
+
+function miniDeps(ai: MockGateway, edit: TriggerEdit = (rows) => rows): AnalyzerDeps {
   const mini = loadMini();
   return {
     morphology: createMiniMorphology(),
@@ -37,14 +53,16 @@ function miniDeps(ai: MockGateway): AnalyzerDeps {
       });
     },
     async triggers() {
-      return mini.triggers.map(
-        (t): TriggerFacts => ({
-          id: t.id,
-          kind: t.kind,
-          lemma: t.lemma,
-          lemmaId: t.lemmaId ?? null,
-          case: t.case,
-        }),
+      return edit(
+        mini.triggers.map(
+          (t): TriggerFacts => ({
+            id: t.id,
+            kind: t.kind,
+            lemma: t.lemma,
+            lemmaId: t.lemmaId ?? null,
+            case: t.case,
+          }),
+        ),
       );
     },
   };
@@ -55,8 +73,8 @@ const strict = () => createMockGateway();
 /** The local mode gateway: the first reading of every word. */
 const local = () => createMockGateway({ defaults: promptMockDefaults() });
 
-async function analyze(body: string, ai: MockGateway = strict()) {
-  const r = await analyzeText(miniDeps(ai), body, { userId: USER });
+async function analyze(body: string, ai: MockGateway = strict(), edit?: TriggerEdit) {
+  const r = await analyzeText(miniDeps(ai, edit), body, { userId: USER });
   TextAnalysisSchema.parse(r.analysis);
   return r;
 }
@@ -141,6 +159,56 @@ describe('rules decide without the model', () => {
       tag: 'p7',
       trig: { kind: 'preposition', id: 'prep-s-ins' },
     });
+  });
+
+  it('dva, tri, štyri agree with the counted noun instead of making it nominative', async () => {
+    // C4's trigger list gives dva the nominative; dve ženy is also the accusative.
+    const withDva: TriggerEdit = (rows) => [
+      ...rows,
+      { id: 'num-dva', kind: 'numeral', lemma: 'dva', lemmaId: 58, case: 'nom' },
+    ];
+    const body = 'Vidím dve ženy.';
+    const ai = local();
+    const { analysis } = await analyze(body, ai, withDva);
+    expect(askedWords(ai)).toContain('ženy');
+    const asked = JSON.parse(ai.callsFor('reader.disambiguate')[0]?.messages[0]?.content ?? '{}');
+    const zeny = asked.words.find((w: { word: string }) => w.word === 'ženy') as {
+      readings: { case: string; number: string }[];
+    };
+    // Plural nominative, accusative (and vocative) are left to the model; the singular
+    // genitive is gone.
+    expect(zeny.readings.map((r) => `${r.case}.${r.number}`).sort()).toEqual([
+      'acc.pl',
+      'nom.pl',
+      'voc.pl',
+    ]);
+    expect(tok(body, analysis, 'ženy')).toMatchObject({ m: 'model' });
+  });
+
+  it('a numeral in the accusative stays accusative before a genitive plural', async () => {
+    // päť without a trigger row (as zopár, mnoho): the agreement rule used to make it p2.
+    const noPat: TriggerEdit = (rows) => rows.filter((t) => t.id !== 'num-pat');
+    const body = 'Mám päť žien.';
+    const { analysis } = await analyze(body, local(), noPat);
+    expect(tok(body, analysis, 'žien')).toMatchObject({ tag: 'p2' });
+    expect(tok(body, analysis, 'žien').trig).toBeUndefined();
+    expect(tok(body, analysis, 'päť').tag).toMatch(/^[sp][14]/u);
+    // With the trigger row it is the plural nominative or accusative and marks the noun.
+    const listed = await analyze(body, local());
+    expect(tok(body, listed.analysis, 'päť').tag).toMatch(/^p[14]/u);
+    expect(tok(body, listed.analysis, 'žien').trig).toMatchObject({ id: 'num-pat' });
+  });
+
+  it('a name inside a sentence is never a common word with other accents', async () => {
+    // "Zenu" after another word is a name the data lacks, not "ženu"; at the start of a
+    // sentence it may be "ženu" typed without accents, so the fallback stays.
+    const body = 'Videl som Zenu. Zenu som videl.';
+    const { analysis } = await analyze(body, local());
+    expect(tok(body, analysis, 'Zenu').l).toBeUndefined();
+    expect(tok(body, analysis, 'Zenu', 1)).toMatchObject({ l: 11, tag: 's4', m: 'single' });
+    // Exact spellings are unaffected, and so are proper names the data has.
+    const v = 'Som v Bratislave.';
+    expect(tok(v, (await analyze(v)).analysis, 'Bratislave')).toMatchObject({ l: 31 });
   });
 
   it('a rule never removes the last reading', async () => {
@@ -306,6 +374,8 @@ describe('chunking', () => {
       const content = c.messages[0]?.content ?? '';
       expect(content.length).toBeLessThanOrEqual(MAX_CHARS_PER_CALL);
       expect(JSON.parse(content).words.length).toBeLessThanOrEqual(MAX_WORDS_PER_CALL);
+      // The route's limit applies, not one sized to the answer alone.
+      expect(c.maxTokens).toBeUndefined();
     }
     expect(tokenCount).toBeGreaterThan(2_000);
     // Every known word has a reading; those beyond the call limit are guesses.
@@ -323,6 +393,26 @@ describe('chunking', () => {
       for (const ctx of msg.contexts) expect(ctx.length).toBeLessThanOrEqual(402);
     }
     expect(ai.calls.length).toBeLessThanOrEqual(MAX_CALLS_PER_TEXT);
+  });
+});
+
+describe('token limit', () => {
+  it('the largest batch has its answer and room for adaptive thinking', () => {
+    // The longest possible answer: every word picked, with three place word and two place
+    // reading indexes. Even at 1.5 characters per token it fits answerTokens.
+    const picks = Array.from({ length: MAX_WORDS_PER_CALL }, (_, i) => ({ w: 100 + i, c: 99 }));
+    expect(JSON.stringify({ picks }).length / 1.5).toBeLessThan(answerTokens(MAX_WORDS_PER_CALL));
+    const need = answerTokens(MAX_WORDS_PER_CALL) + THINKING_ROOM_TOKENS;
+    expect(ROUTE_DEFAULTS['reader.disambiguate'].maxTokens).toBeGreaterThanOrEqual(need);
+    // What reaches the API: the route's limit, which AI_MAX_TOKENS_READER_DISAMBIGUATE changes.
+    const body = (env: Record<string, string>) =>
+      buildRequest(routeSettings('reader.disambiguate', {}, routeOverridesFromEnv(env)), {
+        system: [{ text: 'x' }],
+        messages: [{ role: 'user', content: '{}' }],
+      });
+    expect(body({}).max_tokens).toBe(ROUTE_DEFAULTS['reader.disambiguate'].maxTokens);
+    expect(body({}).output_config?.effort).toBe('low');
+    expect(body({ AI_MAX_TOKENS_READER_DISAMBIGUATE: '12000' }).max_tokens).toBe(12_000);
   });
 });
 

@@ -44,7 +44,7 @@ function parseModels(values: readonly string[] | undefined): Partial<Record<AiRo
 
 function lexiconOf(kind: string): Lexicon {
   if (kind === 'mini') return new Lexicon(sourceFromContentDir(MINI_DIR));
-  return new Lexicon(sourceFromBuild(PATHS.build, MINI_DIR));
+  return new Lexicon(sourceFromBuild(PATHS.build));
 }
 
 const RUN_OPTIONS = {

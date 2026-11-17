@@ -28,6 +28,7 @@ export const ROUTE_DEFAULTS: Readonly<Record<AiRoute, RouteDefaults>> = {
   'tutor.analyze': { effort: 'medium', maxTokens: 8000, timeoutMs: 60_000 },
   'tutor.reply': { effort: 'low', maxTokens: 4000, timeoutMs: 60_000 },
   'tutor.summary': { effort: 'medium', maxTokens: 8000, timeoutMs: 90_000 },
+  // The analyzer sends no maxTokens of its own: 8000 covers 150 picks plus thinking.
   'reader.disambiguate': { effort: 'low', maxTokens: 8000, timeoutMs: 60_000 },
   'reader.gloss': { effort: 'low', maxTokens: 8000, timeoutMs: 60_000 },
   'reader.translate': { effort: 'low', maxTokens: 2000, timeoutMs: 30_000 },
