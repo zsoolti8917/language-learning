@@ -15,3 +15,5 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
+      - name: Client first load budget (200 KB gzip JS)
+        run: pnpm --filter @app/web build && pnpm --filter @app/web size
