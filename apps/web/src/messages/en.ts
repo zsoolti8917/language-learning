@@ -12,6 +12,13 @@ export const en = {
     notifications: 'Notifications',
     close: 'Close',
   },
+  notices: {
+    offline: 'You are offline. Reviews, the trainer and opened texts still work.',
+    updateTitle: 'A new version is ready',
+    updateBody: 'Reload to use it. Your answers are saved.',
+    updateAction: 'Reload',
+    updateLater: 'Later',
+  },
   tabs: {
     label: 'Main',
     today: 'Today',

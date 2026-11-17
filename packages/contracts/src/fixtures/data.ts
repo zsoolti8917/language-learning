@@ -227,26 +227,41 @@ export const EX_BRATOVI: ExerciseItemIn = {
 
 type CardSnapshotIn = z.input<typeof CardSnapshotSchema>;
 
-/** Opaque scheduler state, as packages/srs might store it. */
+/**
+ * Opaque scheduler states, exactly as packages/srs writes them (`SCHEDULER_VERSION` 'fsrs7.1'),
+ * so `parseSchedulerState` reads them. Both come from the answers Good, Good, Hard, Good, each
+ * on its due date, at desired retention 0.9 (`replay` of @app/srs). The mesto card's last
+ * answer is the `review.submitAnswers` example at NOW; the queue's case card is due at EARLIER.
+ */
 const SCHEDULER = {
-  v: 'ts-fsrs@6/fsrs-7',
-  due: TOMORROW,
-  stability: 4.93,
-  difficulty: 5.1,
+  v: 'fsrs7.1',
+  state: 2,
+  dueAt: '2026-12-26T14:18:07.362Z',
+  lastReviewAt: NOW,
+  stability: 26.59911832,
+  stabilityFast: 453.38384231,
+  difficulty: 6.03898787,
   reps: 4,
   lapses: 0,
-  state: 2,
-  lastReview: NOW,
+  learningStep: 0,
+  scheduledDays: 39.241751885911185,
+};
+
+/** The scheduler state of the `review.queue` example's case sentence card (due at EARLIER). */
+export const SCHEDULER_CASE_CARD = {
+  ...SCHEDULER,
+  dueAt: EARLIER,
+  lastReviewAt: '2026-10-08T13:16:52.638Z',
 };
 
 export const CARD_MESTO: CardSnapshotIn = {
   cardId: IDS.cardMesto,
   state: 'review',
-  dueAt: TOMORROW,
-  stability: 4.93,
-  difficulty: 5.1,
-  reps: 4,
-  lapses: 0,
+  dueAt: SCHEDULER.dueAt,
+  stability: SCHEDULER.stability,
+  difficulty: SCHEDULER.difficulty,
+  reps: SCHEDULER.reps,
+  lapses: SCHEDULER.lapses,
   scheduler: SCHEDULER,
 };
 

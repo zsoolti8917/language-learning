@@ -23,6 +23,7 @@ import {
   NOW,
   nounReadings,
   PROFILE,
+  SCHEDULER_CASE_CARD,
   spanOf,
   TEXT_ANALYSIS,
   TEXT_BODY,
@@ -266,7 +267,7 @@ export const examples: ExampleTable = {
                   patternId: 'mesto',
                 },
                 variant: 0,
-                scheduler: CARD_MESTO.scheduler,
+                scheduler: SCHEDULER_CASE_CARD,
               },
               {
                 cardId: IDS.cardKniha,

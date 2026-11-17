@@ -1,4 +1,5 @@
 import { Link, Outlet } from '@tanstack/react-router';
+import { PwaNotices } from '../lib/pwa/notices';
 import { t } from '../messages';
 import { Button } from '../ui/Button';
 import { EmptyState } from '../ui/EmptyState';
@@ -11,6 +12,8 @@ export function TabLayout() {
     <div className="min-h-dvh bg-bg text-fg">
       {/* 4.5rem leaves room for the tab bar; the safe area adds the home indicator. */}
       <main className="mx-auto max-w-xl pb-[calc(4.5rem+env(safe-area-inset-bottom))] pt-safe px-safe">
+        {/* Offline indicator and update prompt for every tab screen. */}
+        <PwaNotices className="px-gutter pt-3" />
         <Outlet />
       </main>
       <TabBar />

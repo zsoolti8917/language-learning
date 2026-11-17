@@ -1,4 +1,6 @@
 /// <reference types="vitest/config" />
+import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
@@ -9,7 +11,31 @@ import { VitePWA } from 'vite-plugin-pwa';
 // Client variables live in the repository root .env (see .env.example).
 const envDir = fileURLToPath(new URL('../..', import.meta.url));
 
+/** The web package version, plus the short git sha when git is at hand: `0.0.0+abc1234`. */
+function appVersion(): string {
+  const pkg = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')) as {
+    version: string;
+  };
+  // Vercel builds without a .git folder but names the commit.
+  const ci = process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7);
+  if (ci) return `${pkg.version}+${ci}`;
+  try {
+    const sha = execFileSync('git', ['rev-parse', '--short', 'HEAD'], {
+      cwd: fileURLToPath(new URL('.', import.meta.url)),
+      stdio: ['ignore', 'pipe', 'ignore'],
+      timeout: 2000,
+    })
+      .toString()
+      .trim();
+    return sha ? `${pkg.version}+${sha}` : pkg.version;
+  } catch {
+    return pkg.version;
+  }
+}
+
 export default defineConfig(({ mode }) => {
+  // About (features/today) shows it. A value set in the environment wins.
+  process.env.VITE_APP_VERSION ||= appVersion();
   // `--mode mock` (dev or build) is the same as VITE_MOCK_API=true.
   if (mode === 'mock') process.env.VITE_MOCK_API = 'true';
   const env = loadEnv(mode, envDir, 'VITE_');
@@ -72,8 +98,9 @@ export default defineConfig(({ mode }) => {
     test: {
       environment: 'jsdom',
       setupFiles: ['./src/test/setup.ts'],
-      // Contract and DB code under test may run longer than the 5 s default on a cold start.
-      testTimeout: 15_000,
+      // Contract and DB code under test may run longer than the 5 s default on a cold start,
+      // and each findBy… may wait 5 s (src/test/setup.ts) on a loaded machine.
+      testTimeout: 30_000,
     },
   };
 });
