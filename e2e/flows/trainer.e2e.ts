@@ -63,10 +63,11 @@ test('a trainer session moves mastery', async ({ page, api }) => {
   );
   expect(moved.some((b) => b.level !== 'unseen' && b.mastery > 0)).toBe(true);
 
-  // The item answered wrong became a review card.
+  // The item answered wrong became a review card, unless it was a meaning choice (no form).
   const cards = await api.call('notes.list', { query: { kind: 'case_sentence' } });
-  expect(cards.body.items).toHaveLength(1);
-  expect(cards.body.items[0]?.source).toBe('declension');
+  const formItem = items[0]?.kind !== 'choice_meaning';
+  expect(cards.body.items).toHaveLength(formItem ? 1 : 0);
+  if (formItem) expect(cards.body.items[0]?.source).toBe('declension');
 
   // The grid of the course shows a practised cell with its level.
   await page.getByRole('link', { name: 'Back to the course' }).click();

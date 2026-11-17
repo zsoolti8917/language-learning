@@ -100,15 +100,18 @@ test('review session: answers graded on the phone, sent through the outbox, stor
   }
 
   // The last new card, then the cards in their learning steps come back until the session ends.
+  // Answers made while a batch is on its way merge into the next one, so count answers, not batches.
+  const answersSent = () =>
+    batches.reduce((n, r) => n + (r.postDataJSON() as { answers: unknown[] }).answers.length, 0);
   await answer(page, items, true);
-  await expect.poll(() => batches.length).toBe(3);
+  await expect.poll(answersSent).toBe(4);
   let more = 0;
   while (!(await page.getByText('Done for now').isVisible()) && more < 12) {
     await answer(page, items, true);
     more++;
   }
   await expect(page.getByText('Done for now')).toBeVisible();
-  await expect.poll(() => batches.length).toBe(3 + more);
+  await expect.poll(answersSent).toBe(4 + more);
   await expect(page.getByTestId('sync-line')).toHaveCount(0);
 
   // A new queue from the server holds no card answered today as new.
@@ -117,10 +120,7 @@ test('review session: answers graded on the phone, sent through the outbox, stor
   expect(queue.body.items.every((i) => i.state !== 'new')).toBe(true);
 });
 
-test('deck: search, report from a card, suspend, edit and delete a note', async ({
-  page,
-  api,
-}) => {
+test('deck: search, report from a card, suspend, edit and delete a note', async ({ page, api }) => {
   await onboard(api);
   const words = await api.call('words.list', { query: { band: 0, status: 'unknown', limit: 3 } });
   await api.call('words.triage', {

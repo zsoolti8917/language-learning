@@ -77,5 +77,7 @@ test('every screen loads for a learner with history', async ({ page, api }) => {
   const health = await (await page.request.get('/api/v1/health')).json();
   await expect(page.getByText(health.contentVersion)).toBeVisible();
   await page.goto(`/tutor/${conversationId}`);
-  await expect(page.getByRole('list', { name: 'Messages' }).locator('li[data-role]')).toHaveCount(3);
+  await expect(page.getByRole('list', { name: 'Messages' }).locator('li[data-role]')).toHaveCount(
+    3,
+  );
 });
