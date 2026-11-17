@@ -4,7 +4,6 @@ import {
   defaultExample,
   ENDPOINT_COUNT,
   type EndpointName,
-  ErrorResponseSchema,
   endpointList,
   LIMITS,
 } from '@app/contracts';
@@ -44,12 +43,6 @@ describe('contract test: every endpoint as a dev user', () => {
     it(`${ep.method} ${ep.path} (${name})`, async () => {
       const ex = defaultExample(name);
       const res = await t.as().call(name, ex.request as never);
-      // A built module answers not_found when the example names a row (a path id) that this
-      // new learner does not own; that answer must still have the error shape.
-      if (res.status === 404 && ex.request && 'params' in ex.request) {
-        expect(ErrorResponseSchema.parse(res.body).error.code).toBe('not_found');
-        return;
-      }
       expect(res.status, res.text).toBe(ep.status);
       if (ep.stream) {
         expect(res.headers.get('content-type')).toContain('text/event-stream');
