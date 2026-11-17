@@ -94,8 +94,8 @@ Lemma conventions that differ by design, not by error: the data files *to*, *tá
 | Exact expected form | found errors | pending the key |
 | Verification: false reports removed | every false report | pending the key |
 | Reply rule checks | 600 replies | pending the key |
-| Analyzer case accuracy | 2,158 known words with a case | pending the key |
-| Analyzer lemma accuracy | 4,447 known words | pending the key |
+| Analyzer case accuracy | 2,150 known words with a case | pending the key |
+| Analyzer lemma accuracy | 4,439 known words | pending the key |
 | Cost and delay per route | 1,257 calls | pending the key |
 
 ### Harness check with the mock model (`tools/evals/reports/mock-oracle/report.md`)
@@ -106,12 +106,14 @@ The oracle answers `tutor.analyze` with the label, `reader.disambiguate` with th
 |---|---:|---|---|
 | Recall after verification, perfect reports | 300 | 100.0 % | Verification keeps every correct report of an injected error |
 | False corrections, perfect reports | 300 | 0.0 % | |
-| Analyzer case accuracy, perfect model picks | 2,158 known words | **98.1 %** | The ceiling: 41 words are wrong before the model is asked |
-| of which `single` (one reading in the data) | 397 | 95.5 % | Proper names the data reads as another word (*Maja* as genitive of *máj*) |
-| of which `rule` | 537 | 98.1 % | Numerals in the accusative (*osem*, *šesť*, *desať*, *mnoho*, *zopár*) are narrowed to the genitive by a rule |
-| Known words | 4,558 | 97.6 % | 111 words unknown, almost all foreign proper names |
+| Analyzer case accuracy, perfect model picks | 2,150 known words | **98.7 %** | The ceiling: 29 words are wrong before the model is asked (98.1 %, 41 words, before the follow-ups below) |
+| of which `single` (one reading in the data) | 392 | 96.4 % | Given names the data lacks, at the start of a sentence (*Maja* read as *mája* of *máj*, 6 words) or spelled as a common word (*Marga*, a form of *margo*) |
+| of which `rule` | 529 | 99.1 % | Personal pronouns after a preposition carry the phrase on (*v ňom nič*, *v tom kus*), *na pol žrde*, a vocative |
+| Known words | 4,558 | 97.4 % | 119 words unknown, almost all foreign proper names |
 
-So the 95 % target leaves the model about three points of room below the ceiling. Two fixes outside the model would raise the ceiling (B3's rules, not in this package): keep a counting numeral's own case, and do not trust a single reading of a capitalised word that the data knows only as a common noun.
+So the 95 % target leaves the model more than three points of room below the ceiling.
+
+**Follow-ups after C4** (I3 follow-ups): the trigger list is C4's full list (221 rows) instead of the mini dataset's 22 plus derived prepositions, and two B3 rules were fixed at the root. C4's numeral rows already keep *osem*, *šesť*, *desať* in the accusative (3 words); quantity words outside the list keep their own nominative or accusative case too (*zopár otázok*, *mnoho generácií*: 2 words); and *dva*, *tri*, *štyri* agree with the counted noun instead of forcing it into the nominative, which C4's nominative rows would otherwise have done to 6 accusative words (*dva roky*, *tri semestre*, *štyri vyrovnané zvitky*). A capitalised word after another word of the sentence is no longer read as a common word with other accents (*že Maja*, *podal mi Colu*, *zatienila Rostov*): it stays unknown. That moves 8 words, all with a wrong lemma and 6 with a wrong case, to unknown, so the known-word denominator drops from 2,158 to 2,150 and the all-words case accuracy rises from 93.6 % to 93.8 %. Given names at the start of a sentence still need proper name data the morphology does not have.
 
 Planted mistakes land where they should (tested in `run.test.ts`): a false report on every correct sentence shows as 100 % before verification and 0 % after (some dropped as `given_equals_expected` or `given_valid_for_case`, the rest left unverified and so never shown); missed labels lower recall before and after verification alike; wrong picks lower the `model` row.
 
@@ -121,14 +123,14 @@ Planted mistakes land where they should (tested in `run.test.ts`): a false repor
 
 | Route | Model | Requests | Estimate | At most |
 |---|---|---:|---:|---:|
-| `reader.disambiguate` | claude-opus-5-5 | 57 | $2.60 | $2.61 |
+| `reader.disambiguate` | claude-opus-5-5 | 57 | $2.70 | $10.66 |
 | `tutor.analyze` | claude-opus-5-5 | 600 | $17.81 | $31.01 |
 | `tutor.reply` | claude-opus-5-5 | 600 | $6.13 | $51.13 |
-| `reader.disambiguate` | claude-sonnet-5-5 (comparison) | 57 | $1.30 | $1.31 |
+| `reader.disambiguate` | claude-sonnet-5-5 (comparison) | 57 | $1.35 | $5.33 |
 | `tutor.reply` | claude-sonnet-5-5 (comparison) | 600 | $3.06 | $25.56 |
-| **Total** | | **1,914** | **$30.90** | $111.62 |
+| **Total** | | **1,914** | **$31.05** | $123.68 |
 
-"At most" assumes every call uses its whole token limit. A first run of 25 cases per set (`--limit 25`) is 156 requests, about $2.43.
+"At most" assumes every call uses its whole token limit. A first run of 25 cases per set (`--limit 25`) is 156 requests, about $2.44. `reader.disambiguate` calls send no token limit of their own: the route's 8,000 (`AI_MAX_TOKENS_READER_DISAMBIGUATE`) leaves room for adaptive thinking above the largest answer, so its "at most" is 8,000 output tokens per call; the expected cost does not change, since only generated tokens are paid.
 
 ## Prompt versions in use and their scores
 
@@ -184,7 +186,7 @@ Options of `run`: `--suite all|tutor|analyzer`, `--limit N` (first N cases of ea
 Prompt tuning against the real model is out of reach without the key. Once it exists and the spend is approved:
 
 1. Run `pnpm --filter @app/ai run smoke` once (B8's check of the key and the wiring).
-2. Live run with `--limit 25 --max-spend 3` (about $2.43). Read `tools/evals/reports/latest/tutor-cases.jsonl`: are the misses real misses, or sentences the injection made grammatical? Check the measured output tokens and delay against the estimate's assumptions (`EXPECTED_OUTPUT`), and whether `reader.disambiguate` answers are cut off (its token limit is 256 + 16 per word with adaptive thinking on; a cut off batch turns every word in it into a guess, visible as `guess` in the method split).
-3. Full live run (about $26.54 for the base run; raise `--max-spend` to the approved amount). Commit `tools/evals/cache/` and `tools/evals/reports/latest/`, and fill in the results and prompt version tables above.
+2. Live run with `--limit 25 --max-spend 3` (about $2.44). Read `tools/evals/reports/latest/tutor-cases.jsonl`: are the misses real misses, or sentences the injection made grammatical? Check the measured output tokens and delay against the estimate's assumptions (`EXPECTED_OUTPUT`), and whether `reader.disambiguate` answers are cut off (its limit is the route's 8,000 tokens with adaptive thinking at low effort; a cut off batch turns every word in it into a guess, visible as `guess` in the method split; raise `AI_MAX_TOKENS_READER_DISAMBIGUATE` if that happens).
+3. Full live run (about $26.64 for the base run; raise `--max-spend` to the approved amount). Commit `tools/evals/cache/` and `tools/evals/reports/latest/`, and fill in the results and prompt version tables above.
 4. Where a target is missed: write `v2` of the prompt in its folder as a small pull request to its owner (B9 for `tutor.*`, B3 for `reader.disambiguate`), rerun (only the changed route is paid for), and record both versions with their scores here. Do not tune on cases a person marked as bad labels.
-5. The cheaper model comparison on `tutor.reply` and `reader.disambiguate` (about $4.36), then `compare`. The choice of model stays with the owner of the app; setting it is `AI_MODEL_TUTOR_REPLY` / `AI_MODEL_READER_DISAMBIGUATE`.
+5. The cheaper model comparison on `tutor.reply` and `reader.disambiguate` (about $4.41), then `compare`. The choice of model stays with the owner of the app; setting it is `AI_MODEL_TUTOR_REPLY` / `AI_MODEL_READER_DISAMBIGUATE`.

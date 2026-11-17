@@ -6,7 +6,7 @@
     "injected": 300,
     "analyzer": 500,
     "seed": 20261117,
-    "morphology": "content/build (100681 lemmas, 5000 ranked)"
+    "morphology": "content/build (100681 lemmas, 5000 ranked, 221 triggers)"
   },
   "promptVersions": {
     "tutor.analyze": 1,
@@ -279,79 +279,79 @@
     "words": 4558,
     "unaligned": 0,
     "known": {
-      "n": 4447,
+      "n": 4439,
       "of": 4558,
-      "value": 0.975647213690215
+      "value": 0.9738920579201404
     },
     "lemmaAccuracy": {
       "n": 4394,
-      "of": 4447,
-      "value": 0.9880818529345626
+      "of": 4439,
+      "value": 0.9898625816625366
     },
     "caseAccuracy": {
-      "n": 2117,
-      "of": 2158,
-      "value": 0.9810009267840594
+      "n": 2121,
+      "of": 2150,
+      "value": 0.9865116279069768
     },
     "caseAccuracyAll": {
-      "n": 2117,
+      "n": 2121,
       "of": 2261,
-      "value": 0.9363113666519239
+      "value": 0.9380804953560371
     },
     "byMethod": [
       {
         "method": "single",
-        "words": 967,
+        "words": 962,
         "lemma": {
           "n": 944,
-          "of": 967,
-          "value": 0.9762150982419855
+          "of": 962,
+          "value": 0.9812889812889813
         },
         "case": {
-          "n": 379,
-          "of": 397,
-          "value": 0.9546599496221663
+          "n": 378,
+          "of": 392,
+          "value": 0.9642857142857143
         }
       },
       {
         "method": "rule",
-        "words": 966,
+        "words": 952,
         "lemma": {
-          "n": 957,
-          "of": 966,
-          "value": 0.9906832298136646
+          "n": 944,
+          "of": 952,
+          "value": 0.9915966386554622
         },
         "case": {
-          "n": 527,
-          "of": 537,
-          "value": 0.9813780260707635
+          "n": 524,
+          "of": 529,
+          "value": 0.9905482041587902
         }
       },
       {
         "method": "model",
-        "words": 2514,
+        "words": 2525,
         "lemma": {
-          "n": 2493,
-          "of": 2514,
-          "value": 0.9916467780429594
+          "n": 2506,
+          "of": 2525,
+          "value": 0.9924752475247525
         },
         "case": {
-          "n": 1211,
-          "of": 1224,
-          "value": 0.9893790849673203
+          "n": 1219,
+          "of": 1229,
+          "value": 0.9918633034987795
         }
       },
       {
         "method": "none",
-        "words": 111,
+        "words": 119,
         "lemma": {
           "n": 0,
-          "of": 111,
+          "of": 119,
           "value": 0
         },
         "case": {
           "n": 0,
-          "of": 103,
+          "of": 111,
           "value": 0
         }
       }
@@ -361,8 +361,8 @@
         "key": "nom",
         "case": {
           "n": 560,
-          "of": 582,
-          "value": 0.9621993127147767
+          "of": 580,
+          "value": 0.9655172413793104
         }
       },
       {
@@ -384,9 +384,9 @@
       {
         "key": "acc",
         "case": {
-          "n": 545,
-          "of": 558,
-          "value": 0.9767025089605734
+          "n": 550,
+          "of": 553,
+          "value": 0.9945750452079566
         }
       },
       {
@@ -408,9 +408,9 @@
       {
         "key": "ins",
         "case": {
-          "n": 197,
-          "of": 198,
-          "value": 0.9949494949494949
+          "n": 196,
+          "of": 197,
+          "value": 0.9949238578680203
         }
       }
     ],
@@ -418,17 +418,12 @@
       {
         "gold": "nom",
         "chosen": "gen",
-        "n": 11
-      },
-      {
-        "gold": "acc",
-        "chosen": "gen",
-        "n": 8
+        "n": 10
       },
       {
         "gold": "nom",
         "chosen": "none",
-        "n": 5
+        "n": 4
       },
       {
         "gold": "nom",
@@ -437,11 +432,6 @@
       },
       {
         "gold": "acc",
-        "chosen": "none",
-        "n": 2
-      },
-      {
-        "gold": "acc",
         "chosen": "nom",
         "n": 1
       },
@@ -452,17 +442,27 @@
       },
       {
         "gold": "acc",
+        "chosen": "gen",
+        "n": 1
+      },
+      {
+        "gold": "dat",
+        "chosen": "loc",
+        "n": 1
+      },
+      {
+        "gold": "dat",
+        "chosen": "nom",
+        "n": 1
+      },
+      {
+        "gold": "gen",
         "chosen": "dat",
         "n": 1
       },
       {
-        "gold": "dat",
-        "chosen": "loc",
-        "n": 1
-      },
-      {
-        "gold": "dat",
-        "chosen": "nom",
+        "gold": "gen",
+        "chosen": "acc",
         "n": 1
       }
     ]
@@ -475,8 +475,8 @@
       "cached": 0,
       "estimated": 0,
       "failed": 0,
-      "inputTokens": 275020,
-      "outputTokens": 9343,
+      "inputTokens": 276512,
+      "outputTokens": 9382,
       "cacheReadTokens": 0,
       "cacheWriteTokens": 0,
       "costUsd": 0,
@@ -511,8 +511,8 @@
       "cached": 0,
       "estimated": 0,
       "failed": 0,
-      "inputTokens": 549431,
-      "outputTokens": 3113,
+      "inputTokens": 549259,
+      "outputTokens": 3221,
       "cacheReadTokens": 0,
       "cacheWriteTokens": 0,
       "costUsd": 0,
@@ -554,9 +554,9 @@
       "name": "Analyzer case accuracy (words the data knows)",
       "target": "at least 95 %",
       "value": {
-        "n": 2117,
-        "of": 2158,
-        "value": 0.9810009267840594
+        "n": 2121,
+        "of": 2150,
+        "value": 0.9865116279069768
       },
       "met": true
     }

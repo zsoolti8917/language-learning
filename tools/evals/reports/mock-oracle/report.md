@@ -2,7 +2,7 @@
 
 > The answers come from the mock model (the oracle in `tools/evals/src/oracle.ts`). These numbers check the harness; they say nothing about Claude.
 
-Datasets: 300 correct sentences, 300 with an injected case error, 500 analyzer sentences (seed 20261117). Morphology: content/build (100681 lemmas, 5000 ranked).
+Datasets: 300 correct sentences, 300 with an injected case error, 500 analyzer sentences (seed 20261117). Morphology: content/build (100681 lemmas, 5000 ranked, 221 triggers).
 
 Prompt versions and models:
 
@@ -18,7 +18,7 @@ Prompt versions and models:
 |---|---|---|---|
 | False corrections on correct sentences, after verification | at most 2 % | 0.0 % (0/300) | yes |
 | Injected errors found | at least 85 % | 100.0 % (300/300) | yes |
-| Analyzer case accuracy (words the data knows) | at least 95 % | 98.1 % (2117/2158) | yes |
+| Analyzer case accuracy (words the data knows) | at least 95 % | 98.7 % (2121/2150) | yes |
 
 ## Tutor
 
@@ -75,53 +75,53 @@ False reports (case errors that are not the injected one): 0. Removed by verific
 
 | Metric | Value |
 |---|---|
-| Words the morphology data knows | 97.6 % (4447/4558) |
-| Lemma accuracy (known words) | 98.8 % (4394/4447) |
-| Case accuracy (known words) | 98.1 % (2117/2158) |
-| Case accuracy (all words, unknown ones wrong) | 93.6 % (2117/2261) |
+| Words the morphology data knows | 97.4 % (4439/4558) |
+| Lemma accuracy (known words) | 99.0 % (4394/4439) |
+| Case accuracy (known words) | 98.7 % (2121/2150) |
+| Case accuracy (all words, unknown ones wrong) | 93.8 % (2121/2261) |
 
 ### By how the reading was chosen
 
 | Method | Words | Lemma | Case |
 |---|---|---|---|
-| single | 967 | 97.6 % (944/967) | 95.5 % (379/397) |
-| rule | 966 | 99.1 % (957/966) | 98.1 % (527/537) |
-| model | 2514 | 99.2 % (2493/2514) | 98.9 % (1211/1224) |
-| none | 111 | 0.0 % (0/111) | 0.0 % (0/103) |
+| single | 962 | 98.1 % (944/962) | 96.4 % (378/392) |
+| rule | 952 | 99.2 % (944/952) | 99.1 % (524/529) |
+| model | 2525 | 99.2 % (2506/2525) | 99.2 % (1219/1229) |
+| none | 119 | 0.0 % (0/119) | 0.0 % (0/111) |
 
 ### Case accuracy by gold case
 
 | Case | Accuracy |
 |---|---|
-| nom | 96.2 % (560/582) |
+| nom | 96.6 % (560/580) |
 | gen | 99.6 % (446/448) |
 | dat | 98.3 % (117/119) |
-| acc | 97.7 % (545/558) |
+| acc | 99.5 % (550/553) |
 | voc | 100.0 % (1/1) |
 | loc | 99.6 % (251/252) |
-| ins | 99.5 % (197/198) |
+| ins | 99.5 % (196/197) |
 
 ### Most frequent case confusions
 
 | Gold | Chosen | Words |
 |---|---|---|
-| nom | gen | 11 |
-| acc | gen | 8 |
-| nom | none | 5 |
+| nom | gen | 10 |
+| nom | none | 4 |
 | nom | acc | 4 |
-| acc | none | 2 |
 | acc | nom | 1 |
 | acc | loc | 1 |
-| acc | dat | 1 |
+| acc | gen | 1 |
 | dat | loc | 1 |
 | dat | nom | 1 |
+| gen | dat | 1 |
+| gen | acc | 1 |
 
 ## Cost and delay per route
 
 | Route | Model | Calls | Cached | Input tok | Output tok | Cache read tok | Cost | Per call | Mean delay | p95 delay |
 |---|---|---|---|---|---|---|---|---|---|---|
-| `reader.disambiguate` | claude-opus-5-5 | 57 | 0 | 275020 | 9343 | 0 | $0.00 | $0.00 | n/a | n/a |
+| `reader.disambiguate` | claude-opus-5-5 | 57 | 0 | 276512 | 9382 | 0 | $0.00 | $0.00 | n/a | n/a |
 | `tutor.analyze` | claude-opus-5-5 | 600 | 0 | 1026492 | 30577 | 0 | $0.00 | $0.00 | n/a | n/a |
-| `tutor.reply` | claude-opus-5-5 | 600 | 0 | 549431 | 3113 | 0 | $0.00 | $0.00 | n/a | n/a |
+| `tutor.reply` | claude-opus-5-5 | 600 | 0 | 549259 | 3221 | 0 | $0.00 | $0.00 | n/a | n/a |
 
 Total: 1257 calls, 0 from the cache, $0.00.
