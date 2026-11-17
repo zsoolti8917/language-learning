@@ -11,7 +11,7 @@ import {
   type PlacementResult,
   PlacementRunSchema,
 } from '@app/contracts';
-import { lessonProgress, placement, profile, userLemma } from '@app/db';
+import { lessonProgress, placement, profile, queryRows, userLemma } from '@app/db';
 import { createTestDb, type TestDb, uuidv7 } from '@app/testkit';
 import { and, eq, sql } from 'drizzle-orm';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -42,9 +42,10 @@ beforeAll(async () => {
   notes = createDbNotes();
   t = await createTestApp({ db, ports: { notes } });
   attempts = t.ports.attempts as AttemptsRecorder;
-  const [row] = await db.db
-    .execute<{ n: number }>(sql`select count(*)::int as n from ling.lemma where freq_rank <= 3000`)
-    .then((r) => ('rows' in r ? (r.rows as { n: number }[]) : (r as unknown as { n: number }[])));
+  const [row] = await queryRows<{ n: number }>(
+    db.db,
+    sql`select count(*)::int as n from ling.lemma where freq_rank <= 3000`,
+  );
   rankedTotal = Number(row?.n);
 });
 
@@ -64,10 +65,12 @@ interface Learner {
   cases: 'right' | 'wrong' | 'skip';
 }
 
-function answersFor(items: StoredItem[], round: number, who: Learner) {
+type Answer = { itemId: string; choice?: number; typed?: string };
+
+function answersFor(items: StoredItem[], round: number, who: Learner): Answer[] {
   return items
     .filter((i) => i.round === round)
-    .flatMap((i) => {
+    .flatMap((i): Answer[] => {
       if (isVocab(i))
         return [
           {

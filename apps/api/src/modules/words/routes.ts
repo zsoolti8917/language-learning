@@ -8,8 +8,8 @@ export const routes = [
   route('words.triage', ({ body, withUser, ports }) =>
     withUser((tx) => service.triage(tx, ports, body)),
   ),
-  route('lemmas.get', ({ params, withUser }) =>
-    withUser((tx) => service.lemmaDetail(tx, params.id)),
+  route('lemmas.get', ({ params, withUser, ports }) =>
+    withUser((tx) => service.lemmaDetail(tx, ports, params.id)),
   ),
   route('lemmas.setStatus', ({ params, body, withUser, ports }) =>
     withUser((tx) => service.setStatus(tx, ports, params.id, body.status)),

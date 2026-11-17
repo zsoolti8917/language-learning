@@ -7,7 +7,6 @@ import type {
   ResponseOf,
   TriageDecision,
 } from '@app/contracts';
-import { readTags } from '@app/ling';
 import { notFound, validationFailed } from '../../platform/errors';
 import type { Ports, Tx } from '../../ports';
 import * as repo from './repo';
@@ -128,13 +127,16 @@ export async function setStatus(
   return { lemmaId, status };
 }
 
-export async function lemmaDetail(tx: Tx, lemmaId: number): Promise<LemmaDetail> {
+/**
+ * The word page. The table of forms comes from MorphologyPort.getParadigm (every form with
+ * its readings, in table order: singular cases, then plural); the rest is read here.
+ */
+export async function lemmaDetail(tx: Tx, ports: Ports, lemmaId: number): Promise<LemmaDetail> {
   const row = await repo.getLemma(tx, lemmaId);
   if (!row) throw notFound();
-  const gender = row.gender ?? undefined;
-  const [senses, forms, sentences, status, noteId] = [
+  const paradigm = await ports.morphology.getParadigm(lemmaId, tx);
+  const [senses, sentences, status, noteId] = [
     await repo.getSenses(tx, lemmaId),
-    await repo.getForms(tx, lemmaId),
     await repo.getSentences(tx, lemmaId, WORD_PAGE_SENTENCES),
     await repo.getStatus(tx, lemmaId),
     await repo.getWordNoteId(tx, lemmaId),
@@ -142,7 +144,7 @@ export async function lemmaDetail(tx: Tx, lemmaId: number): Promise<LemmaDetail>
   return {
     lemma: row,
     senses,
-    forms: forms.map((f) => ({ form: f.form, readings: readTags(f.tags, gender) })),
+    forms: paradigm.forms,
     sentences: sentences.flatMap((s) => {
       const tok = s.tokens[s.tokenIndex];
       if (!tok) return [];

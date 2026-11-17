@@ -50,9 +50,18 @@ export function createDbNotes(): DbNotes {
       }
       return r;
     },
-    createPhraseNote: (tx, input) => (step(tx), rec.createPhraseNote(tx, input)),
-    createCaseSentenceNote: (tx, input) => (step(tx), rec.createCaseSentenceNote(tx, input)),
-    suspendNote: (tx, id) => (step(tx), rec.suspendNote(tx, id)),
+    createPhraseNote(tx, input) {
+      step(tx);
+      return rec.createPhraseNote(tx, input);
+    },
+    createCaseSentenceNote(tx, input) {
+      step(tx);
+      return rec.createCaseSentenceNote(tx, input);
+    },
+    suspendNote(tx, id) {
+      step(tx);
+      return rec.suspendNote(tx, id);
+    },
     async setLemmaStatus(tx, lemmaIds, status, source) {
       step(tx);
       await rec.setLemmaStatus(tx, lemmaIds, status, source);

@@ -14,7 +14,6 @@ import type {
   TopForm,
 } from '@app/contracts';
 import {
-  form,
   lemma,
   lemmaSentence,
   note,
@@ -171,14 +170,6 @@ export async function getSenses(tx: Tx, lemmaId: number) {
     source: s.source as SenseSource,
     verified: s.verified,
   }));
-}
-
-export async function getForms(tx: Tx, lemmaId: number) {
-  return tx
-    .select({ form: form.form, tags: form.tags })
-    .from(form)
-    .where(eq(form.lemmaId, lemmaId))
-    .orderBy(asc(form.form));
 }
 
 /** Example sentences of a lemma in their content order, with the token of the lemma. */
