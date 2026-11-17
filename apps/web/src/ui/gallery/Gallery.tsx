@@ -7,10 +7,12 @@ import { CaseBadge } from '../CaseBadge';
 import { CASES, caseColorVar } from '../cases';
 import { EmptyState } from '../EmptyState';
 import { Input } from '../Input';
+import { ProgressBar } from '../ProgressBar';
 import { ProgressRing } from '../ProgressRing';
 import { Sheet } from '../Sheet';
 import { Skeleton } from '../Skeleton';
 import { Tabs } from '../Tabs';
+import { Textarea } from '../Textarea';
 import { ToastProvider, useToast } from '../Toast';
 import { type TextToken, TokenText } from '../TokenText';
 
@@ -251,6 +253,24 @@ function ThemeBlock({ theme }: { theme: 'light' | 'dark' }) {
         <Input label="Disabled" disabled defaultValue="Read only" />
       </Section>
 
+      <Section title="Textarea">
+        <Textarea
+          label="Slovak text"
+          lang="sk"
+          placeholder="Vložte text…"
+          showCount
+          maxLength={200}
+        />
+        <Textarea
+          label="Comment"
+          hint="Optional. What is wrong with this card?"
+          defaultValue="The gloss says town, but here it means city."
+        />
+        <Textarea label="Too long" showCount maxLength={10} defaultValue="Dnes idem do mesta." />
+        <Textarea label="With an error" error="Paste some text first." />
+        <Textarea label="Disabled" disabled defaultValue="Read only" />
+      </Section>
+
       <Section title="AccentBar">
         <AccentDemo />
       </Section>
@@ -358,6 +378,23 @@ function ThemeBlock({ theme }: { theme: 'light' | 'dark' }) {
             60%
           </ProgressRing>
         </Row>
+      </Section>
+
+      <Section title="ProgressBar">
+        <ProgressBar value={0} max={4} label="Placement" valueText="Round 0 of 4" />
+        <ProgressBar value={2} max={4} label="Placement" valueText="Round 2 of 4" showLabel>
+          2/4
+        </ProgressBar>
+        <ProgressBar value={4} max={4} label="Lesson" showLabel color="var(--ui-correct)">
+          Done
+        </ProgressBar>
+        <ProgressBar
+          value={3}
+          max={5}
+          label="Genitive mastery"
+          size="sm"
+          color={caseColorVar('gen')}
+        />
       </Section>
 
       <Section title="EmptyState">
