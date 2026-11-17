@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react';
-import { api } from '../api';
+import { api, hasLogin } from '../api';
 import { Outbox, type OutboxState } from './outbox';
 
 export {
@@ -26,6 +26,17 @@ export {
   registerMerger,
 } from './outbox';
 export {
+  canOpenLocalDatabase,
+  checkLocalDatabase,
+  claimLocalData,
+  type LocalDatabaseState,
+  OWNER_KV_KEY,
+  type PersistResult,
+  requestPersistentStorage,
+  resetLocalDatabaseCheck,
+  useLocalDatabase,
+} from './storage';
+export {
   applyCardSnapshots,
   applyTextSummary,
   getLemmaStatus,
@@ -37,7 +48,7 @@ export {
 } from './store';
 
 /** The app's outbox over the shared client and database. `main.tsx` starts its triggers. */
-export const outbox = new Outbox({ api });
+export const outbox = new Outbox({ api, canSend: hasLogin });
 
 /** Outbox counts for an indicator, and a manual sync. */
 export function useOutbox(target: Outbox = outbox): OutboxState & {

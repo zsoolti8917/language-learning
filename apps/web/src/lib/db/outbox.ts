@@ -78,8 +78,11 @@ export interface FlushReport {
   sent: number;
   retrying: number;
   failed: number;
-  /** Why the run stopped early: offline, the network failed, or the login needs a refresh. */
-  stopped?: 'offline' | 'network' | 'unauthorized';
+  /**
+   * Why the run stopped early: offline, the network failed, the login needs a refresh, or
+   * nobody is signed in.
+   */
+  stopped?: 'offline' | 'network' | 'unauthorized' | 'signedOut';
 }
 
 export interface OutboxOptions {
@@ -90,6 +93,11 @@ export interface OutboxOptions {
   isOnline?: () => boolean;
   /** Delay before retry number `attempts` (1, 2, …), in ms. */
   backoff?: (attempts: number) => number;
+  /**
+   * False while nobody is signed in: the items wait (a login that expired keeps them) instead
+   * of going out without a token. Default: always true.
+   */
+  canSend?: () => boolean | Promise<boolean>;
 }
 
 export interface EnqueueOptions {
@@ -105,6 +113,7 @@ export class Outbox {
   private readonly now: () => number;
   private readonly isOnline: () => boolean;
   private readonly backoff: (attempts: number) => number;
+  private readonly canSend: () => boolean | Promise<boolean>;
   private running: Promise<FlushReport> | null = null;
   private again = false;
   private started = false;
@@ -119,6 +128,7 @@ export class Outbox {
     this.isOnline =
       options.isOnline ?? (() => typeof navigator === 'undefined' || navigator.onLine !== false);
     this.backoff = options.backoff ?? defaultBackoff;
+    this.canSend = options.canSend ?? (() => true);
   }
 
   /** Puts a write in the outbox and (once started) sends it at once if possible. */
@@ -199,6 +209,7 @@ export class Outbox {
       (r) => r.nextAttemptAt <= this.now(),
     );
     if (due.length === 0) return report;
+    if (!(await this.canSend())) return { ...report, stopped: 'signedOut' };
     this.setState({ syncing: true });
     for (const candidate of due) {
       const seq = candidate.seq as number;
@@ -289,6 +300,20 @@ export class Outbox {
     }
     await this.db.outbox.where('status').equals('pending').modify({ nextAttemptAt: 0 });
     return this.flush();
+  }
+
+  /** Sends one refused item again (the retry of the sync problems notice). */
+  async retry(seq: number): Promise<FlushReport> {
+    await this.db.outbox.update(seq, { status: 'pending', nextAttemptAt: 0 });
+    await this.refresh();
+    return this.flush();
+  }
+
+  /** Items the server refused for good, oldest first. */
+  async failedItems(): Promise<OutboxRow[]> {
+    return (await this.db.outbox.where('status').equals('failed').toArray()).sort(
+      (a, b) => (a.seq ?? 0) - (b.seq ?? 0),
+    );
   }
 
   /** Drops one item for good (a refused write the learner gives up on). */
