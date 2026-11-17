@@ -5,12 +5,13 @@ import type { AnalysisToken, TextAnalysis } from '@app/contracts';
 import { foldAscii } from '@app/contracts';
 import { splitSentences, tokenize } from '@app/ling';
 import type { AnalyzerPort, DictionaryPort, MorphologyPort } from '../ports';
+import { markStandIn } from '../platform/stand-in';
 
 export function createSimpleAnalyzer(deps: {
   morphology: () => MorphologyPort;
   dictionary: () => DictionaryPort;
 }): AnalyzerPort {
-  return {
+  return markStandIn('analyzer', {
     async analyzeText(body) {
       const spans = splitSentences(body);
       const sentences = spans.map((sp) => ({
@@ -66,5 +67,5 @@ export function createSimpleAnalyzer(deps: {
       }
       return { analysis, tokenCount, lemmaCounts };
     },
-  };
+  });
 }
