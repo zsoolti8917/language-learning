@@ -47,7 +47,7 @@ jobs:
     # 390x844, three runs of every flow (e2e/scripts/run.mjs picks free ports).
     needs: check
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -59,6 +59,8 @@ jobs:
       - name: Chromium for Playwright (CI only; the cloud containers have /opt/pw-browsers)
         run: pnpm --filter @app/e2e exec playwright install --with-deps chromium
       - run: pnpm e2e -- --repeat-each=3
+      # Offline use, sync, two devices, storage, updates and performance (I4), three runs each.
+      - run: pnpm e2e:offline -- --repeat-each=3
       - if: failure()
         uses: actions/upload-artifact@v4
         with:
