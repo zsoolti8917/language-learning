@@ -1,0 +1,3762 @@
+{
+  "id": "28eebdc3-fc17-40f6-b7ef-8159b13d6b29",
+  "prevId": "dcaa7ff0-a817-490e-8d50-a73a2cb43e1a",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "app.ai_call": {
+      "name": "ai_call",
+      "schema": "app",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "route": {
+          "name": "route",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "model": {
+          "name": "model",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "input_tokens": {
+          "name": "input_tokens",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "output_tokens": {
+          "name": "output_tokens",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "cache_read_tokens": {
+          "name": "cache_read_tokens",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "cache_write_tokens": {
+          "name": "cache_write_tokens",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "cost_usd": {
+          "name": "cost_usd",
+          "type": "numeric(10, 6)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "latency_ms": {
+          "name": "latency_ms",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "request_id": {
+          "name": "request_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ai_call_user_created_idx": {
+          "name": "ai_call_user_created_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "ai_call_user_id_profile_user_id_fk": {
+          "name": "ai_call_user_id_profile_user_id_fk",
+          "tableFrom": "ai_call",
+          "tableTo": "profile",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "ai_call_select_own": {
+          "name": "ai_call_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "ai_call_insert_own": {
+          "name": "ai_call_insert_own",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "authenticated"
+          ],
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        },
+        "ai_call_delete_own": {
+          "name": "ai_call_delete_own",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "ai_call_route_check": {
+          "name": "ai_call_route_check",
+          "value": "\"route\" in ('tutor.analyze', 'tutor.reply', 'tutor.summary', 'reader.disambiguate', 'reader.gloss', 'reader.translate')"
+        },
+        "ai_call_status_check": {
+          "name": "ai_call_status_check",
+          "value": "\"status\" in ('ok', 'refused', 'truncated', 'error')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "app.text": {
+      "name": "text",
+      "schema": "app",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "body": {
+          "name": "body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source": {
+          "name": "source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_ref": {
+          "name": "source_ref",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "analysis": {
+          "name": "analysis",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "analysis_version": {
+          "name": "analysis_version",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'processing'"
+        },
+        "error": {
+          "name": "error",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "token_count": {
+          "name": "token_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "unique_lemma_count": {
+          "name": "unique_lemma_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "coverage": {
+          "name": "coverage",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "coverage_at": {
+          "name": "coverage_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_opened_at": {
+          "name": "last_opened_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "progress": {
+          "name": "progress",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "archived": {
+          "name": "archived",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "text_user_archived_opened_idx": {
+          "name": "text_user_archived_opened_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "archived",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "last_opened_at",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "text_user_id_profile_user_id_fk": {
+          "name": "text_user_id_profile_user_id_fk",
+          "tableFrom": "text",
+          "tableTo": "profile",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "text_select_own": {
+          "name": "text_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "text_insert_own": {
+          "name": "text_insert_own",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "authenticated"
+          ],
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        },
+        "text_delete_own": {
+          "name": "text_delete_own",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "text_update_own": {
+          "name": "text_update_own",
+          "as": "PERMISSIVE",
+          "for": "UPDATE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())",
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "text_source_check": {
+          "name": "text_source_check",
+          "value": "\"source\" in ('paste', 'library', 'generated', 'url')"
+        },
+        "text_status_check": {
+          "name": "text_status_check",
+          "value": "\"status\" in ('processing', 'ready', 'failed')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "app.attempt": {
+      "name": "attempt",
+      "schema": "app",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source": {
+          "name": "source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_ref": {
+          "name": "source_ref",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "exercise_id": {
+          "name": "exercise_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lemma_id": {
+          "name": "lemma_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "g_case": {
+          "name": "g_case",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "g_number": {
+          "name": "g_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "g_gender": {
+          "name": "g_gender",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pattern": {
+          "name": "pattern",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "trigger_id": {
+          "name": "trigger_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "correct": {
+          "name": "correct",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "retry": {
+          "name": "retry",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "diagnosis": {
+          "name": "diagnosis",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "error_type": {
+          "name": "error_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "given": {
+          "name": "given",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expected": {
+          "name": "expected",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "given_case": {
+          "name": "given_case",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "occurred_at": {
+          "name": "occurred_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "duration_ms": {
+          "name": "duration_ms",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "attempt_user_bucket_idx": {
+          "name": "attempt_user_bucket_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "g_case",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "g_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "g_gender",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "occurred_at",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "attempt_user_id_profile_user_id_fk": {
+          "name": "attempt_user_id_profile_user_id_fk",
+          "tableFrom": "attempt",
+          "tableTo": "profile",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "attempt_select_own": {
+          "name": "attempt_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "attempt_insert_own": {
+          "name": "attempt_insert_own",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "authenticated"
+          ],
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        },
+        "attempt_delete_own": {
+          "name": "attempt_delete_own",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "attempt_source_check": {
+          "name": "attempt_source_check",
+          "value": "\"source\" in ('trainer', 'lesson', 'review', 'placement', 'tutor')"
+        },
+        "attempt_g_case_check": {
+          "name": "attempt_g_case_check",
+          "value": "\"g_case\" in ('nom', 'gen', 'dat', 'acc', 'voc', 'loc', 'ins')"
+        },
+        "attempt_g_number_check": {
+          "name": "attempt_g_number_check",
+          "value": "\"g_number\" in ('sg', 'pl')"
+        },
+        "attempt_g_gender_check": {
+          "name": "attempt_g_gender_check",
+          "value": "\"g_gender\" in ('m_anim', 'm_inan', 'f', 'n')"
+        },
+        "attempt_diagnosis_check": {
+          "name": "attempt_diagnosis_check",
+          "value": "\"diagnosis\" in ('correct', 'other_case', 'diacritics', 'wrong_pattern', 'not_a_form')"
+        },
+        "attempt_error_type_check": {
+          "name": "attempt_error_type_check",
+          "value": "\"error_type\" in ('case_after_preposition', 'case_after_verb', 'case_after_numeral', 'case_other', 'agreement_gender', 'agreement_number', 'agreement_case', 'animacy', 'genitive_plural', 'pattern_ending', 'pronoun_form', 'verb_form', 'aspect', 'word_order', 'vocabulary', 'spelling', 'other')"
+        },
+        "attempt_given_case_check": {
+          "name": "attempt_given_case_check",
+          "value": "\"given_case\" in ('nom', 'gen', 'dat', 'acc', 'voc', 'loc', 'ins')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "app.card": {
+      "name": "card",
+      "schema": "app",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "note_id": {
+          "name": "note_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "template": {
+          "name": "template",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'recall'"
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'new'"
+        },
+        "due_at": {
+          "name": "due_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "new_ord": {
+          "name": "new_ord",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stability": {
+          "name": "stability",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "difficulty": {
+          "name": "difficulty",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reps": {
+          "name": "reps",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "lapses": {
+          "name": "lapses",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "last_review_at": {
+          "name": "last_review_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scheduler_state": {
+          "name": "scheduler_state",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scheduler_version": {
+          "name": "scheduler_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "variant_cursor": {
+          "name": "variant_cursor",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "suspended": {
+          "name": "suspended",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "card_user_state_due_idx": {
+          "name": "card_user_state_due_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "state",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "due_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "card_user_id_profile_user_id_fk": {
+          "name": "card_user_id_profile_user_id_fk",
+          "tableFrom": "card",
+          "tableTo": "profile",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "card_note_id_note_id_fk": {
+          "name": "card_note_id_note_id_fk",
+          "tableFrom": "card",
+          "tableTo": "note",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "note_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "card_note_template_unique": {
+          "name": "card_note_template_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "note_id",
+            "template"
+          ]
+        }
+      },
+      "policies": {
+        "card_select_own": {
+          "name": "card_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "card_insert_own": {
+          "name": "card_insert_own",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "authenticated"
+          ],
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        },
+        "card_delete_own": {
+          "name": "card_delete_own",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "card_update_own": {
+          "name": "card_update_own",
+          "as": "PERMISSIVE",
+          "for": "UPDATE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())",
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "card_template_check": {
+          "name": "card_template_check",
+          "value": "\"template\" in ('recall')"
+        },
+        "card_state_check": {
+          "name": "card_state_check",
+          "value": "\"state\" in ('new', 'learning', 'review', 'relearning')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "app.content_report": {
+      "name": "content_report",
+      "schema": "app",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "target_kind": {
+          "name": "target_kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "target_ref": {
+          "name": "target_ref",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "comment": {
+          "name": "comment",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'open'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "content_report_user_id_profile_user_id_fk": {
+          "name": "content_report_user_id_profile_user_id_fk",
+          "tableFrom": "content_report",
+          "tableTo": "profile",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "content_report_select_own": {
+          "name": "content_report_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "content_report_insert_own": {
+          "name": "content_report_insert_own",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "authenticated"
+          ],
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        },
+        "content_report_delete_own": {
+          "name": "content_report_delete_own",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "content_report_update_own": {
+          "name": "content_report_update_own",
+          "as": "PERMISSIVE",
+          "for": "UPDATE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())",
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "content_report_target_kind_check": {
+          "name": "content_report_target_kind_check",
+          "value": "\"target_kind\" in ('exercise', 'sense', 'sentence', 'lesson', 'tutor_error', 'analysis_token')"
+        },
+        "content_report_status_check": {
+          "name": "content_report_status_check",
+          "value": "\"status\" in ('open', 'resolved')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "app.conversation": {
+      "name": "conversation",
+      "schema": "app",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "scenario_id": {
+          "name": "scenario_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mode": {
+          "name": "mode",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
+        "goal_state": {
+          "name": "goal_state",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "turn_count": {
+          "name": "turn_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "summary": {
+          "name": "summary",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "model": {
+          "name": "model",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "prompt_version": {
+          "name": "prompt_version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "started_at": {
+          "name": "started_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "ended_at": {
+          "name": "ended_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "conversation_user_id_profile_user_id_fk": {
+          "name": "conversation_user_id_profile_user_id_fk",
+          "tableFrom": "conversation",
+          "tableTo": "profile",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "conversation_select_own": {
+          "name": "conversation_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "conversation_insert_own": {
+          "name": "conversation_insert_own",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "authenticated"
+          ],
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        },
+        "conversation_delete_own": {
+          "name": "conversation_delete_own",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "conversation_update_own": {
+          "name": "conversation_update_own",
+          "as": "PERMISSIVE",
+          "for": "UPDATE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())",
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "conversation_mode_check": {
+          "name": "conversation_mode_check",
+          "value": "\"mode\" in ('scenario', 'case_coach')"
+        },
+        "conversation_status_check": {
+          "name": "conversation_status_check",
+          "value": "\"status\" in ('active', 'completed', 'abandoned')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "app.lesson_progress": {
+      "name": "lesson_progress",
+      "schema": "app",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lesson_id": {
+          "name": "lesson_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "step_index": {
+          "name": "step_index",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "score": {
+          "name": "score",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "started_at": {
+          "name": "started_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "lesson_progress_user_id_profile_user_id_fk": {
+          "name": "lesson_progress_user_id_profile_user_id_fk",
+          "tableFrom": "lesson_progress",
+          "tableTo": "profile",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "lesson_progress_pkey": {
+          "name": "lesson_progress_pkey",
+          "columns": [
+            "user_id",
+            "lesson_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {
+        "lesson_progress_select_own": {
+          "name": "lesson_progress_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "lesson_progress_insert_own": {
+          "name": "lesson_progress_insert_own",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "authenticated"
+          ],
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        },
+        "lesson_progress_delete_own": {
+          "name": "lesson_progress_delete_own",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "lesson_progress_update_own": {
+          "name": "lesson_progress_update_own",
+          "as": "PERMISSIVE",
+          "for": "UPDATE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())",
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "lesson_progress_status_check": {
+          "name": "lesson_progress_status_check",
+          "value": "\"status\" in ('locked', 'available', 'in_progress', 'completed', 'tested_out')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "app.message": {
+      "name": "message",
+      "schema": "app",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "conversation_id": {
+          "name": "conversation_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "seq": {
+          "name": "seq",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "annotations": {
+          "name": "annotations",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "usage": {
+          "name": "usage",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "client_id": {
+          "name": "client_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "message_user_id_profile_user_id_fk": {
+          "name": "message_user_id_profile_user_id_fk",
+          "tableFrom": "message",
+          "tableTo": "profile",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "message_conversation_id_conversation_id_fk": {
+          "name": "message_conversation_id_conversation_id_fk",
+          "tableFrom": "message",
+          "tableTo": "conversation",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "conversation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "message_conversation_seq_unique": {
+          "name": "message_conversation_seq_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "conversation_id",
+            "seq"
+          ]
+        },
+        "message_conversation_client_unique": {
+          "name": "message_conversation_client_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "conversation_id",
+            "client_id"
+          ]
+        }
+      },
+      "policies": {
+        "message_select_own": {
+          "name": "message_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "message_insert_own": {
+          "name": "message_insert_own",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "authenticated"
+          ],
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        },
+        "message_delete_own": {
+          "name": "message_delete_own",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "message_update_own": {
+          "name": "message_update_own",
+          "as": "PERMISSIVE",
+          "for": "UPDATE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())",
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "message_role_check": {
+          "name": "message_role_check",
+          "value": "\"role\" in ('tutor', 'learner', 'system_note')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "app.note": {
+      "name": "note",
+      "schema": "app",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lemma_id": {
+          "name": "lemma_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "exercise_id": {
+          "name": "exercise_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "text_id": {
+          "name": "text_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content": {
+          "name": "content",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source": {
+          "name": "source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_ref": {
+          "name": "source_ref",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "suspended": {
+          "name": "suspended",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "note_user_word_idx": {
+          "name": "note_user_word_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "lemma_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"kind\" = 'word' and \"deleted_at\" is null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "note_user_exercise_idx": {
+          "name": "note_user_exercise_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "exercise_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"exercise_id\" is not null and \"deleted_at\" is null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "note_user_created_idx": {
+          "name": "note_user_created_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "note_user_id_profile_user_id_fk": {
+          "name": "note_user_id_profile_user_id_fk",
+          "tableFrom": "note",
+          "tableTo": "profile",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "note_select_own": {
+          "name": "note_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "note_insert_own": {
+          "name": "note_insert_own",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "authenticated"
+          ],
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        },
+        "note_delete_own": {
+          "name": "note_delete_own",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "note_update_own": {
+          "name": "note_update_own",
+          "as": "PERMISSIVE",
+          "for": "UPDATE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())",
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "note_kind_check": {
+          "name": "note_kind_check",
+          "value": "\"kind\" in ('word', 'phrase', 'case_sentence')"
+        },
+        "note_source_check": {
+          "name": "note_source_check",
+          "value": "\"source\" in ('reader', 'words', 'declension', 'tutor', 'manual')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "app.placement": {
+      "name": "placement",
+      "schema": "app",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
+        "items": {
+          "name": "items",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::jsonb"
+        },
+        "result": {
+          "name": "result",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "started_at": {
+          "name": "started_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "placement_user_id_profile_user_id_fk": {
+          "name": "placement_user_id_profile_user_id_fk",
+          "tableFrom": "placement",
+          "tableTo": "profile",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "placement_select_own": {
+          "name": "placement_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "placement_insert_own": {
+          "name": "placement_insert_own",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "authenticated"
+          ],
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        },
+        "placement_delete_own": {
+          "name": "placement_delete_own",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "placement_update_own": {
+          "name": "placement_update_own",
+          "as": "PERMISSIVE",
+          "for": "UPDATE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())",
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "placement_status_check": {
+          "name": "placement_status_check",
+          "value": "\"status\" in ('active', 'completed', 'abandoned')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "app.profile": {
+      "name": "profile",
+      "schema": "app",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "display_name": {
+          "name": "display_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ui_lang": {
+          "name": "ui_lang",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'en'"
+        },
+        "explain_lang": {
+          "name": "explain_lang",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'en'"
+        },
+        "level": {
+          "name": "level",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'A2'"
+        },
+        "timezone": {
+          "name": "timezone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Europe/Bratislava'"
+        },
+        "day_start_hour": {
+          "name": "day_start_hour",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 4
+        },
+        "daily_new_limit": {
+          "name": "daily_new_limit",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 10
+        },
+        "daily_review_limit": {
+          "name": "daily_review_limit",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 80
+        },
+        "desired_retention": {
+          "name": "desired_retention",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0.9
+        },
+        "strict_diacritics": {
+          "name": "strict_diacritics",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "placement_done_at": {
+          "name": "placement_done_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "current_lesson_id": {
+          "name": "current_lesson_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "words_band_target": {
+          "name": "words_band_target",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1000
+        },
+        "settings": {
+          "name": "settings",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "profile_select_own": {
+          "name": "profile_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "profile_insert_own": {
+          "name": "profile_insert_own",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "authenticated"
+          ],
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        },
+        "profile_delete_own": {
+          "name": "profile_delete_own",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "profile_update_own": {
+          "name": "profile_update_own",
+          "as": "PERMISSIVE",
+          "for": "UPDATE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())",
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "profile_level_check": {
+          "name": "profile_level_check",
+          "value": "\"level\" in ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "app.review": {
+      "name": "review",
+      "schema": "app",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "card_id": {
+          "name": "card_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "answered_at": {
+          "name": "answered_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "received_at": {
+          "name": "received_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "rating": {
+          "name": "rating",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "grade": {
+          "name": "grade",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "overridden": {
+          "name": "overridden",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "typed": {
+          "name": "typed",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expected": {
+          "name": "expected",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "variant": {
+          "name": "variant",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "duration_ms": {
+          "name": "duration_ms",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "state_before": {
+          "name": "state_before",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "state_after": {
+          "name": "state_after",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "client_id": {
+          "name": "client_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "diagnosis": {
+          "name": "diagnosis",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "review_user_answered_idx": {
+          "name": "review_user_answered_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "answered_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "review_card_answered_idx": {
+          "name": "review_card_answered_idx",
+          "columns": [
+            {
+              "expression": "card_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "answered_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "review_user_id_profile_user_id_fk": {
+          "name": "review_user_id_profile_user_id_fk",
+          "tableFrom": "review",
+          "tableTo": "profile",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "review_card_id_card_id_fk": {
+          "name": "review_card_id_card_id_fk",
+          "tableFrom": "review",
+          "tableTo": "card",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "card_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "review_select_own": {
+          "name": "review_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "review_insert_own": {
+          "name": "review_insert_own",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "authenticated"
+          ],
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        },
+        "review_delete_own": {
+          "name": "review_delete_own",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "review_rating_check": {
+          "name": "review_rating_check",
+          "value": "\"rating\" in (1, 2, 3, 4)"
+        },
+        "review_grade_check": {
+          "name": "review_grade_check",
+          "value": "\"grade\" in ('correct', 'close', 'wrong', 'revealed')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "app.tutor_error": {
+      "name": "tutor_error",
+      "schema": "app",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "conversation_id": {
+          "name": "conversation_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "message_id": {
+          "name": "message_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "span_start": {
+          "name": "span_start",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "span_end": {
+          "name": "span_end",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "given": {
+          "name": "given",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expected": {
+          "name": "expected",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "corrected_sentence": {
+          "name": "corrected_sentence",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "error_type": {
+          "name": "error_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "case_expected": {
+          "name": "case_expected",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "case_given": {
+          "name": "case_given",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lemma_id": {
+          "name": "lemma_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "trigger_id": {
+          "name": "trigger_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "explanation_en": {
+          "name": "explanation_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "severity": {
+          "name": "severity",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "verified": {
+          "name": "verified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "note_id": {
+          "name": "note_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "resolved_at": {
+          "name": "resolved_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "tutor_error_user_id_profile_user_id_fk": {
+          "name": "tutor_error_user_id_profile_user_id_fk",
+          "tableFrom": "tutor_error",
+          "tableTo": "profile",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "tutor_error_conversation_id_conversation_id_fk": {
+          "name": "tutor_error_conversation_id_conversation_id_fk",
+          "tableFrom": "tutor_error",
+          "tableTo": "conversation",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "conversation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "tutor_error_message_id_message_id_fk": {
+          "name": "tutor_error_message_id_message_id_fk",
+          "tableFrom": "tutor_error",
+          "tableTo": "message",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "message_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "tutor_error_note_id_note_id_fk": {
+          "name": "tutor_error_note_id_note_id_fk",
+          "tableFrom": "tutor_error",
+          "tableTo": "note",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "note_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "tutor_error_select_own": {
+          "name": "tutor_error_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "tutor_error_insert_own": {
+          "name": "tutor_error_insert_own",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "authenticated"
+          ],
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        },
+        "tutor_error_delete_own": {
+          "name": "tutor_error_delete_own",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "tutor_error_update_own": {
+          "name": "tutor_error_update_own",
+          "as": "PERMISSIVE",
+          "for": "UPDATE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())",
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "tutor_error_error_type_check": {
+          "name": "tutor_error_error_type_check",
+          "value": "\"error_type\" in ('case_after_preposition', 'case_after_verb', 'case_after_numeral', 'case_other', 'agreement_gender', 'agreement_number', 'agreement_case', 'animacy', 'genitive_plural', 'pattern_ending', 'pronoun_form', 'verb_form', 'aspect', 'word_order', 'vocabulary', 'spelling', 'other')"
+        },
+        "tutor_error_case_expected_check": {
+          "name": "tutor_error_case_expected_check",
+          "value": "\"case_expected\" in ('nom', 'gen', 'dat', 'acc', 'voc', 'loc', 'ins')"
+        },
+        "tutor_error_case_given_check": {
+          "name": "tutor_error_case_given_check",
+          "value": "\"case_given\" in ('nom', 'gen', 'dat', 'acc', 'voc', 'loc', 'ins')"
+        },
+        "tutor_error_severity_check": {
+          "name": "tutor_error_severity_check",
+          "value": "\"severity\" in ('case', 'other')"
+        },
+        "tutor_error_status_check": {
+          "name": "tutor_error_status_check",
+          "value": "\"status\" in ('prompted', 'self_corrected', 'corrected', 'summary_only', 'disputed')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "app.user_lemma": {
+      "name": "user_lemma",
+      "schema": "app",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lemma_id": {
+          "name": "lemma_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source": {
+          "name": "source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "known_at": {
+          "name": "known_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "user_lemma_user_id_profile_user_id_fk": {
+          "name": "user_lemma_user_id_profile_user_id_fk",
+          "tableFrom": "user_lemma",
+          "tableTo": "profile",
+          "schemaTo": "app",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "user_lemma_pkey": {
+          "name": "user_lemma_pkey",
+          "columns": [
+            "user_id",
+            "lemma_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {
+        "user_lemma_select_own": {
+          "name": "user_lemma_select_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "user_lemma_insert_own": {
+          "name": "user_lemma_insert_own",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "authenticated"
+          ],
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        },
+        "user_lemma_delete_own": {
+          "name": "user_lemma_delete_own",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())"
+        },
+        "user_lemma_update_own": {
+          "name": "user_lemma_update_own",
+          "as": "PERMISSIVE",
+          "for": "UPDATE",
+          "to": [
+            "authenticated"
+          ],
+          "using": "\"user_id\" = (select auth.uid())",
+          "withCheck": "\"user_id\" = (select auth.uid())"
+        }
+      },
+      "checkConstraints": {
+        "user_lemma_status_check": {
+          "name": "user_lemma_status_check",
+          "value": "\"status\" in ('unknown', 'learning', 'known', 'ignored')"
+        },
+        "user_lemma_source_check": {
+          "name": "user_lemma_source_check",
+          "value": "\"source\" in ('placement', 'triage', 'reader', 'review', 'manual')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "ling.content_version": {
+      "name": "content_version",
+      "schema": "ling",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "content_version_id_seq",
+            "schema": "ling",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "version": {
+          "name": "version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "built_at": {
+          "name": "built_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "loaded_at": {
+          "name": "loaded_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "sources": {
+          "name": "sources",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "counts": {
+          "name": "counts",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "ling.exercise": {
+      "name": "exercise",
+      "schema": "ling",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sentence_sk": {
+          "name": "sentence_sk",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sentence_en": {
+          "name": "sentence_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "target": {
+          "name": "target",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "g_case": {
+          "name": "g_case",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "g_number": {
+          "name": "g_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "g_gender": {
+          "name": "g_gender",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pattern": {
+          "name": "pattern",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "trigger_id": {
+          "name": "trigger_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "options": {
+          "name": "options",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lesson_id": {
+          "name": "lesson_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "difficulty": {
+          "name": "difficulty",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source": {
+          "name": "source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "verified": {
+          "name": "verified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "flags": {
+          "name": "flags",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        }
+      },
+      "indexes": {
+        "exercise_bucket_idx": {
+          "name": "exercise_bucket_idx",
+          "columns": [
+            {
+              "expression": "g_case",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "g_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "g_gender",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "exercise_lesson_id_idx": {
+          "name": "exercise_lesson_id_idx",
+          "columns": [
+            {
+              "expression": "lesson_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "exercise_kind_check": {
+          "name": "exercise_kind_check",
+          "value": "\"kind\" in ('cloze', 'choice_meaning', 'choice_form')"
+        },
+        "exercise_g_case_check": {
+          "name": "exercise_g_case_check",
+          "value": "\"g_case\" in ('nom', 'gen', 'dat', 'acc', 'voc', 'loc', 'ins')"
+        },
+        "exercise_g_number_check": {
+          "name": "exercise_g_number_check",
+          "value": "\"g_number\" in ('sg', 'pl')"
+        },
+        "exercise_g_gender_check": {
+          "name": "exercise_g_gender_check",
+          "value": "\"g_gender\" in ('m_anim', 'm_inan', 'f', 'n')"
+        },
+        "exercise_source_check": {
+          "name": "exercise_source_check",
+          "value": "\"source\" in ('authored', 'generated', 'ud', 'tatoeba')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "ling.form": {
+      "name": "form",
+      "schema": "ling",
+      "columns": {
+        "lemma_id": {
+          "name": "lemma_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "form": {
+          "name": "form",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "form_ascii": {
+          "name": "form_ascii",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tags": {
+          "name": "tags",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "form_form_ascii_idx": {
+          "name": "form_form_ascii_idx",
+          "columns": [
+            {
+              "expression": "form_ascii",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "form_lemma_id_lemma_id_fk": {
+          "name": "form_lemma_id_lemma_id_fk",
+          "tableFrom": "form",
+          "tableTo": "lemma",
+          "schemaTo": "ling",
+          "columnsFrom": [
+            "lemma_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "form_pkey": {
+          "name": "form_pkey",
+          "columns": [
+            "lemma_id",
+            "form"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "ling.lemma": {
+      "name": "lemma",
+      "schema": "ling",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "key": {
+          "name": "key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lemma": {
+          "name": "lemma",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lemma_ascii": {
+          "name": "lemma_ascii",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pos": {
+          "name": "pos",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "gender": {
+          "name": "gender",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pattern": {
+          "name": "pattern",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "aspect": {
+          "name": "aspect",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "freq_rank": {
+          "name": "freq_rank",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "top_forms": {
+          "name": "top_forms",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::jsonb"
+        },
+        "flags": {
+          "name": "flags",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        }
+      },
+      "indexes": {
+        "lemma_lemma_ascii_idx": {
+          "name": "lemma_lemma_ascii_idx",
+          "columns": [
+            {
+              "expression": "lemma_ascii",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "lemma_freq_rank_idx": {
+          "name": "lemma_freq_rank_idx",
+          "columns": [
+            {
+              "expression": "freq_rank",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"freq_rank\" is not null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "lemma_key_unique": {
+          "name": "lemma_key_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "key"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "lemma_pos_check": {
+          "name": "lemma_pos_check",
+          "value": "\"pos\" in ('noun', 'adj', 'pron', 'num', 'verb', 'adv', 'prep', 'conj', 'part', 'intj', 'other')"
+        },
+        "lemma_gender_check": {
+          "name": "lemma_gender_check",
+          "value": "\"gender\" in ('m_anim', 'm_inan', 'f', 'n')"
+        },
+        "lemma_aspect_check": {
+          "name": "lemma_aspect_check",
+          "value": "\"aspect\" in ('ipf', 'pf', 'both')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "ling.lemma_sentence": {
+      "name": "lemma_sentence",
+      "schema": "ling",
+      "columns": {
+        "lemma_id": {
+          "name": "lemma_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sentence_id": {
+          "name": "sentence_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token_index": {
+          "name": "token_index",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "form": {
+          "name": "form",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tag": {
+          "name": "tag",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ord": {
+          "name": "ord",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "lemma_sentence_lemma_id_lemma_id_fk": {
+          "name": "lemma_sentence_lemma_id_lemma_id_fk",
+          "tableFrom": "lemma_sentence",
+          "tableTo": "lemma",
+          "schemaTo": "ling",
+          "columnsFrom": [
+            "lemma_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "lemma_sentence_sentence_id_sentence_id_fk": {
+          "name": "lemma_sentence_sentence_id_sentence_id_fk",
+          "tableFrom": "lemma_sentence",
+          "tableTo": "sentence",
+          "schemaTo": "ling",
+          "columnsFrom": [
+            "sentence_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "lemma_sentence_pkey": {
+          "name": "lemma_sentence_pkey",
+          "columns": [
+            "lemma_id",
+            "sentence_id",
+            "token_index"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "ling.lesson": {
+      "name": "lesson",
+      "schema": "ling",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "course": {
+          "name": "course",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'declension'"
+        },
+        "ord": {
+          "name": "ord",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title_en": {
+          "name": "title_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title_sk": {
+          "name": "title_sk",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "g_case": {
+          "name": "g_case",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "g_number": {
+          "name": "g_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "focus": {
+          "name": "focus",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "summary_md": {
+          "name": "summary_md",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prerequisites": {
+          "name": "prerequisites",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::text[]"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "lesson_g_case_check": {
+          "name": "lesson_g_case_check",
+          "value": "\"g_case\" in ('nom', 'gen', 'dat', 'acc', 'voc', 'loc', 'ins')"
+        },
+        "lesson_g_number_check": {
+          "name": "lesson_g_number_check",
+          "value": "\"g_number\" in ('sg', 'pl')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "ling.lesson_step": {
+      "name": "lesson_step",
+      "schema": "ling",
+      "columns": {
+        "lesson_id": {
+          "name": "lesson_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ord": {
+          "name": "ord",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "lesson_step_lesson_id_lesson_id_fk": {
+          "name": "lesson_step_lesson_id_lesson_id_fk",
+          "tableFrom": "lesson_step",
+          "tableTo": "lesson",
+          "schemaTo": "ling",
+          "columnsFrom": [
+            "lesson_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "lesson_step_pkey": {
+          "name": "lesson_step_pkey",
+          "columns": [
+            "lesson_id",
+            "ord"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "lesson_step_kind_check": {
+          "name": "lesson_step_kind_check",
+          "value": "\"kind\" in ('explain', 'triggers', 'comprehension', 'production', 'checkpoint')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "ling.library_text": {
+      "name": "library_text",
+      "schema": "ling",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "body": {
+          "name": "body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "level": {
+          "name": "level",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "analysis": {
+          "name": "analysis",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lemma_counts": {
+          "name": "lemma_counts",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "source": {
+          "name": "source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "license": {
+          "name": "license",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ord": {
+          "name": "ord",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "library_text_level_check": {
+          "name": "library_text_level_check",
+          "value": "\"level\" in ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')"
+        },
+        "library_text_source_check": {
+          "name": "library_text_source_check",
+          "value": "\"source\" in ('authored', 'generated', 'public_domain')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "ling.pattern": {
+      "name": "pattern",
+      "schema": "ling",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "label_sk": {
+          "name": "label_sk",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pos": {
+          "name": "pos",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "gender": {
+          "name": "gender",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "model_lemma_id": {
+          "name": "model_lemma_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "everyday_model_lemma_id": {
+          "name": "everyday_model_lemma_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "endings": {
+          "name": "endings",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "notes_en": {
+          "name": "notes_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "pattern_pos_check": {
+          "name": "pattern_pos_check",
+          "value": "\"pos\" in ('noun', 'adj')"
+        },
+        "pattern_gender_check": {
+          "name": "pattern_gender_check",
+          "value": "\"gender\" in ('m_anim', 'm_inan', 'f', 'n')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "ling.scenario": {
+      "name": "scenario",
+      "schema": "ling",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "mode": {
+          "name": "mode",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title_en": {
+          "name": "title_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title_sk": {
+          "name": "title_sk",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "goal_en": {
+          "name": "goal_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "setting_sk": {
+          "name": "setting_sk",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tutor_role": {
+          "name": "tutor_role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "target_cases": {
+          "name": "target_cases",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "target_triggers": {
+          "name": "target_triggers",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "level": {
+          "name": "level",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "opening_sk": {
+          "name": "opening_sk",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "success_criteria": {
+          "name": "success_criteria",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "vocab_hint": {
+          "name": "vocab_hint",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::jsonb"
+        },
+        "ord": {
+          "name": "ord",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "scenario_mode_check": {
+          "name": "scenario_mode_check",
+          "value": "\"mode\" in ('scenario', 'case_coach')"
+        },
+        "scenario_level_check": {
+          "name": "scenario_level_check",
+          "value": "\"level\" in ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')"
+        },
+        "scenario_target_cases_check": {
+          "name": "scenario_target_cases_check",
+          "value": "\"target_cases\" <@ array['nom', 'gen', 'dat', 'acc', 'voc', 'loc', 'ins']::text[]"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "ling.sense": {
+      "name": "sense",
+      "schema": "ling",
+      "columns": {
+        "lemma_id": {
+          "name": "lemma_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ord": {
+          "name": "ord",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "gloss_en": {
+          "name": "gloss_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "note": {
+          "name": "note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "source": {
+          "name": "source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "verified": {
+          "name": "verified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "sense_lemma_id_lemma_id_fk": {
+          "name": "sense_lemma_id_lemma_id_fk",
+          "tableFrom": "sense",
+          "tableTo": "lemma",
+          "schemaTo": "ling",
+          "columnsFrom": [
+            "lemma_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "sense_pkey": {
+          "name": "sense_pkey",
+          "columns": [
+            "lemma_id",
+            "ord"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "sense_source_check": {
+          "name": "sense_source_check",
+          "value": "\"source\" in ('wiktionary', 'generated', 'manual', 'runtime')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "ling.sentence": {
+      "name": "sentence",
+      "schema": "ling",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "text_sk": {
+          "name": "text_sk",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "text_en": {
+          "name": "text_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tokens": {
+          "name": "tokens",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "difficulty": {
+          "name": "difficulty",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source": {
+          "name": "source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_ref": {
+          "name": "source_ref",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "license": {
+          "name": "license",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "audio_path": {
+          "name": "audio_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "verified": {
+          "name": "verified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "sentence_source_check": {
+          "name": "sentence_source_check",
+          "value": "\"source\" in ('tatoeba', 'ud', 'generated')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "ling.trigger": {
+      "name": "trigger",
+      "schema": "ling",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lemma": {
+          "name": "lemma",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lemma_id": {
+          "name": "lemma_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "g_case": {
+          "name": "g_case",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "meaning_en": {
+          "name": "meaning_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "note_en": {
+          "name": "note_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "example_sk": {
+          "name": "example_sk",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "example_en": {
+          "name": "example_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "contrast_group": {
+          "name": "contrast_group",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "freq_rank": {
+          "name": "freq_rank",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "trigger_kind_check": {
+          "name": "trigger_kind_check",
+          "value": "\"kind\" in ('preposition', 'verb', 'numeral', 'quantifier', 'question', 'adjective', 'noun', 'function')"
+        },
+        "trigger_g_case_check": {
+          "name": "trigger_g_case_check",
+          "value": "\"g_case\" in ('nom', 'gen', 'dat', 'acc', 'voc', 'loc', 'ins')"
+        }
+      },
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {
+    "app": "app",
+    "ling": "ling"
+  },
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

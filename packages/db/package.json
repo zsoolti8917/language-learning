@@ -10,7 +10,8 @@
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "node ../../scripts/pending.mjs F3 db:migrate"
+    "db:migrate": "tsx scripts/db.ts migrate",
+    "db:load": "tsx scripts/db.ts load"
   },
   "dependencies": {
     "@app/contracts": "workspace:*",
