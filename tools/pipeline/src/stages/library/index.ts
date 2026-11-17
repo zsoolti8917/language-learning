@@ -13,6 +13,7 @@
 //   pnpm run pipeline library --fill dry-run   + request count and cost of the missing reviews
 //   pnpm run pipeline library --fill live      + sends them (refuses above $5 without --max-spend)
 //   pnpm run pipeline library --fill mock      + scripted reviews, kept in the build folder
+//   pnpm run pipeline library --fill offline   + reviews written outside the API
 import { join } from 'node:path';
 import type { LibraryRow } from '@app/contracts';
 import {
@@ -25,9 +26,9 @@ import {
 } from '../../lib/files';
 import { codeDirOf, resolveArg, type Stage, type StageContext } from '../../lib/runner';
 import type { Check } from '../../lib/validate';
-import { FILL_OPTIONS, fillModeOf, runOptionsOf } from '../../model/options';
+import { FILL_OPTIONS, fillAlwaysRuns, fillModeOf, runOptionsOf } from '../../model/options';
 import { formatUsd } from '../../model/pricing';
-import { type BatchJob, DEFAULT_MODEL, runBatch } from '../../model/runner';
+import { type BatchJob, runBatch } from '../../model/runner';
 import { type AuthoredText, LIBRARY_LEVELS, readAuthoredTexts } from './authored';
 import { REVIEW_PROMPT_VERSION, type ReviewAnswer, type ReviewInput, reviewTask } from './review';
 import { setVocabulary } from './setvocab';
@@ -193,7 +194,7 @@ export async function runLibrary(ctx: StageContext): Promise<Record<string, unkn
   };
   const pending = texts.filter((t) => !current(t));
   let fill: Record<string, unknown> = { mode, pending: pending.length };
-  const options = runOptionsOf(ctx);
+  const options = runOptionsOf(ctx, 'library');
   if (options && pending.length > 0 && problems.length === 0) {
     const jobs: BatchJob<ReviewInput>[] = pending.map((t) => ({
       id: t.id,
@@ -209,7 +210,7 @@ export async function runLibrary(ctx: StageContext): Promise<Record<string, unkn
         problems: r.output.problems,
         route: reviewTask.route,
         promptVersion: REVIEW_PROMPT_VERSION,
-        model: reviewTask.model ?? DEFAULT_MODEL,
+        model: r.model,
         requestHash: r.hash,
         ...(mode === 'mock' ? { mock: true as const } : {}),
       });
@@ -423,8 +424,7 @@ export const libraryStage: Stage = {
   params: (ctx) => ({
     fill: fillModeOf(ctx),
     maxSpend: ctx.args['max-spend'] ?? null,
-    at:
-      fillModeOf(ctx) === 'dry-run' || fillModeOf(ctx) === 'live' ? ctx.now().toISOString() : null,
+    at: fillAlwaysRuns(ctx) ? ctx.now().toISOString() : null,
   }),
   run: runLibrary,
   parts: [{ file: 'library.jsonl', path: (p) => join(p.build, 'library', 'library.jsonl') }],

@@ -7,6 +7,9 @@
 // - `dry-run` builds the requests and prints their count and estimated cost; nothing is sent.
 // - `mock` answers from a scripted client (tests, local runs); nothing reaches the network.
 // - `live` refuses to send requests estimated above `maxSpendUsd` (default $5).
+// - `offline` sends nothing either: every open request is written to a folder as a file, and
+//   an answer file placed beside it by a writer outside the API is checked exactly like an
+//   API answer (schema, task check) and then cached. See docs/content-build.md.
 import { readdir, readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
@@ -59,8 +62,11 @@ export interface BatchJob<I> {
   input: I;
 }
 
-export type RunMode = 'dry-run' | 'mock' | 'live';
-export const RUN_MODES: readonly RunMode[] = ['dry-run', 'mock', 'live'];
+export type RunMode = 'dry-run' | 'mock' | 'live' | 'offline';
+export const RUN_MODES: readonly RunMode[] = ['dry-run', 'mock', 'live', 'offline'];
+
+/** What an offline answer records as its model when the run names no writer. */
+export const OFFLINE_MODEL = 'offline';
 
 export interface RunOptions {
   mode: RunMode;
@@ -75,6 +81,15 @@ export interface RunOptions {
   /** Requests per batch (the API takes up to 100,000 or 256 MB). Default 5,000. */
   maxPerBatch?: number;
   sleep?: (ms: number) => Promise<void>;
+  /**
+   * Offline mode: the folder that receives the open requests, `<route>/<hash>.json` each.
+   * After a run the route's folder holds exactly the requests still without a valid answer.
+   */
+  requestsDir?: string;
+  /** Offline mode: the folder answers are read from, `<route>/<hash>.json` each. */
+  answersDir?: string;
+  /** Offline mode: who wrote the answers; recorded as the model of each one. */
+  answeredBy?: string;
 }
 
 export interface JobResult<I, O> {
@@ -83,6 +98,8 @@ export interface JobResult<I, O> {
   output: O;
   hash: string;
   cached: boolean;
+  /** Who gave the answer: the model the API reports, or the writer of an offline answer. */
+  model: string;
 }
 
 export interface JobFailure {
@@ -106,6 +123,8 @@ export interface BatchOutcome<I, O> {
   /** Cost from the usage the API reported, at batch prices. */
   actualUsd: number;
   batchIds: string[];
+  /** Offline mode: the hashes of the requests still without a valid answer. */
+  open: string[];
 }
 
 export class SpendLimitError extends Error {
@@ -149,6 +168,22 @@ interface CacheEntry {
   at: string;
   /** Written in mock mode: never reused by a dry run or a live run. */
   mock?: boolean;
+  /** Written in offline mode: the answer came from a file, not from the API. */
+  offline?: boolean;
+}
+
+/** An open request as offline mode writes it: everything a writer needs to answer it. */
+export interface OfflineRequest {
+  hash: string;
+  route: string;
+  promptVersion: number;
+  effort: string;
+  /** The ids of the jobs this request answers. */
+  jobs: string[];
+  system: string;
+  user: string;
+  /** The JSON schema the answer must match. */
+  schema: unknown;
 }
 
 interface PendingBatch {
@@ -161,6 +196,9 @@ const routeDir = (cacheDir: string, route: string) => join(cacheDir, route);
 const entryPath = (cacheDir: string, route: string, hash: string) =>
   join(routeDir(cacheDir, route), hash.slice(0, 2), `${hash}.json`);
 const pendingDir = (cacheDir: string, route: string) => join(routeDir(cacheDir, route), 'pending');
+/** Where offline mode writes a request, and where it looks for its answer. */
+export const offlinePath = (dir: string, route: string, hash: string) =>
+  join(dir, route, `${hash}.json`);
 
 async function readEntry(path: string): Promise<CacheEntry | null> {
   if (!existsSync(path)) return null;
@@ -242,14 +280,26 @@ export async function runBatch<I, O>(
 
   const results: JobResult<I, O>[] = [];
   const failures: JobFailure[] = [];
-  const accept = (hash: string, value: unknown, cached: boolean): string | null => {
+  const accept = (
+    hash: string,
+    value: unknown,
+    cached: boolean,
+    answeredBy: string,
+  ): string | null => {
     const slot = byHash.get(hash);
     if (!slot) return 'unknown request';
     const outs: JobResult<I, O>[] = [];
     for (const job of slot.jobs) {
       const v = validateAnswer(task, job.input, value);
       if (!v.ok) return v.reason;
-      outs.push({ id: job.id, input: job.input, output: v.output, hash, cached });
+      outs.push({
+        id: job.id,
+        input: job.input,
+        output: v.output,
+        hash,
+        cached,
+        model: answeredBy,
+      });
     }
     results.push(...outs);
     return null;
@@ -264,7 +314,7 @@ export async function runBatch<I, O>(
   for (const hash of byHash.keys()) {
     const entry = await readEntry(entryPath(opts.cacheDir, task.route, hash));
     const usable = entry && (opts.mode === 'mock' || !entry.mock);
-    if (usable && accept(hash, entry.output, true) === null) cached++;
+    if (usable && accept(hash, entry.output, true, entry.model ?? model) === null) cached++;
     else todo.push(hash);
   }
 
@@ -294,7 +344,7 @@ export async function runBatch<I, O>(
     worstUsd: batchCost(model, inputTokens, worstOutput),
   };
   log(
-    `${task.route}: ${byHash.size} requests for ${jobs.length} jobs, ${cached} cached, ${todo.length} to send; ` +
+    `${task.route}: ${byHash.size} requests for ${jobs.length} jobs, ${cached} cached, ${todo.length} ${opts.mode === 'offline' ? 'open' : 'to send'}; ` +
       `estimate ${estimate.inputTokens.toLocaleString('en')} input and ${estimate.outputTokens.toLocaleString('en')} output tokens, ` +
       `${formatUsd(estimate.usd)} at batch prices (at most ${formatUsd(estimate.worstUsd)}) on ${model}`,
   );
@@ -310,7 +360,76 @@ export async function runBatch<I, O>(
     estimate,
     actualUsd: 0,
     batchIds: [],
+    open: [],
   };
+  if (opts.mode === 'offline') {
+    // Answers come from files; nothing is sent, so there is no spend to guard.
+    const { requestsDir, answersDir } = opts;
+    if (!requestsDir || !answersDir)
+      throw new Error(`${task.route}: offline mode needs requestsDir and answersDir`);
+    const by = opts.answeredBy ?? OFFLINE_MODEL;
+    let answered = 0;
+    for (const hash of todo) {
+      const apath = offlinePath(answersDir, task.route, hash);
+      if (!existsSync(apath)) {
+        fail(hash, 'no answer yet');
+        outcome.open.push(hash);
+        continue;
+      }
+      let value: unknown;
+      let problem: string | null;
+      try {
+        value = JSON.parse(await readFile(apath, 'utf8'));
+        problem = accept(hash, value, false, by);
+      } catch {
+        problem = 'answer is not JSON';
+      }
+      if (problem) {
+        fail(hash, problem);
+        outcome.open.push(hash);
+        continue;
+      }
+      const entry: CacheEntry = {
+        hash,
+        route: task.route,
+        promptVersion: task.promptVersion,
+        model: by,
+        output: value,
+        at: new Date().toISOString(),
+        offline: true,
+      };
+      await writeFileAtomic(entryPath(opts.cacheDir, task.route, hash), stableJson(entry));
+      answered++;
+    }
+    // The route's request folder holds exactly the requests that are still open.
+    const rdir = routeDir(requestsDir, task.route);
+    const keep = new Set(outcome.open.map((h) => `${h}.json`));
+    if (existsSync(rdir))
+      for (const f of await readdir(rdir))
+        if (!keep.has(f)) await rm(join(rdir, f), { force: true });
+    for (const hash of outcome.open) {
+      const slot = byHash.get(hash);
+      if (!slot) continue;
+      const request: OfflineRequest = {
+        hash,
+        route: task.route,
+        promptVersion: task.promptVersion,
+        effort: task.effort ?? 'low',
+        jobs: slot.jobs.map((j) => j.id),
+        system: task.system,
+        user: task.user((slot.jobs[0] as BatchJob<I>).input),
+        schema: slot.params.output_config?.format?.schema ?? {},
+      };
+      await writeFileAtomic(offlinePath(requestsDir, task.route, hash), stableJson(request));
+    }
+    log(
+      `${task.route}: offline, ${answered} answers accepted from ${routeDir(answersDir, task.route)}, ` +
+        `${outcome.open.length} requests open in ${rdir}; nothing sent`,
+    );
+    for (const f of failures.filter((x) => x.reason !== 'no answer yet').slice(0, 20))
+      log(`${task.route}: rejected ${f.id}: ${f.reason}`);
+    return outcome;
+  }
   if (opts.mode === 'dry-run' || todo.length === 0) {
     if (opts.mode === 'dry-run') log(`${task.route}: dry run, nothing sent`);
     return outcome;
@@ -369,7 +488,7 @@ export async function runBatch<I, O>(
         fail(hash, 'answer is not JSON');
         continue;
       }
-      const problem = accept(hash, value, false);
+      const problem = accept(hash, value, false, msg.model);
       if (problem) {
         fail(hash, problem);
         continue;

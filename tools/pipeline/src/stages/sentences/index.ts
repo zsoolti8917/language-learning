@@ -16,6 +16,8 @@
 //   pnpm run pipeline sentences --fill dry-run     + request count and cost of the fill
 //   pnpm run pipeline sentences --fill live        + sends it (refuses above $5 without --max-spend)
 //   pnpm run pipeline sentences --fill mock        + scripted answers (tests, local runs)
+//   pnpm run pipeline sentences --fill offline     + answers written outside the API, route by
+//                                                    route: translate, then sentences, then review
 //   --lexicon <set dir>   take lemmas, forms, triggers and senses from a set (the mini dataset)
 import { join } from 'node:path';
 import type { SentenceRow } from '@app/contracts';
@@ -30,12 +32,11 @@ import {
 } from '../../lib/files';
 import { codeDirOf, resolveArg, type Stage, type StageContext } from '../../lib/runner';
 import type { Check } from '../../lib/validate';
-import { FILL_OPTIONS, fillModeOf, runOptionsOf } from '../../model/options';
+import { FILL_OPTIONS, fillAlwaysRuns, fillModeOf, runOptionsOf } from '../../model/options';
 import { type CostEstimate, DEFAULT_MAX_SPEND_USD, formatUsd } from '../../model/pricing';
 import {
   type BatchJob,
   type BatchOutcome,
-  DEFAULT_MODEL,
   type RunOptions,
   runBatch,
   SpendLimitError,
@@ -230,7 +231,7 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
   const top = intArg(ctx, 'top', SENTENCE_TOP);
   const sample = intArg(ctx, 'sample', 0);
   const mode = fillModeOf(ctx);
-  const options = runOptionsOf(ctx);
+  const options = runOptionsOf(ctx, 'sentences');
   const files = lexiconFiles(ctx.paths.build, lexiconDir(ctx));
   for (const p of [files.lemmas, files.forms, ...(files.ranks ? [files.ranks] : [])])
     if (!existsSync(p))
@@ -354,7 +355,7 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
           textEn: item.en.trim(),
           route: translateTask.route,
           promptVersion: translateTask.promptVersion,
-          model: translateTask.model ?? DEFAULT_MODEL,
+          model: r.model,
           requestHash: r.hash,
         };
         translations.set(id, row);
@@ -458,7 +459,13 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
       id: `s${i}`,
       input: { items: g.map(({ lemmaId: _id, ...it }, n) => ({ ...it, n })) },
     }));
-    type Passed = { item: (typeof items)[number]; sk: string; en: string; hash: string };
+    type Passed = {
+      item: (typeof items)[number];
+      sk: string;
+      en: string;
+      hash: string;
+      model: string;
+    };
     // Before anything is generated the review has no sentences: it is estimated with one
     // stand-in per item (a dry run reports that; a live run checks it fits the budget).
     const standIns: Passed[] = items.map((item) => ({
@@ -466,6 +473,7 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
       sk: `${item.form} ${'slovo '.repeat(6).trim()}.`,
       en: 'An English sentence of about eight words here.',
       hash: '',
+      model: '',
     }));
     if (options.mode === 'live') {
       const dry = { ...options, mode: 'dry-run' as const, log: () => undefined };
@@ -507,7 +515,7 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
           count(genRejected, t);
           continue;
         }
-        passed.push({ item, sk, en: ans.en.trim(), hash: r.hash });
+        passed.push({ item, sk, en: ans.en.trim(), hash: r.hash, model: r.model });
       }
     }
     const toReview = mode === 'dry-run' ? standIns : passed;
@@ -538,7 +546,7 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
             textEn: ans.en.trim(),
             route: task.route,
             promptVersion: task.promptVersion,
-            model: task.model ?? DEFAULT_MODEL,
+            model: p.model,
             requestHash: p.hash,
             review: {
               route: reviewTask.route,
@@ -890,8 +898,7 @@ export const sentencesStage: Stage = {
     top: ctx.args.top ?? null,
     sample: ctx.args.sample ?? null,
     maxSpend: ctx.args['max-spend'] ?? null,
-    at:
-      fillModeOf(ctx) === 'dry-run' || fillModeOf(ctx) === 'live' ? ctx.now().toISOString() : null,
+    at: fillAlwaysRuns(ctx) ? ctx.now().toISOString() : null,
   }),
   run: runSentences,
   parts: [{ file: 'sentences.jsonl', path: (p) => join(p.build, 'sentences', 'sentences.jsonl') }],

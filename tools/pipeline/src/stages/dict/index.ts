@@ -7,12 +7,13 @@
 //   pnpm run pipeline dict --fill dry-run       + request count and cost of the missing ones
 //   pnpm run pipeline dict --fill live          + sends them (refuses above $5 without --max-spend)
 //   pnpm run pipeline dict --fill mock          + scripted glosses, written to the build folder
+//   pnpm run pipeline dict --fill offline       + answers written outside the API (docs/content-build.md)
 import { join } from 'node:path';
 import type { SenseRow } from '@app/contracts';
 import { existsSync, JsonlWriter, readJsonl, stableJson, writeFileAtomic } from '../../lib/files';
 import { codeDirOf, resolveArg, type Stage, type StageContext } from '../../lib/runner';
 import type { Check } from '../../lib/validate';
-import { FILL_OPTIONS, fillModeOf, runOptionsOf } from '../../model/options';
+import { FILL_OPTIONS, fillAlwaysRuns, fillModeOf, runOptionsOf } from '../../model/options';
 import { formatUsd } from '../../model/pricing';
 import {
   GLOSS_GROUP_SIZE,
@@ -20,7 +21,7 @@ import {
   type GlossWord,
   glossesTask,
 } from '../../model/prompts/content-glosses';
-import { type BatchJob, type BatchOutcome, DEFAULT_MODEL, runBatch } from '../../model/runner';
+import { type BatchJob, type BatchOutcome, runBatch } from '../../model/runner';
 import type { FreqLemma } from '../freq/rank';
 import {
   type DictEntry,
@@ -142,7 +143,7 @@ export async function runDict(ctx: StageContext): Promise<Record<string, unknown
   if (sample > 0) gaps = gaps.slice(0, sample);
 
   let fill: BatchOutcome<GlossRequest, unknown> | null = null;
-  const options = runOptionsOf(ctx);
+  const options = runOptionsOf(ctx, 'dict');
   if (options && gaps.length > 0) {
     const words: GlossWord[] = gaps.map((r) => {
       const l = lemmas.get(r.id) as FreqLemma;
@@ -181,7 +182,7 @@ export async function runDict(ctx: StageContext): Promise<Record<string, unknown
           source: 'generated',
           route: glossesTask.route,
           promptVersion: glossesTask.promptVersion,
-          model: glossesTask.model ?? DEFAULT_MODEL,
+          model: r.model,
           requestHash: r.hash,
         });
         added++;
@@ -395,9 +396,9 @@ export const dictStage: Stage = {
     fillLimit: ctx.args['fill-limit'] ?? null,
     sample: ctx.args.sample ?? null,
     maxSpend: ctx.args['max-spend'] ?? null,
-    // A dry run or a live fill always reaches the model step, even when nothing else changed.
-    at:
-      fillModeOf(ctx) === 'dry-run' || fillModeOf(ctx) === 'live' ? ctx.now().toISOString() : null,
+    // A dry run, a live fill and an offline fill always reach the model step, even when
+    // nothing else changed.
+    at: fillAlwaysRuns(ctx) ? ctx.now().toISOString() : null,
   }),
   run: runDict,
   parts: [{ file: 'senses.jsonl', path: (p) => join(p.build, 'dict', 'senses.jsonl') }],

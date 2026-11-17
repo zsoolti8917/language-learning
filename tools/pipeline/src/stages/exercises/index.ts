@@ -18,9 +18,9 @@ import { existsSync, JsonlWriter, readJsonl, stableJson, writeFileAtomic } from 
 import { codeDirOf, resolveArg, type Stage, type StageContext } from '../../lib/runner';
 import type { Check } from '../../lib/validate';
 import type { BatchClient } from '../../model/client';
-import { FILL_OPTIONS, fillModeOf, runOptionsOf } from '../../model/options';
+import { FILL_OPTIONS, fillAlwaysRuns, fillModeOf, runOptionsOf } from '../../model/options';
 import { formatUsd } from '../../model/pricing';
-import { type BatchJob, type BatchOutcome, DEFAULT_MODEL, runBatch } from '../../model/runner';
+import { type BatchJob, type BatchOutcome, runBatch } from '../../model/runner';
 import { lessonBuckets, lessonsOut, readAuthoredLessons, readLessonRows } from '../lessons';
 import { authoredDir, readTriggerRows, triggersOut } from '../triggers';
 import { loadMorphology, MORPH_OPTION, morphFiles, morphInputs } from '../triggers/morphology';
@@ -262,7 +262,7 @@ export async function runExercises(
   const open = slots.filter((s) => !done.has(s.slot));
   const rejections: Rejection[] = [];
   const mode = fillModeOf(ctx);
-  const options = runOptionsOf(ctx);
+  const options = runOptionsOf(ctx, 'exercises');
   let generation: BatchOutcome<ExerciseRequest, unknown> | null = null;
   let review: BatchOutcome<ReviewRequest, unknown> | null = null;
   const added: ExerciseRow[] = [];
@@ -281,6 +281,7 @@ export async function runExercises(
       start: number;
       end: number;
       hash: string;
+      model: string;
     }[] = [];
     for (const r of gen.results)
       for (const c of r.output.items) {
@@ -294,7 +295,7 @@ export async function runExercises(
             reason: checked.problems.join('; '),
             sentenceSk: c.sentenceSk,
           });
-        else passed.push({ slot, c, ...checked.value, hash: r.hash });
+        else passed.push({ slot, c, ...checked.value, hash: r.hash, model: r.model });
       }
     let items = passed.map((p) => reviewItem(p.slot, p.c, p.text));
     if (mode === 'dry-run')
@@ -344,7 +345,7 @@ export async function runExercises(
           buildRow(rc, p.slot, p.c, { start: p.start, end: p.end, text: p.text }, contrast, {
             slot: p.slot.slot,
             review: 'pass',
-            model: exercisesTask.model ?? DEFAULT_MODEL,
+            model: p.model,
             generation: {
               route: exercisesTask.route,
               promptVersion: exercisesTask.promptVersion,
@@ -642,8 +643,7 @@ export const exercisesStage: Stage = {
     vocabulary: ctx.args.vocabulary ?? null,
     buckets: ctx.args.buckets ?? null,
     maxSpend: ctx.args['max-spend'] ?? null,
-    at:
-      fillModeOf(ctx) === 'dry-run' || fillModeOf(ctx) === 'live' ? ctx.now().toISOString() : null,
+    at: fillAlwaysRuns(ctx) ? ctx.now().toISOString() : null,
   }),
   run: (ctx) => runExercises(ctx),
   parts: [
