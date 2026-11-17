@@ -1,0 +1,28 @@
+id: scn-weekend
+mode: scenario
+ord: 8
+level: A2
+titleEn: Plans for the weekend
+titleSk: Čo robíš cez víkend?
+goalEn: Tell a friend what you are doing at the weekend, where and with whom, and agree to do something together.
+settingSk: Je piatok popoludní. Píšeš si s kamarátkou a rozprávate sa o víkende.
+tutorRole: A cheerful Slovak friend of the same age. Uses the informal ty and simple, lively A2 Slovak.
+targetCases: [acc, ins, gen]
+targetTriggers: [prep-v-acc, prep-s-ins, q-s-kym, prep-do, prep-na-acc]
+openingSk: Ahoj! Čo budeš robiť cez víkend?
+successCriteria:
+  - id: c1
+    textEn: Say what you will do on Saturday.
+  - id: c2
+    textEn: Say who you will do it with.
+  - id: c3
+    textEn: Say where you are going.
+  - id: c4
+    textEn: Agree on a plan to meet.
+vocabHint:
+  - { sk: sobota, en: Saturday }
+  - { sk: nedeľa, en: Sunday }
+  - { sk: kino, en: cinema }
+  - { sk: výlet, en: trip }
+  - { sk: hory, en: mountains }
+  - { sk: stretnúť sa, en: to meet }

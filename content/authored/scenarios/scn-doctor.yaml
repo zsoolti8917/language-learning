@@ -1,0 +1,28 @@
+id: scn-doctor
+mode: scenario
+ord: 3
+level: A2
+titleEn: At the doctor's
+titleSk: U lekára
+goalEn: Tell the doctor what hurts, since when, and understand what you should do.
+settingSk: Nie je ti dobre, a tak ideš k lekárovi. Sedíš v ambulancii a lekárka sa ťa pýta, čo ťa trápi.
+tutorRole: A calm, kind general practitioner. Speaks slowly in simple A2 Slovak, uses the formal vy and asks one question at a time.
+targetCases: [gen, loc, acc]
+targetTriggers: [prep-od, prep-v-loc, q-kde, prep-na-acc]
+openingSk: Dobrý deň, posaďte sa. Čo vás trápi?
+successCriteria:
+  - id: c1
+    textEn: Say what hurts.
+  - id: c2
+    textEn: Say since when you have felt ill.
+  - id: c3
+    textEn: Answer whether you have a temperature.
+  - id: c4
+    textEn: Repeat what the doctor tells you to do.
+vocabHint:
+  - { sk: hlava, en: head }
+  - { sk: hrdlo, en: throat }
+  - { sk: teplota, en: temperature }
+  - { sk: liek, en: medicine }
+  - { sk: recept, en: prescription }
+  - { sk: bolieť, en: to hurt }
