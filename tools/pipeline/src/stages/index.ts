@@ -2,7 +2,9 @@
 // a folder under stages/ that exports a Stage; add it here, in its place in the order.
 // The order also decides how validate assembles the parts of the set.
 import type { Stage } from '../lib/runner';
+import { dictStage } from './dict';
 import { fetchStage } from './fetch';
+import { freqStage } from './freq';
 import { loadStage } from './load';
 import { morphStage } from './morph';
 import { validateStage } from './validate';
@@ -10,7 +12,9 @@ import { validateStage } from './validate';
 export const STAGES: readonly Stage[] = [
   fetchStage,
   morphStage,
-  // C2: freq, dict · C3: sentences · C4: triggers, lessons, exercises · C5: scenarios, library
+  freqStage,
+  dictStage,
+  // C3: sentences · C4: triggers, lessons, exercises · C5: scenarios, library
   validateStage,
   loadStage,
 ];
