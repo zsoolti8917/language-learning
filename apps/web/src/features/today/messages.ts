@@ -57,11 +57,6 @@ export const m = defineMessages({
     ins: 'Instrumental',
   },
   notices: {
-    offline: 'You are offline. Reviews, the trainer and opened texts still work.',
-    updateTitle: 'A new version is ready',
-    updateBody: 'Reload to use it. Your answers are saved.',
-    updateAction: 'Reload',
-    updateLater: 'Later',
     iosTitle: 'Install the app',
     iosBody: 'Tap the Share button in Safari, then Add to Home Screen. Sign in once more there.',
     iosDismiss: 'Got it',

@@ -46,6 +46,10 @@ export type { Tx } from '@app/db';
 
 // --- Lexicon (B2) -----------------------------------------------------------------
 
+/**
+ * Lexicon ports read schema `ling`. Pass `tx` when calling inside an open transaction:
+ * PGlite has one connection, so a call without it would wait for the transaction forever.
+ */
 export interface MorphologyPort {
   /**
    * Every lemma each form can belong to. The map is keyed by `lookupKey(form)` (lower case,
@@ -53,21 +57,22 @@ export interface MorphologyPort {
    * The candidates of one key are all forms that fold to it (`mesta` and `mestá` share a key),
    * exact matches of the input first; filter by `candidate.form` to tell them apart.
    */
-  lookupForms(forms: string[]): Promise<Map<string, FormCandidate[]>>;
+  lookupForms(forms: string[], tx?: Tx): Promise<Map<string, FormCandidate[]>>;
   /** Every form with its tags. Throws for an unknown lemma. */
-  getParadigm(lemmaId: number): Promise<Paradigm>;
+  getParadigm(lemmaId: number, tx?: Tx): Promise<Paradigm>;
   /** The readings of `form` that match `want`; empty when the form is not such a form. */
   verifyForm(
     form: string,
     want: { lemmaId?: number; case?: Case; number?: GrammaticalNumber },
+    tx?: Tx,
   ): Promise<FormCandidate[]>;
-  getLemma(lemmaId: number): Promise<Lemma | null>;
+  getLemma(lemmaId: number, tx?: Tx): Promise<Lemma | null>;
   /** Lemmas whose base form is `text` (case and accents ignored), optionally of one part of speech. */
-  findLemma(text: string, pos?: Pos): Promise<Lemma[]>;
+  findLemma(text: string, pos?: Pos, tx?: Tx): Promise<Lemma[]>;
 }
 
 export interface DictionaryPort {
-  getSenses(lemmaIds: number[]): Promise<Map<number, Sense[]>>;
+  getSenses(lemmaIds: number[], tx?: Tx): Promise<Map<number, Sense[]>>;
   /** Glosses of every lemma; missing ones are asked from the model once and stored. */
   ensureGlosses(
     lemmaIds: number[],

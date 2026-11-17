@@ -7,7 +7,6 @@ import { parseResponse } from '../../lib/api/validate';
 import { clearLocalData, db } from '../../lib/db';
 import { en } from '../../messages';
 import { mockEndpoint, mockNetworkError, renderRoute, server } from '../../test/utils';
-import { enableFeatureMocks } from '../words/mockHttp';
 import { m } from './messages';
 import { MINI_CASE_ITEMS } from './mockData';
 import { VOCAB_PER_ROUND, VOCAB_ROUNDS, vocabRound } from './mocks';
@@ -20,11 +19,9 @@ const FIRST_RUN: Profile = { ...PROFILE, settings: {}, placementDoneAt: null };
 type User = ReturnType<typeof userEvent.setup>;
 
 beforeAll(() => {
-  enableFeatureMocks(true);
   configureApi({ onResponse: (name, data) => void parseResponse(name, data) });
 });
 afterAll(() => {
-  enableFeatureMocks(false);
   configureApi({ onResponse: () => {} });
 });
 

@@ -22,11 +22,13 @@ export { CASE_CLASSES, CASES, type CaseName, caseColorVar } from './cases';
 export { cn } from './cn';
 export { EmptyState, type EmptyStateProps } from './EmptyState';
 export { fieldClasses, Input, type InputProps } from './Input';
+export { ProgressBar, type ProgressBarProps } from './ProgressBar';
 export { ProgressRing, type ProgressRingProps } from './ProgressRing';
 export { Sheet, type SheetProps } from './Sheet';
 export { Skeleton, type SkeletonProps } from './Skeleton';
 export { UI_STRINGS } from './strings';
 export { type TabItem, Tabs, type TabsProps } from './Tabs';
+export { Textarea, type TextareaProps } from './Textarea';
 export {
   Toast,
   type ToastOptions,

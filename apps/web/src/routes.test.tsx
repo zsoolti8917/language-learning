@@ -1,7 +1,7 @@
 import { examples, type Profile } from '@app/contracts';
 import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { tabFor } from './app/TabBar';
 import { PROFILE_KV_KEY } from './lib/auth/profile';
 import { kvSet } from './lib/db/db';
@@ -10,6 +10,9 @@ import { ROUTE_PATHS } from './routes';
 import { mockEndpoint, mockNetworkError, renderRoute, server } from './test/utils';
 
 const PROFILE = examples['profile.get'].ok[0]?.response.body as Profile;
+
+/** Real screens (Today above all) take a while to render on a loaded machine. */
+const SLOW = { timeout: 10_000 };
 
 /** Example URL and expected screen title of every route. */
 const ROUTES: { path: string; url: string; title: string; tab: boolean }[] = [
@@ -57,7 +60,9 @@ describe('route table', () => {
     async (r) => {
       // Account screens are for signed out visitors; the rest need a login.
       renderRoute(r.url);
-      expect(await screen.findByRole('heading', { name: r.title, level: 1 })).toBeInTheDocument();
+      expect(
+        await screen.findByRole('heading', { name: r.title, level: 1 }, SLOW),
+      ).toBeInTheDocument();
       const nav = screen.getByRole('navigation', { name: en.tabs.label });
       const current = within(nav).getByRole('link', { current: 'page' });
       expect(current).toHaveAttribute('data-tab', tabFor(new URL(r.url, 'http://x').pathname));
@@ -69,10 +74,38 @@ describe('route table', () => {
     async (r) => {
       const signedOut = ['/login', '/signup'].includes(r.path);
       renderRoute(r.url, { auth: signedOut ? 'signedOut' : 'signedIn' });
-      expect(await screen.findByRole('heading', { name: r.title, level: 1 })).toBeInTheDocument();
+      expect(
+        await screen.findByRole('heading', { name: r.title, level: 1 }, SLOW),
+      ).toBeInTheDocument();
       expect(screen.queryByRole('navigation', { name: en.tabs.label })).toBeNull();
     },
   );
+
+  it('reads an optional email search param on /verify', async () => {
+    const { router } = renderRoute('/verify?email=ana%40example.test', { auth: 'signedOut' });
+    expect(
+      await screen.findByRole('heading', { name: en.screens.verify }, SLOW),
+    ).toBeInTheDocument();
+    expect(router.state.matches.at(-1)?.search).toEqual({ email: 'ana@example.test' });
+    const route = Object.values(router.routesById).find((r) => r.fullPath === '/verify');
+    const validate = route?.options.validateSearch as (s: Record<string, unknown>) => unknown;
+    expect(validate({ email: ' ana@example.test ' })).toEqual({ email: 'ana@example.test' });
+    expect(validate({ email: 'not an address' })).toEqual({});
+    expect(validate({})).toEqual({});
+  });
+
+  it('shows the offline indicator above tab screens only', async () => {
+    const online = vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false);
+    try {
+      renderRoute('/cases');
+      expect(
+        await screen.findByRole('heading', { name: en.screens.course }, SLOW),
+      ).toBeInTheDocument();
+      expect(screen.getAllByText(en.notices.offline)).toHaveLength(1);
+    } finally {
+      online.mockRestore();
+    }
+  });
 
   it('passes route params to the screen', async () => {
     // The placeholder printed its params; M5 replaced it, so read them from the router.

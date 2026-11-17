@@ -5,7 +5,6 @@
 // with the example's response, so the shell's mock tests still hold.
 // In the browser the store lives in localStorage, so a reload keeps it; tests reset it.
 import {
-  type EndpointName,
   examples,
   type LemmaStatus,
   type LibraryItem,
@@ -13,43 +12,8 @@ import {
   type TextSummary,
 } from '@app/contracts';
 import { type HttpHandler, HttpResponse, http } from 'msw';
-import type { ApiInput, ApiResult } from '../../lib/api/client';
-import { ENDPOINT_META } from '../../lib/api/endpoints.gen';
-import { env } from '../../lib/env';
+import { endpointPattern, mockEndpoint } from '../../mocks/endpoint';
 import { mockAnalyze } from './mockAnalyzer';
-
-// src/mocks/handlers.ts loads this file while it is itself being loaded (its eager glob), so
-// its `mockEndpoint` cannot be used here at load time. This is the same idea, kept small.
-type Body<N extends EndpointName> = ApiInput<N> extends { body: infer B } ? B : undefined;
-type Info<N extends EndpointName> = {
-  params: Record<string, string>;
-  query: URLSearchParams;
-  body: Body<N>;
-};
-
-function patternOf(name: EndpointName): string {
-  const base = env.apiBase.replace(/\/$/, '');
-  const path = `${base}${ENDPOINT_META[name].path}`;
-  return /^https?:\/\//.test(base) ? path : `*${path}`;
-}
-
-function mockEndpoint<N extends EndpointName>(
-  name: N,
-  reply: (info: Info<N>) => ApiResult<N> | Response,
-): HttpHandler {
-  const meta = ENDPOINT_META[name];
-  const method = meta.method.toLowerCase() as 'get' | 'post' | 'put' | 'patch' | 'delete';
-  return http[method](patternOf(name), async ({ request, params }) => {
-    const text = await request.clone().text();
-    const value = reply({
-      params: params as Record<string, string>,
-      query: new URL(request.url).searchParams,
-      body: (text ? JSON.parse(text) : undefined) as Body<N>,
-    });
-    if (value instanceof Response) return value;
-    return HttpResponse.json(value as never, { status: meta.status });
-  });
-}
 
 const EXAMPLE_TEXT = examples['texts.get'].ok[0].response.body as TextDetail;
 const EXAMPLE_LIBRARY = (examples['library.list'].ok[0].response.body as { items: LibraryItem[] })
@@ -268,7 +232,7 @@ export const handlers: HttpHandler[] = [
   }),
   // Side effect only, then the contract example answers (with the example's text id): the
   // learner's copy of the starter text is kept under that id.
-  http.post(patternOf('library.add'), ({ params }) => {
+  http.post(endpointPattern('library.add'), ({ params }) => {
     const item = EXAMPLE_LIBRARY.find((i) => i.id === params.id);
     const id = LIBRARY_COPY_ID;
     if (item && !store.texts[id]) {
@@ -282,7 +246,7 @@ export const handlers: HttpHandler[] = [
   }),
   // Side effect only: record the status, then the next handler (the contract example)
   // answers, so other features see the usual reply.
-  http.post(patternOf('notes.create'), async ({ request }) => {
+  http.post(endpointPattern('notes.create'), async ({ request }) => {
     try {
       const body = (await request.clone().json()) as { kind?: string; lemmaId?: number };
       if (body.kind === 'word' && typeof body.lemmaId === 'number') {

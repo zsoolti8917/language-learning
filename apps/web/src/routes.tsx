@@ -195,6 +195,11 @@ const signupRoute = createRoute({
 const verifyRoute = createRoute({
   getParentRoute: () => bare,
   path: '/verify',
+  // Optional: the address the code went to. M1 also keeps it in sessionStorage.
+  validateSearch: (s: Record<string, unknown>): { email?: string } => {
+    const email = typeof s.email === 'string' ? s.email.trim() : '';
+    return email.includes('@') && email.length <= 320 ? { email } : {};
+  },
   component: lazyRouteComponent(() => import('./features/account/VerifyScreen'), 'VerifyScreen'),
 });
 const resetRoute = createRoute({

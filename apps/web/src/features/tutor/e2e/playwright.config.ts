@@ -12,9 +12,11 @@ const CLOUD_CHROMIUM = '/opt/pw-browsers/chromium';
 const executablePath =
   process.env.PW_CHROMIUM_PATH ?? (existsSync(CLOUD_CHROMIUM) ? CLOUD_CHROMIUM : undefined);
 
-const PORT = 5183;
+const PORT = Number(process.env.E2E_PORT ?? 5183);
 const WEB_ROOT = fileURLToPath(new URL('../../../..', import.meta.url));
 
+// E2E_PORT and E2E_DIST_DIR (set by scripts/e2e-all.mjs) override the port and the build
+// folder; a server already on the port is never reused (it may be another checkout's).
 export default defineConfig({
   testDir: '.',
   testMatch: '*.e2e.ts',
@@ -36,7 +38,7 @@ export default defineConfig({
     command: `vite --mode mock --port ${PORT} --strictPort`,
     cwd: WEB_ROOT,
     url: `http://localhost:${PORT}/`,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
     timeout: 120_000,
   },
 });

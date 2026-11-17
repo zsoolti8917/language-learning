@@ -8,18 +8,15 @@ import { clearLocalData, db, outbox } from '../../lib/db';
 import { en } from '../../messages';
 import { mockEndpoint, mockNetworkError, renderRoute, server } from '../../test/utils';
 import { m } from './messages';
-import { enableFeatureMocks } from './mockHttp';
 import { resetWordsMock } from './mocks';
 
 const MESTO = examples['lemmas.get'].ok[0]?.response.body as LemmaDetail;
 
 beforeAll(() => {
-  enableFeatureMocks(true);
   // Every answer the screens read must fit the contract.
   configureApi({ onResponse: (name, data) => void parseResponse(name, data) });
 });
 afterAll(() => {
-  enableFeatureMocks(false);
   configureApi({ onResponse: () => {} });
 });
 

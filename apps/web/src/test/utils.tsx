@@ -23,7 +23,7 @@ export {
   mockError,
   mockNetworkError,
   sseResponse,
-} from '../mocks/handlers';
+} from '../mocks/endpoint';
 export { server } from '../mocks/node';
 
 export interface ProviderOptions {

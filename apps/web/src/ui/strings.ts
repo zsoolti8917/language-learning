@@ -35,6 +35,8 @@ export const UI_STRINGS = {
     ignored: 'ignored',
   },
   accentBar: 'Slovak letters',
+  charCount: '{count} characters',
+  charCountMax: '{count} of {max} characters',
   close: 'Close',
   loading: 'Loading',
   notifications: 'Notifications',

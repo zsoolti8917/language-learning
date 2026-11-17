@@ -3,6 +3,7 @@ import { act, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { swEvents } from '../../lib/pwa';
+import { PwaNotices } from '../../lib/pwa/notices';
 import { en } from '../../messages';
 import {
   mockEndpoint,
@@ -142,27 +143,27 @@ describe('Today mock variants', () => {
 });
 
 describe('notices', () => {
-  it('shows the offline indicator', async () => {
+  it('shows the offline indicator (lib/pwa/notices, in the tab layout)', async () => {
     const online = vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false);
-    renderWithProviders(<AppNotices />);
-    expect(screen.getByText(m.t('notices.offline'))).toBeInTheDocument();
+    renderWithProviders(<PwaNotices />);
+    expect(screen.getByText(en.notices.offline)).toBeInTheDocument();
     online.mockReturnValue(true);
     act(() => {
       window.dispatchEvent(new Event('online'));
     });
-    expect(screen.queryByText(m.t('notices.offline'))).toBeNull();
+    expect(screen.queryByText(en.notices.offline)).toBeNull();
   });
 
   it('shows the update prompt and applies the update', async () => {
     const update = vi.fn(async () => {});
     swEvents.setUpdater(update);
-    renderWithProviders(<AppNotices />);
-    expect(screen.queryByText(m.t('notices.updateTitle'))).toBeNull();
+    renderWithProviders(<PwaNotices />);
+    expect(screen.queryByText(en.notices.updateTitle)).toBeNull();
     act(() => swEvents.needRefresh());
-    await userEvent.click(screen.getByRole('button', { name: m.t('notices.updateAction') }));
+    await userEvent.click(screen.getByRole('button', { name: en.notices.updateAction }));
     expect(update).toHaveBeenCalled();
-    await userEvent.click(screen.getByRole('button', { name: m.t('notices.updateLater') }));
-    expect(screen.queryByText(m.t('notices.updateTitle'))).toBeNull();
+    await userEvent.click(screen.getByRole('button', { name: en.notices.updateLater }));
+    expect(screen.queryByText(en.notices.updateTitle)).toBeNull();
   });
 
   it('shows the iOS install hint once on iPhone Safari', async () => {
