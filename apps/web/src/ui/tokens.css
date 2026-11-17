@@ -1,0 +1,300 @@
+/*
+ * Design tokens of the Slovak app (F7).
+ *
+ * Import this file once, right after Tailwind:
+ *   @import "tailwindcss";
+ *   @import "./ui/tokens.css";
+ *
+ * Raw tokens are CSS variables named --ui-*. Light values sit on :root and on
+ * [data-theme="light"]; dark values on [data-theme="dark"] and, when no theme is
+ * forced, on :root under prefers-color-scheme: dark. The @theme block below maps
+ * every token into Tailwind, so components use utilities such as bg-surface,
+ * text-fg, text-case-gen, rounded-card and min-h-tap and never raw colours.
+ *
+ * Colours are written as #rrggbb on purpose: ui/contrast.test.ts parses this
+ * file and checks every text pair against WCAG level AA.
+ */
+
+:root,
+[data-theme="light"] {
+  /* Surfaces and text */
+  --ui-bg: #f6f6f4;
+  --ui-surface: #ffffff;
+  --ui-surface-2: #ebebe8;
+  --ui-border: #d9d9d4;
+  --ui-border-strong: #7a7a74;
+  --ui-fg: #1a1a19;
+  --ui-fg-muted: #5a5a55;
+  --ui-overlay: #00000066;
+
+  /* Actions */
+  --ui-primary: #4338ca;
+  --ui-primary-hover: #3730a3;
+  --ui-primary-fg: #ffffff;
+  --ui-primary-soft: #e0e7ff;
+  --ui-danger: #b91c1c;
+  --ui-danger-fg: #ffffff;
+  --ui-focus: #4338ca;
+
+  /* Answer states */
+  --ui-correct: #166534;
+  --ui-correct-soft: #dcfce7;
+  --ui-close: #854d0e;
+  --ui-close-soft: #fef9c3;
+  --ui-wrong: #b91c1c;
+  --ui-wrong-soft: #fee2e2;
+
+  /* Word status in TokenText */
+  --ui-token-unknown: #dbeafe;
+  --ui-token-unknown-line: #1d4ed8;
+  --ui-token-learning: #fef3c7;
+  --ui-token-learning-line: #b45309;
+  --ui-token-selected: #c7d2fe;
+
+  /* Cases: one colour each, always shown with the case name */
+  --ui-case-nom: #0369a1;
+  --ui-case-nom-soft: #e0f2fe;
+  --ui-case-gen: #7e22ce;
+  --ui-case-gen-soft: #f3e8ff;
+  --ui-case-dat: #0f766e;
+  --ui-case-dat-soft: #ccfbf1;
+  --ui-case-acc: #b91c1c;
+  --ui-case-acc-soft: #fee2e2;
+  --ui-case-voc: #be185d;
+  --ui-case-voc-soft: #fce7f3;
+  --ui-case-loc: #9a3412;
+  --ui-case-loc-soft: #ffedd5;
+  --ui-case-ins: #166534;
+  --ui-case-ins-soft: #dcfce7;
+
+  /* Shape, size and type (the same in both themes) */
+  --ui-radius-control: 0.75rem;
+  --ui-radius-card: 1rem;
+  --ui-radius-sheet: 1.5rem;
+  --ui-tap: 2.75rem;
+  --ui-gutter: 1rem;
+  --ui-font-sans:
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --ui-text-input: 1rem;
+  --ui-text-answer: 1.25rem;
+  --ui-text-reading: 1.125rem;
+  --ui-duration: 160ms;
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --ui-bg: #111113;
+  --ui-surface: #1c1c1f;
+  --ui-surface-2: #2a2a2e;
+  --ui-border: #34343a;
+  --ui-border-strong: #8b8b93;
+  --ui-fg: #f2f2f0;
+  --ui-fg-muted: #a9a9a3;
+  --ui-overlay: #000000a6;
+
+  --ui-primary: #a5b4fc;
+  --ui-primary-hover: #c7d2fe;
+  --ui-primary-fg: #1e1b4b;
+  --ui-primary-soft: #312e81;
+  --ui-danger: #fca5a5;
+  --ui-danger-fg: #450a0a;
+  --ui-focus: #a5b4fc;
+
+  --ui-correct: #86efac;
+  --ui-correct-soft: #052e16;
+  --ui-close: #fde047;
+  --ui-close-soft: #422006;
+  --ui-wrong: #fca5a5;
+  --ui-wrong-soft: #450a0a;
+
+  --ui-token-unknown: #1e3a8a;
+  --ui-token-unknown-line: #93c5fd;
+  --ui-token-learning: #451a03;
+  --ui-token-learning-line: #fcd34d;
+  --ui-token-selected: #3730a3;
+
+  --ui-case-nom: #7dd3fc;
+  --ui-case-nom-soft: #082f49;
+  --ui-case-gen: #d8b4fe;
+  --ui-case-gen-soft: #3b0764;
+  --ui-case-dat: #5eead4;
+  --ui-case-dat-soft: #042f2e;
+  --ui-case-acc: #fca5a5;
+  --ui-case-acc-soft: #450a0a;
+  --ui-case-voc: #f9a8d4;
+  --ui-case-voc-soft: #500724;
+  --ui-case-loc: #fdba74;
+  --ui-case-loc-soft: #431407;
+  --ui-case-ins: #86efac;
+  --ui-case-ins-soft: #052e16;
+
+  color-scheme: dark;
+}
+
+/* Follow the system when no theme is forced. Keep equal to the block above. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ui-bg: #111113;
+    --ui-surface: #1c1c1f;
+    --ui-surface-2: #2a2a2e;
+    --ui-border: #34343a;
+    --ui-border-strong: #8b8b93;
+    --ui-fg: #f2f2f0;
+    --ui-fg-muted: #a9a9a3;
+    --ui-overlay: #000000a6;
+
+    --ui-primary: #a5b4fc;
+    --ui-primary-hover: #c7d2fe;
+    --ui-primary-fg: #1e1b4b;
+    --ui-primary-soft: #312e81;
+    --ui-danger: #fca5a5;
+    --ui-danger-fg: #450a0a;
+    --ui-focus: #a5b4fc;
+
+    --ui-correct: #86efac;
+    --ui-correct-soft: #052e16;
+    --ui-close: #fde047;
+    --ui-close-soft: #422006;
+    --ui-wrong: #fca5a5;
+    --ui-wrong-soft: #450a0a;
+
+    --ui-token-unknown: #1e3a8a;
+    --ui-token-unknown-line: #93c5fd;
+    --ui-token-learning: #451a03;
+    --ui-token-learning-line: #fcd34d;
+    --ui-token-selected: #3730a3;
+
+    --ui-case-nom: #7dd3fc;
+    --ui-case-nom-soft: #082f49;
+    --ui-case-gen: #d8b4fe;
+    --ui-case-gen-soft: #3b0764;
+    --ui-case-dat: #5eead4;
+    --ui-case-dat-soft: #042f2e;
+    --ui-case-acc: #fca5a5;
+    --ui-case-acc-soft: #450a0a;
+    --ui-case-voc: #f9a8d4;
+    --ui-case-voc-soft: #500724;
+    --ui-case-loc: #fdba74;
+    --ui-case-loc-soft: #431407;
+    --ui-case-ins: #86efac;
+    --ui-case-ins-soft: #052e16;
+
+    color-scheme: dark;
+  }
+}
+
+/* Tailwind theme: utilities read the raw tokens, so a theme switch needs no rebuild. */
+@theme inline {
+  --color-bg: var(--ui-bg);
+  --color-surface: var(--ui-surface);
+  --color-surface-2: var(--ui-surface-2);
+  --color-border: var(--ui-border);
+  --color-border-strong: var(--ui-border-strong);
+  --color-fg: var(--ui-fg);
+  --color-fg-muted: var(--ui-fg-muted);
+  --color-overlay: var(--ui-overlay);
+
+  --color-primary: var(--ui-primary);
+  --color-primary-hover: var(--ui-primary-hover);
+  --color-primary-fg: var(--ui-primary-fg);
+  --color-primary-soft: var(--ui-primary-soft);
+  --color-danger: var(--ui-danger);
+  --color-danger-fg: var(--ui-danger-fg);
+  --color-focus: var(--ui-focus);
+
+  --color-correct: var(--ui-correct);
+  --color-correct-soft: var(--ui-correct-soft);
+  --color-close: var(--ui-close);
+  --color-close-soft: var(--ui-close-soft);
+  --color-wrong: var(--ui-wrong);
+  --color-wrong-soft: var(--ui-wrong-soft);
+
+  --color-token-unknown: var(--ui-token-unknown);
+  --color-token-unknown-line: var(--ui-token-unknown-line);
+  --color-token-learning: var(--ui-token-learning);
+  --color-token-learning-line: var(--ui-token-learning-line);
+  --color-token-selected: var(--ui-token-selected);
+
+  --color-case-nom: var(--ui-case-nom);
+  --color-case-nom-soft: var(--ui-case-nom-soft);
+  --color-case-gen: var(--ui-case-gen);
+  --color-case-gen-soft: var(--ui-case-gen-soft);
+  --color-case-dat: var(--ui-case-dat);
+  --color-case-dat-soft: var(--ui-case-dat-soft);
+  --color-case-acc: var(--ui-case-acc);
+  --color-case-acc-soft: var(--ui-case-acc-soft);
+  --color-case-voc: var(--ui-case-voc);
+  --color-case-voc-soft: var(--ui-case-voc-soft);
+  --color-case-loc: var(--ui-case-loc);
+  --color-case-loc-soft: var(--ui-case-loc-soft);
+  --color-case-ins: var(--ui-case-ins);
+  --color-case-ins-soft: var(--ui-case-ins-soft);
+
+  --radius-control: var(--ui-radius-control);
+  --radius-card: var(--ui-radius-card);
+  --radius-sheet: var(--ui-radius-sheet);
+
+  --spacing-tap: var(--ui-tap);
+  --spacing-gutter: var(--ui-gutter);
+
+  --font-sans: var(--ui-font-sans);
+  --text-input: var(--ui-text-input);
+  --text-input--line-height: 1.5;
+  --text-answer: var(--ui-text-answer);
+  --text-answer--line-height: 1.4;
+  --text-reading: var(--ui-text-reading);
+  --text-reading--line-height: 2.25;
+}
+
+/* Safe areas of the phone (notch, home indicator). */
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@utility pl-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+@utility pr-safe {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+@utility px-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+@layer base {
+  html {
+    font-family: var(--ui-font-sans);
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :root,
+  [data-theme] {
+    background-color: var(--ui-bg);
+    color: var(--ui-fg);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--ui-focus);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      /* biome-ignore lint/complexity/noImportantStyles: reduced motion must override component and inline transitions */
+      animation-duration: 0.01ms !important;
+      /* biome-ignore lint/complexity/noImportantStyles: reduced motion must override component and inline transitions */
+      animation-iteration-count: 1 !important;
+      /* biome-ignore lint/complexity/noImportantStyles: reduced motion must override component and inline transitions */
+      transition-duration: 0.01ms !important;
+      /* biome-ignore lint/complexity/noImportantStyles: reduced motion must override component and inline transitions */
+      scroll-behavior: auto !important;
+    }
+  }
+}
