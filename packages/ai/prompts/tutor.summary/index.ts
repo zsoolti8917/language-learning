@@ -7,4 +7,8 @@ export const prompt: PromptFolder = {
   route: 'tutor.summary',
   current: 1,
   versions: { 1: v1 },
+  // Local mode answers with a fixed summary.
+  mock: () => ({
+    data: { textEn: 'Well done: you kept the conversation going. Practise the cases from today.' },
+  }),
 };
