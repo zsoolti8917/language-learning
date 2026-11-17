@@ -2,6 +2,13 @@
 // Anthropic SDK.
 
 export { PROMPTS } from '../prompts';
+export {
+  type AnthropicGatewayOptions,
+  buildRequest,
+  createAnthropicGateway,
+  systemBlocks,
+} from './anthropic';
+export { mapSdkError, stopReasonError } from './errors';
 export { createConfiguredMock, createGateway, promptMockDefaults } from './factory';
 export {
   createMockGateway,
@@ -11,7 +18,34 @@ export {
   type Responder,
   type ScriptedAnswer,
 } from './mock';
+export {
+  costOf,
+  FALLBACK_PRICE,
+  type ModelPrice,
+  PRICES,
+  priceOf,
+  type TokenCounts,
+} from './pricing';
 export { currentVersion, type PromptFolder, type PromptVersion } from './prompt';
+export { type Recording, type RecordingGateway, recordGateway, replay } from './record';
+export {
+  promptFor,
+  promptVersions,
+  type RegisteredPrompt,
+  systemFor,
+  volatileValues,
+} from './registry';
+export {
+  EFFORTS,
+  type Effort,
+  ROUTE_DEFAULTS,
+  type RouteDefaults,
+  type RouteOverrides,
+  type RouteSettings,
+  routeOverridesFromEnv,
+  routeSettings,
+} from './routes';
+export { type ScriptedGateway, scriptedGateway } from './scripting';
 export {
   type AiErrorCode,
   type AiGateway,
