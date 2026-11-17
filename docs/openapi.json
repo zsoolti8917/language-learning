@@ -394,8 +394,8 @@
                   "words": {
                     "band": 0,
                     "fromRank": 1,
-                    "toRank": 500,
-                    "total": 500,
+                    "toRank": 1000,
+                    "total": 1000,
                     "known": 212,
                     "learning": 40,
                     "target": 1000
@@ -1542,20 +1542,20 @@
                     {
                       "band": 0,
                       "fromRank": 1,
-                      "toRank": 500,
-                      "total": 500,
+                      "toRank": 1000,
+                      "total": 1000,
                       "known": 212,
                       "learning": 40,
-                      "unknown": 248
+                      "unknown": 748
                     },
                     {
                       "band": 1,
-                      "fromRank": 501,
-                      "toRank": 1000,
-                      "total": 500,
+                      "fromRank": 1001,
+                      "toRank": 2000,
+                      "total": 1000,
                       "known": 60,
                       "learning": 12,
-                      "unknown": 428
+                      "unknown": 928
                     }
                   ]
                 }
