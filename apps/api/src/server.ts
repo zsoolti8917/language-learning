@@ -53,6 +53,8 @@ async function main(): Promise<void> {
     console.log(
       `API on ${running.url}/api/v1 (APP_ENV=${c.appEnv}, DB_MODE=${c.dbMode}, AUTH_MODE=${c.authMode}, AI_MODE=${c.aiMode})`,
     );
+    const ports = Object.entries(running.runtime.ports).map(([name, kind]) => `${name}=${kind}`);
+    console.log(`Ports: ${ports.join(', ')}`);
     const stop = () => {
       running.close().then(
         () => process.exit(0),

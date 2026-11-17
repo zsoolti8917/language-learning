@@ -3,6 +3,7 @@
 // transaction, because they read the learner from it. B1 and B5 replace them.
 import type { BucketMastery, LemmaStatus, LemmaStatusSource, MasteryLevel } from '@app/contracts';
 import { ALL_BUCKETS, bucketKey, bucketOf } from '@app/ling';
+import { markStandIn } from '../platform/stand-in';
 import { currentUserId } from '../platform/tx';
 import type {
   AttemptRecord,
@@ -48,7 +49,7 @@ export function createNotesRecorder(ids: IdGenerator): NotesRecorder {
     return { noteId: note.noteId, created: true };
   }
 
-  return {
+  return markStandIn('notes', {
     notes,
     statusCalls,
     async createWordNote(tx: Tx, input) {
@@ -108,7 +109,7 @@ export function createNotesRecorder(ids: IdGenerator): NotesRecorder {
       notes.length = 0;
       statusCalls.length = 0;
     },
-  };
+  });
 }
 
 export interface AttemptsRecorder extends AttemptsPort {
@@ -126,7 +127,7 @@ function levelOf(attempts: number, mastery: number): MasteryLevel {
 
 export function createAttemptsRecorder(): AttemptsRecorder {
   const attempts: AttemptsRecorder['attempts'] = [];
-  return {
+  return markStandIn('attempts', {
     attempts,
     async record(tx, list) {
       const userId = await currentUserId(tx);
@@ -156,5 +157,5 @@ export function createAttemptsRecorder(): AttemptsRecorder {
     reset() {
       attempts.length = 0;
     },
-  };
+  });
 }

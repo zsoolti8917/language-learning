@@ -4,6 +4,7 @@ import type { FormCandidate, Lemma, Pos, Sense } from '@app/contracts';
 import { foldAscii } from '@app/contracts';
 import { readTags } from '@app/ling';
 import { loadMini } from '@app/testkit/mini';
+import { markStandIn } from '../platform/stand-in';
 import type { DictionaryPort, MorphologyPort } from '../ports';
 
 const lower = (s: string) => s.normalize('NFC').toLowerCase();
@@ -54,7 +55,7 @@ const byRank = (a: FormCandidate, b: FormCandidate) =>
   (a.freqRank ?? Number.MAX_SAFE_INTEGER) - (b.freqRank ?? Number.MAX_SAFE_INTEGER);
 
 export function createMiniMorphology(): MorphologyPort {
-  return {
+  return markStandIn('morphology', {
     async lookupForms(forms) {
       const out = new Map<string, FormCandidate[]>();
       for (const form of forms) {
@@ -103,7 +104,7 @@ export function createMiniMorphology(): MorphologyPort {
         .map((l) => lemmaOf(l.id))
         .filter((l): l is Lemma => l !== null);
     },
-  };
+  });
 }
 
 export function createMiniDictionary(): DictionaryPort {
@@ -118,7 +119,7 @@ export function createMiniDictionary(): DictionaryPort {
         source: s.source,
         verified: s.verified,
       }));
-  return {
+  return markStandIn('dictionary', {
     async getSenses(lemmaIds) {
       return new Map(lemmaIds.map((id) => [id, senses(id)]));
     },
@@ -126,5 +127,5 @@ export function createMiniDictionary(): DictionaryPort {
     async ensureGlosses(lemmaIds) {
       return new Map(lemmaIds.map((id) => [id, senses(id).map((s) => s.glossEn)]));
     },
-  };
+  });
 }

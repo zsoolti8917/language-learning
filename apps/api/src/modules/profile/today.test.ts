@@ -3,7 +3,6 @@
 import { StatsSummarySchema, TodaySchema } from '@app/contracts';
 import { createTestDb, MESTO_WORD_CONTENT, type TestDb, uuidv7 } from '@app/testkit';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { contractExample } from '../../platform/stub';
 import type { AttemptRecord } from '../../ports';
 import { createTestApp, type TestApp } from '../../testing/app';
 import { lastDays, pickNextLesson, pickTutorScenario, weakBuckets } from './service';
@@ -287,15 +286,11 @@ describe('GET /today', () => {
       expect(res.body.review).toEqual({ due: 3, new: 2, learning: 2 });
     });
 
-    it('agree with GET /review/queue for the same moment and time zone', async (ctx) => {
+    it('agree with GET /review/queue for the same moment and time zone', async () => {
       const id = await seed('America/New_York');
       const me = t.as(id);
       const queue = await me.get('/review/queue?limit=200');
-      // Until B1 replaces the stub, the queue answers the contract example.
-      ctx.skip(
-        JSON.stringify(queue.body) === JSON.stringify(contractExample('review.queue')),
-        'review.queue is still the F5 stub (B1)',
-      );
+      expect(queue.status).toBe(200);
       const today = await me.get('/today');
       expect(today.body.review).toEqual(queue.body.counts);
     });
