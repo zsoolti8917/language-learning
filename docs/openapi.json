@@ -1024,7 +1024,7 @@
                       "glossEn": "town, city",
                       "variants": [
                         {
-                          "sentenceId": "tat-482913",
+                          "sentenceId": "tat-8214994",
                           "sentenceSk": "Idem do mesta.",
                           "sentenceEn": "I am going to town.",
                           "blank": {
@@ -1167,7 +1167,7 @@
                       "glossEn": "town, city",
                       "variants": [
                         {
-                          "sentenceId": "tat-482913",
+                          "sentenceId": "tat-8214994",
                           "sentenceSk": "Idem do mesta.",
                           "sentenceEn": "I am going to town.",
                           "blank": {
@@ -1331,7 +1331,7 @@
                       "glossEn": "town, city",
                       "variants": [
                         {
-                          "sentenceId": "tat-482913",
+                          "sentenceId": "tat-8214994",
                           "sentenceSk": "Idem do mesta.",
                           "sentenceEn": "I am going to town.",
                           "blank": {
@@ -1982,7 +1982,7 @@
                   ],
                   "sentences": [
                     {
-                      "id": "tat-482913",
+                      "id": "tat-8214994",
                       "textSk": "Idem do mesta.",
                       "textEn": "I am going to town.",
                       "form": "mesta",
