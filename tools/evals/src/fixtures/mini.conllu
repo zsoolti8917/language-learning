@@ -1,0 +1,141 @@
+# A hand written excerpt in the format of UD Slovak SNK, with words of the mini dataset
+# only, for the eval tests. These are not sentences of the treebank.
+
+# sent_id = fx-1
+# text = Dnes idem do mesta s kamarátom.
+1	Dnes	dnes	ADV	_	_	2	advmod	_	_
+2	idem	ísť	VERB	_	_	0	root	_	_
+3	do	do	ADP	_	AdpType=Prep|Case=Gen	4	case	_	_
+4	mesta	mesto	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	2	obl	_	_
+5	s	s	ADP	_	AdpType=Prep|Case=Ins	6	case	_	_
+6	kamarátom	kamarát	NOUN	_	Animacy=Anim|Case=Ins|Gender=Masc|Number=Sing	2	obl	_	SpaceAfter=No
+7	.	.	PUNCT	Z	_	2	punct	_	_
+
+# sent_id = fx-2
+# text = Mám novú knihu a pekný dom.
+1	Mám	mať	VERB	_	_	0	root	_	_
+2	novú	nový	ADJ	_	Case=Acc|Degree=Pos|Gender=Fem|Number=Sing	3	amod	_	_
+3	knihu	kniha	NOUN	_	Case=Acc|Gender=Fem|Number=Sing	1	obj	_	_
+4	a	a	CCONJ	_	_	6	cc	_	_
+5	pekný	pekný	ADJ	_	Animacy=Inan|Case=Acc|Degree=Pos|Gender=Masc|Number=Sing	6	amod	_	_
+6	dom	dom	NOUN	_	Animacy=Inan|Case=Acc|Gender=Masc|Number=Sing	3	conj	_	SpaceAfter=No
+7	.	.	PUNCT	Z	_	1	punct	_	_
+
+# sent_id = fx-3
+# text = Dnes vidím ženu v novom meste.
+1	Dnes	dnes	ADV	_	_	2	advmod	_	_
+2	vidím	vidieť	VERB	_	_	0	root	_	_
+3	ženu	žena	NOUN	_	Case=Acc|Gender=Fem|Number=Sing	2	obj	_	_
+4	v	v	ADP	_	AdpType=Prep|Case=Loc	6	case	_	_
+5	novom	nový	ADJ	_	Case=Loc|Degree=Pos|Gender=Neut|Number=Sing	6	amod	_	_
+6	meste	mesto	NOUN	_	Case=Loc|Gender=Neut|Number=Sing	2	obl	_	SpaceAfter=No
+7	.	.	PUNCT	Z	_	2	punct	_	_
+
+# sent_id = fx-4
+# text = Brat býva v Bratislave pri námestí.
+1	Brat	brat	NOUN	_	Animacy=Anim|Case=Nom|Gender=Masc|Number=Sing	2	nsubj	_	_
+2	býva	bývať	VERB	_	_	0	root	_	_
+3	v	v	ADP	_	AdpType=Prep|Case=Loc	4	case	_	_
+4	Bratislave	bratislava	PROPN	_	Case=Loc|Gender=Fem|Number=Sing	2	obl	_	_
+5	pri	pri	ADP	_	AdpType=Prep|Case=Loc	6	case	_	_
+6	námestí	námestie	NOUN	_	Case=Loc|Gender=Neut|Number=Sing	4	nmod	_	SpaceAfter=No
+7	.	.	PUNCT	Z	_	2	punct	_	_
+
+# sent_id = fx-5
+# text = Pomáham kamarátovi a bratovi v obchode.
+1	Pomáham	pomáhať	VERB	_	_	0	root	_	_
+2	kamarátovi	kamarát	NOUN	_	Animacy=Anim|Case=Dat|Gender=Masc|Number=Sing	1	obj	_	_
+3	a	a	CCONJ	_	_	4	cc	_	_
+4	bratovi	brat	NOUN	_	Animacy=Anim|Case=Dat|Gender=Masc|Number=Sing	2	conj	_	_
+5	v	v	ADP	_	AdpType=Prep|Case=Loc	6	case	_	_
+6	obchode	obchod	NOUN	_	Animacy=Inan|Case=Loc|Gender=Masc|Number=Sing	1	obl	_	SpaceAfter=No
+7	.	.	PUNCT	Z	_	1	punct	_	_
+
+# sent_id = fx-6
+# text = Ideme do kina s dobrým kamarátom.
+1	Ideme	ísť	VERB	_	_	0	root	_	_
+2	do	do	ADP	_	AdpType=Prep|Case=Gen	3	case	_	_
+3	kina	kino	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	1	obl	_	_
+4	s	s	ADP	_	AdpType=Prep|Case=Ins	6	case	_	_
+5	dobrým	dobrý	ADJ	_	Animacy=Anim|Case=Ins|Degree=Pos|Gender=Masc|Number=Sing	6	amod	_	_
+6	kamarátom	kamarát	NOUN	_	Animacy=Anim|Case=Ins|Gender=Masc|Number=Sing	1	obl	_	SpaceAfter=No
+7	.	.	PUNCT	Z	_	1	punct	_	_
+
+# sent_id = fx-7
+# text = Môj brat pracuje v slovenskom meste.
+1	Môj	môj	DET	_	Animacy=Anim|Case=Nom|Gender=Masc|Number=Sing|Poss=Yes	2	det	_	_
+2	brat	brat	NOUN	_	Animacy=Anim|Case=Nom|Gender=Masc|Number=Sing	3	nsubj	_	_
+3	pracuje	pracovať	VERB	_	_	0	root	_	_
+4	v	v	ADP	_	AdpType=Prep|Case=Loc	6	case	_	_
+5	slovenskom	slovenský	ADJ	_	Case=Loc|Degree=Pos|Gender=Neut|Number=Sing	6	amod	_	_
+6	meste	mesto	NOUN	_	Case=Loc|Gender=Neut|Number=Sing	3	obl	_	SpaceAfter=No
+7	.	.	PUNCT	Z	_	3	punct	_	_
+
+# sent_id = fx-8
+# text = Mám dobrú prácu v novom obchode.
+1	Mám	mať	VERB	_	_	0	root	_	_
+2	dobrú	dobrý	ADJ	_	Case=Acc|Degree=Pos|Gender=Fem|Number=Sing	3	amod	_	_
+3	prácu	práca	NOUN	_	Case=Acc|Gender=Fem|Number=Sing	1	obj	_	_
+4	v	v	ADP	_	AdpType=Prep|Case=Loc	6	case	_	_
+5	novom	nový	ADJ	_	Animacy=Inan|Case=Loc|Degree=Pos|Gender=Masc|Number=Sing	6	amod	_	_
+6	obchode	obchod	NOUN	_	Animacy=Inan|Case=Loc|Gender=Masc|Number=Sing	1	obl	_	SpaceAfter=No
+7	.	.	PUNCT	Z	_	1	punct	_	_
+
+# sent_id = fx-9
+# text = Žena kúpi päť kníh pre brata.
+1	Žena	žena	NOUN	_	Case=Nom|Gender=Fem|Number=Sing	2	nsubj	_	_
+2	kúpi	kúpiť	VERB	_	_	0	root	_	_
+3	päť	päť	NUM	_	Case=Acc|NumType=Card	4	nummod	_	_
+4	kníh	kniha	NOUN	_	Case=Gen|Gender=Fem|Number=Plur	2	obj	_	_
+5	pre	pre	ADP	_	AdpType=Prep|Case=Acc	6	case	_	_
+6	brata	brat	NOUN	_	Animacy=Anim|Case=Acc|Gender=Masc|Number=Sing	2	obl	_	SpaceAfter=No
+7	.	.	PUNCT	Z	_	2	punct	_	_
+
+# sent_id = fx-10
+# text = Dievča ide z mesta do Bratislavy.
+1	Dievča	dievča	NOUN	_	Case=Nom|Gender=Neut|Number=Sing	2	nsubj	_	_
+2	ide	ísť	VERB	_	_	0	root	_	_
+3	z	z	ADP	_	AdpType=Prep|Case=Gen	4	case	_	_
+4	mesta	mesto	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	2	obl	_	_
+5	do	do	ADP	_	AdpType=Prep|Case=Gen	6	case	_	_
+6	Bratislavy	bratislava	PROPN	_	Case=Gen|Gender=Fem|Number=Sing	2	obl	_	SpaceAfter=No
+7	.	.	PUNCT	Z	_	2	punct	_	_
+
+# sent_id = fx-11
+# text = Kamarát má veľmi pekný počítač.
+1	Kamarát	kamarát	NOUN	_	Animacy=Anim|Case=Nom|Gender=Masc|Number=Sing	2	nsubj	_	_
+2	má	mať	VERB	_	_	0	root	_	_
+3	veľmi	veľmi	ADV	_	_	4	advmod	_	_
+4	pekný	pekný	ADJ	_	Animacy=Inan|Case=Acc|Degree=Pos|Gender=Masc|Number=Sing	5	amod	_	_
+5	počítač	počítač	NOUN	_	Animacy=Inan|Case=Acc|Gender=Masc|Number=Sing	2	obj	_	SpaceAfter=No
+6	.	.	PUNCT	Z	_	2	punct	_	_
+
+# sent_id = fx-12
+# text = Chlap ide s hrdinom do domu.
+1	Chlap	chlap	NOUN	_	Animacy=Anim|Case=Nom|Gender=Masc|Number=Sing	2	nsubj	_	_
+2	ide	ísť	VERB	_	_	0	root	_	_
+3	s	s	ADP	_	AdpType=Prep|Case=Ins	4	case	_	_
+4	hrdinom	hrdina	NOUN	_	Animacy=Anim|Case=Ins|Gender=Masc|Number=Sing	2	obl	_	_
+5	do	do	ADP	_	AdpType=Prep|Case=Gen	6	case	_	_
+6	domu	dom	NOUN	_	Animacy=Inan|Case=Gen|Gender=Masc|Number=Sing	2	obl	_	SpaceAfter=No
+7	.	.	PUNCT	Z	_	2	punct	_	_
+
+# sent_id = fx-13
+# text = Dnes vidím dievča pri dobrej ulici.
+1	Dnes	dnes	ADV	_	_	2	advmod	_	_
+2	vidím	vidieť	VERB	_	_	0	root	_	_
+3	dievča	dievča	NOUN	_	Case=Acc|Gender=Neut|Number=Sing	2	obj	_	_
+4	pri	pri	ADP	_	AdpType=Prep|Case=Loc	6	case	_	_
+5	dobrej	dobrý	ADJ	_	Case=Loc|Degree=Pos|Gender=Fem|Number=Sing	6	amod	_	_
+6	ulici	ulica	NOUN	_	Case=Loc|Gender=Fem|Number=Sing	2	obl	_	SpaceAfter=No
+7	.	.	PUNCT	Z	_	2	punct	_	_
+
+# sent_id = fx-14
+# text = Brat ide k rodičovi bez kávy.
+1	Brat	brat	NOUN	_	Animacy=Anim|Case=Nom|Gender=Masc|Number=Sing	2	nsubj	_	_
+2	ide	ísť	VERB	_	_	0	root	_	_
+3	k	k	ADP	_	AdpType=Prep|Case=Dat	4	case	_	_
+4	rodičovi	rodič	NOUN	_	Animacy=Anim|Case=Dat|Gender=Masc|Number=Sing	2	obl	_	_
+5	bez	bez	ADP	_	AdpType=Prep|Case=Gen	6	case	_	_
+6	kávy	káva	NOUN	_	Case=Gen|Gender=Fem|Number=Sing	2	obl	_	SpaceAfter=No
+7	.	.	PUNCT	Z	_	2	punct	_	_
