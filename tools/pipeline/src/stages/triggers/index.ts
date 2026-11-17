@@ -8,8 +8,8 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import {
-  CaseSchema,
   type Case,
+  CaseSchema,
   type Pos,
   type TriggerKind,
   TriggerKindSchema,
@@ -137,7 +137,9 @@ export function triggerSpellings(
   const all = Object.keys(map);
   if (t.kind === 'question') {
     const digit = String(CASE_DIGITS[t.case]);
-    const inCase = all.filter((f) => map[f]?.some((tag) => /^[spx]\d/u.test(tag) && tag[1] === digit));
+    const inCase = all.filter((f) =>
+      map[f]?.some((tag) => /^[spx]\d/u.test(tag) && tag[1] === digit),
+    );
     if (inCase.length > 0) return new Set(inCase);
   }
   return new Set(all.length > 0 ? all : [formKey(t.lemma)]);
@@ -220,13 +222,15 @@ export function buildTriggers(m: Morphology, authored: readonly AuthoredTrigger[
       problems.push(`${w}: a ${t.kind} id starts with "${ID_PREFIX[t.kind]}-"`);
     if (t.contrastGroup) groups.set(t.contrastGroup, [...(groups.get(t.contrastGroup) ?? []), t]);
     const lemma = triggerLemma(m, t);
-    if (!lemma) (m.complete ? problems : notes).push(`${w}: no lemma "${t.lemma}" in the morphology`);
+    if (!lemma)
+      (m.complete ? problems : notes).push(`${w}: no lemma "${t.lemma}" in the morphology`);
     else {
       const set = casesByLemma.get(lemma.id) ?? new Set<Case>();
       set.add(t.case);
       casesByLemma.set(lemma.id, set);
     }
-    for (const p of exampleProblems(m, t, lemma)) (m.complete ? problems : notes).push(`${w}: ${p}`);
+    for (const p of exampleProblems(m, t, lemma))
+      (m.complete ? problems : notes).push(`${w}: ${p}`);
     if (t.kind === 'preposition' && lemma) {
       const cases = lemma.flags.cases as Case[] | undefined;
       if (!cases) (m.complete ? problems : notes).push(`${w}: ${t.lemma} has no flags.cases`);
@@ -263,7 +267,9 @@ export function buildTriggers(m: Morphology, authored: readonly AuthoredTrigger[
     if (l.pos !== 'prep') continue;
     for (const c of (l.flags.cases as Case[] | undefined) ?? [])
       if (!cases.has(c))
-        problems.push(`preposition ${l.lemma} takes the ${c} in the morphology, but no trigger has it`);
+        problems.push(
+          `preposition ${l.lemma} takes the ${c} in the morphology, but no trigger has it`,
+        );
   }
   return { rows, problems, notes };
 }
@@ -280,7 +286,8 @@ export async function runTriggers(ctx: StageContext): Promise<Record<string, unk
   for (const n of built.notes.slice(0, 20)) ctx.log(`triggers: warning ${n}`);
   for (const p of built.problems.slice(0, 50)) ctx.log(`triggers: ${p}`);
   const counts: Record<string, number> = {};
-  for (const r of built.rows) counts[`${r.kind}.${r.case}`] = (counts[`${r.kind}.${r.case}`] ?? 0) + 1;
+  for (const r of built.rows)
+    counts[`${r.kind}.${r.case}`] = (counts[`${r.kind}.${r.case}`] ?? 0) + 1;
   const summary = {
     morphology: m.source,
     complete: m.complete,
@@ -363,9 +370,12 @@ export const triggerCasesCheck: Check = {
       set.add(row.case);
       seen.set(row.lemmaId, set);
       const known = cases.get(row.lemmaId);
-      if (!known) (ctx.complete ? ctx.issue : ctx.warn)(`${w}: lemma ${row.lemmaId} has no flags.cases`);
+      if (!known)
+        (ctx.complete ? ctx.issue : ctx.warn)(`${w}: lemma ${row.lemmaId} has no flags.cases`);
       else if (!known.includes(row.case))
-        ctx.issue(`${w}: ${row.lemma} takes ${known.join(', ')} in the morphology, not the ${row.case}`);
+        ctx.issue(
+          `${w}: ${row.lemma} takes ${known.join(', ')} in the morphology, not the ${row.case}`,
+        );
     }
     for (const [id, got] of seen)
       for (const c of cases.get(id) ?? [])

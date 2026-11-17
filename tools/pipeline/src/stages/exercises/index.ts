@@ -38,9 +38,9 @@ import {
   type ExerciseRequest,
   exercisesTask,
   ITEMS_PER_REQUEST,
+  REVIEWS_PER_REQUEST,
   type ReviewItem,
   type ReviewRequest,
-  REVIEWS_PER_REQUEST,
   reviewTask,
 } from './prompts';
 import { buildRow, type Candidate, checkCandidate, NAMES, type RuleContext } from './rules';
@@ -65,7 +65,8 @@ function intArg(ctx: StageContext, name: string, fallback: number): number {
 }
 
 export function planOptionsOf(ctx: StageContext): PlanOptions {
-  const buckets = typeof ctx.args.buckets === 'string' ? ctx.args.buckets.split(',').filter(Boolean) : [];
+  const buckets =
+    typeof ctx.args.buckets === 'string' ? ctx.args.buckets.split(',').filter(Boolean) : [];
   return {
     ...DEFAULT_PLAN,
     perBucket: intArg(ctx, 'per-bucket', DEFAULT_PLAN.perBucket),
@@ -91,7 +92,10 @@ const GENDER_NAMES = {
 } as const;
 
 /** The generation requests: the open slots of each bucket, ITEMS_PER_REQUEST at a time. */
-export function generationJobs(slots: readonly Slot[], vocabularyLimit: number): BatchJob<ExerciseRequest>[] {
+export function generationJobs(
+  slots: readonly Slot[],
+  vocabularyLimit: number,
+): BatchJob<ExerciseRequest>[] {
   const byBucket = new Map<string, Slot[]>();
   for (const s of slots) {
     const k = s.slot.split('/')[0] as string;
@@ -109,7 +113,12 @@ export function generationJobs(slots: readonly Slot[], vocabularyLimit: number):
           bucket: `${CASE_NAMES[b.case]} ${b.number === 'sg' ? 'singular' : 'plural'}, ${GENDER_NAMES[b.gender]}`,
           vocabularyLimit,
           names: NAMES,
-          triggers: triggers.map((t) => ({ id: t.id, kind: t.kind, word: t.say, meaning: t.meaningEn })),
+          triggers: triggers.map((t) => ({
+            id: t.id,
+            kind: t.kind,
+            word: t.say,
+            meaning: t.meaningEn,
+          })),
           items: group.map((s) => ({
             slot: s.slot,
             trigger: s.trigger.id,
@@ -144,7 +153,10 @@ export function reviewJobs(items: readonly ReviewItem[]): BatchJob<ReviewRequest
   const jobs: BatchJob<ReviewRequest>[] = [];
   for (const [key, list] of byBucket)
     for (let i = 0; i < list.length; i += REVIEWS_PER_REQUEST)
-      jobs.push({ id: `review ${key}#${i / REVIEWS_PER_REQUEST}`, input: { items: list.slice(i, i + REVIEWS_PER_REQUEST) } });
+      jobs.push({
+        id: `review ${key}#${i / REVIEWS_PER_REQUEST}`,
+        input: { items: list.slice(i, i + REVIEWS_PER_REQUEST) },
+      });
   return jobs;
 }
 
@@ -179,8 +191,14 @@ export const CHECKPOINT_SIZE = 10;
 /** The exercise steps of a lesson, from the bank. */
 export function fillSteps(lesson: LessonRow, bank: readonly ExerciseRow[]): LessonRow['steps'] {
   const mine = bank.filter((r) => r.lessonId === lesson.id);
-  const choice = roundRobin(mine.filter((r) => r.kind !== 'cloze'), COMPREHENSION_SIZE);
-  const cloze = roundRobin(mine.filter((r) => r.kind === 'cloze'), Number.POSITIVE_INFINITY);
+  const choice = roundRobin(
+    mine.filter((r) => r.kind !== 'cloze'),
+    COMPREHENSION_SIZE,
+  );
+  const cloze = roundRobin(
+    mine.filter((r) => r.kind === 'cloze'),
+    Number.POSITIVE_INFINITY,
+  );
   const checkpoint = Math.min(CHECKPOINT_SIZE, cloze.length);
   const production = Math.min(PRODUCTION_SIZE, cloze.length - checkpoint);
   const ids: Record<string, string[]> = {
@@ -226,8 +244,15 @@ export async function runExercises(
   const contrast = new Map<string, { id: string; meaningEn: string }[]>();
   for (const t of triggerRows)
     if (t.contrastGroup)
-      contrast.set(t.contrastGroup, [...(contrast.get(t.contrastGroup) ?? []), { id: t.id, meaningEn: t.meaningEn }]);
-  const rc: RuleContext = { m, prepositions: prepositionSpellings(m), vocabularyLimit: opts.vocabularyLimit };
+      contrast.set(t.contrastGroup, [
+        ...(contrast.get(t.contrastGroup) ?? []),
+        { id: t.id, meaningEn: t.meaningEn },
+      ]);
+  const rc: RuleContext = {
+    m,
+    prepositions: prepositionSpellings(m),
+    vocabularyLimit: opts.vocabularyLimit,
+  };
   const slots = planAll(m, lessons, triggers, opts);
   const slotById = new Map(slots.map((s) => [s.slot, s]));
 
@@ -248,16 +273,27 @@ export async function runExercises(
       ...(deps.generateClient ? { client: deps.generateClient } : {}),
     });
     generation = gen as BatchOutcome<ExerciseRequest, unknown>;
-    for (const f of gen.failures)
-      rejections.push({ slot: f.id, stage: 'model', reason: f.reason });
-    const passed: { slot: Slot; c: Candidate; text: string; start: number; end: number; hash: string }[] = [];
+    for (const f of gen.failures) rejections.push({ slot: f.id, stage: 'model', reason: f.reason });
+    const passed: {
+      slot: Slot;
+      c: Candidate;
+      text: string;
+      start: number;
+      end: number;
+      hash: string;
+    }[] = [];
     for (const r of gen.results)
       for (const c of r.output.items) {
         const slot = slotById.get(c.slot);
         if (!slot) continue;
         const checked = checkCandidate(c, slot, rc);
         if (!checked.ok)
-          rejections.push({ slot: c.slot, stage: 'rules', reason: checked.problems.join('; '), sentenceSk: c.sentenceSk });
+          rejections.push({
+            slot: c.slot,
+            stage: 'rules',
+            reason: checked.problems.join('; '),
+            sentenceSk: c.sentenceSk,
+          });
         else passed.push({ slot, c, ...checked.value, hash: r.hash });
       }
     let items = passed.map((p) => reviewItem(p.slot, p.c, p.text));
@@ -265,7 +301,16 @@ export async function runExercises(
       // Nothing was written yet: estimate the review as if every open slot passed, with a
       // sentence of a typical length.
       items = open.map((s) =>
-        reviewItem(s, { slot: s.slot, sentenceSk: `${s.trigger.say} ${s.gap} a ešte pár slov.`, sentenceEn: 'A typical sentence of about eight words.', gap: s.gap }, s.gap),
+        reviewItem(
+          s,
+          {
+            slot: s.slot,
+            sentenceSk: `${s.trigger.say} ${s.gap} a ešte pár slov.`,
+            sentenceEn: 'A typical sentence of about eight words.',
+            gap: s.gap,
+          },
+          s.gap,
+        ),
       );
     if (items.length > 0) {
       const rev = await runBatch(reviewTask, reviewJobs(items), {
@@ -281,12 +326,18 @@ export async function runExercises(
             hash: r.hash,
             ...(v.problem ? { problem: v.problem } : {}),
           });
-      for (const f of rev.failures) rejections.push({ slot: f.id, stage: 'model', reason: `review: ${f.reason}` });
+      for (const f of rev.failures)
+        rejections.push({ slot: f.id, stage: 'model', reason: `review: ${f.reason}` });
       for (const p of passed) {
         const v = verdict.get(p.slot.slot);
         if (!v) continue;
         if (!v.ok) {
-          rejections.push({ slot: p.slot.slot, stage: 'review', reason: v.problem ?? 'rejected by the review', sentenceSk: p.c.sentenceSk });
+          rejections.push({
+            slot: p.slot.slot,
+            stage: 'review',
+            reason: v.problem ?? 'rejected by the review',
+            sentenceSk: p.c.sentenceSk,
+          });
           continue;
         }
         added.push(
@@ -294,21 +345,33 @@ export async function runExercises(
             slot: p.slot.slot,
             review: 'pass',
             model: exercisesTask.model ?? DEFAULT_MODEL,
-            generation: { route: exercisesTask.route, promptVersion: exercisesTask.promptVersion, requestHash: p.hash },
-            reviewer: { route: reviewTask.route, promptVersion: reviewTask.promptVersion, requestHash: v.hash },
+            generation: {
+              route: exercisesTask.route,
+              promptVersion: exercisesTask.promptVersion,
+              requestHash: p.hash,
+            },
+            reviewer: {
+              route: reviewTask.route,
+              promptVersion: reviewTask.promptVersion,
+              requestHash: v.hash,
+            },
           }),
         );
       }
     }
     if (added.length > 0) {
-      const all = [...existing, ...added].sort((a, b) => (String(a.flags.slot) < String(b.flags.slot) ? -1 : 1));
+      const all = [...existing, ...added].sort((a, b) =>
+        String(a.flags.slot) < String(b.flags.slot) ? -1 : 1,
+      );
       const w = await JsonlWriter.open(gpath);
       for (const r of all) await w.write(r);
       await w.close();
       ctx.log(`exercises: ${added.length} exercises added to ${gpath}`);
     }
   } else if (open.length > 0)
-    ctx.log(`exercises: ${open.length} slots have no exercise; --fill dry-run estimates the model fill`);
+    ctx.log(
+      `exercises: ${open.length} slots have no exercise; --fill dry-run estimates the model fill`,
+    );
 
   // The bank: every stored row whose slot is still planned (or any slot when --buckets
   // narrows the plan), unique by id.
@@ -323,9 +386,12 @@ export async function runExercises(
   await lw.close();
 
   const perBucket: Record<string, number> = {};
-  for (const r of rows) perBucket[`${r.case}.${r.number}.${r.gender}`] = (perBucket[`${r.case}.${r.number}.${r.gender}`] ?? 0) + 1;
+  for (const r of rows)
+    perBucket[`${r.case}.${r.number}.${r.gender}`] =
+      (perBucket[`${r.case}.${r.number}.${r.gender}`] ?? 0) + 1;
   const perLesson: Record<string, number> = {};
-  for (const r of rows) perLesson[r.lessonId ?? 'none'] = (perLesson[r.lessonId ?? 'none'] ?? 0) + 1;
+  for (const r of rows)
+    perLesson[r.lessonId ?? 'none'] = (perLesson[r.lessonId ?? 'none'] ?? 0) + 1;
   const summary = {
     mode,
     morphology: m.source,
@@ -337,10 +403,22 @@ export async function runExercises(
     perBucket,
     perLesson,
     generation: generation
-      ? { requests: generation.requests, cached: generation.cached, sent: generation.sent, estimate: generation.estimate, actualUsd: generation.actualUsd }
+      ? {
+          requests: generation.requests,
+          cached: generation.cached,
+          sent: generation.sent,
+          estimate: generation.estimate,
+          actualUsd: generation.actualUsd,
+        }
       : null,
     review: review
-      ? { requests: review.requests, cached: review.cached, sent: review.sent, estimate: review.estimate, actualUsd: review.actualUsd }
+      ? {
+          requests: review.requests,
+          cached: review.cached,
+          sent: review.sent,
+          estimate: review.estimate,
+          actualUsd: review.actualUsd,
+        }
       : null,
   };
   if (generation && review) {
@@ -351,9 +429,15 @@ export async function runExercises(
     );
   }
   await writeFileAtomic(out(ctx, 'report.json'), stableJson({ ...summary, rejections }));
-  await writeFileAtomic(out(ctx, 'report.md'), renderReport(summary, rejections, lessonBuckets(lessons)));
-  for (const r of rejections.slice(0, 20)) ctx.log(`exercises: rejected ${r.slot} (${r.stage}): ${r.reason}`);
-  ctx.log(`exercises: ${rows.length} exercises in the bank, ${rejections.length} rejected in this run`);
+  await writeFileAtomic(
+    out(ctx, 'report.md'),
+    renderReport(summary, rejections, lessonBuckets(lessons)),
+  );
+  for (const r of rejections.slice(0, 20))
+    ctx.log(`exercises: rejected ${r.slot} (${r.stage}): ${r.reason}`);
+  ctx.log(
+    `exercises: ${rows.length} exercises in the bank, ${rejections.length} rejected in this run`,
+  );
   return { ...summary, perBucket: undefined, rejections: rejections.length };
 }
 
@@ -365,8 +449,26 @@ function renderReport(
     exercises: number;
     perBucket: Record<string, number>;
     perLesson: Record<string, number>;
-    generation: { requests: number; estimate: { usd: number; worstUsd: number; requests: number; inputTokens: number; outputTokens: number } } | null;
-    review: { requests: number; estimate: { usd: number; worstUsd: number; requests: number; inputTokens: number; outputTokens: number } } | null;
+    generation: {
+      requests: number;
+      estimate: {
+        usd: number;
+        worstUsd: number;
+        requests: number;
+        inputTokens: number;
+        outputTokens: number;
+      };
+    } | null;
+    review: {
+      requests: number;
+      estimate: {
+        usd: number;
+        worstUsd: number;
+        requests: number;
+        inputTokens: number;
+        outputTokens: number;
+      };
+    } | null;
   },
   rejections: readonly Rejection[],
   buckets: Map<string, string[]>,
@@ -379,21 +481,41 @@ function renderReport(
     '## Model fill',
     '',
   ];
-  for (const [name, o] of [['Generation', s.generation], ['Review', s.review]] as const)
+  for (const [name, o] of [
+    ['Generation', s.generation],
+    ['Review', s.review],
+  ] as const)
     if (o)
       lines.push(
         `- ${name}: ${o.estimate.requests} requests to send, ${o.estimate.inputTokens.toLocaleString('en')} input and ${o.estimate.outputTokens.toLocaleString('en')} output tokens, ${formatUsd(o.estimate.usd)} at batch prices (at most ${formatUsd(o.estimate.worstUsd)}).`,
       );
   if (!s.generation) lines.push('No fill in this run.');
-  lines.push('', '## Exercises per bucket', '', '| Lesson | Bucket | Exercises |', '|---|---|---:|');
+  lines.push(
+    '',
+    '## Exercises per bucket',
+    '',
+    '| Lesson | Bucket | Exercises |',
+    '|---|---|---:|',
+  );
   for (const [lesson, keys] of buckets)
-    if (lesson !== MIXED_LESSON) for (const k of keys) lines.push(`| ${lesson} | ${k} | ${s.perBucket[k] ?? 0} |`);
-  lines.push('', '## Exercises per lesson', '', ...Object.entries(s.perLesson).map(([k, v]) => `- ${k}: ${v}`), '');
+    if (lesson !== MIXED_LESSON)
+      for (const k of keys) lines.push(`| ${lesson} | ${k} | ${s.perBucket[k] ?? 0} |`);
+  lines.push(
+    '',
+    '## Exercises per lesson',
+    '',
+    ...Object.entries(s.perLesson).map(([k, v]) => `- ${k}: ${v}`),
+    '',
+  );
   if (rejections.length > 0)
     lines.push(
       '## Rejected in this run',
       '',
-      ...rejections.slice(0, 300).map((r) => `- ${r.slot} (${r.stage}): ${r.reason}${r.sentenceSk ? ` — ${r.sentenceSk}` : ''}`),
+      ...rejections
+        .slice(0, 300)
+        .map(
+          (r) => `- ${r.slot} (${r.stage}): ${r.reason}${r.sentenceSk ? ` — ${r.sentenceSk}` : ''}`,
+        ),
       '',
     );
   return `${lines.join('\n')}\n`;
@@ -429,7 +551,8 @@ export const exerciseFormsCheck: Check = {
       try {
         const t = parseTag(tag);
         if (t.kind === 'noun') return t.case === r.case && t.number === r.number;
-        if (t.kind === 'agree') return t.case === r.case && t.number === r.number && t.gender === r.gender;
+        if (t.kind === 'agree')
+          return t.case === r.case && t.number === r.number && t.gender === r.gender;
         if (t.kind === 'pron') return t.case === r.case;
       } catch {
         return false;
@@ -457,7 +580,8 @@ export const exerciseFormsCheck: Check = {
       perBucket.set(k, (perBucket.get(k) ?? 0) + 1);
       if (row.source === 'generated') {
         if (row.verified) ctx.issue(`${w}: a generated exercise is marked verified`);
-        if (row.flags.review !== 'pass') ctx.issue(`${w}: a generated exercise without a passed review`);
+        if (row.flags.review !== 'pass')
+          ctx.issue(`${w}: a generated exercise without a passed review`);
       }
       const answers = new Set(row.target.answers.map(formKey));
       for (const a of row.target.answers) {
@@ -471,7 +595,8 @@ export const exerciseFormsCheck: Check = {
         if (opts.length > 0) ctx.issue(`${w}: a cloze with options`);
         continue;
       }
-      if (opts.filter((o) => o.correct).length !== 1) ctx.issue(`${w}: not exactly one right option`);
+      if (opts.filter((o) => o.correct).length !== 1)
+        ctx.issue(`${w}: not exactly one right option`);
       if (row.kind === 'choice_form')
         for (const o of opts) {
           const why = notAForm(o.text, row, false);
@@ -482,7 +607,8 @@ export const exerciseFormsCheck: Check = {
     }
     if (ctx.complete)
       for (const [k, c] of perBucket)
-        if (c < BUCKET_TARGET) ctx.warn(`bucket ${k} has ${c} exercises, fewer than ${BUCKET_TARGET}`);
+        if (c < BUCKET_TARGET)
+          ctx.warn(`bucket ${k} has ${c} exercises, fewer than ${BUCKET_TARGET}`);
   },
 };
 
@@ -507,7 +633,8 @@ export const exercisesStage: Stage = {
     ...morphInputs(morphFiles(ctx)),
     exercisesPath(ctx),
   ],
-  outputs: (ctx) => ['exercises.jsonl', 'lessons.jsonl', 'report.md', 'report.json'].map((f) => out(ctx, f)),
+  outputs: (ctx) =>
+    ['exercises.jsonl', 'lessons.jsonl', 'report.md', 'report.json'].map((f) => out(ctx, f)),
   params: (ctx) => ({
     fill: fillModeOf(ctx),
     morph: ctx.args.morph ?? null,
@@ -515,12 +642,17 @@ export const exercisesStage: Stage = {
     vocabulary: ctx.args.vocabulary ?? null,
     buckets: ctx.args.buckets ?? null,
     maxSpend: ctx.args['max-spend'] ?? null,
-    at: fillModeOf(ctx) === 'dry-run' || fillModeOf(ctx) === 'live' ? ctx.now().toISOString() : null,
+    at:
+      fillModeOf(ctx) === 'dry-run' || fillModeOf(ctx) === 'live' ? ctx.now().toISOString() : null,
   }),
   run: (ctx) => runExercises(ctx),
   parts: [
     { file: 'exercises.jsonl', path: (p) => join(p.build, 'exercises', 'exercises.jsonl') },
-    { file: 'lessons.jsonl', path: (p) => join(p.build, 'exercises', 'lessons.jsonl'), mode: 'merge' },
+    {
+      file: 'lessons.jsonl',
+      path: (p) => join(p.build, 'exercises', 'lessons.jsonl'),
+      mode: 'merge',
+    },
   ],
   checks: [exerciseFormsCheck],
 };

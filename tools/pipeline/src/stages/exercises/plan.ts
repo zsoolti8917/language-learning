@@ -6,8 +6,8 @@ import type { Case, Gender, GrammaticalNumber, TriggerKind, TriggerRow } from '@
 import { type Bucket, formKey, parseBucketKey, tagOf } from '@app/ling';
 import type { AuthoredLesson } from '../lessons';
 import { lessonBuckets } from '../lessons';
-import { formsWith, type MorphLemma, type Morphology } from '../triggers/morphology';
 import { triggerSay, triggerSpellings } from '../triggers';
+import { formsWith, type MorphLemma, type Morphology } from '../triggers/morphology';
 
 export interface PlanTrigger {
   id: string;
@@ -16,6 +16,8 @@ export interface PlanTrigger {
   case: Case;
   meaningEn: string;
   contrastGroup?: string;
+  /** Other cases the same trigger word takes in other rows (na: acc and loc). */
+  otherCases: Case[];
   /** The form shown to the model. */
   say: string;
   /** Spellings (formKey) that count as this trigger in a sentence. */
@@ -99,6 +101,13 @@ export function planTriggers(m: Morphology, rows: readonly TriggerRow[]): Map<st
       lemma: t.lemma,
       case: t.case,
       meaningEn: t.meaningEn,
+      otherCases: [
+        ...new Set(
+          rows
+            .filter((o) => o.lemmaId === t.lemmaId && o.kind === t.kind && o.case !== t.case)
+            .map((o) => o.case),
+        ),
+      ],
       say: triggerSay(m, t, lemma),
       spellings: triggerSpellings(m, t, lemma),
     };
@@ -137,13 +146,18 @@ export function planBucket(
   const nounTag = tagOf({ case: bucket.case, number: bucket.number });
   const agreeTag = `${nounTag}${GENDER_LETTER[bucket.gender]}`;
   const byRank = (a: MorphLemma, b: MorphLemma) =>
-    (a.freqRank ?? Number.POSITIVE_INFINITY) - (b.freqRank ?? Number.POSITIVE_INFINITY) || a.id - b.id;
+    (a.freqRank ?? Number.POSITIVE_INFINITY) - (b.freqRank ?? Number.POSITIVE_INFINITY) ||
+    a.id - b.id;
 
   let allowed = lesson.triggerIds
     .map((id) => triggers.get(id))
-    .filter((t): t is PlanTrigger => t !== undefined && t.case === bucket.case && fits(t, bucket.number));
+    .filter(
+      (t): t is PlanTrigger => t !== undefined && t.case === bucket.case && fits(t, bucket.number),
+    );
   if (allowed.length === 0)
-    allowed = [...triggers.values()].filter((t) => t.case === bucket.case && fits(t, bucket.number));
+    allowed = [...triggers.values()].filter(
+      (t) => t.case === bucket.case && fits(t, bucket.number),
+    );
   if (allowed.length === 0) return [];
   const forPronouns = allowed.filter((t) => t.kind === 'verb' || t.kind === 'question');
 
@@ -160,7 +174,8 @@ export function planBucket(
   if (nouns.length === 0) return [];
   const adjectives: { w: SlotWord; nom: string }[] = [];
   for (const l of [...m.lemmas.values()].sort(byRank)) {
-    if (l.pos !== 'adj' || l.flags.proper || (l.pattern !== 'pekny' && l.pattern !== 'cudzi')) continue;
+    if (l.pos !== 'adj' || l.flags.proper || (l.pattern !== 'pekny' && l.pattern !== 'cudzi'))
+      continue;
     if ((l.freqRank ?? Number.POSITIVE_INFINITY) > opts.adjectiveLimit) continue;
     const w = word(m, l, 'adjective', agreeTag);
     const nom = formsWith(m.forms.get(l.id), `s1${GENDER_LETTER[bucket.gender]}`)[0];
@@ -194,7 +209,10 @@ export function planBucket(
       const noun = nouns[n++ % nouns.length] as SlotWord;
       const lemma = m.lemmas.get(noun.lemmaId) as MorphLemma;
       pattern = lemma.pattern;
-      const adj = i % 4 === 3 && adjectives.length > 0 ? adjectives[Math.floor(i / 4) % adjectives.length] : undefined;
+      const adj =
+        i % 4 === 3 && adjectives.length > 0
+          ? adjectives[Math.floor(i / 4) % adjectives.length]
+          : undefined;
       if (adj) {
         words = [adj.w, noun];
         cue = `${adj.nom} ${noun.lemma}`;

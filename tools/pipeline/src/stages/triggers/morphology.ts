@@ -115,7 +115,10 @@ export interface LoadOptions {
   words?: boolean;
 }
 
-export async function loadMorphology(files: MorphFiles, opts: LoadOptions = {}): Promise<Morphology> {
+export async function loadMorphology(
+  files: MorphFiles,
+  opts: LoadOptions = {},
+): Promise<Morphology> {
   for (const p of [files.lemmas, files.forms])
     if (!existsSync(p))
       throw new Error(
@@ -134,9 +137,11 @@ export async function loadMorphology(files: MorphFiles, opts: LoadOptions = {}):
     else byLemma.set(l.lemma, [l.id]);
   }
   if (files.ranks && existsSync(files.ranks))
-    for await (const r of readJsonl<{ id: number; freqRank: number; topForms?: MorphLemma['topForms'] }>(
-      files.ranks,
-    )) {
+    for await (const r of readJsonl<{
+      id: number;
+      freqRank: number;
+      topForms?: MorphLemma['topForms'];
+    }>(files.ranks)) {
       const l = lemmas.get(r.id);
       if (!l) continue;
       l.freqRank = r.freqRank;

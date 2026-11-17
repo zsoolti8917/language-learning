@@ -8,8 +8,8 @@
 import type { Case, ExerciseRow, FormMap, GrammaticalNumber } from '@app/contracts';
 import { formKey, tagOf } from '@app/ling';
 import { sha256 } from '../../lib/files';
-import { formsWith, type Morphology, wordsOf } from '../triggers/morphology';
 import { ADJACENT_KINDS } from '../triggers';
+import { CASE_DIGITS, formsWith, type Morphology, wordsOf } from '../triggers/morphology';
 import type { Slot, SlotWord } from './plan';
 
 /** Names a sentence may use besides the common words. */
@@ -60,11 +60,16 @@ export function checkCandidate(
     problems.push(`the gap "${c.gap}" has ${gapWords.length} words, not ${slot.words.length}`);
   const at: number[] = [];
   for (let i = 0; i + gapWords.length <= words.length; i++)
-    if (gapWords.length > 0 && gapWords.every((g, j) => formKey((words[i + j] as { w: string }).w) === g))
+    if (
+      gapWords.length > 0 &&
+      gapWords.every((g, j) => formKey((words[i + j] as { w: string }).w) === g)
+    )
       at.push(i);
   if (at.length !== 1) {
     problems.push(
-      at.length === 0 ? `the gap "${c.gap}" is not in the sentence` : `the gap "${c.gap}" is in the sentence twice`,
+      at.length === 0
+        ? `the gap "${c.gap}" is not in the sentence`
+        : `the gap "${c.gap}" is in the sentence twice`,
     );
     return { ok: false, problems };
   }
@@ -81,8 +86,22 @@ export function checkCandidate(
       problems.push(`"${form}" is ${describeTags(map, form)} of ${w.lemma}, not ${w.tag}`);
   });
 
-  // Every word is known and common; the trigger stands where it governs the gap.
+  // A trigger that stands right before the gap and takes two cases (na, v, za ...) must not
+  // leave both open: "na dni" is the locative singular and the accusative plural of deň.
   const trigger = slot.trigger;
+  if (ADJACENT_KINDS.has(trigger.kind))
+    for (const other of trigger.otherCases) {
+      const digit = String(CASE_DIGITS[other]);
+      const fitsOther = slot.words.every((w, j) =>
+        (rc.m.forms.get(w.lemmaId)?.[gapWords[j] ?? ''] ?? []).some((t) => t[1] === digit),
+      );
+      if (fitsOther)
+        problems.push(
+          `"${c.gap}" is also a form of the ${other}, which ${trigger.lemma} takes too`,
+        );
+    }
+
+  // Every word is known and common; the trigger stands where it governs the gap.
   const isTrigger = (w: string) => trigger.spellings.has(formKey(w));
   const inGap = new Set(gapTokens.map((t) => t.s));
   for (const w of words) {
@@ -173,9 +192,15 @@ export function wrongFormOptions(
 const hashOrder = <T extends { text: string }>(xs: T[], salt: string) =>
   [...xs].sort((a, b) => (sha256(`${salt}|${a.text}`) < sha256(`${salt}|${b.text}`) ? -1 : 1));
 
-/** `ex-` + the first ten hex digits of the hash of kind, sentence and target. */
-export function exerciseId(kind: string, sentenceSk: string, target: ExerciseRow['target']): string {
-  return `ex-${sha256(`${kind}|${sentenceSk}|${target.start}-${target.end}|${target.answers.join('/')}`).slice(0, 10)}`;
+/** `ex-` + the first ten hex digits of the hash of kind, sentence, target, bucket and trigger. */
+export function exerciseId(
+  kind: string,
+  sentenceSk: string,
+  target: ExerciseRow['target'],
+  bucket: string,
+  triggerId: string,
+): string {
+  return `ex-${sha256(`${kind}|${sentenceSk}|${target.start}-${target.end}|${target.answers.join('/')}|${bucket}|${triggerId}`).slice(0, 10)}`;
 }
 
 /**
@@ -193,7 +218,9 @@ export function difficultyOf(
   const words = wordsOf(sentenceSk);
   const len = Math.min(1, Math.max(0, (words.length - 3) / 9));
   const scale = (rank: number) =>
-    Number.isFinite(rank) ? Math.log1p(Math.min(rank, rc.vocabularyLimit)) / Math.log1p(rc.vocabularyLimit) : 1;
+    Number.isFinite(rank)
+      ? Math.log1p(Math.min(rank, rc.vocabularyLimit)) / Math.log1p(rc.vocabularyLimit)
+      : 1;
   let rarest = 0;
   for (const w of words) {
     if (w.s >= start && w.e <= end) continue;
@@ -202,7 +229,9 @@ export function difficultyOf(
     if (info && !info.properOnly) rarest = Math.max(rarest, scale(info.rank));
   }
   const noun = slot.words[slot.words.length - 1];
-  const target = noun ? scale(rc.m.lemmas.get(noun.lemmaId)?.freqRank ?? Number.POSITIVE_INFINITY) : 0;
+  const target = noun
+    ? scale(rc.m.lemmas.get(noun.lemmaId)?.freqRank ?? Number.POSITIVE_INFINITY)
+    : 0;
   const d =
     0.1 +
     0.25 * len +
@@ -267,7 +296,13 @@ export function buildRow(
     answers,
   };
   const row: ExerciseRow = {
-    id: exerciseId(kind, sentenceSk, target),
+    id: exerciseId(
+      kind,
+      sentenceSk,
+      target,
+      `${slot.bucket.case}.${slot.bucket.number}.${slot.bucket.gender}`,
+      slot.trigger.id,
+    ),
     kind,
     sentenceSk,
     sentenceEn: c.sentenceEn.trim(),

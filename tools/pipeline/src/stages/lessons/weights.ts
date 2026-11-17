@@ -23,15 +23,24 @@ export const wordTagPath = (paths: Paths) => join(paths.raw, ARANEUM_SOURCE, WOR
 
 const NOUN_TAG = /^S[SAFU]([mifn])([sp])([1-7])$/u;
 const GENDER: Record<string, string> = { m: 'm_anim', i: 'm_inan', f: 'f', n: 'n' };
-const CASE: Record<string, string> = { '1': 'nom', '2': 'gen', '3': 'dat', '4': 'acc', '6': 'loc', '7': 'ins' };
+const CASE: Record<string, string> = {
+  '1': 'nom',
+  '2': 'gen',
+  '3': 'dat',
+  '4': 'acc',
+  '6': 'loc',
+  '7': 'ins',
+};
 
 /** Sums the ARF of the common noun rows of the Araneum word form list by bucket. */
-export async function araneumBucketSums(lines: AsyncIterable<string>): Promise<Map<string, number>> {
+export async function araneumBucketSums(
+  lines: AsyncIterable<string>,
+): Promise<Map<string, number>> {
   const sums = new Map<string, number>();
   for await (const line of lines) {
     const cols = line.split('\t');
     const tag = cols[1];
-    if (!tag || tag[0] !== 'S') continue;
+    if (tag?.[0] !== 'S') continue;
     const m = NOUN_TAG.exec(tag);
     if (!m) continue;
     const c = CASE[m[3] as string];
@@ -50,7 +59,7 @@ function rankBucketSums(m: Morphology): Map<string, number> {
     if (l.pos !== 'noun' || !l.gender || !l.freqRank || !l.topForms) continue;
     for (const f of l.topForms) {
       const parsed = tryParseTag(f.tag);
-      if (!parsed || parsed.kind !== 'noun' || parsed.case === 'voc') continue;
+      if (parsed?.kind !== 'noun' || parsed.case === 'voc') continue;
       const b = bucketOfTag(f.tag, l.gender);
       if (!b) continue;
       const k = bucketKey(b);

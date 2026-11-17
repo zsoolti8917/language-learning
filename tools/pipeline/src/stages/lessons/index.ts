@@ -39,7 +39,13 @@ import { corpusWeights, lessonWeights, wordTagPath } from './weights';
 export const PASS_SHARE = 0.75;
 /** A checkpoint lists at least this many exercises. */
 export const MIN_CHECKPOINT = 8;
-export const STEP_KINDS = ['explain', 'triggers', 'comprehension', 'production', 'checkpoint'] as const;
+export const STEP_KINDS = [
+  'explain',
+  'triggers',
+  'comprehension',
+  'production',
+  'checkpoint',
+] as const;
 
 export const AuthoredLessonSchema = z
   .object({
@@ -59,7 +65,9 @@ export const AuthoredLessonSchema = z
     explain: z
       .object({
         md: z.string().min(1),
-        examples: z.array(z.object({ sk: z.string().min(1), en: z.string().min(1) }).strict()).min(1),
+        examples: z
+          .array(z.object({ sk: z.string().min(1), en: z.string().min(1) }).strict())
+          .min(1),
       })
       .strict(),
   })
@@ -96,7 +104,9 @@ export function lessonBuckets(lessons: readonly AuthoredLesson[]): Map<string, s
 }
 
 /** `Vidím [ženu].` → the text without brackets and the span of the bracketed words. */
-export function readExample(sk: string): { sk: string; highlight: { start: number; end: number } } | null {
+export function readExample(
+  sk: string,
+): { sk: string; highlight: { start: number; end: number } } | null {
   const open = sk.indexOf('[');
   const close = sk.indexOf(']');
   if (open < 0 || close < open || sk.indexOf('[', open + 1) >= 0) return null;
@@ -122,7 +132,9 @@ export async function buildLessons(
   const soft = (msg: string) => (m.complete ? problems : notes).push(msg);
 
   // Patterns.
-  const authoredPatterns = await readAuthoredPatterns(await yamlFiles(authoredDir(ctx, 'patterns')));
+  const authoredPatterns = await readAuthoredPatterns(
+    await yamlFiles(authoredDir(ctx, 'patterns')),
+  );
   const patterns: PatternRow[] = [];
   for (const p of authoredPatterns) {
     const built = buildPattern(m, p);
@@ -136,7 +148,8 @@ export async function buildLessons(
   for (const l of m.lemmas.values())
     if (l.pattern) used.set(l.pattern, (used.get(l.pattern) ?? 0) + 1);
   for (const [id, n] of used)
-    if (!patternIds.has(id)) soft(`pattern ${id} is used by ${n} lemmas but has no pattern file entry`);
+    if (!patternIds.has(id))
+      soft(`pattern ${id} is used by ${n} lemmas but has no pattern file entry`);
 
   // Lessons.
   const authored = await readAuthoredLessons(authoredDir(ctx, 'lessons'));
@@ -148,7 +161,8 @@ export async function buildLessons(
   authored.forEach((l, i) => {
     const w = `lesson ${l.id}`;
     if (l.ord !== i + 1) problems.push(`${w}: ord ${l.ord}, expected ${i + 1}`);
-    for (const p of l.prerequisites) if (!ids.has(p)) problems.push(`${w}: unknown prerequisite ${p}`);
+    for (const p of l.prerequisites)
+      if (!ids.has(p)) problems.push(`${w}: unknown prerequisite ${p}`);
     for (const t of l.triggerIds) {
       const row = triggers.get(t);
       if (!row) problems.push(`${w}: unknown trigger ${t}`);
@@ -171,7 +185,8 @@ export async function buildLessons(
       }
       const words = wordsOf(read.sk);
       const unknown = words.filter((x) => !m.words.has(formKey(x.w))).map((x) => x.w);
-      if (unknown.length > 0) soft(`${w}: unknown words in example ${j + 1}: ${unknown.join(', ')}`);
+      if (unknown.length > 0)
+        soft(`${w}: unknown words in example ${j + 1}: ${unknown.join(', ')}`);
       const hl = words.filter((x) => x.s >= read.highlight.start && x.e <= read.highlight.end);
       const lessonCase: Case | undefined = l.case;
       const caseOk = (x: string) => {
@@ -188,7 +203,12 @@ export async function buildLessons(
     });
     const focus = lessonWeights(keys, weights.shares).map(({ key, weight }) => {
       const b = parseBucketKey(key);
-      return { case: b?.case ?? 'nom', number: b?.number ?? 'sg', gender: b?.gender ?? 'n', weight };
+      return {
+        case: b?.case ?? 'nom',
+        number: b?.number ?? 'sg',
+        gender: b?.gender ?? 'n',
+        weight,
+      };
     });
     const row: LessonRow = {
       id: l.id,
@@ -200,7 +220,11 @@ export async function buildLessons(
       summaryMd: l.summaryMd.trim(),
       prerequisites: l.prerequisites,
       steps: [
-        { ord: 0, kind: 'explain', content: { kind: 'explain', md: l.explain.md.trim(), examples } },
+        {
+          ord: 0,
+          kind: 'explain',
+          content: { kind: 'explain', md: l.explain.md.trim(), examples },
+        },
         { ord: 1, kind: 'triggers', content: { kind: 'triggers', triggerIds: l.triggerIds } },
         { ord: 2, kind: 'comprehension', content: { kind: 'comprehension', exerciseIds: [] } },
         { ord: 3, kind: 'production', content: { kind: 'production', exerciseIds: [] } },
@@ -264,7 +288,11 @@ export async function runLessons(ctx: StageContext): Promise<Record<string, unkn
   for (const r of built.patterns) await pw.write(r);
   await pw.close();
   ctx.log(`lessons: ${built.lessons.length} lessons and ${built.patterns.length} patterns written`);
-  return { lessons: built.lessons.length, patterns: built.patterns.length, notes: built.notes.length };
+  return {
+    lessons: built.lessons.length,
+    patterns: built.patterns.length,
+    notes: built.notes.length,
+  };
 }
 
 function renderReport(b: BuiltLessons): string {
@@ -348,7 +376,9 @@ export const lessonStepsCheck: Check = {
         if (c.kind === 'comprehension' || c.kind === 'production' || c.kind === 'checkpoint') {
           if (c.exerciseIds.length === 0) ctx.issue(`${w}: the ${c.kind} step has no exercises`);
           if (c.kind === 'checkpoint' && c.exerciseIds.length < MIN_CHECKPOINT)
-            ctx.issue(`${w}: the checkpoint lists ${c.exerciseIds.length} exercises, fewer than ${MIN_CHECKPOINT}`);
+            ctx.issue(
+              `${w}: the checkpoint lists ${c.exerciseIds.length} exercises, fewer than ${MIN_CHECKPOINT}`,
+            );
           for (const x of c.exerciseIds)
             if (lessonOf.has(x) && lessonOf.get(x) !== row.id)
               ctx.issue(`${w}: exercise ${x} belongs to lesson ${lessonOf.get(x) ?? 'none'}`);
@@ -372,9 +402,12 @@ export const lessonsStage: Stage = {
     triggersOut(ctx),
     ...morphInputs(morphFiles(ctx)),
     // The corpus list for the bucket weights, in the full build when it was fetched.
-    ...(morphFiles(ctx).complete && existsSync(wordTagPath(ctx.paths)) ? [wordTagPath(ctx.paths)] : []),
+    ...(morphFiles(ctx).complete && existsSync(wordTagPath(ctx.paths))
+      ? [wordTagPath(ctx.paths)]
+      : []),
   ],
-  outputs: (ctx) => ['lessons.jsonl', 'patterns.jsonl', 'report.md', 'report.json'].map((f) => out(ctx, f)),
+  outputs: (ctx) =>
+    ['lessons.jsonl', 'patterns.jsonl', 'report.md', 'report.json'].map((f) => out(ctx, f)),
   params: (ctx) => ({ morph: ctx.args.morph ?? null }),
   run: runLessons,
   parts: [

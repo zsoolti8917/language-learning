@@ -315,7 +315,9 @@ describe('the sentences stage on the mini dataset', () => {
     const manifest = JSON.parse(await readFile(join(dir, 'manifest.json'), 'utf8'));
     manifest.counts.sentences = out.length;
     await writeFile(join(dir, 'manifest.json'), JSON.stringify(manifest));
-    const r = await validateSet(dir, allChecks(STAGES), { registry: await miniRegistry() });
+    // The mini lessons have three steps, not C4's five: the C4 checks are tested in their stages.
+    const stages = STAGES.filter((s) => !['triggers', 'lessons', 'exercises'].includes(s.name));
+    const r = await validateSet(dir, allChecks(stages), { registry: await miniRegistry() });
     expect(r.issues).toEqual([]);
     expect(r.ok).toBe(true);
     expect(r.issueCounts['sentences.rules']).toBeUndefined();

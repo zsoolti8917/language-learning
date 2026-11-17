@@ -98,7 +98,12 @@ export const exercisesTask: BatchTask<ExerciseRequest, ExerciseAnswer> = {
       const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
       const sentenceSk =
         t?.kind === 'question' ? `${cap(word)}? ${cap(item.gap)}.` : `${cap(word)} ${item.gap}.`;
-      return { slot: item.slot, sentenceSk, sentenceEn: `[mock] ${word} ${item.gap}`, gap: item.gap };
+      return {
+        slot: item.slot,
+        sentenceSk,
+        sentenceEn: `[mock] ${word} ${item.gap}`,
+        gap: item.gap,
+      };
     }),
   }),
 };
