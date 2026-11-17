@@ -72,20 +72,24 @@ test('review session: answers graded on the phone, sent through the outbox, stor
   await noSidewaysScroll(page);
   expect(batches).toHaveLength(1);
 
-  // Back online: one batch with both answers, and the outbox empties.
-  const synced = page.waitForResponse((r) => r.url().endsWith('/api/v1/review/answers'));
+  // Back online: the outbox sends both waiting answers, in order, and empties. They usually
+  // travel in one merged batch, but the last answer's outbox write can land just after the
+  // connection returns, so count answers across batches rather than batches.
   await context.setOffline(false);
-  const res = await synced;
-  expect(res.status()).toBe(200);
-  const body = res.request().postDataJSON() as {
-    answers: { cardId: string; clientGrade: string }[];
-  };
-  expect(body.answers.map((a) => [a.cardId, a.clientGrade])).toEqual([
+  const answersAfterReconnect = () =>
+    batches
+      .slice(1)
+      .flatMap(
+        (req) =>
+          (req.postDataJSON() as { answers: { cardId: string; clientGrade: string }[] }).answers,
+      )
+      .map((a) => [a.cardId, a.clientGrade]);
+  await expect.poll(answersAfterReconnect).toEqual([
     [second, 'wrong'],
     [third, 'correct'],
   ]);
+  for (const req of batches.slice(1)) expect((await req.response())?.status()).toBe(200);
   await expect(page.getByTestId('sync-line')).toHaveCount(0);
-  expect(batches).toHaveLength(2);
 
   // The server stored the three reviews with its own grades.
   for (const [cardId, grade] of [
