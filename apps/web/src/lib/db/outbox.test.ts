@@ -244,6 +244,19 @@ describe('outbox', () => {
     stop();
   });
 
+  it('tries again by itself when the network fails although the device is online', async () => {
+    const srv = fakeServer();
+    box = testOutbox({ isOnline: () => true, networkRetry: () => 20 });
+    await submit([answer()]);
+    srv.fail('network');
+    const stop = box.start(window);
+    // The first run fails on the network; no event comes, the retry timer sends it.
+    await waitFor(() => srv.log.length === 1);
+    await waitFor(() => box.getState().pending === 0);
+    expect(await box.list()).toEqual([]);
+    stop();
+  });
+
   it('waits while nobody is signed in, and sends once a login is back', async () => {
     const srv = fakeServer();
     let signedIn = false;

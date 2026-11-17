@@ -45,7 +45,7 @@ export async function hasLogin(): Promise<boolean> {
 /** The app's one API client. Features call `api.<module>.<action>(input)`. */
 export const api: ApiClient = createApiClient({
   base: env.apiBase,
-  getToken: () => hooks.getToken?.() ?? null,
+  getToken: () => (hooks.getToken ? hooks.getToken() : undefined),
   onUnauthorized: () => hooks.onUnauthorized?.() ?? Promise.resolve(false),
   onResponse: (name, data) => hooks.onResponse?.(name, data),
 });
