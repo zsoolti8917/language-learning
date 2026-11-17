@@ -155,8 +155,10 @@ test('reader offline: an opened text reads offline, a status set offline syncs l
   await expect(sheet.getByTestId('trigger')).toHaveText('After “do” comes the genitive.');
   await sheet.getByRole('button', { name: 'Known', exact: true }).click();
   await expect(kina).toHaveAttribute('data-status', 'known');
-  const rows = await outboxRows(page);
-  expect(rows.map((r) => [r.name, r.status])).toContainEqual(['lemmas.setStatus', 'pending']);
+  // The sheet updates the page before the outbox write lands, so wait for the row.
+  await expect
+    .poll(async () => (await outboxRows(page)).map((r) => [r.name, r.status]))
+    .toContainEqual(['lemmas.setStatus', 'pending']);
 
   // The library shows the opened text while offline.
   await page.goto('/read');
