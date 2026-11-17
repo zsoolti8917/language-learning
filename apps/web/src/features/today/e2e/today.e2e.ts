@@ -115,8 +115,8 @@ test('offline: Today says so', async ({ page, context }) => {
   await page.goto('/');
   await expect(page.getByText('12 due')).toBeVisible();
   await context.setOffline(true);
-  await expect(page.getByText(m.t('notices.offline'))).toBeVisible();
+  await expect(page.getByText(en.notices.offline)).toBeVisible();
   await context.setOffline(false);
-  await expect(page.getByText(m.t('notices.offline'))).toHaveCount(0);
+  await expect(page.getByText(en.notices.offline)).toHaveCount(0);
   expect(errors).toEqual([]);
 });

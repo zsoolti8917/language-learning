@@ -143,7 +143,7 @@ describe('NoteScreen', () => {
     expect(screen.getByRole('heading', { name: 'Sentences' })).toBeInTheDocument();
     expect(screen.getByText('I live in a town.')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Schedule' })).toBeInTheDocument();
-    expect(screen.getByText('4.9 days')).toBeInTheDocument();
+    expect(screen.getByText('26.6 days')).toBeInTheDocument(); // the example's stability
     expect(screen.getByRole('heading', { name: 'Last reviews' })).toBeInTheDocument();
     expect(screen.getByText(/Rated Good/)).toBeInTheDocument();
     expect(DETAIL.reviews).toHaveLength(1);

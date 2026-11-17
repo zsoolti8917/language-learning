@@ -51,6 +51,7 @@ test.describe('design system gallery', () => {
         'Case colours',
         'Button',
         'Input',
+        'Textarea',
         'AccentBar',
         'AnswerInput',
         'TokenText',
@@ -59,6 +60,7 @@ test.describe('design system gallery', () => {
         'Tabs',
         'Toast',
         'ProgressRing',
+        'ProgressBar',
         'EmptyState',
         'Skeleton',
       ]) {

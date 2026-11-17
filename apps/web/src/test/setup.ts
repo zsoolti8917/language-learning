@@ -2,9 +2,13 @@
 // Testing Library cleanup, an IndexedDB stand in, and the mock server in Node.
 import 'fake-indexeddb/auto';
 import '@testing-library/jest-dom/vitest';
-import { cleanup } from '@testing-library/react';
+import { cleanup, configure } from '@testing-library/react';
 import { afterAll, afterEach, beforeAll } from 'vitest';
 import { server } from '../mocks/node';
+
+// findBy…/waitFor wait 5 s instead of 1 s: real screens render slowly when the machine is
+// loaded (CI, many test workers). A query that should fail still fails, only later.
+configure({ asyncUtilTimeout: 5_000 });
 
 // Vitest runs without globals, so Testing Library cannot register its own cleanup.
 afterEach(cleanup);
