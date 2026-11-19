@@ -70,11 +70,34 @@ the exact message.
 
 This is `DATABASE_URL`. The API never logs in as `postgres`.
 
-## 4. Vercel environment variables
+## 4. Vercel project
+
+The repository builds itself in Vercel's Build Output API format (`pnpm run vercel-build`,
+see `scripts/vercel-build.mjs`): the client as static files and the API as one Node 24
+function at `/api` in `fra1` with a 300 second limit. `vercel.json` sets the commands, so on
+the import page:
+
+1. **Framework Preset**: Other.
+2. **Root Directory**: `./` (the repository root, not `apps/web`).
+3. **Build and Output Settings**: leave every override off; `vercel.json` sets the install
+   command (`pnpm install --frozen-lockfile`) and the build command
+   (`pnpm run vercel-build`). Output Directory is ignored, because the build writes
+   `.vercel/output` itself.
+4. Add the variables of section 5, then press **Deploy**.
+5. After the first deploy, **Project Settings, Functions**: the region shows Frankfurt
+   (`fra1`). **Project Settings, General, Node.js Version**: 24.x.
+
+## 5. Vercel environment variables
 
 Set these under **Project Settings, Environment Variables**. "Secret" means mark it
 Sensitive. Values for Preview and Production may differ once there is a second Supabase
 project; until then both use the same one.
+
+### Build
+
+| Name | Value | Secret |
+|---|---|---|
+| `ENABLE_EXPERIMENTAL_COREPACK` | `1`, so Vercel installs with the pnpm version in `package.json` (12) | no |
 
 ### Server
 
@@ -100,7 +123,7 @@ project; until then both use the same one.
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | the publishable key (`sb_publishable_…`) |
 | `VITE_MOCK_API` | `false` |
 
-## 5. Later migrations
+## 6. Later migrations
 
 The setup script records the migrations it applied in `drizzle.__drizzle_migrations`, so a
 later `pnpm --filter @app/db db:migrate` with `DATABASE_URL` set to the **direct**
