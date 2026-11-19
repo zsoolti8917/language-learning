@@ -2,6 +2,7 @@
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { type FormEvent, useState } from 'react';
 import { useAuth } from '../../lib/auth';
+import { env } from '../../lib/env';
 import { t } from '../../messages';
 import { Button, Input } from '../../ui';
 import { m } from './messages';
@@ -46,9 +47,11 @@ export function LoginScreen() {
       footer={
         <>
           <TextLink to="/reset">{m.t('login.forgot')}</TextLink>
-          <p className="text-fg-muted">
-            {m.t('login.noAccount')} <TextLink to="/signup">{m.t('login.toSignup')}</TextLink>
-          </p>
+          {env.signupOpen && (
+            <p className="text-fg-muted">
+              {m.t('login.noAccount')} <TextLink to="/signup">{m.t('login.toSignup')}</TextLink>
+            </p>
+          )}
         </>
       }
     >
