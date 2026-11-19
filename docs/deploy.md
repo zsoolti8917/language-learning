@@ -44,17 +44,15 @@ the exact message.
    secret is listed, press **Migrate JWT secret** and rotate to the new key.
 3. **Authentication, Sign In / Providers, Email**: Email on, **Confirm email** on,
    **Email OTP length** 6. **Allow new users to sign up** on while you test.
-4. **Authentication, Emails, Templates**: the app asks for the six digit code, not a link.
-   In **Confirm signup** and **Reset password**, make the body show the code:
-
-   ```html
-   <h2>Your code</h2>
-   <p>Enter this code in the app: <strong>{{ .Token }}</strong></p>
-   <p>It expires in one hour.</p>
-   ```
-
-5. **Authentication, URL Configuration**: Site URL is the Vercel production address once it
-   exists (for example `https://slovak.vercel.app`).
+4. **Authentication, Emails, Templates**: leave them as they are. With Supabase's built in
+   sender the emails carry a link, and the app works with links: the sign up link returns
+   to `/verify` and confirms the account, the reset link returns to `/reset` and asks for
+   the new password. (With custom SMTP the templates could show `{{ .Token }}` instead;
+   the app then still expects the link, so keep the link in the body.)
+5. **Authentication, URL Configuration**: **Site URL** is the Vercel production address
+   once it exists (for example `https://slovak.vercel.app`). Under **Redirect URLs** add
+   `https://<that address>/**`, and `https://*-<team>.vercel.app/**` for previews, or the
+   links fall back to the Site URL.
 6. Supabase's built in mail sender allows only a few emails an hour. It is enough for
    testing; set up custom SMTP (**Authentication, Emails, SMTP Settings**) before others use
    the app.

@@ -39,6 +39,7 @@ export function useAuthStore(): AuthStore {
  */
 export function useAuth(): AuthSnapshot & {
   mode: AuthStore['client']['mode'];
+  confirmsByLink: boolean;
   signIn: AuthStore['signIn'];
   signUp: AuthStore['signUp'];
   verifyCode: AuthStore['verifyCode'];
@@ -52,6 +53,7 @@ export function useAuth(): AuthSnapshot & {
   return {
     ...snap,
     mode: store.client.mode,
+    confirmsByLink: store.client.confirmsByLink === true,
     signIn: store.signIn,
     signUp: store.signUp,
     verifyCode: store.verifyCode,

@@ -73,10 +73,13 @@ export function ResendButton({
   sentAt,
   onResend,
   disabled,
+  link,
 }: {
   sentAt: number;
   onResend: () => Promise<void>;
   disabled?: boolean;
+  /** The email carries a link, not a code. */
+  link?: boolean;
 }) {
   const left = useResendCountdown(sentAt);
   const [sending, setSending] = useState(false);
@@ -95,7 +98,13 @@ export function ResendButton({
         }
       }}
     >
-      {left > 0 ? m.t('verify.resendIn', { seconds: left }) : m.t('verify.resend')}
+      {link
+        ? left > 0
+          ? m.t('verify.linkResendIn', { seconds: left })
+          : m.t('verify.linkResend')
+        : left > 0
+          ? m.t('verify.resendIn', { seconds: left })
+          : m.t('verify.resend')}
     </Button>
   );
 }
