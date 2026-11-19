@@ -21,7 +21,8 @@
     "pipeline": "pnpm --filter @app/pipeline run pipeline",
     "openapi": "pnpm --filter @app/contracts run openapi",
     "seed:demo": "pnpm --filter @app/e2e run seed:demo",
-    "smoke": "node scripts/pending.mjs F8 smoke"
+    "smoke": "node scripts/pending.mjs F8 smoke",
+    "vercel-build": "node scripts/vercel-build.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
@@ -29,6 +30,7 @@
     "typescript": "catalog:",
     "vitest": "catalog:",
     "fast-check": "catalog:",
-    "tsx": "catalog:"
+    "tsx": "catalog:",
+    "esbuild": "catalog:"
   }
 }

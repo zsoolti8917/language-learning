@@ -1,5 +1,7 @@
 // /reset: email → six digit code and a new password. The code signs the learner in
-// (`verifyCode(…, 'recovery')`), then `updatePassword` sets the new one.
+// (`verifyCode(…, 'recovery')`), then `updatePassword` sets the new one. When the email
+// carries a link instead (Supabase's default emails), the link returns here signed in and
+// only the new password is asked for.
 import { useNavigate } from '@tanstack/react-router';
 import { type FormEvent, useState } from 'react';
 import { useAuth } from '../../lib/auth';
@@ -35,6 +37,8 @@ export function ResetScreen() {
   const [touched, setTouched] = useState(false);
   const [sending, setSending] = useState(false);
   const [formError, setFormError] = useState<string>();
+  /** Signed in by the email link: the code step is done. */
+  const linkedIn = auth.confirmsByLink && auth.session !== null;
 
   async function sendCode(e: FormEvent) {
     e.preventDefault();
@@ -58,14 +62,14 @@ export function ResetScreen() {
 
   async function setNewPassword(e: FormEvent) {
     e.preventDefault();
-    if (!pending) return;
+    if (!pending && !linkedIn) return;
     setTouched(true);
     setFormError(undefined);
-    if ((!verified && codeError(code)) || newPasswordError(password)) return;
+    if ((!verified && !linkedIn && codeError(code)) || newPasswordError(password)) return;
     setSending(true);
     try {
-      if (!verified) {
-        await auth.verifyCode(pending.email, code, 'recovery');
+      if (!verified && !linkedIn) {
+        await auth.verifyCode(pending?.email ?? '', code, 'recovery');
         setVerified(true);
       }
       await auth.updatePassword(password);
@@ -94,6 +98,30 @@ export function ResetScreen() {
 
   const footer = <TextLink to="/login">{m.t('reset.toLogin')}</TextLink>;
 
+  if (linkedIn) {
+    return (
+      <AuthScreen title={t('screens.reset')} intro={m.t('reset.introLinked')} footer={footer}>
+        <form noValidate onSubmit={setNewPassword} className="flex flex-col gap-4">
+          <Input
+            label={m.t('fields.newPassword')}
+            type="password"
+            name="new-password"
+            autoComplete="new-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            hint={m.t('fields.passwordHint', { min: MIN_PASSWORD })}
+            error={touched ? newPasswordError(password) : undefined}
+            disabled={sending}
+          />
+          <FormError>{formError}</FormError>
+          <Button type="submit" block size="lg" loading={sending}>
+            {m.t('reset.submit')}
+          </Button>
+        </form>
+      </AuthScreen>
+    );
+  }
+
   if (!pending) {
     const error = touched ? emailError(email) : undefined;
     return (
@@ -116,6 +144,32 @@ export function ResetScreen() {
             {m.t('reset.sendCode')}
           </Button>
         </form>
+      </AuthScreen>
+    );
+  }
+
+  if (auth.confirmsByLink) {
+    return (
+      <AuthScreen
+        title={t('screens.reset')}
+        intro={m.t('reset.linkSent', { email: pending.email })}
+        footer={footer}
+      >
+        <div className="flex flex-col gap-4">
+          <FormError>{formError}</FormError>
+          <ResendButton link sentAt={pending.sentAt} onResend={resend} />
+          <Button
+            variant="ghost"
+            block
+            onClick={() => {
+              writePending(null);
+              setPending(null);
+              setFormError(undefined);
+            }}
+          >
+            {m.t('reset.otherEmail')}
+          </Button>
+        </div>
       </AuthScreen>
     );
   }

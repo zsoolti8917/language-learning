@@ -32,6 +32,11 @@ export class AuthError extends Error {
 /** Login plumbing (docs/architecture.md, "Auth and security"). Two modes: Supabase and dev. */
 export interface AuthClient {
   readonly mode: 'supabase' | 'dev';
+  /**
+   * True when the email carries a link instead of a code (Supabase's default emails). The
+   * link signs the learner in on /verify or /reset; no code is typed.
+   */
+  readonly confirmsByLink?: boolean;
   /** The stored session, refreshed if it expired; null when signed out. */
   getSession(): Promise<Session | null>;
   /** Creates the account; Supabase emails a six digit code. */

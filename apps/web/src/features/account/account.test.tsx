@@ -256,6 +256,60 @@ describe('password reset', () => {
   });
 });
 
+describe('email links instead of codes', () => {
+  /** Supabase's default emails carry a link; the client says so with confirmsByLink. */
+  function linkAuth(overrides: Partial<AuthClient> = {}, signedIn = false): AuthClient {
+    return { ...createDevAuth({ storage: null, signedIn }), confirmsByLink: true, ...overrides };
+  }
+
+  it('asks to open the link after sign up, and resends it', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    const resendCode = vi.fn().mockResolvedValue(undefined);
+    writePending({ email: 'new@b.sk', purpose: 'signup', sentAt: Date.now() - 61_000 });
+    renderRoute('/verify', { auth: linkAuth({ resendCode }) });
+    expect(
+      await screen.findByText(m.t('verify.linkIntro', { email: 'new@b.sk' })),
+    ).toBeInTheDocument();
+    expect(screen.queryByLabelText(m.t('fields.code'))).toBeNull();
+    await userEvent.click(screen.getByRole('button', { name: m.t('verify.linkResend') }));
+    expect(resendCode).toHaveBeenCalledWith('new@b.sk', 'signup');
+  });
+
+  it('goes on once the link signs the learner in', async () => {
+    writePending({ email: 'new@b.sk', purpose: 'signup', sentAt: Date.now() });
+    server.use(mockEndpoint('profile.get', EXAMPLE_PROFILE));
+    const { router } = renderRoute('/verify', { auth: linkAuth({}, true) });
+    await waitFor(() => expect(router.state.location.pathname).toBe('/'));
+    expect(readPending()).toBeNull();
+  });
+
+  it('sends a reset link, then asks only for the new password', async () => {
+    const auth = linkAuth();
+    const requestPasswordReset = vi.spyOn(auth, 'requestPasswordReset');
+    renderRoute('/reset', { auth });
+    await userEvent.type(await screen.findByLabelText(m.t('fields.email')), 'me@b.sk');
+    await userEvent.click(screen.getByRole('button', { name: m.t('reset.sendCode') }));
+    expect(requestPasswordReset).toHaveBeenCalledWith('me@b.sk');
+    expect(
+      await screen.findByText(m.t('reset.linkSent', { email: 'me@b.sk' })),
+    ).toBeInTheDocument();
+    expect(screen.queryByLabelText(m.t('fields.code'))).toBeNull();
+  });
+
+  it('sets the password after the reset link signed the learner in', async () => {
+    const auth = linkAuth({}, true);
+    const verifyCode = vi.spyOn(auth, 'verifyCode');
+    const updatePassword = vi.spyOn(auth, 'updatePassword');
+    const { router } = renderRoute('/reset', { auth });
+    expect(await screen.findByText(m.t('reset.introLinked'))).toBeInTheDocument();
+    await userEvent.type(field(m.t('fields.newPassword')), 'enough-now');
+    await userEvent.click(screen.getByRole('button', { name: m.t('reset.submit') }));
+    await waitFor(() => expect(router.state.location.pathname).toBe('/'));
+    expect(updatePassword).toHaveBeenCalledWith('enough-now');
+    expect(verifyCode).not.toHaveBeenCalled();
+  });
+});
+
 describe('onboarding', () => {
   function capturePatch() {
     const bodies: UpdateProfile[] = [];

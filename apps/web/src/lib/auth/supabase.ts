@@ -1,5 +1,6 @@
-// Supabase mode: email and password with six digit codes (docs/architecture.md,
-// "From login to a database row"). The library is loaded on first use, so it stays out of
+// Supabase mode: email and password. The project's default emails carry a confirmation
+// link, not a code: the link returns to /verify (sign up) or /reset (password) with the
+// session in the URL, which the library reads at start (docs/deploy.md, section 2). The library is loaded on first use, so it stays out of
 // the first load. It keeps the session on the device and refreshes the token itself.
 import type { Session as SbSession, SupabaseClient } from '@supabase/supabase-js';
 import { type AuthClient, AuthError, type AuthErrorCode, type Session } from './types';
@@ -47,6 +48,11 @@ export function mapSupabaseError(e: unknown): AuthError {
   return new AuthError('unknown', message);
 }
 
+/** The address an email link returns to: this site's origin and `path`. */
+function returnTo(path: string): string | undefined {
+  return typeof window === 'undefined' ? undefined : `${window.location.origin}${path}`;
+}
+
 export function createSupabaseAuth(options: SupabaseAuthOptions): AuthClient {
   let clientPromise: Promise<Pick<SupabaseClient, 'auth'>> | null = null;
   const listeners = new Set<(s: Session | null) => void>();
@@ -57,7 +63,12 @@ export function createSupabaseAuth(options: SupabaseAuthOptions): AuthClient {
       ? Promise.resolve(options.client)
       : import('@supabase/supabase-js').then(({ createClient }) =>
           createClient(options.url, options.publishableKey, {
-            auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false },
+            auth: {
+              persistSession: true,
+              autoRefreshToken: true,
+              detectSessionInUrl: true,
+              flowType: 'implicit',
+            },
           }),
         );
     const c = await clientPromise;
@@ -86,10 +97,17 @@ export function createSupabaseAuth(options: SupabaseAuthOptions): AuthClient {
 
   return {
     mode: 'supabase',
+    confirmsByLink: true,
     getSession: () => run(async (c) => toSession(check(await c.auth.getSession()).session)),
     signUp: (email, password) =>
       run(async (c) => {
-        check(await c.auth.signUp({ email, password }));
+        check(
+          await c.auth.signUp({
+            email,
+            password,
+            options: { emailRedirectTo: returnTo('/verify') },
+          }),
+        );
       }),
     verifyCode: (email, code, purpose) =>
       run(async (c) => {
@@ -106,8 +124,16 @@ export function createSupabaseAuth(options: SupabaseAuthOptions): AuthClient {
       }),
     resendCode: (email, purpose) =>
       run(async (c) => {
-        if (purpose === 'recovery') check(await c.auth.resetPasswordForEmail(email));
-        else check(await c.auth.resend({ type: 'signup', email }));
+        if (purpose === 'recovery')
+          check(await c.auth.resetPasswordForEmail(email, { redirectTo: returnTo('/reset') }));
+        else
+          check(
+            await c.auth.resend({
+              type: 'signup',
+              email,
+              options: { emailRedirectTo: returnTo('/verify') },
+            }),
+          );
       }),
     signIn: (email, password) =>
       run(async (c) => {
@@ -117,7 +143,7 @@ export function createSupabaseAuth(options: SupabaseAuthOptions): AuthClient {
       }),
     requestPasswordReset: (email) =>
       run(async (c) => {
-        check(await c.auth.resetPasswordForEmail(email));
+        check(await c.auth.resetPasswordForEmail(email, { redirectTo: returnTo('/reset') }));
       }),
     updatePassword: (password) =>
       run(async (c) => {

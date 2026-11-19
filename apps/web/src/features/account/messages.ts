@@ -37,6 +37,10 @@ export const m = defineMessages({
     toSignup: 'Create an account',
     toLogin: 'Back to sign in',
     devHint: 'Dev mode: the code is {code}.',
+    linkIntro: 'We sent a link to {email}. Open it on this device to confirm your account.',
+    linkResend: 'Send the link again',
+    linkResendIn: 'Send the link again in {seconds} s',
+    linkResent: 'A new link is on its way.',
   },
   reset: {
     introEmail: 'Enter your email and we send you a code to set a new password.',
@@ -46,6 +50,8 @@ export const m = defineMessages({
     done: 'Your password is changed.',
     toLogin: 'Back to sign in',
     otherEmail: 'Use another email',
+    linkSent: 'We sent a link to {email}. Open it on this device to choose a new password.',
+    introLinked: 'Choose a new password.',
   },
   onboarding: {
     intro: 'Three quick questions, then you are ready.',
