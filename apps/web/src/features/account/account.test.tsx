@@ -3,6 +3,7 @@ import { act, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { type AuthClient, AuthError, createDevAuth } from '../../lib/auth';
+import { env } from '../../lib/env';
 import { en } from '../../messages';
 import { mockEndpoint, mockNetworkError, renderRoute, server } from '../../test/utils';
 import { EXAMPLE_PROFILE, FRESH_PROFILE } from '../today/fixtures';
@@ -91,6 +92,22 @@ describe('login', () => {
     expect(
       await screen.findByRole('heading', { name: en.screens.today, level: 1 }),
     ).toBeInTheDocument();
+  });
+});
+
+describe('closed sign up', () => {
+  afterEach(() => {
+    env.signupOpen = true;
+  });
+
+  it('hides the sign up link and sends /signup to the login', async () => {
+    env.signupOpen = false;
+    const { router } = renderRoute('/signup', { auth: 'signedOut' });
+    expect(
+      await screen.findByRole('heading', { name: en.screens.login, level: 1 }),
+    ).toBeInTheDocument();
+    expect(router.state.location.pathname).toBe('/login');
+    expect(screen.queryByRole('link', { name: m.t('login.toSignup') })).toBeNull();
   });
 });
 

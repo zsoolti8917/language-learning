@@ -5,6 +5,7 @@
 import { useNavigate } from '@tanstack/react-router';
 import { type FormEvent, useEffect, useState } from 'react';
 import { DEV_CODE, useAuth } from '../../lib/auth';
+import { env } from '../../lib/env';
 import { t } from '../../messages';
 import { Button, EmptyState, useToast } from '../../ui';
 import { CodeField, ResendButton } from './code';
@@ -41,7 +42,7 @@ export function VerifyScreen() {
           description={m.t('verify.noPendingHint')}
           action={
             <div className="flex flex-col items-center">
-              <TextLink to="/signup">{m.t('verify.toSignup')}</TextLink>
+              {env.signupOpen && <TextLink to="/signup">{m.t('verify.toSignup')}</TextLink>}
               <TextLink to="/login">{m.t('verify.toLogin')}</TextLink>
             </div>
           }

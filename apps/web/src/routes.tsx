@@ -15,6 +15,7 @@ import { BareLayout, ErrorScreen, NotFoundScreen, PendingScreen, TabLayout } fro
 import { isApiError } from './lib/api/errors';
 import { isFirstRun, loadProfile } from './lib/auth/profile';
 import type { AuthStore } from './lib/auth/store';
+import { env } from './lib/env';
 
 export interface RouterContext {
   queryClient: QueryClient;
@@ -189,7 +190,10 @@ const loginRoute = createRoute({
 const signupRoute = createRoute({
   getParentRoute: () => bare,
   path: '/signup',
-  beforeLoad: redirectIfSignedIn,
+  beforeLoad: async (args: GuardArgs) => {
+    if (!env.signupOpen) throw redirect({ to: '/login' });
+    await redirectIfSignedIn(args);
+  },
   component: lazyRouteComponent(() => import('./features/account/SignupScreen'), 'SignupScreen'),
 });
 const verifyRoute = createRoute({

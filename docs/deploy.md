@@ -120,6 +120,7 @@ project; until then both use the same one.
 | `VITE_SUPABASE_URL` | `https://<project-ref>.supabase.co` |
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | the publishable key (`sb_publishable_…`) |
 | `VITE_MOCK_API` | `false` |
+| `VITE_SIGNUP` | `closed` hides sign up in the app (pair it with **Allow new users to sign up** off in Supabase); leave unset to show it |
 
 ## 6. Later migrations
 

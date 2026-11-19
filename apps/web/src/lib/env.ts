@@ -10,6 +10,8 @@ export interface ClientEnv {
   supabasePublishableKey: string;
   /** `true` starts the mock server in the browser. */
   mockApi: boolean;
+  /** `false` (VITE_SIGNUP=closed) hides sign up: the app is private to existing accounts. */
+  signupOpen: boolean;
 }
 
 export function readEnv(raw: Record<string, string | boolean | undefined>): ClientEnv {
@@ -23,6 +25,7 @@ export function readEnv(raw: Record<string, string | boolean | undefined>): Clie
     supabaseUrl: str('VITE_SUPABASE_URL'),
     supabasePublishableKey: str('VITE_SUPABASE_PUBLISHABLE_KEY'),
     mockApi: str('VITE_MOCK_API') === 'true',
+    signupOpen: str('VITE_SIGNUP') !== 'closed',
   };
 }
 
