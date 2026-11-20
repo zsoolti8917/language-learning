@@ -5,8 +5,9 @@
 # meaning, a rare sense, the form of a gloss or a note. Sorted by key.
 #
 # Written in the content fill of 2026-11-20 from a reading of every Wiktionary entry of the
-# 3,000 most frequent lemmas and of the reading texts (docs/content-build.md); no gloss
-# here is verified by a person.
+# 3,000 most frequent lemmas and of the reading texts, from a reading of every written verb
+# entry for the meanings that need `sa` or `si`, and from the review reports
+# (docs/content-build.md); no gloss here is verified by a person.
 - key: "Anna|noun|f|1"
   glosses:
     - gloss: "Anna, Ann"
@@ -140,6 +141,14 @@
     - gloss: "bank"
       note: "financial institution"
   why: "Wrong sense: 'flask' and 'retort' are the technical homonym banka 2 (a glass vessel), not the bank."
+- key: "baviť|verb||1"
+  glosses:
+    - "to entertain, to be fun for"
+    - gloss: "to have fun"
+      note: "with sa"
+    - gloss: "to talk, to chat"
+      note: "with sa"
+  why: "Having fun and talking are baviť sa, while plain baviť is to entertain (baví ma to)."
 - key: "beh|noun|m_inan|1"
   glosses:
     - "running, run"
@@ -198,6 +207,11 @@
   glosses:
     - "close, near"
   why: "The definitional note limited 'close' to space and time and hid the common close friends and family."
+- key: "blížiť|verb||1"
+  glosses:
+    - gloss: "to approach, to draw near"
+      note: "with sa"
+  why: "The verb exists only as blížiť sa (8 of 8 treebank uses)."
 - key: "bojovník|noun|m_anim|1"
   glosses:
     - "warrior"
@@ -217,6 +231,12 @@
   glosses:
     - "brother"
   why: "The note is a definition that repeats the gloss."
+- key: "brať|verb||1"
+  glosses:
+    - "to take"
+    - gloss: "to get married"
+      note: "with sa: berú sa v sobotu"
+  why: "Missing meaning: brať sa (to get married) is the everyday expression and the entry had room."
 - key: "bryndza|noun|f|1"
   glosses:
     - gloss: "bryndza"
@@ -266,6 +286,11 @@
     - "prize, award"
     - "value"
   why: "The note 'meaning of something' is unclear; 'prize, award' is more common than 'value', and 'reward' is not the usual sense."
+- key: "ceniť|verb||1"
+  glosses:
+    - gloss: "to value, to appreciate"
+      note: "often with si"
+  why: "In everyday speech this meaning is mostly ceniť si (cením si to)."
 - key: "cesta|noun|f|1"
   glosses:
     - "way, road"
@@ -320,6 +345,12 @@
   glosses:
     - "sick, ill"
   why: "'sickly' means chorľavý (often ill), not chorý; 'sick' was missing."
+- key: "chovať|verb||1"
+  glosses:
+    - "to breed, to raise"
+    - gloss: "to behave"
+      note: "with sa"
+  why: "'To behave' is chovať sa."
 - key: "chrbát|noun|m_inan|1"
   glosses:
     - gloss: "back"
@@ -334,6 +365,12 @@
     - "taste"
     - "appetite, desire"
   why: "Missing meaning: the second main sense is appetite or desire (chuť do jedla, nemám chuť variť), which 'craving' covers only in part."
+- key: "chváliť|verb||1"
+  glosses:
+    - "to praise"
+    - gloss: "to boast"
+      note: "with sa: chváli sa novým autom"
+  why: "To boast is chváliť sa (niečím); to praise is plain."
 - key: "chvíľa|noun|f|1"
   glosses:
     - "moment, while"
@@ -343,12 +380,26 @@
     - "mistake, error"
     - "fault"
   why: "'mistake, error' is the main meaning, not 'fault', and the computing gloss repeated 'error'."
+- key: "chystať|verb||1"
+  glosses:
+    - gloss: "to be about to"
+      note: "with sa"
+    - gloss: "to prepare, to get ready"
+      note: "with sa when it has no object"
+  why: "To be about to is chystať sa, the use in all the app's sentences, and one gets ready with sa but prepares a meal without it."
 - key: "cudzí|adj||1"
   glosses:
     - "foreign"
     - "someone else's, other people's"
     - "strange, unfamiliar"
   why: "'foreign' (cudzí jazyk) is the main meaning and 'someone else's' (KSSJ meaning 1) was missing."
+- key: "cítiť|verb||1"
+  glosses:
+    - "to feel"
+    - gloss: "to feel a certain way"
+      note: "with sa: cítim sa dobre"
+    - "to smell"
+  why: "Feeling well or safe is cítiť sa (cítim sa dobre), while feeling pain or tension is plain cítiť."
 - key: "dariť|verb||1"
   glosses:
     - gloss: "to do well, to thrive"
@@ -399,6 +450,11 @@
     - "children's, child's"
     - "childish"
   why: "Order and missing meaning: the main sense 'children's' (detská izba, detský lekár) was absent; 'childish' is only KSSJ's second sense."
+- key: "diať|verb||1"
+  glosses:
+    - gloss: "to happen, to go on"
+      note: "with sa"
+  why: "The verb exists only as diať sa (čo sa deje)."
 - key: "diel|noun|m_inan|1"
   glosses:
     - "part"
@@ -443,6 +499,12 @@
   glosses:
     - "agreed, arranged"
   why: "Wrong sense: admitted is not a meaning of dohodnutý; the app's sentences use agreed and arranged."
+- key: "dohodnúť|verb||1"
+  glosses:
+    - gloss: "to reach an agreement"
+      note: "with sa"
+    - "to arrange"
+  why: "To reach an agreement is dohodnúť sa (dohodli sme sa); plain dohodnúť is to arrange or agree on something."
 - key: "doklad|noun|m_inan|1"
   glosses:
     - "document"
@@ -470,18 +532,78 @@
     - "home, household"
     - "homemade"
   why: "The common meanings 'home' (domáca úloha, domáci zápas) and 'homemade' (domáce jedlo) were missing."
+- key: "dopriať|verb||1"
+  glosses:
+    - gloss: "to treat oneself to"
+      note: "with si"
+    - "to grant, to allow"
+  why: "To treat oneself is dopriať si; granting something to someone is plain."
+- key: "dopustiť|verb||1"
+  glosses:
+    - gloss: "to commit"
+      note: "with sa: dopustiť sa chyby"
+    - "to allow, to let happen"
+  why: "To commit an error or a crime is dopustiť sa with the genitive; to allow is plain."
 - key: "dostať|verb||1"
   glosses:
     - "to get, to receive"
     - gloss: "to get to, to reach"
       note: "with sa"
   why: "Form and missing meaning: the second gloss repeated 'to get', and the common dostať sa (to get to, to reach) was cut."
+- key: "dostávať|verb||1"
+  glosses:
+    - "to get, to receive"
+    - gloss: "to get to, to reach"
+      note: "with sa"
+  why: "Five of six treebank uses are dostávať sa 'to get to, to reach', a meaning the entry lacked."
+- key: "dotknúť|verb||1"
+  glosses:
+    - gloss: "to touch"
+      note: "with sa"
+    - gloss: "to affect, to concern"
+      note: "with sa"
+    - gloss: "to offend, to hurt"
+      note: "with sa"
+  why: "All three meanings are dotknúť sa (10 of 10 treebank uses, every app sentence)."
+- key: "dotýkať|verb||1"
+  glosses:
+    - gloss: "to touch"
+      note: "with sa: nedotýkaj sa toho"
+    - gloss: "to concern"
+      note: "with sa"
+  why: "The verb exists only as dotýkať sa (KSSJ headword), in both meanings."
 - key: "dovolenka|noun|f|1"
   glosses:
     - "vacation, holiday"
     - gloss: "leave"
       note: "time off work"
   why: "'furlough' limited the word to the army; the everyday second sense is leave from work."
+- key: "dovoliť|verb||1"
+  glosses:
+    - "to allow, to permit"
+    - gloss: "to afford"
+      note: "with si"
+    - gloss: "to dare, to take the liberty"
+      note: "with si"
+  why: "'To afford' is dovoliť si, and the other common dovoliť si sense in KSSJ, 'to dare, to take the liberty', was missing."
+- key: "dovoľovať|verb||1"
+  glosses:
+    - "to allow, to permit"
+    - gloss: "to dare"
+      note: "with si"
+  why: "To dare is dovoľovať si (čo si to dovoľuješ)."
+- key: "dozvedieť|verb||1"
+  glosses:
+    - gloss: "to find out, to learn"
+      note: "with sa"
+  why: "The verb exists only as dozvedieť sa (21 of 21 treebank uses)."
+- key: "dočkať|verb||1"
+  glosses:
+    - gloss: "to finally get"
+      note: "with sa: nemôžem sa dočkať leta"
+    - gloss: "to live to see"
+      note: "with sa"
+  why: "Both meanings are dočkať sa; the example shows the nemôcť sa dočkať (can't wait) of all three app sentences."
 - key: "drahý|adj||1"
   glosses:
     - "expensive"
@@ -528,6 +650,11 @@
     - gloss: "to show"
       note: "on TV, at the movies"
   why: "Missing meaning: 'to put' (dávam topánky do skrine) and KSSJ's 'to show' (čo dávajú v kine) were absent."
+- key: "dívať|verb||1"
+  glosses:
+    - gloss: "to look, to watch"
+      note: "with sa"
+  why: "The verb exists only as dívať sa (13 of 13 treebank uses)."
 - key: "dôjsť|verb||1"
   glosses:
     - "to arrive, to reach"
@@ -575,6 +702,13 @@
   glosses:
     - "soccer, football"
   why: "The gloss and note were scrambled regional labels ('football; soccer', 'UK; US, Australia, Ireland')."
+- key: "hanbiť|verb||1"
+  glosses:
+    - gloss: "to be ashamed"
+      note: "with sa"
+    - gloss: "to be shy"
+      note: "with sa"
+  why: "The verb exists only as hanbiť sa."
 - key: "hej|part||1"
   glosses:
     - gloss: "yeah, yep"
@@ -603,10 +737,22 @@
   glosses:
     - "noise"
   why: "The note 'usually unwanted mixture of sounds' is a definition that repeats the gloss."
+- key: "hlásiť|verb||1"
+  glosses:
+    - "to report, to announce"
+    - gloss: "to sign up, to apply"
+      note: "with sa"
+  why: "To sign up or apply is hlásiť sa (na vysokú školu)."
 - key: "hmotnosť|noun|f|1"
   glosses:
     - "mass, weight"
   why: "'materiality' is a rare philosophical sense; the everyday meaning is weight, and 'physics' was a needless field label."
+- key: "hnevať|verb||1"
+  glosses:
+    - gloss: "to be angry"
+      note: "with sa"
+    - "to make angry"
+  why: "To be angry is hnevať sa (8 of 8 treebank uses); plain hnevať is to make angry."
 - key: "hnutie|noun|n|1"
   glosses:
     - gloss: "movement"
@@ -620,6 +766,12 @@
     - gloss: "o'clock"
       note: "telling the time"
   why: "The common meanings 'lesson, class' (hodina angličtiny) and 'o'clock' (je päť hodín) were missing."
+- key: "hodiť|verb||1"
+  glosses:
+    - "to throw"
+    - gloss: "to be suitable, to fit"
+      note: "with sa: sobota sa mi hodí"
+  why: "To suit is hodiť sa with the person in the dative; the plain to throw is the more frequent meaning (14 of 19 treebank uses, 5 of 8 app sentences) and goes first."
 - key: "hospodársky|adj||1"
   glosses:
     - "economic, business"
@@ -654,6 +806,12 @@
     - gloss: "gross"
       note: "of pay or income"
   why: "'wide' is not a meaning, the first note was over 80 characters, two glosses repeated 'rough', and 'rude' and 'gross' (hrubá mzda, hrubý domáci produkt) were missing."
+- key: "hrávať|verb||1"
+  glosses:
+    - "to play regularly"
+    - gloss: "to play as children do"
+      note: "with sa: deti sa hrávali vonku"
+  why: "Children's play is hrávať sa, a separate verb in KSSJ, which the entry lacks."
 - key: "hráč|noun|m_anim|1"
   glosses:
     - "player"
@@ -662,6 +820,11 @@
   glosses:
     - "thick, dense"
   why: "'thick' (soup, dough, hair, fog), KSSJ's first sense and the one in the library text, was missing."
+- key: "hýbať|verb||1"
+  glosses:
+    - gloss: "to move"
+      note: "with sa when it has no object"
+  why: "Plain hýbať takes an object (hýbať rukou); to move by oneself is hýbať sa (nehýb sa)."
 - key: "ihrisko|noun|n|1"
   glosses:
     - "playground"
@@ -697,6 +860,12 @@
     - gloss: "kernel"
       note: "of a nut"
   why: "Order and technical senses: the computing kernel came first; the everyday senses are core, nucleus and the kernel of a nut or fruit."
+- key: "javiť|verb||1"
+  glosses:
+    - gloss: "to seem, to appear"
+      note: "with sa"
+    - "to show"
+  why: "To seem is javiť sa; plain javiť is to show (javiť záujem)."
 - key: "jazda|noun|f|1"
   glosses:
     - "ride"
@@ -719,6 +888,14 @@
     - "food"
     - "meal, dish"
   why: "Missing meaning: 'meal, dish' (po jedle, zoznam jedál) is common and was absent."
+- key: "jednať|verb||1"
+  glosses:
+    - gloss: "to be about, to concern"
+      note: "with sa: o čo sa jedná?"
+    - "to negotiate"
+    - gloss: "to haggle, to bargain"
+      note: "with sa: jednať sa o cenu"
+  why: "'To be about' is the impersonal, colloquial jedná sa o; haggling is jednať sa o cenu (two of the three app sentences) and replaces the rarer 'to act', which no app sentence uses; negotiating is plain."
 - key: "júl|noun|m_inan|1"
   glosses:
     - "July"
@@ -785,6 +962,12 @@
     - gloss: "road"
       note: "official term, as in traffic news"
   why: "The English grammar label 'uncountable' explains nothing, and the official word for a road (miestne komunikácie) was missing."
+- key: "konať|verb||1"
+  glosses:
+    - gloss: "to take place, to be held"
+      note: "with sa"
+    - "to act"
+  why: "To take place is konať sa, while plain konať means to act."
 - key: "koniec|noun|m_inan|1"
   glosses:
     - "end"
@@ -815,6 +998,12 @@
     - "country"
     - "landscape"
   why: "The main meaning 'country' was missing, and 'county, region' is not a meaning of krajina."
+- key: "kreslo|noun|n|1"
+  glosses:
+    - "armchair"
+    - gloss: "seat"
+      note: "in parliament or government"
+  why: "Note: the note of 'seat' was a whole definition, too long for a card."
 - key: "kričať|verb||1"
   glosses:
     - "to shout, to scream, to yell"
@@ -864,6 +1053,11 @@
   glosses:
     - "code"
   why: "The field label 'computing' explains nothing and wrongly narrows an everyday word."
+- key: "kôň|noun|m_inan|1"
+  glosses:
+    - gloss: "horse"
+      note: "the plural of kôň; animal nouns decline like inanimate nouns in the plural"
+  why: "The morphology files the plural of an animal noun as a second entry of the inanimate gender; the note says what that label means."
 - key: "kým|conj||1"
   glosses:
     - "while"
@@ -893,6 +1087,17 @@
   glosses:
     - "only, just"
   why: "Form and notes: three glosses repeated 'only, just', each with a long definitional note."
+- key: "lepšiť|verb||1"
+  glosses:
+    - gloss: "to get better, to improve"
+      note: "with sa"
+  why: "The verb is used as lepšiť sa (počasie sa lepší); its form list seems to hold forms of the adjective lepší."
+- key: "liečiť|verb||1"
+  glosses:
+    - "to treat, to heal"
+    - gloss: "to undergo treatment"
+      note: "with sa"
+  why: "Added liečiť sa (lieči sa v nemocnici), a common meaning the entry lacked."
 - key: "liter|noun|m_inan|1"
   glosses:
     - "liter"
@@ -916,6 +1121,11 @@
     - "note, slip of paper"
     - "small leaf"
   why: "'ticket' is the everyday meaning and its note wrongly limited it to entertainment; the common 'note, slip' was missing."
+- key: "líšiť|verb||1"
+  glosses:
+    - gloss: "to differ"
+      note: "with sa"
+  why: "'To differ' is líšiť sa."
 - key: "majster|noun|m_anim|1"
   glosses:
     - "champion"
@@ -927,6 +1137,11 @@
   glosses:
     - "mom, mother"
   why: "Missing main meaning: Slovak mama is the neutral everyday word for mother, while English 'mama' is childish."
+- key: "manžel|noun|m_anim|1"
+  glosses:
+    - gloss: "husband"
+      note: "the plural manželia also means a married couple"
+  why: "Note: manželia is the usual word for a married couple, which 'husbands' hides in the app's sentences."
 - key: "mapa|noun|f|1"
   glosses:
     - "map"
@@ -935,6 +1150,12 @@
   glosses:
     - "March"
   why: "The note was a definition that repeats the gloss."
+- key: "maľovať|verb||1"
+  glosses:
+    - "to paint"
+    - gloss: "to put on makeup"
+      note: "with sa"
+  why: "To put on makeup is maľovať sa."
 - key: "mať|verb||1"
   glosses:
     - "to have"
@@ -971,6 +1192,12 @@
     - "seat"
     - "job, position"
   why: "Order, form and missing meaning: 'place' is the main meaning, 'location' only repeated it, and 'seat' and 'job' were absent."
+- key: "miešať|verb||1"
+  glosses:
+    - "to mix, to stir"
+    - gloss: "to interfere"
+      note: "with sa: nemiešaj sa do toho"
+  why: "To interfere is miešať sa (do niečoho); to mix is plain."
 - key: "milovať|verb||1"
   glosses:
     - "to love"
@@ -996,11 +1223,23 @@
     - gloss: "apart from, besides"
       note: "nonstandard, for okrem"
   why: "The glosses were definitions ('Denotes location...') instead of equivalents."
+- key: "minúť|verb||1"
+  glosses:
+    - "to spend"
+    - "to miss"
+    - gloss: "to run out"
+      note: "with sa: minuli sa nám peniaze"
+  why: "To run out is minúť sa, with the person in the dative."
 - key: "moc|noun|f|1"
   glosses:
     - "power"
     - "authority, rule"
   why: "'power' must lead instead of 'effect, force, potency', the political sense was cut, and the notes were long definitions."
+- key: "modliť|verb||1"
+  glosses:
+    - gloss: "to pray"
+      note: "with sa"
+  why: "The verb is modliť sa."
 - key: "more|noun|n|1"
   glosses:
     - "sea"
@@ -1051,6 +1290,29 @@
     - "wise"
     - "smart, clever"
   why: "The common sense 'smart, clever' (múdre dieťa) was missing while the entry had room."
+- key: "mýliť|verb||1"
+  glosses:
+    - gloss: "to be wrong, to be mistaken"
+      note: "with sa"
+    - "to confuse, to mislead"
+  why: "To be wrong is mýliť sa, while plain mýliť means to confuse."
+- key: "nachádzať|verb||1"
+  glosses:
+    - gloss: "to be located"
+      note: "with sa"
+    - "to find"
+  why: "To be located is nachádzať sa (kde sa nachádza hotel); to find is plain."
+- key: "najať|verb||1"
+  glosses:
+    - "to hire"
+    - gloss: "to rent"
+      note: "often with si"
+  why: "Renting for oneself is usually najať si (KSSJ gives najímať, najímať si and glosses prenajať si as najať si)."
+- key: "najesť|verb||1"
+  glosses:
+    - gloss: "to eat, to eat one's fill"
+      note: "with sa"
+  why: "The verb exists only as najesť sa."
 - key: "najmenej|part||1"
   glosses:
     - "at least"
@@ -1067,6 +1329,19 @@
     - gloss: "as, since, because"
       note: "nonstandard"
   why: "Order and wrong note: KSSJ's standard sense is as far as (nakoľko viem), as in all the app's sentences, while it marks the causal sense incorrect, not colloquial."
+- key: "napadnúť|verb||1"
+  glosses:
+    - "to come to mind"
+    - "to attack"
+    - gloss: "to fall, to settle"
+      note: "of snow: napadol sneh"
+  why: "Missing meaning: the app's sentences show napadnúť of snow, which neither gloss covers."
+- key: "naplniť|verb||1"
+  glosses:
+    - gloss: "to fill, to fill up"
+      note: "with sa when it has no object"
+    - "to fulfill"
+  why: "Filling up without an object is naplniť sa (námestie sa naplní ľuďmi)."
 - key: "napokon|adv||1"
   glosses:
     - "finally, at last, eventually"
@@ -1080,6 +1355,23 @@
   glosses:
     - "to write"
   why: "Form: both glosses repeated 'to write'; the grammar-label notes were dropped."
+- key: "napĺňať|verb||1"
+  glosses:
+    - gloss: "to fill"
+      note: "with sa when it has no object"
+    - "to fulfill"
+  why: "Without an object Slovak needs napĺňať sa (sála sa napĺňa)."
+- key: "narodiť|verb||1"
+  glosses:
+    - gloss: "to be born"
+      note: "with sa"
+  why: "The verb exists only as narodiť sa (21 of 21 treebank uses)."
+- key: "nasadiť|verb||1"
+  glosses:
+    - gloss: "to put on"
+      note: "often with si"
+    - "to deploy"
+  why: "Putting on glasses or a hat is usually nasadiť si, as in the app's sentence."
 - key: "nasledujúci|adj||1"
   glosses:
     - "following, next, subsequent"
@@ -1095,6 +1387,25 @@
     - "to line up, to assemble"
     - "to start, to take office, to enter"
   why: "Notes: without their grammar labels the senses would show long definitions as notes."
+- key: "natiahnuť|verb||1"
+  glosses:
+    - gloss: "to stretch out"
+      note: "with sa when it has no object"
+    - gloss: "to pull on"
+      note: "often with si"
+  why: "Stretching out without an object is natiahnuť sa (na gauč); pulling on clothes is usually natiahnuť si."
+- key: "naučiť|verb||1"
+  glosses:
+    - gloss: "to learn"
+      note: "with sa"
+    - "to teach"
+  why: "To learn is naučiť sa; plain naučiť is to teach."
+- key: "nazývať|verb||1"
+  glosses:
+    - "to call, to name"
+    - gloss: "to be called"
+      note: "with sa"
+  why: "To be called is nazývať sa."
 - key: "na|prep||1"
   glosses:
     - gloss: "on, at"
@@ -1102,6 +1413,17 @@
     - gloss: "onto, to, for"
       note: "with accusative"
   why: "Missing meaning: all three glosses were locative, two of them rare or repeating 'at', while the common accusative meanings were cut."
+- key: "nebaviť|verb||1"
+  glosses:
+    - "to not be fun for"
+    - gloss: "to not talk"
+      note: "with sa"
+  why: "To not talk is nebaviť sa (už sa spolu nebavia)."
+- key: "nebáť|verb||1"
+  glosses:
+    - gloss: "to not be afraid"
+      note: "with sa"
+  why: "The verb is nebáť sa (nebojte sa)."
 - key: "nechať|verb||1"
   glosses:
     - "to leave"
@@ -1109,19 +1431,210 @@
     - gloss: "to keep"
       note: "with si"
   why: "'to leave' is the most common meaning, nechať si 'to keep' was missing, and the 'transitive' notes and the rare 'to put off' are dropped."
+- key: "nechcieť|verb||1"
+  glosses:
+    - "to not want"
+    - gloss: "to not feel like"
+      note: "with sa: nechce sa mi ísť von"
+  why: "The common impersonal nechce sa mi (I don't feel like) was missing; two of the app's sentences use it."
+- key: "necítiť|verb||1"
+  glosses:
+    - "to not feel"
+    - gloss: "to not feel a certain way"
+      note: "with sa: necítim sa dobre"
+    - "to not smell"
+  why: "Not feeling some way is necítiť sa (necítim sa dobre, zle, vinný), so the gloss names the state in general as cítiť does, not only feeling well, which misleads with necítim sa zle."
+- key: "nedariť|verb||1"
+  glosses:
+    - gloss: "to not go well"
+      note: "with sa: v práci sa mi nedarí"
+    - gloss: "to not succeed"
+      note: "with sa: nedarí sa mi zaspať"
+  why: "The verb exists only as nedariť sa, with the person in the dative."
+- key: "nedať|verb||1"
+  glosses:
+    - gloss: "to not be possible"
+      note: "with sa: to sa nedá"
+    - "to not give"
+    - "to not let"
+  why: "'Not possible' is the impersonal nedá sa; not giving and not letting are plain."
+- key: "nediať|verb||1"
+  glosses:
+    - gloss: "to not happen"
+      note: "with sa: nič sa nedeje"
+  why: "Diať exists only as diať sa."
 - key: "nedostatok|noun|m_inan|1"
   glosses:
     - "lack, deficiency, shortage"
     - "shortcoming, defect"
   why: "'scarcity' stood first but only repeated 'lack, shortage', and 'deficiency' stood twice."
+- key: "nedostať|verb||1"
+  glosses:
+    - "to not get, to not receive"
+    - gloss: "to not get to"
+      note: "with sa"
+  why: "Nedostať sa, to not get somewhere (do budovy sa nedostanete), is common in the app's sentences and missing."
+- key: "nedozvedieť|verb||1"
+  glosses:
+    - gloss: "to not find out"
+      note: "with sa"
+  why: "The verb exists only as nedozvedieť sa."
+- key: "nehrať|verb||1"
+  glosses:
+    - "to not play"
+    - gloss: "to not play as children do"
+      note: "with sa: deti sa vonku nehrajú"
+  why: "Children playing is hrať sa, unlike playing a sport or an instrument, so it gets its own gloss; 'to play around' says something else in English."
+- key: "nehýbať|verb||1"
+  glosses:
+    - gloss: "to not move"
+      note: "with sa when it has no object"
+  why: "Not moving oneself is nehýbať sa (nehýb sa!), while with an object it is plain (nehýbe rukou)."
 - key: "nemecký|adj||1"
   glosses:
     - "German"
   why: "The note was a definition that repeats the gloss."
+- key: "nemeniť|verb||1"
+  glosses:
+    - gloss: "to not change"
+      note: "with sa when it has no object"
+  why: "Something not changing is nemeniť sa (nič sa nemení), while not changing something is plain."
+- key: "nemyslieť|verb||1"
+  glosses:
+    - gloss: "to not think"
+      note: "often with si"
+    - "to not think about"
+    - "to not mean"
+  why: "Not thinking that something is so is mostly nemyslieť si (nemyslím si, že), as in most of the app's sentences, while nemyslieť na is plain."
+- key: "nepamätať|verb||1"
+  glosses:
+    - gloss: "to not remember"
+      note: "often with si"
+  why: "Everyday speech says nepamätám si, as in all the app's sentences, though KSSJ also allows the plain verb and pamätať sa na."
+- key: "nepodariť|verb||1"
+  glosses:
+    - gloss: "to not succeed, to fail"
+      note: "with sa: nepodarilo sa mi to"
+    - gloss: "to not turn out well"
+      note: "with sa"
+  why: "Podariť exists only as podariť sa, with the person in the dative (nepodarilo sa mi to)."
+- key: "nepozerať|verb||1"
+  glosses:
+    - gloss: "to not look"
+      note: "often with sa"
+    - "to not watch"
+  why: "To look is pozerať or more often pozerať sa (KSSJ lists both), but to watch is plain (nepozerám televíziu), so the gloss is split."
 - key: "nepriateľ|noun|m_anim|1"
   glosses:
     - "enemy"
   why: "Both notes were definitions, one over 80 characters, and 'military adversary' is the same meaning."
+- key: "neprísť|verb||1"
+  glosses:
+    - "to not come, to not arrive"
+    - gloss: "to not figure out"
+      note: "with na: na nič neprišiel"
+  why: "Missing meaning: neprísť na (to not figure out) stands in the app's sentences."
+- key: "nepáčiť|verb||1"
+  glosses:
+    - gloss: "to not like, to not please"
+      note: "with sa: nepáči sa mi to"
+  why: "The verb exists only as nepáčiť sa, with the person in the dative."
+- key: "nepýtať|verb||1"
+  glosses:
+    - gloss: "to not ask"
+      note: "with sa"
+    - "to not ask for"
+  why: "Split: not asking a question is nepýtať sa; plain nepýtať is to not ask for something."
+- key: "nerozumieť|verb||1"
+  glosses:
+    - "to not understand"
+    - gloss: "to not get along"
+      note: "with si"
+  why: "Added nerozumieť si (to not get along with someone), a common meaning the entry lacked."
+- key: "neskončiť|verb||1"
+  glosses:
+    - gloss: "to not end"
+      note: "often with sa"
+    - "to not finish"
+  why: "Split: an event that does not end is usually neskončiť sa (vojna sa neskončila); not finishing something is plain."
+- key: "nesnažiť|verb||1"
+  glosses:
+    - gloss: "to not try"
+      note: "with sa"
+  why: "The verb exists only as nesnažiť sa."
+- key: "nespomínať|verb||1"
+  glosses:
+    - gloss: "to not remember"
+      note: "often with si"
+    - "to not mention"
+  why: "To remember is mostly spomínať si (KSSJ: spomínať (si) na); to mention is plain."
+- key: "nestarať|verb||1"
+  glosses:
+    - gloss: "to not look after"
+      note: "with sa"
+    - gloss: "to not care"
+      note: "with sa"
+  why: "The verb exists only as nestarať sa (o)."
+- key: "nestať|verb||1"
+  glosses:
+    - gloss: "to not happen"
+      note: "with sa"
+    - gloss: "to not become"
+      note: "with sa"
+  why: "Both meanings exist only as nestať sa (nestalo sa to, nestal sa lekárom)."
+- key: "nestratiť|verb||1"
+  glosses:
+    - "to not lose"
+    - gloss: "to not get lost"
+      note: "with sa"
+  why: "Added nestratiť sa (to not get lost), the negated stratiť sa."
+- key: "nestretnúť|verb||1"
+  glosses:
+    - gloss: "to not meet"
+      note: "with sa when it has no object"
+  why: "Without an object, not meeting someone is nestretnúť sa (nestretli sme sa), while nestretol som ho is plain."
+- key: "netýkať|verb||1"
+  glosses:
+    - gloss: "to not concern"
+      note: "with sa: to sa ťa netýka"
+  why: "The verb exists only as týkať sa."
+- key: "neuvedomovať|verb||1"
+  glosses:
+    - gloss: "to not realize"
+      note: "with si"
+  why: "The verb exists only as neuvedomovať si."
+- key: "nevrátiť|verb||1"
+  glosses:
+    - gloss: "to not come back"
+      note: "with sa"
+    - "to not give back"
+  why: "To come back is vrátiť sa; to give back is plain."
+- key: "nevzdať|verb||1"
+  glosses:
+    - gloss: "to not give up"
+      note: "often with sa"
+  why: "To give up is mostly vzdať sa (nikdy sa nevzdám), though colloquial nevzdať to is plain."
+- key: "nevšimnúť|verb||1"
+  glosses:
+    - gloss: "to not notice"
+      note: "with si"
+  why: "The verb exists only as nevšimnúť si."
+- key: "nezaujímať|verb||1"
+  glosses:
+    - "to not interest"
+    - gloss: "to not be interested in"
+      note: "with sa"
+  why: "To not be interested in is nezaujímať sa o (Ženy sa o neho nezaujímajú); to not interest is plain."
+- key: "nezdať|verb||1"
+  glosses:
+    - gloss: "to not seem"
+      note: "with sa: nezdá sa mi to"
+  why: "The verb exists only as zdať sa."
+- key: "nezmeniť|verb||1"
+  glosses:
+    - gloss: "to not change"
+      note: "with sa when it has no object"
+  why: "Not changing oneself takes sa (nič sa nezmenilo); with an object the verb is plain."
 - key: "nie|part||1"
   glosses:
     - "not"
@@ -1154,6 +1667,12 @@
       note: "as in night bus, night shift"
     - "nocturnal"
   why: "The everyday use is 'night' (night bus, night shift); bookish 'nocturnal' stood alone."
+- key: "nudiť|verb||1"
+  glosses:
+    - gloss: "to be bored"
+      note: "with sa"
+    - "to bore"
+  why: "To be bored is nudiť sa, the more common use, so it now stands first."
 - key: "nula|noun|f|1"
   glosses:
     - "zero"
@@ -1193,6 +1712,31 @@
     - gloss: "term"
       note: "of office"
   why: "Missing meanings: 'season' (ročné obdobie) and 'term' (volebné obdobie) are common renderings and were absent."
+- key: "obec|noun|f|1"
+  glosses:
+    - "municipality, village"
+    - gloss: "community"
+      note: "of people with a shared faith or interest: cirkevná obec"
+  why: "Missing meaning: an obec is in everyday speech a village, and the word also names a community of people; 'municipality' alone is the administrative term."
+- key: "objaviť|verb||1"
+  glosses:
+    - gloss: "to appear"
+      note: "with sa"
+    - "to discover"
+  why: "To appear is objaviť sa, the more frequent use (22 of 30 treebank uses), so it goes first."
+- key: "objavovať|verb||1"
+  glosses:
+    - gloss: "to appear, to turn up"
+      note: "with sa"
+    - "to discover, to explore"
+  why: "To appear is objavovať sa (8 of 8 treebank uses); to discover is the plain verb."
+- key: "objednať|verb||1"
+  glosses:
+    - gloss: "to order"
+      note: "often with si"
+    - gloss: "to book an appointment"
+      note: "with sa"
+  why: "Ordering for oneself is usually objednať si (both app sentences), and booking an appointment is objednať sa."
 - key: "obliecť|verb||1"
   glosses:
     - gloss: "to put on"
@@ -1202,17 +1746,37 @@
     - gloss: "to dress"
       note: "someone else"
   why: "The very common obliecť sa (to get dressed) and dressing someone else were missing."
+- key: "obliekať|verb||1"
+  glosses:
+    - gloss: "to dress, to get dressed"
+      note: "with sa when it has no object"
+    - gloss: "to put on"
+      note: "often with si"
+  why: "Getting dressed is obliekať sa and putting on clothes is mostly obliekať si; dressing someone is plain."
 - key: "obnoviť|verb||1"
   glosses:
     - "to restore, to renovate"
     - "to regenerate, to revitalize"
     - "to resume, to re-establish"
   why: "Notes: without their grammar labels the senses would show long definitions as notes."
+- key: "oboznámiť|verb||1"
+  glosses:
+    - "to familiarize, to acquaint"
+    - gloss: "to become familiar with"
+      note: "with sa"
+  why: "KSSJ lists oboznámiť sa 'to get acquainted with', which the entry lacked."
 - key: "obraz|noun|m_inan|1"
   glosses:
     - "painting, picture"
     - "image"
   why: "Technical sense and order: the mathematical 'image' is dropped, and 'painting, picture' (every app use) now comes before 'image'."
+- key: "obrátiť|verb||1"
+  glosses:
+    - gloss: "to turn, to turn over"
+      note: "with sa when it has no object"
+    - gloss: "to turn to, to contact"
+      note: "with sa: obráťte sa na nás"
+  why: "Plain obrátiť is only transitive; turning oneself and turning to someone is obrátiť sa (16 of 19 treebank uses)."
 - key: "obsadiť|verb||1"
   glosses:
     - "to occupy"
@@ -1221,16 +1785,47 @@
     - gloss: "to cast"
       note: "in a role"
   why: "The second gloss repeated 'to occupy' and lacked 'to', and the third used 'sb'."
+- key: "obávať|verb||1"
+  glosses:
+    - gloss: "to fear, to be afraid"
+      note: "with sa"
+  why: "The verb exists only as obávať sa."
 - key: "občiansky|adj||1"
   glosses:
     - "civic, civil"
   why: "The common equivalent 'civil' (občianska vojna, občianske práva) was missing."
+- key: "ocitnúť|verb||1"
+  glosses:
+    - gloss: "to find oneself, to end up"
+      note: "with sa"
+  why: "The verb exists only as ocitnúť sa (14 of 14 treebank uses)."
+- key: "oddeliť|verb||1"
+  glosses:
+    - gloss: "to separate"
+      note: "with sa when it has no object"
+  why: "Separating oneself takes sa (oddeliť sa od skupiny); the plain verb needs an object."
+- key: "oddýchnuť|verb||1"
+  glosses:
+    - gloss: "to get some rest"
+      note: "with si"
+  why: "The verb is used only as oddýchnuť si."
 - key: "odmena|noun|f|1"
   glosses:
     - "reward, award, recompense"
     - gloss: "bonuses, premiums"
       note: "usually in the plural"
   why: "The notes were an 80-character definition and the field label 'economics'."
+- key: "odohrať|verb||1"
+  glosses:
+    - "to play"
+    - gloss: "to take place"
+      note: "with sa"
+  why: "'To take place' is odohrať sa; playing a match is plain."
+- key: "odohrávať|verb||1"
+  glosses:
+    - gloss: "to take place"
+      note: "with sa"
+  why: "'To take place' is odohrávať sa (4 of 4 treebank uses)."
 - key: "odpor|noun|m_inan|1"
   glosses:
     - "resistance"
@@ -1240,6 +1835,30 @@
   glosses:
     - "to rest"
   why: "'to be resting on' and 'to be dormant' are rare literary senses."
+- key: "odrážať|verb||1"
+  glosses:
+    - gloss: "to reflect"
+      note: "with sa when it has no object"
+    - "to fend off"
+    - gloss: "to bounce off"
+      note: "with sa"
+  why: "Bouncing off and being reflected on their own take sa (KSSJ odraziť sa)."
+- key: "odviezť|verb||1"
+  glosses:
+    - gloss: "to take, to drive"
+      note: "someone or something somewhere by vehicle"
+    - gloss: "to take away"
+      note: "by vehicle: odviezli smeti"
+    - gloss: "to get a ride, to ride"
+      note: "with sa: odviezť sa vlakom"
+  why: "Form: 'to drive, to take away' mixed taking somebody somewhere by vehicle with carting something off; the common odviezť sa (to get a ride) was missing."
+- key: "odvolať|verb||1"
+  glosses:
+    - "to dismiss, to recall"
+    - "to call off, to revoke"
+    - gloss: "to appeal"
+      note: "with sa"
+  why: "To appeal is odvolať sa."
 - key: "odísť|verb||1"
   glosses:
     - "to leave, to depart"
@@ -1283,6 +1902,20 @@
     - gloss: "they, them"
       note: "the plural forms oni, ich, im"
   why: "Missing meaning and note: the lemma includes the plural forms oni, im, ich (im is its third most used form), so 'they, them' was missing, and the note only restated the gloss."
+- key: "opakovať|verb||1"
+  glosses:
+    - "to repeat"
+    - gloss: "to review"
+      note: "often with si"
+    - gloss: "to happen again, to recur"
+      note: "with sa"
+  why: "Reviewing is usually opakovať si, and the missing sense to recur is opakovať sa (potom sa opakuje)."
+- key: "oplatiť|verb||1"
+  glosses:
+    - gloss: "to be worth it"
+      note: "with sa"
+    - "to repay"
+  why: "'To be worth it' is oplatiť sa; 'to repay' is the plain verb."
 - key: "opustiť|verb||1"
   glosses:
     - "to leave, to abandon"
@@ -1293,10 +1926,27 @@
     - gloss: "to copy"
       note: "a text; also to cheat in school"
   why: "The notes 'ambitransitive, proscribed' explained nothing, and copying and cheating are one meaning."
+- key: "opýtať|verb||1"
+  glosses:
+    - gloss: "to ask"
+      note: "with sa"
+  why: "The verb exists only as opýtať sa (7 of 7 treebank uses)."
 - key: "organizovať|verb||1"
   glosses:
     - "to organize"
   why: "Glosses 2 and 3 only repeated 'to organize' in reflexive forms, and 'transitive' was a bare grammar label."
+- key: "ospravedlniť|verb||1"
+  glosses:
+    - gloss: "to apologize"
+      note: "with sa"
+    - "to excuse, to justify"
+  why: "To apologize is ospravedlniť sa; plain ospravedlniť is to excuse."
+- key: "ospravedlňovať|verb||1"
+  glosses:
+    - gloss: "to apologize"
+      note: "with sa"
+    - "to excuse, to justify"
+  why: "To apologize is ospravedlňovať sa; to excuse or justify is plain."
 - key: "ostatný|adj||1"
   glosses:
     - gloss: "other, remaining"
@@ -1321,12 +1971,27 @@
     - gloss: "spicy, hot"
       note: "of food"
   why: "The note narrowed 'sharp' to cutting, and the common 'spicy, hot' of food was missing."
+- key: "otočiť|verb||1"
+  glosses:
+    - gloss: "to turn, to turn around"
+      note: "with sa when it has no object"
+  why: "Plain otočiť turns something (kľúč, auto), while a person turning around is otočiť sa (19 of 26 treebank uses)."
 - key: "otvoriť|verb||1"
   glosses:
     - "to open"
     - gloss: "to present, to raise"
       note: "a topic or question"
   why: "All three glosses repeated 'to open'; the distinct sense 'to raise' a topic was cut."
+- key: "otvárať|verb||1"
+  glosses:
+    - gloss: "to open"
+      note: "with sa when the thing opens by itself: dvere sa otvárajú"
+  why: "Opening by itself takes sa (dvere sa otvárajú); the plain verb stands without an object too (obchod otvára o ôsmej), so the note names the case."
+- key: "overiť|verb||1"
+  glosses:
+    - gloss: "to verify, to check"
+      note: "often with si"
+  why: "KSSJ gives overiť (si) fakty, and all the app's sentences use overiť si."
 - key: "oveľa|adv||1"
   glosses:
     - gloss: "much, far"
@@ -1350,6 +2015,11 @@
     - gloss: "for, by, in"
       note: "with accusative: ask for, by ten percent, in an hour"
   why: "Missing meaning: the rare contact sense 'against, over, on' held the only accusative place while the common 'for' (ask for), 'by' (by ten percent) and 'in' (in an hour) were missing; case notes added."
+- key: "oženiť|verb||1"
+  glosses:
+    - gloss: "to marry, to take a wife"
+      note: "with sa: oženil sa s Evou"
+  why: "A man marries with oženiť sa s niekým."
 - key: "palec|noun|m_inan|1"
   glosses:
     - "thumb"
@@ -1370,12 +2040,23 @@
   glosses:
     - "parking lot"
   why: "Order and wrong sense: parking is the activity (parkovanie), so the place, parking lot, stands alone."
+- key: "pekne|adv||1"
+  glosses:
+    - "nicely, beautifully"
+    - gloss: "kindly, very much"
+      note: "in thanks and requests: ďakujem pekne, pekne prosím"
+  why: "Missing meaning: the fixed use in thanks and requests (ďakujem pekne) is what a learner meets first."
 - key: "pero|noun|n|1"
   glosses:
     - gloss: "pen"
       note: "writing instrument"
     - "feather"
   why: "Order: pen is the everyday meaning, used in all the app's sentences, but feather came first."
+- key: "pes|noun|m_inan|1"
+  glosses:
+    - gloss: "dog"
+      note: "the plural of pes; animal nouns decline like inanimate nouns in the plural"
+  why: "The morphology files the plural of an animal noun as a second entry of the inanimate gender; the note says what that label means."
 - key: "pivnica|noun|f|1"
   glosses:
     - "cellar, basement"
@@ -1396,6 +2077,29 @@
   glosses:
     - "coast, seaside"
   why: "Notes: the field label geography explains nothing for an everyday word."
+- key: "pochváliť|verb||1"
+  glosses:
+    - "to praise"
+    - gloss: "to boast"
+      note: "with sa"
+  why: "To boast is pochváliť sa; to praise is the plain verb."
+- key: "podariť|verb||1"
+  glosses:
+    - gloss: "to succeed, to manage to"
+      note: "with sa: podarilo sa mi to"
+  why: "In this meaning the verb exists only as podariť sa, with the person in the dative."
+- key: "podeliť|verb||1"
+  glosses:
+    - gloss: "to share"
+      note: "with sa: podelil sa so mnou o jedlo"
+    - gloss: "to divide up"
+      note: "often with si"
+  why: "To share is podeliť sa s niekým o niečo; dividing up among themselves is mostly podeliť si (podeľte si úlohy)."
+- key: "podieľať|verb||1"
+  glosses:
+    - gloss: "to participate, to be involved"
+      note: "with sa"
+  why: "The verb exists only as podieľať sa (7 of 7 treebank uses)."
 - key: "podnik|noun|m_inan|1"
   glosses:
     - "business, enterprise"
@@ -1403,6 +2107,11 @@
       note: "bar, restaurant or club"
     - "undertaking, venture"
   why: "'enterprise' stood twice, and the common venue sense (nočný podnik) was missing."
+- key: "podobať|verb||1"
+  glosses:
+    - gloss: "to resemble"
+      note: "with sa: podobá sa na otca"
+  why: "The verb exists only as podobať sa, with na or a dative."
 - key: "podpísať|verb||1"
   glosses:
     - "to sign"
@@ -1417,12 +2126,31 @@
     - "according to"
     - "by, based on"
   why: "Rare sense: 'a la' is bookish; 'by, based on' (podľa veľkosti) replaces it."
+- key: "pohnúť|verb||1"
+  glosses:
+    - gloss: "to move, to budge"
+      note: "with sa when it has no object"
+  why: "To move oneself is pohnúť sa, as in all the app's sentences; plain pohnúť needs an object such as rukou."
+- key: "pohybovať|verb||1"
+  glosses:
+    - gloss: "to move"
+      note: "with sa when it has no object"
+    - gloss: "to range"
+      note: "with sa"
+  why: "Plain pohybovať needs an object (pohybovať nohami), moving oneself is pohybovať sa, and to range is pohybovať sa okolo."
 - key: "pohľad|noun|m_inan|1"
   glosses:
     - "look"
     - "view, sight"
     - "point of view"
   why: "Missing meanings: 'view, sight' (na prvý pohľad) and 'point of view' (z pohľadu) are very common and were absent."
+- key: "pokaziť|verb||1"
+  glosses:
+    - gloss: "to spoil, to ruin"
+      note: "with sa when it has no object"
+    - gloss: "to break"
+      note: "with sa when it has no object"
+  why: "Going bad or breaking down takes sa (mlieko sa pokazí, auto sa pokazilo); the plain verb needs an object."
 - key: "pokoj|noun|m_inan|1"
   glosses:
     - "peace, quiet"
@@ -1438,6 +2166,17 @@
     - "try, attempt"
     - "experiment"
   why: "The very common meaning 'experiment' (KSSJ sense 2) was missing."
+- key: "pokúsiť|verb||1"
+  glosses:
+    - gloss: "to try, to attempt"
+      note: "with sa"
+  why: "In this meaning the verb is used only as pokúsiť sa."
+- key: "pokúšať|verb||1"
+  glosses:
+    - gloss: "to try, to attempt"
+      note: "with sa"
+    - "to tempt"
+  why: "To try is pokúšať sa (17 of 19 treebank uses); plain pokúšať is to tempt."
 - key: "policajný|adj||1"
   glosses:
     - "police"
@@ -1450,12 +2189,61 @@
   glosses:
     - "half"
   why: "Notes: the note is a definition that repeats the gloss."
+- key: "položiť|verb||1"
+  glosses:
+    - "to put down, to lay"
+    - gloss: "to ask"
+      note: "a question: položiť otázku"
+  why: "Missing meaning: položiť otázku (to ask a question) is common and stands in the app's sentences."
+- key: "pomyslieť|verb||1"
+  glosses:
+    - gloss: "to think to oneself"
+      note: "with si"
+    - "to think of"
+  why: "To think to oneself is pomyslieť si (29 of 35 treebank uses), while pomyslieť na is plain."
+- key: "ponechať|verb||1"
+  glosses:
+    - "to leave"
+    - gloss: "to keep, to retain"
+      note: "often with si"
+  why: "Keeping something for oneself is mostly ponechať si (KSSJ: ponechať si všetky peniaze)."
+- key: "ponúknuť|verb||1"
+  glosses:
+    - "to offer"
+    - gloss: "to offer to do, to volunteer"
+      note: "with sa: ponúkol sa, že pomôže"
+  why: "Offering to do something is ponúknuť sa (KSSJ: ponúkol sa, že nám ukáže cestu; 3 of 11 treebank uses with sa), which the entry lacked."
+- key: "poradiť|verb||1"
+  glosses:
+    - "to advise"
+    - gloss: "to manage, to cope"
+      note: "with si: poradiť si s problémom"
+    - gloss: "to consult"
+      note: "with sa: poradiť sa s lekárom"
+  why: "To cope is poradiť si and to consult is poradiť sa; only to advise is plain."
 - key: "poriadok|noun|m_inan|1"
   glosses:
     - gloss: "order"
       note: "v poriadku: all right, OK"
     - "rules, regulations"
   why: "V poriadku 'all right' (almost half of all uses) was not shown, and 'procedure' is a legal term."
+- key: "porozprávať|verb||1"
+  glosses:
+    - gloss: "to have a talk"
+      note: "with sa"
+    - "to tell"
+  why: "To have a talk is porozprávať sa, the only use in the app's sentences, so it goes first."
+- key: "posadiť|verb||1"
+  glosses:
+    - gloss: "to sit down"
+      note: "with sa"
+    - "to seat"
+  why: "'To sit down' is posadiť sa; seating someone is the plain verb."
+- key: "postarať|verb||1"
+  glosses:
+    - gloss: "to take care of"
+      note: "with sa"
+  why: "The verb exists only as postarať sa (o niekoho)."
 - key: "postava|noun|f|1"
   glosses:
     - "figure, physique, stature"
@@ -1475,11 +2263,29 @@
     - "attitude, standpoint, outlook"
     - "posture, stance, pose"
   why: "The attitude sense (postoj vlády, zaujať postoj) is far more common than body posture, and both notes only defined the glosses."
+- key: "posunúť|verb||1"
+  glosses:
+    - gloss: "to move, to shift"
+      note: "with sa when it has no object"
+    - "to postpone"
+  why: "Plain posunúť needs an object; moving or shifting by itself is posunúť sa (posuň sa, rad sa posunul)."
+- key: "potešiť|verb||1"
+  glosses:
+    - "to please, to make happy"
+    - gloss: "to be pleased, to be glad"
+      note: "with sa"
+  why: "Potešiť sa 'to be pleased' is common (4 of 9 treebank uses, an app sentence) and was missing."
 - key: "potravina|noun|f|1"
   glosses:
     - gloss: "food, groceries"
       note: "usually in the plural"
   why: "The first gloss was a definition with an article and stood before the main meaning."
+- key: "poučiť|verb||1"
+  glosses:
+    - gloss: "to learn a lesson"
+      note: "with sa"
+    - "to instruct, to advise"
+  why: "To learn a lesson is poučiť sa; to instruct someone is plain."
 - key: "povaha|noun|f|1"
   glosses:
     - "nature, character"
@@ -1498,12 +2304,26 @@
     - "to look at, to watch"
     - "to take into consideration"
   why: "The first gloss had eight words."
+- key: "poznamenať|verb||1"
+  glosses:
+    - "to remark"
+    - gloss: "to note down"
+      note: "with si"
+    - "to leave a mark on"
+  why: "To note down is poznamenať si (KSSJ: poznamenať si niečo do zápisníka)."
 - key: "poznať|verb||1"
   glosses:
     - gloss: "to know"
       note: "a person or a place"
     - "to recognize, to get to know"
   why: "'get to know' lacked 'to' and 'recognise' had the British spelling; the note tells poznať from vedieť."
+- key: "pozrieť|verb||1"
+  glosses:
+    - gloss: "to look, to take a look"
+      note: "often with sa"
+    - gloss: "to watch"
+      note: "with si"
+  why: "Looking is mostly pozrieť sa (plain pozrieť na also exists, 54 of 64 treebank uses), while watching is pozrieť si (pozrieť si film)."
 - key: "po|part||1"
   glosses:
     - gloss: "each, at a time"
@@ -1531,6 +2351,11 @@
     - gloss: "to count on, to expect"
       note: "with s + instrumental"
   why: "The common 'počítať s' (to expect) was cut while the rarer 'to include' took a place."
+- key: "poďakovať|verb||1"
+  glosses:
+    - gloss: "to thank"
+      note: "often with sa"
+  why: "Both poďakovať and poďakovať sa are correct, and the treebank has sa in 5 of 7 uses."
 - key: "pravda|noun|f|1"
   glosses:
     - gloss: "truth"
@@ -1542,6 +2367,19 @@
     - "work experience"
     - "practical training, internship"
   why: "The common meanings work experience (bez praxe) and practical training were missing."
+- key: "prebrať|verb||1"
+  glosses:
+    - "to take over"
+    - "to discuss, to go over"
+    - gloss: "to wake up, to come to"
+      note: "with sa"
+  why: "Waking up or coming to is prebrať sa."
+- key: "prechádzať|verb||1"
+  glosses:
+    - "to go through, to cross"
+    - gloss: "to stroll"
+      note: "with sa"
+  why: "To stroll is prechádzať sa; plain prechádzať is to go through."
 - key: "predchádzajúci|adj||1"
   glosses:
     - "preceding, previous, prior"
@@ -1575,6 +2413,18 @@
       note: "with si"
     - "to introduce, to present"
   why: "The common meanings 'to imagine' (predstavovať si) and 'to introduce, to present' were missing, and 'to be' is too vague."
+- key: "prejaviť|verb||1"
+  glosses:
+    - "to show, to express"
+    - gloss: "to become apparent"
+      note: "with sa"
+  why: "To become apparent is prejaviť sa; to show is plain."
+- key: "prejavovať|verb||1"
+  glosses:
+    - "to show, to express"
+    - gloss: "to manifest itself"
+      note: "with sa"
+  why: "To manifest itself is prejavovať sa."
 - key: "prejsť|verb||1"
   glosses:
     - "to cross, to go through"
@@ -1586,6 +2436,32 @@
     - gloss: "to transform, to turn into, to convert"
       note: "also with sa"
   why: "The three glosses repeated 'to transform' and 'to turn into'; one gloss covers both the plain and the sa use."
+- key: "prenajať|verb||1"
+  glosses:
+    - gloss: "to rent"
+      note: "with si"
+    - "to rent out"
+  why: "Renting as a tenant is prenajať si (KSSJ); without si the verb means 'to rent out'."
+- key: "preniesť|verb||1"
+  glosses:
+    - "to carry across, to transfer"
+    - gloss: "to get over"
+      note: "with sa: musíš sa cez to preniesť"
+  why: "Preniesť sa cez niečo, to get over something (KSSJ: p. sa ponad urážku), is a common meaning the entry lacked."
+- key: "prepadnúť|verb||1"
+  glosses:
+    - "to rob, to ambush"
+    - gloss: "to fall through"
+      note: "often with sa"
+    - "to succumb to"
+  why: "Falling through ice or a floor is mostly prepadnúť sa (3 of 7 treebank uses), but plain prepadnúť also means to fall through (KSSJ: zrno prepadlo cez riečicu); robbing and succumbing are plain."
+- key: "presadiť|verb||1"
+  glosses:
+    - "to push through"
+    - gloss: "to succeed, to assert oneself"
+      note: "with sa"
+    - "to replant"
+  why: "To succeed or assert oneself is presadiť sa."
 - key: "prestať|verb||1"
   glosses:
     - "to stop, to quit, to cease"
@@ -1594,15 +2470,48 @@
   glosses:
     - "break, pause, intermission"
   why: "The note was a long definition that repeated the gloss."
+- key: "presunúť|verb||1"
+  glosses:
+    - gloss: "to move, to relocate"
+      note: "with sa when it has no object"
+    - "to reschedule"
+  why: "Moving something is presunúť, moving oneself is presunúť sa (presunuli sme sa do kuchyne)."
+- key: "presvedčiť|verb||1"
+  glosses:
+    - "to convince, to persuade"
+    - gloss: "to make sure, to check"
+      note: "with sa"
+  why: "KSSJ lists presvedčiť sa 'to make sure, to verify', a common meaning the entry lacked."
+- key: "presúvať|verb||1"
+  glosses:
+    - gloss: "to move, to shift"
+      note: "with sa when it has no object"
+  why: "Moving oneself takes sa (presúvať sa do hotela); with an object the verb is plain (presúvať termín)."
+- key: "presťahovať|verb||1"
+  glosses:
+    - gloss: "to move, to relocate"
+      note: "with sa when it has no object"
+  why: "Moving house takes sa (presťahovali sme sa); moving things is plain (presťahovať nábytok)."
 - key: "preukaz|noun|m_inan|1"
   glosses:
     - "ID card, pass, license"
   why: "Form: the gloss was a definition with an article."
+- key: "prezrieť|verb||1"
+  glosses:
+    - gloss: "to look over"
+      note: "often with si"
+    - "to examine"
+  why: "KSSJ gives prezrieť (si) knihu and prezrieť si mesto for looking over; examining is plain."
 - key: "pre|prep||1"
   glosses:
     - "for, for the sake of"
     - "because of, due to"
   why: "Form: both glosses began with 'for' and so repeated each other."
+- key: "prečítať|verb||1"
+  glosses:
+    - gloss: "to read, to read through"
+      note: "often with si"
+  why: "Everyday speech mostly says prečítať si (prečítaj si to), though the plain verb is correct too."
 - key: "priateľ|noun|m_anim|1"
   glosses:
     - "friend"
@@ -1617,6 +2526,38 @@
     - gloss: "to favor"
       note: "of luck, weather or circumstances"
   why: "The label 'transitive' explained nothing, and the very common priať si (čo si prajete) and 'to favor' were missing."
+- key: "približovať|verb||1"
+  glosses:
+    - gloss: "to approach"
+      note: "with sa"
+    - "to bring closer"
+  why: "'To approach' is približovať sa (2 of 2 treebank uses); 'to bring closer' is plain."
+- key: "priblížiť|verb||1"
+  glosses:
+    - gloss: "to approach"
+      note: "with sa"
+    - "to bring closer"
+    - "to explain, to outline"
+  why: "To approach is priblížiť sa, and it goes first because it is the most frequent meaning (4 of 6 treebank uses)."
+- key: "pridať|verb||1"
+  glosses:
+    - "to add"
+    - gloss: "to join"
+      note: "with sa: pridám sa k vám"
+  why: "To join is pridať sa (k niekomu); to add is plain."
+- key: "pridávať|verb||1"
+  glosses:
+    - "to add"
+    - gloss: "to join, to join in"
+      note: "with sa"
+  why: "Added pridávať sa (to join someone or something), a common meaning the entry lacked."
+- key: "prihlásiť|verb||1"
+  glosses:
+    - gloss: "to register, to sign up"
+      note: "with sa when it has no object"
+    - gloss: "to log in"
+      note: "with sa"
+  why: "Signing oneself up or logging in is prihlásiť sa; plain prihlásiť registers someone or something else."
 - key: "princezná|noun|f|1"
   glosses:
     - "princess"
@@ -1625,6 +2566,48 @@
   glosses:
     - "prince"
   why: "The note 'descendant of a monarch' is a definition that repeats the gloss."
+- key: "pripojiť|verb||1"
+  glosses:
+    - gloss: "to connect, to attach"
+      note: "with sa when it has no object"
+    - gloss: "to join"
+      note: "with sa"
+  why: "To join is pripojiť sa, and connecting oneself to a network is pripojiť sa too, while one connects a device without sa."
+- key: "pripomenúť|verb||1"
+  glosses:
+    - "to remind"
+    - gloss: "to recall, to commemorate"
+      note: "often with si"
+  why: "To recall or commemorate for oneself is mostly pripomenúť si (KSSJ: p. (si) výročie); plain pripomenúť is to remind someone."
+- key: "pripraviť|verb||1"
+  glosses:
+    - gloss: "to prepare"
+      note: "with sa when it has no object"
+    - "to deprive of"
+  why: "Preparing oneself, getting ready, is pripraviť sa (pripraviť sa na skúšku); the plain verb needs an object (pripraviť obed)."
+- key: "pripravovať|verb||1"
+  glosses:
+    - gloss: "to prepare"
+      note: "with sa when it has no object"
+  why: "Preparing oneself (študenti sa pripravujú na skúšky) needs sa, preparing something does not."
+- key: "prispôsobiť|verb||1"
+  glosses:
+    - gloss: "to adapt, to adjust"
+      note: "with sa when it has no object"
+  why: "Adapting oneself is prispôsobiť sa, as in all three app sentences; adapting something is plain."
+- key: "priznať|verb||1"
+  glosses:
+    - gloss: "to admit, to confess"
+      note: "with sa when it has no object"
+    - "to grant, to award"
+  why: "Admitting something is plain (priznať chybu), confessing without an object takes sa (priznal sa, priznať sa k činu)."
+- key: "priznávať|verb||1"
+  glosses:
+    - "to admit"
+    - gloss: "to confess, to own up"
+      note: "with sa"
+    - "to grant, to award"
+  why: "Confessing is priznávať sa (KSSJ: priznať sa k činu) while to admit is plain, so the mixed gloss is split."
 - key: "program|noun|m_inan|1"
   glosses:
     - "program"
@@ -1676,7 +2659,9 @@
     - "to come, to arrive"
     - gloss: "to lose"
       note: "with o, as in prísť o prácu"
-  why: "Form and notes: the second and third glosses repeated the first with bare 'intransitive' labels; the common prísť o (to lose) takes a place."
+    - gloss: "to figure out"
+      note: "with na: prišiel na to"
+  why: "Form and notes: the second and third glosses repeated the first with bare 'intransitive' labels; the common prísť o (to lose) and prísť na (to figure out) take their places."
 - key: "prúd|noun|m_inan|1"
   glosses:
     - "current, stream"
@@ -1697,17 +2682,37 @@
     - "gentleman"
     - "lord, master"
   why: "'lord' came first, but Mr./sir and gentleman are the everyday meanings; mister and sir are one meaning."
+- key: "páčiť|verb||1"
+  glosses:
+    - gloss: "to like, to appeal to"
+      note: "with sa: páči sa mi to"
+  why: "The verb exists only as páčiť sa, with the person who likes in the dative."
 - key: "pôvodný|adj||1"
   glosses:
     - "original, initial, primary"
     - "former, previous"
   why: "Form and notes: all three glosses repeated 'original' and the notes were long definitions."
+- key: "púšťať|verb||1"
+  glosses:
+    - "to let go, to release"
+    - "to play, to turn on"
+    - gloss: "to set about, to get into"
+      note: "with sa: púšťať sa do práce"
+  why: "púšťať sa do niečoho, to set about or get into something, is a common meaning the entry lacked."
 - key: "pýtať|verb||1"
   glosses:
     - gloss: "to ask"
       note: "with sa"
     - "to ask for, to demand"
   why: "The reflexive pýtať sa 'to ask' is the common use and must come first."
+- key: "radiť|verb||1"
+  glosses:
+    - "to advise"
+    - gloss: "to consult"
+      note: "with sa: radiť sa s lekárom"
+    - gloss: "to rank among"
+      note: "with sa when it has no object"
+  why: "To consult is radiť sa s niekým, and to rank among is radiť sa medzi unless something is ranked (KSSJ)."
 - key: "rad|noun|m_inan|1"
   glosses:
     - "row, line, queue"
@@ -1719,6 +2724,14 @@
   glosses:
     - "paradise"
   why: "The second gloss repeated 'paradise' and carried an article."
+- key: "rameno|noun|n|1"
+  glosses:
+    - gloss: "shoulder"
+      note: "in everyday speech; the standard word is plece"
+    - "upper arm"
+    - gloss: "arm"
+      note: "of a river, a crane, a lever"
+  why: "Wrong main sense: 'arm' alone reads as the whole limb (ruka); rameno is the upper arm, in everyday speech the shoulder, and the arm of a thing."
 - key: "raz|adv||1"
   glosses:
     - "once"
@@ -1788,10 +2801,35 @@
     - "corner"
     - "horn"
   why: "'corner' (na rohu, za rohom) is the everyday meaning but was cut while two rare horn senses with defining notes took places."
+- key: "rozbehnúť|verb||1"
+  glosses:
+    - gloss: "to start running"
+      note: "with sa"
+    - gloss: "to launch, to get going"
+      note: "with sa when it has no object"
+  why: "The main verb is rozbehnúť sa 'to start running' (KSSJ, 3 of 3 treebank uses), so it comes first, and getting going on its own also takes sa."
 - key: "rozdiel|noun|m_inan|1"
   glosses:
     - "difference"
   why: "The note was over 80 characters, and 'contradiction' is not a meaning of rozdiel."
+- key: "rozhodovať|verb||1"
+  glosses:
+    - "to decide"
+    - gloss: "to make up one's mind"
+      note: "with sa"
+  why: "Deciding for oneself is rozhodovať sa (musí sa rozhodovať sama); plain rozhodovať is to decide about something."
+- key: "rozlúčiť|verb||1"
+  glosses:
+    - gloss: "to say goodbye"
+      note: "with sa: rozlúčil sa s nami"
+  why: "The verb exists only as rozlúčiť sa s niekým."
+- key: "rozprávať|verb||1"
+  glosses:
+    - "to talk, to speak"
+    - gloss: "to talk with someone, to chat"
+      note: "with sa"
+    - "to tell"
+  why: "Added rozprávať sa (to converse), used in all three app sentences and 8 of 33 treebank uses."
 - key: "rozumieť|verb||1"
   glosses:
     - gloss: "to understand"
@@ -1804,6 +2842,25 @@
     - "reasonable, sensible"
     - "rational"
   why: "Notes: both notes were definitions that repeated the gloss."
+- key: "rozvíjať|verb||1"
+  glosses:
+    - gloss: "to develop"
+      note: "with sa when it has no object"
+  why: "Developing something is rozvíjať, developing by itself is rozvíjať sa (mesto sa rozvíja)."
+- key: "rozširovať|verb||1"
+  glosses:
+    - gloss: "to expand, to widen"
+      note: "with sa when it has no object"
+    - gloss: "to spread"
+      note: "with sa when it has no object"
+  why: "Spreading or widening on its own is rozširovať sa (choroba sa rozširuje)."
+- key: "rozšíriť|verb||1"
+  glosses:
+    - gloss: "to expand, to widen"
+      note: "with sa when it has no object"
+    - gloss: "to spread"
+      note: "with sa when it has no object"
+  why: "Spreading or widening on its own is rozšíriť sa (správa sa rozšírila)."
 - key: "ruka|noun|f|1"
   glosses:
     - gloss: "hand, arm"
@@ -1826,6 +2883,17 @@
     - gloss: "gear"
       note: "of a vehicle"
   why: "Order and wrong sense: the everyday meaning is 'speed', not the physics term, and in a car rýchlosť is a gear, not the transmission."
+- key: "sadnúť|verb||1"
+  glosses:
+    - gloss: "to sit down"
+      note: "often with si"
+  why: "Everyday to sit down is sadnúť si (27 of 28 treebank uses, all 11 app sentences), though KSSJ allows sadnúť alone too."
+- key: "sa|other||1"
+  glosses:
+    - gloss: "oneself"
+      note: "also a fixed part of many verbs: báť sa (to be afraid), stať sa (to happen)"
+    - "each other"
+  why: "Note: with most verbs sa has no English word of its own; the note says so, since the verb entries name it in their notes."
 - key: "schod|noun|m_inan|1"
   glosses:
     - gloss: "step, stair"
@@ -1853,6 +2921,32 @@
     - "network"
     - "net"
   why: "'network' (social networks, a network of shops, the power grid) is the more frequent meaning, and the label 'computing' is too narrow."
+- key: "si|other||1"
+  glosses:
+    - gloss: "for oneself, to oneself"
+      note: "also a fixed part of some verbs: všimnúť si (to notice)"
+    - "each other"
+  why: "Note: with some verbs si has no English word of its own; the note says so, since the verb entries name it in their notes."
+- key: "skladať|verb||1"
+  glosses:
+    - gloss: "to consist of"
+      note: "with sa"
+    - "to put together, to fold"
+    - "to compose"
+  why: "To consist of is skladať sa z (Skúška sa skladá z dvoch častí)."
+- key: "sklamať|verb||1"
+  glosses:
+    - "to disappoint"
+    - gloss: "to be disappointed"
+      note: "with sa: sklamal som sa v ňom"
+  why: "Sklamať sa, to be disappointed (KSSJ: s. sa v deťoch), is a common meaning the entry lacked."
+- key: "skončiť|verb||1"
+  glosses:
+    - "to finish, to end"
+    - gloss: "to come to an end"
+      note: "often with sa"
+    - "to end up"
+  why: "An event ending is mostly skončiť sa (zápas sa skončil, KSSJ), while a person finishing something takes no sa."
 - key: "skoro|adv||1"
   glosses:
     - "soon, shortly"
@@ -1869,6 +2963,16 @@
     - gloss: "to pop out, to pop over"
       note: "colloquial"
   why: "Missing meaning: the common colloquial sense of skočiť do obchodu (KSSJ sense 2) was absent while the entry had room."
+- key: "skryť|verb||1"
+  glosses:
+    - gloss: "to hide"
+      note: "with sa when it has no object"
+  why: "Hiding oneself is skryť sa (4 of 4 treebank uses); hiding something is plain."
+- key: "skrývať|verb||1"
+  glosses:
+    - gloss: "to hide"
+      note: "with sa when it has no object"
+  why: "Hiding something is skrývať, hiding oneself is skrývať sa (9 of 16 treebank uses)."
 - key: "skôr|adv||1"
   glosses:
     - "earlier, sooner"
@@ -1918,6 +3022,20 @@
     - "orientation, focus"
     - "trend, school"
   why: "Notes: the three notes are long definitions that repeat the glosses."
+- key: "smiať|verb||1"
+  glosses:
+    - gloss: "to laugh"
+      note: "with sa"
+    - gloss: "to make fun of, to mock"
+      note: "with sa"
+    - gloss: "to smile at"
+      note: "with sa and na: smeje sa na mňa"
+  why: "Form: smiať sa is 'to smile' only with na and a person (smiať sa na niekoho); alone it is 'to laugh'."
+- key: "snažiť|verb||1"
+  glosses:
+    - gloss: "to try, to make an effort"
+      note: "with sa"
+  why: "The verb exists only as snažiť sa."
 - key: "snáď|part||1"
   glosses:
     - "perhaps"
@@ -1932,6 +3050,11 @@
   glosses:
     - "salt"
   why: "'saline' is an adjective or a medical solution, not a meaning of soľ."
+- key: "spojiť|verb||1"
+  glosses:
+    - gloss: "to connect, to join"
+      note: "with sa when it has no object"
+  why: "Joining up without an object takes sa (strany sa spojili, spojiť sa s niekým); the plain verb needs an object."
 - key: "spoločenstvo|noun|n|1"
   glosses:
     - "community"
@@ -1941,11 +3064,34 @@
     - "society"
     - "company, firm"
   why: "The very common meaning 'company, firm' (spoločnosť Microsoft, akciová spoločnosť) was missing."
+- key: "spomenúť|verb||1"
+  glosses:
+    - gloss: "to remember, to recall"
+      note: "with si"
+    - "to mention"
+  why: "To remember is spomenúť si, the more frequent use (18 of 31 treebank uses, all the app's sentences), so it goes first; to mention is plain."
 - key: "spomienka|noun|f|1"
   glosses:
     - "memory, recollection"
     - "memorial, commemoration"
   why: "'mention, reference' is a dated sense (KSSJ: zastaráv.)."
+- key: "spomínať|verb||1"
+  glosses:
+    - gloss: "to remember, to recall"
+      note: "often with si"
+    - "to mention"
+  why: "To remember is spomínať (si) na; everyday speech mostly adds si (spomínam si, ak si dobre spomínam)."
+- key: "spoznať|verb||1"
+  glosses:
+    - gloss: "to get to know, to meet"
+      note: "with sa when it has no object"
+    - "to recognize"
+  why: "Without an object, meeting or getting to know each other is spoznať sa (KSSJ: spoznali sa na zábave)."
+- key: "spoľahnúť|verb||1"
+  glosses:
+    - gloss: "to rely on, to count on"
+      note: "with sa"
+  why: "The verb exists only as spoľahnúť sa."
 - key: "spraviť|verb||1"
   glosses:
     - "to do, to make"
@@ -1956,16 +3102,38 @@
     - "report"
     - "administration, management"
   why: "The common meanings 'news' (dobrá správa, správy) and 'report' were missing."
+- key: "spustiť|verb||1"
+  glosses:
+    - "to launch, to start"
+    - "to lower"
+    - gloss: "to begin, to go off"
+      note: "with sa: spustil sa dážď"
+  why: "KSSJ has plain spustiť without an object (rečník spustil, začal hovoriť), so a no-object note does not hold; the reflexive meaning gets a gloss of its own (KSSJ: spustil sa dážď)."
+- key: "spájať|verb||1"
+  glosses:
+    - gloss: "to connect, to join"
+      note: "with sa when it has no object"
+  why: "Joining without an object is spájať sa (rieky sa spájajú), 3 of 5 treebank uses."
 - key: "spôsob|noun|m_inan|1"
   glosses:
     - "way, manner"
     - gloss: "manners"
       note: "in plural"
   why: "The grammar term 'mood' is technical; replaced by 'manners' (dobré spôsoby)."
+- key: "spýtať|verb||1"
+  glosses:
+    - gloss: "to ask"
+      note: "with sa"
+  why: "The verb exists only as spýtať sa."
 - key: "stan|noun|m_inan|1"
   glosses:
     - "tent"
   why: "Slang sense: erection is not in KSSJ and is not something a learner needs."
+- key: "starať|verb||1"
+  glosses:
+    - gloss: "to look after, to care for"
+      note: "with sa"
+  why: "The verb exists only as starať sa (o niekoho)."
 - key: "stavať|verb||1"
   glosses:
     - "to build, to construct"
@@ -1998,6 +3166,14 @@
     - gloss: "to become"
       note: "with sa"
   why: "Order and form: 'to happen' (čo sa stalo, the most used form) is the everyday meaning, and 'to take place' repeated it."
+- key: "stiahnuť|verb||1"
+  glosses:
+    - gloss: "to download"
+      note: "often with si"
+    - "to pull down, to pull off"
+    - gloss: "to withdraw"
+      note: "with sa when it has no object"
+  why: "Downloading is usually stiahnuť si (both app sentences), and withdrawing without an object is stiahnuť sa (vojsko sa stiahlo)."
 - key: "stojan|noun|m_inan|1"
   glosses:
     - "stand, rack, holder, pedestal"
@@ -2010,6 +3186,12 @@
       note: "political, or in a contract"
     - "page"
   why: "The note limited 'party' to contracts although the political party is the common meaning, which is also more frequent than 'page'."
+- key: "stratiť|verb||1"
+  glosses:
+    - "to lose"
+    - gloss: "to get lost"
+      note: "with sa"
+  why: "The second meaning is stratiť sa."
 - key: "stredný|adj||1"
   glosses:
     - "middle, central"
@@ -2028,6 +3210,13 @@
     - gloss: "to meet"
       note: "often with sa: stretnúť sa s priateľom"
   why: "The grammar label 'transitive' explained nothing, while the word mostly stands with sa."
+- key: "stretávať|verb||1"
+  glosses:
+    - gloss: "to meet"
+      note: "with sa when it has no object"
+    - gloss: "to encounter"
+      note: "with sa: stretávame sa s problémami"
+  why: "Meeting up is stretávať sa and encountering a problem is stretávať sa s, while meeting someone is plain."
 - key: "strieľať|verb||1"
   glosses:
     - "to shoot, to fire"
@@ -2038,11 +3227,25 @@
   glosses:
     - "machine"
   why: "The note was a definition that repeats the gloss."
+- key: "strácať|verb||1"
+  glosses:
+    - "to lose"
+    - gloss: "to get lost, to disappear"
+      note: "with sa"
+  why: "The second meaning is strácať sa."
 - key: "stále|adv||1"
   glosses:
     - "still"
     - "always, all the time"
   why: "'still' (stále, ešte stále) outnumbers 'all the time' about two to one in the SNK treebank; the definition note on 'still' is dropped."
+- key: "stávať|verb||1"
+  glosses:
+    - gloss: "to happen"
+      note: "with sa"
+    - gloss: "to become"
+      note: "with sa"
+    - "to get up"
+  why: "To happen and to become are stávať sa; happen is the use in the app's sentences, so it goes first."
 - key: "stáť|verb||1"
   glosses:
     - "to stand"
@@ -2093,11 +3296,30 @@
     - "headquarters"
     - "settlement"
   why: "The very common senses headquarters (sídlo firmy, so sídlom v) and settlement were missing while the entry had room."
+- key: "sústrediť|verb||1"
+  glosses:
+    - gloss: "to concentrate, to focus"
+      note: "with sa when it has no object"
+  why: "To concentrate is sústrediť sa; plain sústrediť needs an object such as pozornosť or pohľad."
 - key: "súčasný|adj||1"
   glosses:
     - "current, present"
     - "contemporary"
   why: "Order: 'current, present' is KSSJ's first sense and the common one (súčasná vláda, v súčasnej situácii)."
+- key: "sťahovať|verb||1"
+  glosses:
+    - gloss: "to move, to relocate"
+      note: "with sa when it has no object"
+    - "to download"
+    - gloss: "to withdraw"
+      note: "with sa when it has no object"
+  why: "Moving house and withdrawing are sťahovať sa, while with an object (sťahovať nábytok, vojská) the verb is plain."
+- key: "sťažovať|verb||1"
+  glosses:
+    - gloss: "to complain"
+      note: "with sa"
+    - "to make difficult"
+  why: "To complain is sťažovať sa; plain sťažovať is to make difficult."
 - key: "tabuľa|noun|f|1"
   glosses:
     - "board, blackboard"
@@ -2167,6 +3389,12 @@
     - "press, journalistic"
     - "print, printing"
   why: "Order and form: the press sense (tlačová konferencia) is the most common, and the third gloss was a broken fragment."
+- key: "točiť|verb||1"
+  glosses:
+    - gloss: "to spin, to turn"
+      note: "with sa when it has no object"
+    - "to film"
+  why: "Spinning by itself takes sa (zem sa točí); with an object the verb is plain."
 - key: "tradičný|adj||1"
   glosses:
     - "traditional, customary"
@@ -2184,6 +3412,12 @@
     - gloss: "to insist"
       note: "with na + locative"
   why: "The note repeated the gloss, and the common 'to take' (ako dlho to trvá) and 'to insist' (trvať na) were missing."
+- key: "trápiť|verb||1"
+  glosses:
+    - "to trouble, to torment"
+    - gloss: "to worry, to struggle"
+      note: "with sa"
+  why: "To worry or struggle oneself is trápiť sa (netráp sa); plain trápiť is to trouble someone."
 - key: "tráva|noun|f|1"
   glosses:
     - "grass"
@@ -2217,11 +3451,28 @@
     - "to create, to make, to form"
     - "to constitute, to make up"
   why: "Form and rare sense: 'to create' repeated gloss 1 and 'to delimit' is rare, while the common 'to make up' (tvoria polovicu) was cut."
+- key: "tváriť|verb||1"
+  glosses:
+    - gloss: "to pretend, to act"
+      note: "with sa: tvári sa, že spí"
+    - gloss: "to look, to make a face"
+      note: "with sa"
+  why: "The verb exists only as tváriť sa (15 of 15 treebank uses)."
 - key: "ty|pron||1"
   glosses:
     - gloss: "you"
       note: "informal singular"
   why: "Archaic sense: 'thou' is archaic English; the note now marks the informal singular instead."
+- key: "týkať|verb||1"
+  glosses:
+    - gloss: "to concern, to relate to"
+      note: "with sa"
+  why: "The verb exists only as týkať sa."
+- key: "udiať|verb||1"
+  glosses:
+    - gloss: "to happen, to take place"
+      note: "with sa"
+  why: "The verb exists only as udiať sa."
 - key: "udrieť|verb||1"
   glosses:
     - "to strike, to hit"
@@ -2229,6 +3480,18 @@
       note: "with sa"
     - "to attack, to charge"
   why: "The second gloss repeated 'to hit' in a muddle ('to sound, to break'), while the common reflexive udrieť sa was cut."
+- key: "udržať|verb||1"
+  glosses:
+    - "to keep, to maintain, to hold"
+    - gloss: "to stay, to last"
+      note: "with sa"
+  why: "Added the common udržať sa (stay on one's feet or in power; weather or food lasts), 2 of 7 treebank uses."
+- key: "uistiť|verb||1"
+  glosses:
+    - gloss: "to make sure"
+      note: "with sa"
+    - "to assure"
+  why: "To make sure is uistiť sa; plain uistiť is to assure someone."
 - key: "ujsť|verb||1"
   glosses:
     - "to flee, to escape, to run away"
@@ -2237,6 +3500,11 @@
     - gloss: "to escape notice"
       note: "with dative"
   why: "The third gloss repeated 'to escape', so the common cut sense 'to escape notice' (ušlo mi to) takes its place and the bare 'intransitive' labels go."
+- key: "ukrývať|verb||1"
+  glosses:
+    - gloss: "to hide, to conceal"
+      note: "with sa when it has no object"
+  why: "Plain ukrývať needs an object; to hide oneself or be in hiding is ukrývať sa."
 - key: "ukázať|verb||1"
   glosses:
     - "to show"
@@ -2244,23 +3512,118 @@
     - gloss: "to turn out, to prove"
       note: "with sa"
   why: "Order and missing meaning: 'to show' is the main sense, and the common 'ukázať sa' (to turn out) was cut."
+- key: "umiestniť|verb||1"
+  glosses:
+    - "to place, to put"
+    - gloss: "to rank"
+      note: "with sa"
+  why: "Ranking in a competition is umiestniť sa (umiestnil sa na druhom mieste)."
+- key: "umyť|verb||1"
+  glosses:
+    - gloss: "to wash"
+      note: "with sa when it has no object"
+  why: "Washing something is umyť, washing oneself is umyť sa."
+- key: "umývať|verb||1"
+  glosses:
+    - gloss: "to wash"
+      note: "with sa when it has no object"
+  why: "Plain umývať needs an object (umývať riad); to wash oneself is umývať sa."
+- key: "uplatniť|verb||1"
+  glosses:
+    - "to apply, to exercise"
+    - gloss: "to establish oneself"
+      note: "with sa"
+  why: "'To establish oneself' is uplatniť sa."
+- key: "upokojiť|verb||1"
+  glosses:
+    - gloss: "to calm down, to soothe"
+      note: "with sa when it has no object"
+  why: "Calming down oneself is upokojiť sa; plain upokojiť is to calm or soothe someone."
 - key: "urobiť|verb||1"
   glosses:
     - "to do"
     - "to make"
   why: "Order and form: 'to do' is the commoner meaning, and 'to make, to cause' repeated 'to make'."
+- key: "usadiť|verb||1"
+  glosses:
+    - gloss: "to settle down"
+      note: "with sa"
+    - "to seat"
+  why: "'To settle down' is usadiť sa (8 of 8 treebank uses); seating someone is the plain verb."
+- key: "usilovať|verb||1"
+  glosses:
+    - gloss: "to strive, to try hard"
+      note: "with sa"
+  why: "The verb exists only as usilovať sa."
+- key: "uskutočniť|verb||1"
+  glosses:
+    - gloss: "to take place"
+      note: "with sa"
+    - "to carry out"
+  why: "'To take place' is uskutočniť sa; carrying out a plan is plain."
+- key: "usmiať|verb||1"
+  glosses:
+    - gloss: "to smile"
+      note: "with sa"
+  why: "The verb is used only as usmiať sa (40 of 40 treebank uses)."
+- key: "usmievať|verb||1"
+  glosses:
+    - gloss: "to smile"
+      note: "with sa"
+  why: "The verb exists only as usmievať sa (9 of 9 treebank uses)."
+- key: "uspokojiť|verb||1"
+  glosses:
+    - "to satisfy"
+    - gloss: "to settle for, to be content"
+      note: "with sa"
+  why: "Uspokojiť sa s (to settle for) is a common reflexive meaning the entry lacked (3 of 4 treebank uses)."
+- key: "uvedomiť|verb||1"
+  glosses:
+    - gloss: "to realize"
+      note: "with si"
+  why: "The verb is used only as uvedomiť si (17 of 17 treebank uses)."
+- key: "uvedomovať|verb||1"
+  glosses:
+    - gloss: "to realize, to be aware of"
+      note: "with si"
+  why: "This meaning is uvedomovať si (9 of 9 treebank uses)."
+- key: "uvidieť|verb||1"
+  glosses:
+    - "to see, to catch sight of"
+    - gloss: "to see each other"
+      note: "with sa"
+  why: "Uvidieť sa, to see each other (dúfam, že sa skoro uvidíme), is common in the app's sentences and missing."
+- key: "uvoľniť|verb||1"
+  glosses:
+    - gloss: "to release, to free up"
+      note: "with sa when it has no object"
+    - gloss: "to loosen, to relax"
+      note: "with sa when it has no object"
+  why: "Both meanings take sa without an object (KSSJ uvoľniť sa): miesto sa uvoľní (the app's sentence), skrutka sa uvoľnila, uvoľni sa."
 - key: "učiť|verb||1"
   glosses:
     - gloss: "to learn"
       note: "with sa"
     - "to teach"
   why: "Order: učiť sa 'to learn' is the common use (20 of 22 in the app's texts), and the note 'intransitive' on 'to teach' was misleading."
+- key: "užiť|verb||1"
+  glosses:
+    - gloss: "to enjoy"
+      note: "with si"
+    - "to take medicine, to use"
+  why: "To enjoy is užiť si (užite si večer); plain užiť is to take medicine."
 - key: "užívateľ|noun|m_anim|1"
   glosses:
     - "user"
     - gloss: "occupant, tenant"
       note: "of an apartment or land"
   why: "'user' is the everyday meaning, and the definition note of the old first gloss was dropped."
+- key: "užívať|verb||1"
+  glosses:
+    - gloss: "to enjoy"
+      note: "with si"
+    - "to take medicine, to use"
+  why: "To enjoy is užívať si (užíva si život); plain užívať is to take or use."
 - key: "vajce|noun|n|1"
   glosses:
     - "egg"
@@ -2289,6 +3652,13 @@
     - "age"
     - "era, epoch"
   why: "The age of a person is the everyday meaning, not the bookish 'ages, eternity', and the notes were definitions."
+- key: "venovať|verb||1"
+  glosses:
+    - gloss: "to devote oneself to, to pursue"
+      note: "with sa"
+    - "to devote, to dedicate"
+    - "to give, to donate"
+  why: "The commonest use (19 of 31 treebank uses) is venovať sa 'to devote oneself to', which was missing, so it now comes first."
 - key: "veľký|adj||1"
   glosses:
     - "big, large, great"
@@ -2412,25 +3782,168 @@
     - "joke"
     - "wit"
   why: "Notes: the note only defined joke."
+- key: "vták|noun|m_inan|1"
+  glosses:
+    - gloss: "bird"
+      note: "the plural vtáky, beside vtáci; it declines like an inanimate noun"
+  why: "The morphology files the plural of an animal noun as a second entry of the inanimate gender; the note says what that label means."
+- key: "vybaviť|verb||1"
+  glosses:
+    - "to arrange, to sort out"
+    - "to equip, to furnish"
+    - gloss: "to recall"
+      note: "with si"
+  why: "To recall is vybaviť si (KSSJ: živo si vybavil tú situáciu)."
+- key: "vybrať|verb||1"
+  glosses:
+    - gloss: "to choose, to pick"
+      note: "often with si"
+    - "to take out, to withdraw"
+    - gloss: "to set out, to go"
+      note: "with sa"
+  why: "Choosing is mostly vybrať si (KSSJ, most app sentences), and the common vybrať sa 'to set out' (two app sentences) was missing."
+- key: "vychutnať|verb||1"
+  glosses:
+    - gloss: "to enjoy, to savor"
+      note: "often with si"
+  why: "Everyday speech says vychutnať si, as in all the app's sentences, though KSSJ has the plain verb too."
+- key: "vydať|verb||1"
+  glosses:
+    - "to publish, to issue"
+    - gloss: "to get married"
+      note: "with sa: vydala sa za neho"
+    - gloss: "to set out"
+      note: "with sa"
+  why: "Both 'to get married' (said of a woman: vydať sa za) and 'to set out' are vydať sa."
+- key: "vydávať|verb||1"
+  glosses:
+    - "to publish, to issue"
+    - "to emit, to give off"
+    - gloss: "to get married"
+      note: "with sa, of a woman: sestra sa vydáva"
+  why: "The app's sentences use vydávať sa, a woman getting married, which the entry lacked; it replaces the rarer 'to pass off as'. That it is said of a woman stands in the note."
+- key: "vyhnúť|verb||1"
+  glosses:
+    - gloss: "to avoid, to dodge"
+      note: "with sa"
+  why: "To avoid is vyhnúť sa (7 of 7 treebank uses)."
+- key: "vyhrážať|verb||1"
+  glosses:
+    - gloss: "to threaten"
+      note: "with sa: vyhrážal sa mi"
+  why: "The verb exists only as vyhrážať sa, with the person in the dative."
+- key: "vyhýbať|verb||1"
+  glosses:
+    - gloss: "to avoid"
+      note: "with sa: vyhýba sa mi"
+  why: "The verb is used only as vyhýbať sa with a dative (6 of 6 treebank uses)."
+- key: "vyjadriť|verb||1"
+  glosses:
+    - "to express"
+    - gloss: "to comment"
+      note: "with sa"
+  why: "To comment is vyjadriť sa (k návrhu), while plain vyjadriť is to express."
+- key: "vyjadrovať|verb||1"
+  glosses:
+    - "to express"
+    - gloss: "to comment"
+      note: "with sa"
+  why: "To comment is vyjadrovať sa (vyjadrovať sa k veci)."
 - key: "vyjsť|verb||1"
   glosses:
-    - "to step out, to leave"
-    - "to come out, to be published"
-    - "to go up, to ascend"
-  why: "Missing meaning: the rare transitive 'to finish' took a place while 'to come out, to be published', a top use (kniha vyšla), was cut."
+    - gloss: "to go out, to come out"
+      note: "also of a book or film: to be released"
+    - gloss: "to go up, to rise"
+      note: "up the stairs, up a hill; of the sun"
+    - gloss: "to work out, to succeed"
+      note: "vyšlo to: it worked out"
+  why: "Missing meanings: 'to come out, to be published' (kniha vyšla) and the very common 'to work out' (vyšlo to, nevyšlo mu to) had no place beside a rare transitive sense; leaving and being published are both 'to come out'."
+- key: "vyliečiť|verb||1"
+  glosses:
+    - gloss: "to cure, to heal"
+      note: "with sa when it has no object"
+  why: "Plain vyliečiť needs an object; to heal or recover oneself is vyliečiť sa."
 - key: "vymeniť|verb||1"
   glosses:
     - "to replace, to change"
     - "to exchange, to swap, to trade"
   why: "The third gloss repeated 'to replace' and the 'transitive' notes explained nothing."
+- key: "vymyslieť|verb||1"
+  glosses:
+    - "to come up with, to invent"
+    - gloss: "to make up"
+      note: "often with si"
+  why: "Making up something untrue is mostly vymyslieť si (KSSJ and the app's sentences)."
+- key: "vymýšľať|verb||1"
+  glosses:
+    - gloss: "to make up"
+      note: "often with si"
+    - "to invent"
+  why: "Making things up is mostly vymýšľať si (KSSJ: rád si vymýšľa) while to invent is plain, so the mixed gloss is split."
+- key: "vypadnúť|verb||1"
+  glosses:
+    - "to fall out"
+    - "to drop out, to be eliminated"
+    - gloss: "to get out, to clear off"
+      note: "colloquial"
+  why: "Missing meaning: the app's sentences use the colloquial vypadnúť (to get out of a place)."
+- key: "vyplatiť|verb||1"
+  glosses:
+    - gloss: "to be worth it"
+      note: "with sa"
+    - "to pay out"
+  why: "To be worth it is vyplatiť sa (vyplatí sa to), while plain vyplatiť is to pay out."
 - key: "vypnúť|verb||1"
   glosses:
     - "to turn off, to switch off"
   why: "The note only defined the gloss, and 'to stretch' and 'to stick out' are rare senses."
+- key: "vypočuť|verb||1"
+  glosses:
+    - gloss: "to listen to"
+      note: "with si"
+    - "to hear out"
+    - "to question"
+  why: "Split the mixed gloss: listening to something is vypočuť si (KSSJ: vypočuť si reláciu), while hearing someone out is plain."
+- key: "vypracovať|verb||1"
+  glosses:
+    - "to draw up, to work out"
+    - gloss: "to work one's way up"
+      note: "with sa"
+  why: "To work one's way up is vypracovať sa."
 - key: "vyrobiť|verb||1"
   glosses:
     - "to make, to produce"
   why: "The tanning gloss was broken and technical, and the uncommon 'to earn, to make' repeated 'to make'."
+- key: "vyrovnať|verb||1"
+  glosses:
+    - "to even out, to level"
+    - "to tie, to equalize"
+    - gloss: "to cope with"
+      note: "with sa"
+  why: "To cope with or come to terms with is vyrovnať sa s."
+- key: "vyskytnúť|verb||1"
+  glosses:
+    - gloss: "to occur, to arise"
+      note: "with sa"
+  why: "The verb exists only as vyskytnúť sa."
+- key: "vyskytovať|verb||1"
+  glosses:
+    - gloss: "to occur, to be found"
+      note: "with sa"
+  why: "The verb exists only as vyskytovať sa."
+- key: "vyskúšať|verb||1"
+  glosses:
+    - "to try out, to test"
+    - gloss: "to try on"
+      note: "often with si"
+  why: "Trying on clothes, a meaning the entry lacked, is mostly vyskúšať si (Môžem si to vyskúšať?), but KSSJ gives v. si šaty inside the plain sense, so si is usual, not required."
+- key: "vyspať|verb||1"
+  glosses:
+    - gloss: "to get enough sleep"
+      note: "with sa"
+    - gloss: "to sleep with"
+      note: "with sa"
+  why: "Both meanings are vyspať sa."
 - key: "vytiahnuť|verb||1"
   glosses:
     - "to pull out, to take out"
@@ -2441,21 +3954,69 @@
     - "to create, to cause, to form"
     - "to establish, to set up"
   why: "Order and rare sense: 'to create' is the main meaning; the dated colloquial 'to expel' was dropped."
+- key: "vyvinúť|verb||1"
+  glosses:
+    - gloss: "to develop"
+      note: "with sa when it has no object"
+    - "to exert"
+  why: "Developing on its own is vyvinúť sa (situácia sa vyvinie; 5 of 6 treebank uses)."
+- key: "vyvíjať|verb||1"
+  glosses:
+    - gloss: "to develop"
+      note: "with sa when it has no object"
+    - "to exert"
+  why: "Developing something is vyvíjať, developing by itself is vyvíjať sa (Dieťa sa vyvíja veľmi rýchlo)."
 - key: "vy|pron||1"
   glosses:
     - gloss: "you"
       note: "plural, or polite to one person"
   why: "Nothing told vy apart from ty, which has the note 'informal singular'."
+- key: "vyžiadať|verb||1"
+  glosses:
+    - gloss: "to request"
+      note: "often with si"
+    - gloss: "to require, to claim"
+      note: "with si"
+  why: "Requesting is mostly vyžiadať si, and requiring or claiming always takes si (nehoda si vyžiadala obete)."
+- key: "vzdať|verb||1"
+  glosses:
+    - gloss: "to give up, to surrender"
+      note: "often with sa"
+    - "to pay tribute"
+  why: "To give up or surrender is mostly vzdať sa (all 11 treebank uses), but giving up is plain in vzdať zápas (KSSJ) and vzdať to (the app's sentence), as with vzdávať."
+- key: "vzdávať|verb||1"
+  glosses:
+    - gloss: "to give up, to surrender"
+      note: "often with sa"
+    - "to pay tribute"
+  why: "To surrender or give up is mostly vzdávať sa (KSSJ: vzdať sa), though colloquial vzdávať to and sports vzdávať zápas are plain."
 - key: "vziať|verb||1"
   glosses:
     - "to take"
     - gloss: "to get married"
       note: "with sa"
   why: "Missing meaning: 'vziať sa' (to get married) is common and cannot be guessed from 'to take'."
+- key: "vzťahovať|verb||1"
+  glosses:
+    - gloss: "to apply to, to relate to"
+      note: "with sa"
+  why: "In this meaning the verb is vzťahovať sa na (zákon sa vzťahuje na všetkých)."
 - key: "vzťah|noun|m_inan|1"
   glosses:
     - "relationship, relation"
   why: "Missing main meaning and notes: the everyday sense is a relationship between people, and the note was a definition."
+- key: "vážený|adj||1"
+  glosses:
+    - "respected, esteemed"
+    - gloss: "dear"
+      note: "in formal address: Vážený pán Novák"
+  why: "Form: 'dear' alone reads as 'beloved'; the word means respected and is 'Dear' only in formal address."
+- key: "vážiť|verb||1"
+  glosses:
+    - gloss: "to respect, to appreciate"
+      note: "with si"
+    - "to weigh"
+  why: "To respect is vážiť si, and it goes first because it is the more frequent meaning (2 of 2 treebank uses, 5 of 7 app sentences)."
 - key: "výber|noun|m_inan|1"
   glosses:
     - "selection, choice"
@@ -2503,18 +4064,135 @@
     - gloss: "everyone, everybody"
       note: "the form všetci"
   why: "Missing meaning: the most used form všetko means 'everything' and všetci 'everyone', and both were absent."
+- key: "všimnúť|verb||1"
+  glosses:
+    - gloss: "to notice"
+      note: "with si"
+  why: "The verb is used only as všimnúť si (27 of 27 treebank uses)."
+- key: "všímať|verb||1"
+  glosses:
+    - gloss: "to notice, to pay attention to"
+      note: "with si"
+  why: "The verb exists only as všímať si."
+- key: "zabaviť|verb||1"
+  glosses:
+    - gloss: "to have fun"
+      note: "with sa"
+    - "to entertain, to amuse"
+    - "to confiscate"
+  why: "To have fun is zabaviť sa, the only use in the app's sentences, so it goes first."
 - key: "zabiť|verb||1"
   glosses:
     - "to kill, to murder, to slay"
     - gloss: "to kill oneself, to be killed"
       note: "with sa"
   why: "Form and rare sense: 'to slaughter, to kill' repeated gloss 1 and 'to break, to smash' is marginal, while the common zabiť sa was cut."
+- key: "zabávať|verb||1"
+  glosses:
+    - gloss: "to have fun"
+      note: "with sa"
+    - "to entertain, to amuse"
+  why: "'To have fun' is zabávať sa; entertaining someone is plain."
+- key: "zachovať|verb||1"
+  glosses:
+    - "to preserve, to keep"
+    - gloss: "to act, to behave"
+      note: "with sa"
+    - gloss: "to be preserved, to survive"
+      note: "with sa"
+  why: "'To behave' is zachovať sa, and KSSJ's zachovať sa 'to be preserved, to survive', used twice in the app's sentences, was missing."
+- key: "zahrať|verb||1"
+  glosses:
+    - gloss: "to play"
+      note: "often with si"
+    - gloss: "to play with, to play at"
+      note: "with sa"
+  why: "Games and sports are mostly zahrať si (3 of 4 treebank uses, both app sentences), while children's play is zahrať sa."
+- key: "zakladať|verb||1"
+  glosses:
+    - "to found, to establish"
+    - gloss: "to be based on"
+      note: "with sa"
+    - gloss: "to pride oneself on"
+      note: "with si: firma si zakladá na kvalite"
+  why: "To be based on is zakladať sa na, and KSSJ also lists zakladať si na, to pride oneself on, a common meaning the entry lacked."
+- key: "zamerať|verb||1"
+  glosses:
+    - gloss: "to focus, to aim"
+      note: "with sa when it has no object"
+    - "to measure up, to survey"
+  why: "To focus on something takes sa (zamerať sa na štúdium); with an object it is plain (zamerať pozornosť)."
+- key: "zameriavať|verb||1"
+  glosses:
+    - gloss: "to focus on"
+      note: "with sa"
+    - "to aim, to target"
+  why: "'To focus on' is zameriavať sa (2 of 2 treebank uses); aiming something is the plain verb."
+- key: "zamestnať|verb||1"
+  glosses:
+    - "to employ, to hire"
+    - gloss: "to get a job"
+      note: "with sa"
+  why: "To get a job is zamestnať sa; plain zamestnať is to employ."
+- key: "zamilovať|verb||1"
+  glosses:
+    - gloss: "to fall in love"
+      note: "with sa: zamiloval sa do nej"
+  why: "The verb is zamilovať sa do niekoho; the example shows the preposition."
+- key: "zamyslieť|verb||1"
+  glosses:
+    - gloss: "to think about, to reflect"
+      note: "with sa"
+  why: "The verb is used only as zamyslieť sa (5 of 5 treebank uses)."
+- key: "zaoberať|verb||1"
+  glosses:
+    - gloss: "to deal with, to engage in"
+      note: "with sa"
+  why: "The verb exists only as zaoberať sa."
+- key: "zapamätať|verb||1"
+  glosses:
+    - gloss: "to remember, to memorize"
+      note: "with si"
+  why: "The verb is used as zapamätať si."
 - key: "zapnúť|verb||1"
   glosses:
     - "to turn on, to switch on"
     - gloss: "to fasten, to button up"
       note: "a belt, buttons, a zipper"
   why: "Fastening a seat belt or a coat is very common and was absent; 'to power up, to enable' and the label 'transitive' did not help."
+- key: "zapojiť|verb||1"
+  glosses:
+    - gloss: "to join in, to get involved"
+      note: "with sa"
+    - "to plug in, to connect"
+  why: "To join in is zapojiť sa; to plug in is plain."
+- key: "zapísať|verb||1"
+  glosses:
+    - gloss: "to write down"
+      note: "often with si"
+    - gloss: "to enroll, to register"
+      note: "with sa when it has no object"
+  why: "Writing down is usually zapísať si; enrolling oneself is zapísať sa, enrolling someone is plain."
+- key: "zaradiť|verb||1"
+  glosses:
+    - "to include, to classify"
+    - gloss: "to rank among"
+      note: "with sa when it has no object"
+    - gloss: "to take one's place"
+      note: "with sa"
+  why: "Ranking among is zaradiť sa medzi when nothing is ranked, and taking one's place (do radu) is zaradiť sa, as in the app's sentence."
+- key: "zaregistrovať|verb||1"
+  glosses:
+    - gloss: "to register"
+      note: "with sa when it has no object"
+    - "to notice"
+  why: "Registering oneself (signing up) is zaregistrovať sa; registering something is plain."
+- key: "zariadiť|verb||1"
+  glosses:
+    - "to arrange, to sort out"
+    - gloss: "to furnish"
+      note: "often with si"
+  why: "Furnishing one's own home is usually zariadiť si byt, as in the app's sentence."
 - key: "zarobiť|verb||1"
   glosses:
     - "to earn, to make"
@@ -2523,6 +4201,13 @@
     - gloss: "to knead"
       note: "to prepare the dough"
   why: "'make' lacked 'to' and the note 'transitive, intransitive' told the learner nothing."
+- key: "zaslúžiť|verb||1"
+  glosses:
+    - gloss: "to deserve, to earn"
+      note: "with si"
+    - gloss: "to contribute greatly to"
+      note: "with sa: zaslúžil sa o víťazstvo"
+  why: "To deserve is zaslúžiť si; zaslúžiť sa o niečo (KSSJ: pričiniť sa) is a separate common meaning the entry lacked."
 - key: "zaspať|verb||1"
   glosses:
     - "to fall asleep"
@@ -2554,16 +4239,70 @@
     - gloss: "to lock up, to put away"
       note: "a person"
   why: "All three glosses repeated 'to close', while 'to lock up' was cut."
+- key: "zatvárať|verb||1"
+  glosses:
+    - gloss: "to close, to shut"
+      note: "with sa when the thing closes by itself: dvere sa zatvárajú"
+    - "to lock up"
+  why: "Closing by itself takes sa (dvere sa zatvárajú); the plain verb stands without an object too (obchody zatvárajú o šiestej), so the note names the case."
+- key: "zaujímať|verb||1"
+  glosses:
+    - "to interest"
+    - gloss: "to be interested in"
+      note: "with sa: zaujímam sa o hudbu"
+    - "to occupy, to take up"
+  why: "With the person as subject, to be interested in is zaujímať sa o; plain zaujíma ma is gloss 1."
+- key: "zavrieť|verb||1"
+  glosses:
+    - gloss: "to close, to shut"
+      note: "with sa when the thing closes by itself: dvere sa zavreli"
+    - "to lock up"
+  why: "Closing by itself takes sa (dvere sa zavreli); the plain verb stands without an object too (zavreli o šiestej), so the note names the case."
+- key: "začínať|verb||1"
+  glosses:
+    - "to begin, to start"
+    - gloss: "to begin, to get underway"
+      note: "with sa: film sa začína o ôsmej"
+  why: "An event that begins takes sa (KSSJ: začať sa; Stretnutie sa začína o tretej), but a person starting something does not (začínam robiť)."
+- key: "zbaliť|verb||1"
+  glosses:
+    - gloss: "to pack"
+      note: "with sa when it has no object"
+  why: "Packing up to leave is zbaliť sa (KSSJ), while packing a suitcase or things is plain."
+- key: "zbaviť|verb||1"
+  glosses:
+    - gloss: "to get rid of"
+      note: "with sa"
+    - "to rid, to deprive"
+  why: "Getting rid of something is zbaviť sa; zbaviť niekoho niečoho is plain."
+- key: "zblázniť|verb||1"
+  glosses:
+    - gloss: "to go crazy"
+      note: "with sa"
+  why: "The verb exists only as zblázniť sa."
 - key: "zbor|noun|m_inan|1"
   glosses:
     - gloss: "corps, body, force"
       note: "organized group, e.g. police, staff"
     - "choir"
   why: "KSSJ's first sense, an organized body such as the police force or teaching staff, was reduced to 'advisory', and 'music' was a useless label."
+- key: "zdať|verb||1"
+  glosses:
+    - gloss: "to seem"
+      note: "with sa"
+  why: "The verb exists only as zdať sa (28 of 28 treebank uses)."
 - key: "zdravie|noun|n|1"
   glosses:
     - "health"
   why: "Notes: the note is a definition that repeats the gloss."
+- key: "zdržať|verb||1"
+  glosses:
+    - "to delay, to hold up"
+    - gloss: "to stay"
+      note: "with sa"
+    - gloss: "to abstain"
+      note: "with sa"
+  why: "To stay and to abstain are zdržať sa; to delay someone is plain."
 - key: "zelenina|noun|f|1"
   glosses:
     - gloss: "vegetables"
@@ -2574,17 +4313,58 @@
     - "ground, floor"
     - "earth"
   why: "Missing main meaning: 'ground, floor' (spadol na zem, na zemi) is the everyday sense."
+- key: "zhodnúť|verb||1"
+  glosses:
+    - gloss: "to agree"
+      note: "with sa: zhodli sa na cene"
+  why: "The verb exists only as zhodnúť sa (na niečom)."
+- key: "zhodovať|verb||1"
+  glosses:
+    - gloss: "to match, to agree"
+      note: "with sa"
+  why: "The verb exists only as zhodovať sa."
+- key: "zhoršiť|verb||1"
+  glosses:
+    - gloss: "to worsen, to make worse"
+      note: "with sa when it has no object"
+  why: "Plain zhoršiť takes an object, while getting worse is zhoršiť sa (2 of 2 treebank uses)."
+- key: "zhoršovať|verb||1"
+  glosses:
+    - gloss: "to worsen, to make worse"
+      note: "with sa when it has no object"
+  why: "Making something worse is zhoršovať, getting worse is zhoršovať sa (stav sa zhoršuje)."
 - key: "zima|noun|f|1"
   glosses:
     - "winter"
     - gloss: "cold"
       note: "as in it is cold, I am cold"
   why: "'very cold weather' with its note was a definition; the common second meaning is 'cold' (je zima, je mi zima)."
+- key: "zjaviť|verb||1"
+  glosses:
+    - gloss: "to appear"
+      note: "with sa"
+    - "to reveal"
+  why: "'To appear' is zjaviť sa (35 of 35 treebank uses); 'to reveal' is the plain verb."
 - key: "zlato|noun|n|1"
   glosses:
     - "gold"
     - "darling"
   why: "The field label 'element' explains nothing for an everyday word."
+- key: "zlepšiť|verb||1"
+  glosses:
+    - gloss: "to improve"
+      note: "with sa when it has no object"
+  why: "Plain zlepšiť takes an object, while improving on its own is zlepšiť sa (počasie sa zlepší)."
+- key: "zlepšovať|verb||1"
+  glosses:
+    - gloss: "to improve"
+      note: "with sa when it has no object"
+  why: "Getting better is zlepšovať sa (stav sa zlepšuje); plain zlepšovať needs an object."
+- key: "zlomiť|verb||1"
+  glosses:
+    - gloss: "to break"
+      note: "with sa when it has no object"
+  why: "Something breaking is zlomiť sa; the si of zlomil si ruku is only the dative of one's own body part (KSSJ gives it under plain zlomiť, and zlomil mu ruku has none), not a meaning of its own."
 - key: "zlý|adj||1"
   glosses:
     - "bad"
@@ -2602,16 +4382,41 @@
     - "contract"
     - "agreement, treaty"
   why: "The common meanings 'agreement, treaty' (medzinárodná zmluva) were missing."
+- key: "znižovať|verb||1"
+  glosses:
+    - "to reduce, to lower"
+    - gloss: "to go down, to decrease"
+      note: "with sa"
+  why: "Prices or numbers going down is znižovať sa, a common use the entry lacks."
 - key: "známy|adj||1"
   glosses:
     - "famous, well-known, renowned"
     - "familiar, known"
     - "acquainted"
   why: "Notes: the three notes are long definitions that repeat the glosses."
+- key: "zobrať|verb||1"
+  glosses:
+    - "to take"
+    - gloss: "to get married"
+      note: "with sa: zobrali sa v lete"
+  why: "To get married is zobrať sa, said of the couple (rodičia sa zobrali)."
+- key: "zobudiť|verb||1"
+  glosses:
+    - gloss: "to wake up"
+      note: "with sa when it has no object"
+  why: "Waking up oneself is zobudiť sa; plain zobudiť is to wake someone."
 - key: "zomrieť|verb||1"
   glosses:
     - "to die"
   why: "The note 'intransitive' explains nothing."
+- key: "zopakovať|verb||1"
+  glosses:
+    - "to repeat"
+    - gloss: "to review"
+      note: "often with si"
+    - gloss: "to happen again, to recur"
+      note: "with sa"
+  why: "Reviewing is usually zopakovať si, and the missing sense to happen again is zopakovať sa (ak sa to zopakuje)."
 - key: "zostať|verb||1"
   glosses:
     - "to stay, to remain"
@@ -2621,11 +4426,42 @@
   glosses:
     - "list"
   why: "Notes: the note is a definition with a field label that explains nothing."
+- key: "zoznámiť|verb||1"
+  glosses:
+    - gloss: "to meet, to get acquainted"
+      note: "with sa"
+    - "to introduce"
+  why: "To get acquainted is zoznámiť sa; plain zoznámiť is to introduce."
+- key: "zraniť|verb||1"
+  glosses:
+    - "to injure, to hurt"
+    - gloss: "to get injured, to get hurt"
+      note: "with sa"
+  why: "Added zraniť sa (pri nehode sa zranili dvaja ľudia), a common meaning the entry lacked."
+- key: "zraziť|verb||1"
+  glosses:
+    - "to knock down, to run over"
+    - gloss: "to collide"
+      note: "with sa"
+  why: "To collide is zraziť sa (autá sa zrazili)."
 - key: "zručnosť|noun|f|1"
   glosses:
     - "skillfulness, skill"
     - "dexterity, adroitness"
   why: "Skill is the main meaning (jazykové zručnosti), not dexterity."
+- key: "zrútiť|verb||1"
+  glosses:
+    - gloss: "to collapse"
+      note: "with sa"
+    - gloss: "to crash"
+      note: "with sa"
+  why: "Both meanings are zrútiť sa (3 of 4 treebank uses); plain zrútiť means to topple."
+- key: "zveriť|verb||1"
+  glosses:
+    - "to entrust"
+    - gloss: "to confide"
+      note: "with sa when it has no object"
+  why: "Confiding in someone is zveriť sa, while confiding a secret to someone is plain."
 - key: "zvládnuť|verb||1"
   glosses:
     - "to manage, to handle, to cope"
@@ -2638,6 +4474,17 @@
       note: "often with si"
     - "to elect"
   why: "'to consent, to agree' is archaic; the 'transitive' notes explained nothing."
+- key: "zvyknúť|verb||1"
+  glosses:
+    - gloss: "to get used to"
+      note: "often with si"
+    - "to tend to"
+  why: "'To get used to' is mostly zvyknúť si (4 of 4 treebank uses), but KSSJ gives the si as optional (z. (si) na nového učiteľa); 'to tend to' (zvykne spať) is plain."
+- key: "zvyšovať|verb||1"
+  glosses:
+    - gloss: "to increase, to raise"
+      note: "with sa when it has no object"
+  why: "Rising on its own is zvyšovať sa (teplota sa zvyšuje); raising something takes no sa."
 - key: "zvýšiť|verb||1"
   glosses:
     - "to increase, to raise"
@@ -2685,6 +4532,16 @@
     - gloss: "to be useful, to be needed"
       note: "with sa"
   why: "'to move downward' repeated gloss 1 and 'to stray' took a place while the very common zísť sa (meet, gather; come in handy) was cut."
+- key: "zúčastniť|verb||1"
+  glosses:
+    - gloss: "to take part, to participate"
+      note: "with sa"
+  why: "The verb exists only as zúčastniť sa."
+- key: "zúčastňovať|verb||1"
+  glosses:
+    - gloss: "to take part, to participate"
+      note: "with sa"
+  why: "The verb exists only as zúčastňovať sa."
 - key: "zľava|noun|f|1"
   glosses:
     - "discount"
@@ -2803,6 +4660,16 @@
     - gloss: "what"
       note: "in čo ak, čo tak: what if, how about"
   why: "The particle čo is chiefly čo + superlative (as ... as possible); 'what' fits only čo ak, čo tak."
+- key: "čudovať|verb||1"
+  glosses:
+    - gloss: "to be surprised, to wonder"
+      note: "with sa: čudujem sa tomu"
+  why: "The verb exists only as čudovať sa, with the dative."
+- key: "čím|conj||1"
+  glosses:
+    - gloss: "the ... the"
+      note: "with tým: čím skôr, tým lepšie (the sooner, the better)"
+  why: "Wrong sense: 'whereby, by which' is the pronoun čo in the instrumental, an entry of its own; the conjunction is only čím ... tým."
 - key: "číslo|noun|n|1"
   glosses:
     - "number"
@@ -2834,6 +4701,11 @@
     - gloss: "light"
       note: "not heavy"
   why: "Order: 'easy' (nie je to ľahké) is the more frequent meaning, 9 of 14 uses in the app's texts."
+- key: "ľahnúť|verb||1"
+  glosses:
+    - gloss: "to lie down"
+      note: "often with si"
+  why: "Everyday 'to lie down' is ľahnúť si (5 of 5 treebank uses), though KSSJ also allows it without si."
 - key: "ľudstvo|noun|n|1"
   glosses:
     - "humanity, mankind"
@@ -2892,6 +4764,11 @@
     - gloss: "peak"
       note: "of a mountain"
   why: "The common mountain sense (Lomnický štít) was missing, and the note 'armor' was too narrow."
+- key: "šíriť|verb||1"
+  glosses:
+    - gloss: "to spread"
+      note: "with sa when it has no object"
+  why: "Fire, disease or news spreading is šíriť sa; plain šíriť needs an object."
 - key: "šťastný|adj||1"
   glosses:
     - "happy"
@@ -2914,3 +4791,9 @@
       note: "not any"
     - "none"
   why: "Order: the determiner 'no' (žiadny problém) is far commoner than the pronoun 'none'."
+- key: "živiť|verb||1"
+  glosses:
+    - "to provide for, to feed"
+    - gloss: "to make a living"
+      note: "with sa: čím sa živíte?"
+  why: "To make a living is živiť sa; to provide for is plain."
