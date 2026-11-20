@@ -187,10 +187,8 @@
   why: "English 'benzine' is a solvent; the everyday meaning is the fuel."
 - key: "bezpečie|noun|n|1"
   glosses:
-    - "safety"
-    - gloss: "shelter"
-      note: "a safe place"
-  why: "'safety' (v bezpečí) is the main meaning, and its note only defined it."
+    - "safety, security"
+  why: "'safety' (v bezpečí) is the main meaning, and its note only defined it. Then: Rare sense: 'shelter' is no separate meaning (v bezpečí, do bezpečia are 'in, to safety') and suggests a built refuge."
 - key: "bezpečne|adv||1"
   glosses:
     - "safely, securely"
@@ -1220,6 +1218,11 @@
   glosses:
     - "cake, pie, pastry"
   why: "'kolach' is a regional American loan; the everyday meaning is cake, pie or pastry."
+- key: "komentár|noun|m_inan|1"
+  glosses:
+    - "comment"
+    - "commentary"
+  why: "Missing meaning: 'commentary' (športový, politický komentár) was absent."
 - key: "komunikácia|noun|f|1"
   glosses:
     - "communication"
@@ -1352,6 +1355,14 @@
       note: "common, though the norm prefers pre"
     - "for, for the sake of"
   why: "Order and form: causal 'because of' is the everyday use despite the norm, and both glosses began with 'for'."
+- key: "k|prep||1"
+  glosses:
+    - "to, toward"
+    - gloss: "for"
+      note: "an occasion: k narodeninám, k Vianociam"
+    - gloss: "as of"
+      note: "a date: k 1. januáru"
+  why: "Missing meanings: 'for' an occasion (darček k narodeninám) and 'as of' a date were absent."
 - key: "kód|noun|m_inan|1"
   glosses:
     - "code"
@@ -2400,6 +2411,12 @@
   glosses:
     - "to organize"
   why: "Glosses 2 and 3 only repeated 'to organize' in reflexive forms, and 'transitive' was a bare grammar label."
+- key: "orgán|noun|m_inan|1"
+  glosses:
+    - gloss: "organ"
+      note: "of the body"
+    - "authority, body"
+  why: "Note: 'organ' alone also reads as the musical instrument, which is the separate word organ."
 - key: "oslobodiť|verb||1"
   glosses:
     - "to free, to liberate"
@@ -3528,7 +3545,7 @@
     - gloss: "to decide, to make up one's mind"
       note: "with sa: rozhodol sa odísť"
     - gloss: "to decide, to rule on"
-      note: "with o + locative"
+      note: "often with o + locative: komisia rozhodla o návrhu"
   why: "A person making up his mind says rozhodnúť sa (24 of 28 treebank uses), while the plain verb is an authority or event deciding something."
 - key: "rozhodovať|verb||1"
   glosses:
