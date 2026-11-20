@@ -199,7 +199,7 @@ export async function drawSample(
     senses.set(s.lemmaId, list);
   }
   for (const list of senses.values()) list.sort((a, b) => a.ord - b.ord);
-  const meaning = (id: number) => (senses.get(id) ?? []).slice(0, 3).map((s) => s.glossEn);
+  const meaning = (id: number) => (senses.get(id) ?? []).slice(0, 3).map(glossText);
   const triggers = new Map<string, TriggerRow>();
   for await (const t of readJsonl<TriggerRow>(f.triggers)) triggers.set(t.id, t);
 

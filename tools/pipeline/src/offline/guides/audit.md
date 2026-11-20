@@ -5,7 +5,7 @@ You are the second pass over a random sample of the finished content: example se
 ## Steps
 
 1. `offline show audit <route> <job...>` prints the items of a request. The routes and their jobs:
-   - `content.audit.sentences`, jobs `s0`, `s1`, …: a Slovak sentence, its English translation, and each word the sentence teaches with its form, the grammar of that form and the meaning of the lemma.
+   - `content.audit.sentences`, jobs `s0`, `s1`, …: a Slovak sentence, its English translation, and each word the sentence teaches with its form, the grammar of that form and the meaning of the lemma (its glosses, each with its note in brackets).
    - `content.audit.exercises`, jobs `e0`, `e1`, …: the kind of exercise, the sentence, its translation, the answer with its case, number and gender, the base form the learner is shown, the trigger (the word that governs the case, with its meaning) and the options of a choice exercise.
    - `content.audit.glosses`, jobs `g0`, `g1`, …: a lemma with its part of speech and its English glosses in the order the app shows them.
 2. Write the answer file of each request, one line per item:

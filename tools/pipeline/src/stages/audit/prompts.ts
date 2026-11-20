@@ -1,7 +1,8 @@
 // The model calls of the audit stage: a second pass over a random sample of the finished
 // content, the "review reports" of work package I2. Three routes share one answer shape:
-// - `content.audit.sentences` v1 reads example sentences with their translation and the
-//   forms they teach;
+// - `content.audit.sentences` v2 reads example sentences with their translation and the
+//   forms they teach (v2: the meaning of a taught word carries the notes of its glosses,
+//   as the word's card does);
 // - `content.audit.exercises` v1 reads exercises with their key, as a learner meets them;
 // - `content.audit.glosses` v1 reads the English glosses of a lemma.
 // A verdict changes nothing in the set: the stage only reports it.
@@ -16,7 +17,11 @@ export const AUDIT_ROUTES: Record<AuditKind, string> = {
   exercises: 'content.audit.exercises',
   glosses: 'content.audit.glosses',
 };
-export const AUDIT_PROMPT_VERSION = 1;
+export const AUDIT_PROMPT_VERSIONS: Record<AuditKind, number> = {
+  sentences: 2,
+  exercises: 1,
+  glosses: 1,
+};
 /** Items per request. */
 export const AUDIT_GROUP_SIZE = 25;
 
@@ -46,7 +51,7 @@ export interface TaughtWord {
   lemma: string;
   pos: string;
   gender?: string;
-  /** English glosses of the lemma, the most common first. */
+  /** English glosses of the lemma, the most common first, each with its note in brackets. */
   meaning?: string[];
   form: string;
   /** The grammar of the form in words: "genitive singular". */
@@ -96,7 +101,7 @@ Do not report matters of taste: a simple, ordinary item is what a learner needs.
 
 export const AUDIT_SENTENCES_SYSTEM = `You are a native Slovak speaker and an English editor. You audit a random sample of the example sentences of a Slovak learning app, after they were written and checked once. Learners at levels A1 to B1 meet each sentence on a flash card and trust it.
 
-You receive a JSON list of items. Each has a number n, a Slovak sentence (sk), its English translation (en), its source (tatoeba: a public sentence collection; ud: a treebank of web and news texts; generated: a writer) and the words it teaches. Each taught word has its lemma, part of speech, gender where it has one, English meaning where the dictionary has one, the form that stands in the sentence and that form's grammar (formIs).
+You receive a JSON list of items. Each has a number n, a Slovak sentence (sk), its English translation (en), its source (tatoeba: a public sentence collection; ud: a treebank of web and news texts; generated: a writer) and the words it teaches. Each taught word has its lemma, part of speech, gender where it has one, English meaning where the dictionary has one (its glosses in the order the app shows them; a gloss can carry a note in brackets), the form that stands in the sentence and that form's grammar (formIs).
 
 For every item return:
 - n, unchanged.
@@ -147,7 +152,7 @@ function auditTask<I extends { n: number }>(
 ): BatchTask<AuditRequest<I>, AuditAnswer> {
   return {
     route: AUDIT_ROUTES[kind],
-    promptVersion: AUDIT_PROMPT_VERSION,
+    promptVersion: AUDIT_PROMPT_VERSIONS[kind],
     effort: 'high',
     maxTokens: 16000,
     system,

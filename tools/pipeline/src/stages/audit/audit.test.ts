@@ -115,13 +115,14 @@ describe('the sample', () => {
     ]);
     const s = items[0] as AuditItem;
     expect(s.asked).toMatchObject({ source: expect.stringMatching(/tatoeba|generated/u) });
-    // Links in the order of their rank; the meaning is the first glosses in dictionary order.
+    // Links in the order of their rank; the meaning is the first glosses in dictionary order,
+    // each with its note, as the word's card shows them.
     expect(s.asked.teaches).toEqual([
       {
         lemma: 'žena',
         pos: 'noun',
         gender: 'f',
-        meaning: ['woman', 'wife'],
+        meaning: ['woman (adult female person)', 'wife'],
         form: 'ženu',
         formIs: 'accusative singular',
       },
@@ -212,7 +213,7 @@ describe('the audit stage', () => {
       const shown = showRequest(t.paths, 'audit', request);
       if (route === AUDIT_ROUTES.sentences)
         expect(shown).toContain(
-          'teaches: ženu = accusative singular of žena (noun f), meaning: woman; wife',
+          'teaches: ženu = accusative singular of žena (noun f), meaning: woman (adult female person); wife',
         );
       if (route === AUDIT_ROUTES.exercises)
         expect(shown).toContain('trigger: preposition k + dative: to, towards');
