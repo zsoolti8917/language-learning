@@ -19,8 +19,14 @@ import {
 } from '.';
 import { analyse } from './analyze';
 import { excludedPath, readExcluded } from './excluded';
-import { parseConllu, readTatoeba, TATOEBA_SOURCE } from './harvest';
-import { type Lexicon, lexiconFiles, loadLexicon } from './lexicon';
+import {
+  type HarvestedSentence,
+  parseConllu,
+  readTatoeba,
+  TATOEBA_SOURCE,
+  withoutRepeats,
+} from './harvest';
+import { addAnimateAccusatives, Lexicon, lexiconFiles, loadLexicon } from './lexicon';
 import { describeTag } from './prompts';
 import {
   type Candidate,
@@ -96,6 +102,83 @@ describe('tokens, rules and choice on the mini lexicon', () => {
     expect(a.tokens[4]?.by).toBe('treebank');
     // The multiword token Aby has no single analysis; the lexicon does not know it.
     expect(a.tokens[0]?.readings).toEqual([]);
+  });
+
+  it('reads the plural in -ov of an animal noun as an accusative too', () => {
+    const small = new Lexicon(3000);
+    const add = (
+      id: number,
+      lemma: string,
+      pos: 'noun' | 'verb' | 'num' | 'prep' | 'adv',
+      forms: [string, string][],
+      more: object = {},
+    ) => {
+      small.addLemma({
+        id,
+        key: `${lemma}|${pos}|${id}`,
+        lemma,
+        pos,
+        freqRank: id,
+        topForms: [],
+        ...more,
+      });
+      for (const [form, tags] of forms) small.addForm(id, form, tags);
+    };
+    // The morphology files the singular and the plural of an animal under two lemmas.
+    add(
+      1,
+      'pes',
+      'noun',
+      [
+        ['pes', 's1'],
+        ['psa', 's2 s4'],
+      ],
+      { gender: 'm_anim' },
+    );
+    add(
+      2,
+      'pes',
+      'noun',
+      [
+        ['psy', 'p1 p4'],
+        ['psov', 'p2'],
+      ],
+      { gender: 'm_inan', pluralOnly: true },
+    );
+    add(3, 'kôň', 'noun', [['kôň', 's1']], { gender: 'm_anim' });
+    add(
+      4,
+      'kôň',
+      'noun',
+      [
+        ['kone', 'p1 p4'],
+        ['koní', 'p2'],
+      ],
+      { gender: 'm_inan', pluralOnly: true },
+    );
+    add(5, 'mať', 'verb', [['mám', 'v:Kesa+']]);
+    add(6, 'dva', 'num', [['dvoch', 'p2m p2i p4m']]);
+    add(7, 'bez', 'prep', [['bez', '']], { cases: ['gen'] });
+    add(8, 'doma', 'adv', [['doma', '']]);
+    add(9, 'stôl', 'noun', [['stolov', 'p2']], { gender: 'm_inan' });
+    add(10, 'pokoj', 'noun', [['pokoj', 's4']], { gender: 'm_inan' });
+    addAnimateAccusatives(small);
+    expect(small.readings('psov', false)).toEqual([
+      { lemmaId: 2, tag: 'p2', form: 'psov' },
+      { lemmaId: 1, tag: 'p4', form: 'psov' },
+    ]);
+    // koní is the genitive only (the accusative is kone); a table has no animate lemma.
+    expect(small.readings('koní', false)).toEqual([{ lemmaId: 4, tag: 'p2', form: 'koní' }]);
+    expect(small.readings('stolov', false)).toEqual([{ lemmaId: 9, tag: 'p2', form: 'stolov' }]);
+    // Mám doma dvoch psov: an accusative. Neither psov nor dvoch may show a genitive.
+    const has = analyse('Mám doma dvoch psov.', small);
+    expect(targetsOf(has, small).map((t) => t.form)).toEqual(['Mám', 'doma']);
+    // After bez only the genitive is left, and the word can be shown.
+    const without = analyse('Mám doma pokoj bez psov.', small);
+    expect(targetsOf(without, small).find((t) => t.form === 'psov')).toMatchObject({
+      lemmaId: 2,
+      tag: 'p2',
+    });
   });
 
   it('rejects a sentence of the wrong length, with a rare word, or with an unknown word', async () => {
@@ -189,6 +272,28 @@ describe('the harvest', () => {
       textSk: 'Bol som v práci.',
       license: 'CC BY 2.0 FR',
     });
+  });
+});
+
+describe('repeated sentences', () => {
+  it('leaves out a sentence written like an earlier one', () => {
+    const s = (id: string, textSk: string): HarvestedSentence => ({
+      id,
+      source: 'ud',
+      sourceRef: id,
+      license: 'CC BY-SA 4.0',
+      textSk,
+    });
+    const kept = withoutRepeats(
+      [
+        s('a', 'Inak bolo všetko v poriadku.'),
+        s('b', 'Bol na slnku, oni v tieni.'),
+        s('c', 'Inak bolo všetko v poriadku.'),
+      ],
+      // The texts of the Tatoeba sentences.
+      new Set(['Bol na slnku, oni v tieni.']),
+    );
+    expect(kept.map((x) => x.id)).toEqual(['a']);
   });
 });
 

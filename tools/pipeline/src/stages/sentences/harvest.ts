@@ -177,7 +177,28 @@ export async function readUd(
   return out;
 }
 
-/** Both sources. A missing treebank split is skipped. */
+/**
+ * The sentences that are written like no sentence before them. The treebank holds some
+ * passages twice, and a word would get the same example two times.
+ */
+export function withoutRepeats(
+  sentences: readonly HarvestedSentence[],
+  seen: Set<string> = new Set(),
+): HarvestedSentence[] {
+  const out: HarvestedSentence[] = [];
+  for (const s of sentences) {
+    const key = s.textSk.normalize('NFC');
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(s);
+  }
+  return out;
+}
+
+/**
+ * Both sources. A missing treebank split is skipped. A treebank sentence written like a
+ * Tatoeba sentence or like an earlier treebank sentence is left out.
+ */
 export async function harvest(
   raw: string,
   opts: HarvestOptions,
@@ -188,5 +209,6 @@ export async function harvest(
     const p = join(raw, UD_SOURCE, udFile(split));
     if (existsSync(p)) ud.push(...(await readUd(p, split, opts)));
   }
-  return { tatoeba, ud };
+  const seen = new Set(tatoeba.map((s) => s.textSk.normalize('NFC')));
+  return { tatoeba, ud: withoutRepeats(ud, seen) };
 }

@@ -16,6 +16,8 @@ export interface LexLemma {
   topForms: { form: string; tag: string }[];
   /** Cases a preposition governs (morph's `flags.cases`, or the set's triggers). */
   cases?: Case[];
+  /** A noun with plural forms only (morph's `flags.pluralOnly`). */
+  pluralOnly?: boolean;
 }
 
 /** One reading of a written form: a lemma and one form tag. */
@@ -107,7 +109,7 @@ interface RawLemma {
   gender?: Gender;
   freqRank?: number;
   topForms?: { form: string; tag: string }[];
-  flags?: { retired?: boolean; cases?: Case[] };
+  flags?: { retired?: boolean; cases?: Case[]; pluralOnly?: boolean };
 }
 
 export interface LexiconFiles {
@@ -163,6 +165,7 @@ export async function loadLexicon(
     if (l.gender) lemma.gender = l.gender;
     if (r.freqRank !== undefined) lemma.freqRank = r.freqRank;
     if (l.flags?.cases && l.flags.cases.length > 0) lemma.cases = [...l.flags.cases];
+    if (l.flags?.pluralOnly) lemma.pluralOnly = true;
     lex.addLemma(lemma);
   }
   if (files.triggers && existsSync(files.triggers))
@@ -179,5 +182,31 @@ export async function loadLexicon(
     if (words && !words.has(f.form.toLowerCase()) && !lex.common(f.lemmaId)) continue;
     lex.addForm(f.lemmaId, f.form, f.tags);
   }
+  addAnimateAccusatives(lex);
   return lex;
+}
+
+/**
+ * The morphology files the plural of an animal noun under a second, inanimate lemma
+ * (*pes*: *psy*, *psov*) and knows its form in -ov as the genitive only. Slovak also uses
+ * that form as the accusative, as for every animate noun (*mám dvoch psov*). The form
+ * therefore gets the accusative reading of the animate lemma as well, so that a sentence
+ * is not taken to show a genitive where it may show an accusative.
+ */
+export function addAnimateAccusatives(lex: Lexicon): void {
+  const animate = new Map<string, number>();
+  for (const l of lex.lemmas.values())
+    if (l.pos === 'noun' && l.gender === 'm_anim' && !animate.has(l.lemma))
+      animate.set(l.lemma, l.id);
+  for (const list of lex.byLower.values()) {
+    for (const r of [...list]) {
+      const l = lex.lemmas.get(r.lemmaId);
+      if (!l?.pluralOnly || l.gender !== 'm_inan' || r.tag !== 'p2' || !r.form.endsWith('ov'))
+        continue;
+      const twin = animate.get(l.lemma);
+      if (twin === undefined) continue;
+      if (!list.some((x) => x.lemmaId === twin && x.tag === 'p4' && x.form === r.form))
+        list.push({ lemmaId: twin, tag: 'p4', form: r.form });
+    }
+  }
 }
