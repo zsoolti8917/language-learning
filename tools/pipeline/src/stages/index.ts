@@ -2,6 +2,7 @@
 // a folder under stages/ that exports a Stage; add it here, in its place in the order.
 // The order also decides how validate assembles the parts of the set.
 import type { Stage } from '../lib/runner';
+import { analysisStage } from './analysis';
 import { dictStage } from './dict';
 import { exercisesStage } from './exercises';
 import { fetchStage } from './fetch';
@@ -28,6 +29,7 @@ export const STAGES: readonly Stage[] = [
   libraryStage,
   validateStage,
   loadStage,
+  analysisStage,
 ];
 
 export function stageByName(name: string, stages: readonly Stage[] = STAGES): Stage | undefined {

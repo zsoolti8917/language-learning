@@ -10,12 +10,23 @@
 // must still name every item, and the stage's rules drop a SKIP like any other sentence
 // that fails them; `lint` reports it as left out, not as a problem to mend.
 import { readFile } from 'node:fs/promises';
+import { type Disambiguation, DisambiguationSchema } from '@app/api/modules/analyzer/model';
+import {
+  type GlossAnswer as ReaderGlossAnswer,
+  GlossAnswerSchema as ReaderGlossAnswerSchema,
+} from '@app/api/modules/lexicon/service';
 import { tokenize } from '@app/ling';
 import { existsSync, listFiles, writeFileAtomic } from '../lib/files';
 import type { Paths } from '../lib/paths';
 import { offlineAnswersDir, offlineRequestsDir } from '../model/options';
 import { type GlossAnswer, type GlossRequest, glossesTask } from '../model/prompts/content-glosses';
 import { type BatchTask, type OfflineRequest, offlinePath, validateAnswer } from '../model/runner';
+import {
+  type DisambiguationInput,
+  disambiguationProblems,
+  type GlossInput,
+  glossProblems,
+} from '../stages/analysis/answers';
 import {
   DEFAULT_PLAN,
   planAll,
@@ -90,7 +101,8 @@ interface Pair<I, O> {
 }
 
 interface RouteSpec<I, O> {
-  task: BatchTask<I, O>;
+  /** What makes an answer valid: the schema and the check of the route's task. */
+  task: Pick<BatchTask<I, O>, 'schema' | 'check'>;
   /** The task's input, rebuilt from the user message of a request. */
   input(user: string): I;
   /** The request in a compact form a writer can read. */
@@ -469,6 +481,36 @@ const libraryReviewSpec: RouteSpec<LibraryReviewInput, unknown> = {
   show: (input) => [`${input.id}: ${input.title} (${input.level})`, '', input.body],
 };
 
+// --- reader.disambiguate and reader.gloss (analysis) ------------------------------------------
+// Routes of apps/api that the `analysis` stage asks through the offline gateway (gateway.ts).
+// The gateway accepts an answer on the same schema and the same problems as `lint`.
+
+const readingLine = (r: DisambiguationInput['words'][number]['readings'][number]) =>
+  `${r.i}: ${[r.lemma, r.pos, r.case, r.number, r.gender, r.verbTag].filter(Boolean).join(' ')}`;
+
+const disambiguateSpec: RouteSpec<DisambiguationInput, Disambiguation> = {
+  task: { schema: DisambiguationSchema, check: disambiguationProblems },
+  input: (user) => JSON.parse(user) as DisambiguationInput,
+  // Each sentence once, then its open words with their readings by index.
+  show: (input) =>
+    input.contexts.flatMap((context, c) => [
+      `[${c}] ${context}`,
+      ...input.words
+        .filter((w) => w.context === c)
+        .map((w) => tab(w.w, w.word, w.readings.map(readingLine).join(' | '))),
+    ]),
+};
+
+const readerGlossSpec: RouteSpec<GlossInput, ReaderGlossAnswer> = {
+  task: { schema: ReaderGlossAnswerSchema, check: glossProblems },
+  input: (user) => JSON.parse(user) as GlossInput,
+  show: (input) => [
+    ...(input.sentence ? [`sentence: ${input.sentence}`] : []),
+    tab('lemmaId', 'lemma', 'pos', 'gender', 'aspect'),
+    ...input.lemmas.map((l) => tab(l.lemmaId, l.lemma, l.pos, l.gender, l.aspect)),
+  ],
+};
+
 /** Every route of every stage with a model fill. */
 export const OFFLINE_ROUTES: Record<string, Record<string, AnySpec>> = {
   dict: { 'content.glosses': glossesSpec },
@@ -482,6 +524,7 @@ export const OFFLINE_ROUTES: Record<string, Record<string, AnySpec>> = {
     'content.exercises.review': exerciseReviewSpec,
   },
   library: { 'content.review': libraryReviewSpec },
+  analysis: { 'reader.disambiguate': disambiguateSpec, 'reader.gloss': readerGlossSpec },
 };
 
 export function specOf(stage: string, route: string): AnySpec {
@@ -693,6 +736,7 @@ export async function reviewHints(
   stage: string,
   request: OfflineRequest,
 ): Promise<string[]> {
+  if (stage !== 'sentences' && stage !== 'exercises') return [];
   const items: { id: string; sk: string; form?: string }[] =
     stage === 'sentences'
       ? (JSON.parse(request.user) as SentenceReviewRequest['items']).map((i) => ({

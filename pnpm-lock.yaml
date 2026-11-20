@@ -595,6 +595,9 @@ importers:
       '@app/ai':
         specifier: workspace:*
         version: link:../../packages/ai
+      '@app/api':
+        specifier: workspace:*
+        version: link:../../apps/api
       '@app/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts

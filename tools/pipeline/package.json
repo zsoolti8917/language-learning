@@ -17,6 +17,7 @@
     "@app/db": "workspace:*",
     "@app/ling": "workspace:*",
     "@app/ai": "workspace:*",
+    "@app/api": "workspace:*",
     "@anthropic-ai/sdk": "catalog:",
     "zod": "catalog:",
     "yaml": "catalog:"

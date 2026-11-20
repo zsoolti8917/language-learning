@@ -13,6 +13,7 @@ import {
   describeForms,
   describeWords,
   lintRequests,
+  OFFLINE_ROUTES,
   openRequests,
   pick,
   putItems,
@@ -207,7 +208,13 @@ describe('glosses', () => {
 
   it('knows its stages and routes', () => {
     expect(() => specOf('dict', 'content.sentences')).toThrow(/no offline route/u);
-    expect(specOf('sentences', 'content.review').task.route).toBe('content.review');
+    expect(specOf('sentences', 'content.review')).toBe(
+      OFFLINE_ROUTES.sentences?.['content.review'],
+    );
+    expect(Object.keys(OFFLINE_ROUTES.analysis ?? {})).toEqual([
+      'reader.disambiguate',
+      'reader.gloss',
+    ]);
   });
 });
 

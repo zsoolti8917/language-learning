@@ -211,7 +211,7 @@ async function readEntry(path: string): Promise<CacheEntry | null> {
 
 /** Parses and checks an answer. Returns the output or the reasons it was rejected. */
 export function validateAnswer<I, O>(
-  task: BatchTask<I, O>,
+  task: Pick<BatchTask<I, O>, 'schema' | 'check'>,
   input: I,
   value: unknown,
 ): { ok: true; output: O } | { ok: false; reason: string } {
