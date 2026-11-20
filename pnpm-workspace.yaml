@@ -7,6 +7,8 @@ packages:
 # Every dependency of the stack is pinned here, exactly. Packages reference
 # them with "catalog:". Adding or changing an entry is a shared surface change.
 catalog:
+  # Deploy (bundles the API function for Vercel)
+  esbuild: 0.28.2
   # Client
   react: 19.3.1
   react-dom: 19.3.1

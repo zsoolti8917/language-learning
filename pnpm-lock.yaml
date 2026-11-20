@@ -236,6 +236,9 @@ catalogs:
     drizzle-orm:
       specifier: 0.45.4
       version: 0.45.4
+    esbuild:
+      specifier: 0.28.2
+      version: 0.28.2
     fake-indexeddb:
       specifier: 6.2.8
       version: 6.2.8
@@ -313,6 +316,9 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
+      esbuild:
+        specifier: 'catalog:'
+        version: 0.28.2
       fast-check:
         specifier: 'catalog:'
         version: 4.10.2

@@ -11,7 +11,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/db.ts migrate",
-    "db:load": "tsx scripts/db.ts load"
+    "db:load": "tsx scripts/db.ts load",
+    "sql:bundle": "tsx scripts/sql-bundle.ts"
   },
   "dependencies": {
     "@app/contracts": "workspace:*",

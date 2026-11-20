@@ -1,8 +1,11 @@
 // /verify: the six digit code that confirms a new account. On success the learner is signed
-// in and goes to Today; the route guard sends a first run to onboarding.
+// in and goes to Today; the route guard sends a first run to onboarding. When the email
+// carries a link instead (Supabase's default emails), the screen waits for the link, which
+// returns here signed in.
 import { useNavigate } from '@tanstack/react-router';
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, useEffect, useState } from 'react';
 import { DEV_CODE, useAuth } from '../../lib/auth';
+import { env } from '../../lib/env';
 import { t } from '../../messages';
 import { Button, EmptyState, useToast } from '../../ui';
 import { CodeField, ResendButton } from './code';
@@ -20,6 +23,16 @@ export function VerifyScreen() {
   const [touched, setTouched] = useState(false);
   const [sending, setSending] = useState(false);
   const [formError, setFormError] = useState<string>();
+  const linkedIn = auth.confirmsByLink && auth.session !== null;
+
+  // The email link came back here signed in: the account is confirmed.
+  useEffect(() => {
+    if (!linkedIn) return;
+    writePending(null);
+    void navigate({ to: '/' });
+  }, [linkedIn, navigate]);
+
+  if (linkedIn) return null;
 
   if (!pending) {
     return (
@@ -29,7 +42,7 @@ export function VerifyScreen() {
           description={m.t('verify.noPendingHint')}
           action={
             <div className="flex flex-col items-center">
-              <TextLink to="/signup">{m.t('verify.toSignup')}</TextLink>
+              {env.signupOpen && <TextLink to="/signup">{m.t('verify.toSignup')}</TextLink>}
               <TextLink to="/login">{m.t('verify.toLogin')}</TextLink>
             </div>
           }
@@ -63,10 +76,28 @@ export function VerifyScreen() {
       setPending(next);
       setCode('');
       setTouched(false);
-      toast({ title: m.t('verify.resent'), tone: 'success' });
+      toast({
+        title: m.t(auth.confirmsByLink ? 'verify.linkResent' : 'verify.resent'),
+        tone: 'success',
+      });
     } catch (err) {
       setFormError(authErrorMessage(err));
     }
+  }
+
+  if (auth.confirmsByLink) {
+    return (
+      <AuthScreen
+        title={t('screens.verify')}
+        intro={m.t('verify.linkIntro', { email: current.email })}
+        footer={<TextLink to="/login">{m.t('verify.toLogin')}</TextLink>}
+      >
+        <div className="flex flex-col gap-4">
+          <FormError>{formError}</FormError>
+          <ResendButton link sentAt={current.sentAt} onResend={resend} />
+        </div>
+      </AuthScreen>
+    );
   }
 
   return (

@@ -1059,6 +1059,7 @@ Three switches turn each cloud part into its local stand in, and the same code r
 | `VITE_AUTH_MODE` | `supabase` or `dev` |
 | `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` | The only Supabase values the client may hold |
 | `VITE_MOCK_API` | `true` starts the mock server in the browser. Client packages develop with it. |
+| `VITE_SIGNUP` | `closed` hides sign up (the login link and `/signup`, which then goes to `/login`). Unset shows it. |
 
 ### Environments
 

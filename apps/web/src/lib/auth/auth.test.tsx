@@ -68,8 +68,13 @@ describe('Supabase login', () => {
       publishableKey: 'y',
       client: { auth: sb } as never,
     });
+    expect(auth.confirmsByLink).toBe(true);
     await auth.signUp('a@b.test', 'secret123');
-    expect(sb.signUp).toHaveBeenCalledWith({ email: 'a@b.test', password: 'secret123' });
+    expect(sb.signUp).toHaveBeenCalledWith({
+      email: 'a@b.test',
+      password: 'secret123',
+      options: { emailRedirectTo: `${window.location.origin}/verify` },
+    });
     expect(await auth.verifyCode('a@b.test', '123456', 'signup')).toEqual({
       userId: 'u1',
       email: 'a@b.test',
@@ -82,6 +87,9 @@ describe('Supabase login', () => {
       type: 'signup',
     });
     await auth.requestPasswordReset('a@b.test');
+    expect(sb.resetPasswordForEmail).toHaveBeenCalledWith('a@b.test', {
+      redirectTo: `${window.location.origin}/reset`,
+    });
     await auth.verifyCode('a@b.test', '654321', 'recovery');
     expect(sb.verifyOtp).toHaveBeenLastCalledWith({
       email: 'a@b.test',
@@ -91,7 +99,11 @@ describe('Supabase login', () => {
     await auth.updatePassword('new secret');
     expect(sb.updateUser).toHaveBeenCalledWith({ password: 'new secret' });
     await auth.resendCode('a@b.test', 'signup');
-    expect(sb.resend).toHaveBeenCalledWith({ type: 'signup', email: 'a@b.test' });
+    expect(sb.resend).toHaveBeenCalledWith({
+      type: 'signup',
+      email: 'a@b.test',
+      options: { emailRedirectTo: `${window.location.origin}/verify` },
+    });
     expect((await auth.refresh())?.accessToken).toBe('jwt');
     await expect(auth.signIn('a@b.test', 'x')).rejects.toMatchObject({
       code: 'invalid_credentials',
