@@ -63,6 +63,8 @@
   reason: "Broken grammar in the source, an infinitive after \"aby\" (it should be \"dovolil\")."
 - text: "Napadla ho skvelá myšlienka."
   reason: "\"Napadla ho\" for an idea is a Bohemism; Slovak says \"napadla mu\" (with \"ho\" it reads as an attack)."
+- text: "Napriek tomu som jej požiadavku splnil."
+  reason: "The word \"jej\" can be read as the possessive (her request) and as the dative of \"ona\" (splniť niekomu požiadavku), so the sentence is a confusing example of the possessive."
 - text: "Nenašiel som žiadne peniaze v mojom vrecku."
   reason: "Slovak uses the reflexive possessive when the owner is the subject: \"vo svojom vrecku\", not \"v mojom vrecku\"."
 - text: "Netušili, čo to znamená a čoskoro sa dostali do úzkych."
