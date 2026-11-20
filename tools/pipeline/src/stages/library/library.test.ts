@@ -1,5 +1,7 @@
 import { cp, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import type { TextAnalysis } from '@app/contracts';
+import { MINI_DIR } from '@app/testkit/mini';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { readJsonl, writeJsonl } from '../../lib/files';
 import { runStage, type Stage } from '../../lib/runner';
@@ -10,13 +12,16 @@ import { morphStage } from '../morph';
 import { scenarioRulesCheck, scenarioSlovakCheck, scenariosStage } from '../scenarios';
 import { validateStage } from '../validate';
 import {
+  bodyHash,
   type LibraryOutRow,
+  libraryAnalysisCheck,
   libraryStage,
   libraryTextsCheck,
   libraryVocabularyCheck,
   readReviews,
 } from '.';
-import { parseAuthoredText } from './authored';
+import { type LibraryAnalysis, writeAnalyses } from './analysis';
+import { parseAuthoredText, readAuthoredTexts } from './authored';
 import { reviewTask } from './review';
 import { seedLibrarySample } from './sample';
 import { A2_MIN_SHARE, FormIndex, type LemmaInfo, profileText, wordsOf } from './vocab';
@@ -90,6 +95,20 @@ describe('vocabulary profile', () => {
     expect(p.lemmas).toBe(5);
     expect(p.outside).toEqual([{ word: 'kaviarni', lemma: 'kaviareň', rank: 2864 }]);
     expect(profileText(text, index, lemmas, 3000).share).toBe(1);
+  });
+
+  it('keeps the form tags of a word per lemma when the rows carry them', () => {
+    const tagged = new FormIndex(new Set(['Mesta', 'mesta', 'dnes']));
+    tagged.add('mesta', 20, 's2');
+    tagged.add('mesta', 20, 'p1 p4 p5');
+    tagged.add('dnes', 71, '');
+    tagged.add('mesto', 20, 's1 s4 s5'); // not a wanted spelling
+    expect([...(tagged.tagsOf('Mesta', 20) ?? [])]).toEqual(['s2', 'p1', 'p4', 'p5']);
+    expect(tagged.tagsOf('dnes', 71)).toEqual(new Set());
+    expect(tagged.tagsOf('mesta', 21)).toBeUndefined();
+    expect(tagged.tagsOf('mesto', 20)).toBeUndefined();
+    // Rows without tags give candidates but no readings.
+    expect(index.tagsOf('som', 1)).toBeUndefined();
   });
 
   it('reports a word that is no known form', () => {
@@ -226,6 +245,49 @@ describe('library on the authored texts', () => {
     }
   }, 60_000);
 
+  it('carries the analysis made for the current body of a text, and no other', async () => {
+    const texts = await readAuthoredTexts(join(t.paths.content, 'authored', 'library'));
+    const body = (id: string) => texts.find((x) => x.id === id)?.body ?? '';
+    const analysis: TextAnalysis = { v: 1, sentences: [], lemmas: {} };
+    const row = (id: string, hash: string): LibraryAnalysis => ({
+      id,
+      bodyHash: hash,
+      tokenCount: 180,
+      lemmaCounts: { '7': 2 },
+      analysis,
+      methods: { single: 100, rule: 60, model: 20, guess: 0 },
+      route: 'reader.disambiguate',
+      promptVersion: 1,
+      model: 'tester',
+      requestHashes: [],
+    });
+    const file = join(t.root, 'analysis.jsonl');
+    await writeAnalyses(file, [
+      row('lib-004', bodyHash(body('lib-004'))),
+      row('lib-005', bodyHash(`${body('lib-005')} Zmena.`)), // made for another body
+    ]);
+    const r = await runStage(libraryStage, t.ctx({ reviews: reviews(), analysis: file }), {
+      force: true,
+    });
+    expect(r.result).toMatchObject({ texts: 12, analysed: 1 });
+    const out = await rows<LibraryOutRow>(libraryOut());
+    expect(out.find((x) => x.id === 'lib-004')).toMatchObject({
+      analysis,
+      lemmaCounts: { '7': 2 },
+    });
+    expect(out.filter((x) => x.analysis !== undefined).map((x) => x.id)).toEqual(['lib-004']);
+    expect(out.find((x) => x.id === 'lib-005')?.lemmaCounts).toBeUndefined();
+    const report = await readFile(join(t.paths.build, 'library', 'report.md'), 'utf8');
+    expect(report).toContain('1 with a word by word analysis of their current body');
+    expect(report).toMatch(/\| lib-004 \|.*\| 180 words, 20 chosen by tester \|/u);
+    expect(report).toMatch(/\| lib-005 \|.*\| none \|/u);
+    // Without the file the rows carry no analysis again.
+    await runStage(libraryStage, t.ctx({ reviews: reviews() }), { force: true });
+    expect((await rows<LibraryOutRow>(libraryOut())).every((x) => x.analysis === undefined)).toBe(
+      true,
+    );
+  }, 60_000);
+
   it('fails on a word that is no known form and on an A2 text beyond its vocabulary', async () => {
     const file = join(t.paths.content, 'authored', 'library', 'lib-002.md');
     const before = await readFile(file, 'utf8');
@@ -306,4 +368,116 @@ describe('library on the authored texts', () => {
     const partial = await validateSet(set, checks, { complete: false });
     expect(Object.keys(partial.issueCounts)).toEqual(['scenarios.rules']);
   }, 60_000);
+});
+
+describe('library.analysis', () => {
+  let t: TempRoot;
+  type Token = { s: number; e: number; t: string; l?: number; tag?: string; m?: string };
+  type Lib = {
+    id: string;
+    body: string;
+    analysis?: { sentences: { s: number; e: number; tokens: Token[] }[]; lemmas: object };
+    lemmaCounts?: Record<string, number>;
+  };
+  beforeAll(async () => {
+    t = await tempRoot();
+  });
+  afterAll(() => t.remove());
+
+  /** The mini set with its one library text changed by `edit`; the messages of the check. */
+  async function check(name: string, edit: (row: Lib) => void, complete = false) {
+    const set = join(t.root, name);
+    await cp(MINI_DIR, set, { recursive: true });
+    const lib = await rows<Lib>(join(set, 'library.jsonl'));
+    edit(lib[0] as Lib);
+    await writeJsonl(join(set, 'library.jsonl'), lib);
+    const r = await validateSet(set, [libraryAnalysisCheck], { complete });
+    return {
+      issues: r.issues.map((i) => i.message),
+      warnings: r.warnings.map((i) => i.message),
+    };
+  }
+  /** The token of the first word written `word`. */
+  const token = (row: Lib, word: string) => {
+    for (const s of row.analysis?.sentences ?? [])
+      for (const x of s.tokens) if (row.body.slice(x.s, x.e) === word) return x;
+    throw new Error(`no token ${word}`);
+  };
+
+  it('passes the analysis of the mini dataset', async () => {
+    expect(await check('ok', () => undefined)).toEqual({ issues: [], warnings: [] });
+  });
+
+  it('names a reading that is no form of its lemma or has another tag', async () => {
+    const r = await check('readings', (row) => {
+      token(row, 'práce').tag = 's4'; // do práce: the genitive
+      token(row, 'deň').l = 20; // mesto
+      delete token(row, 'ulici').tag;
+    });
+    expect(r.issues).toEqual([
+      expect.stringMatching(
+        /^library\.jsonl:1 \(lib-001\): "deň" is no form of lemma 20 \(mesto\)$/u,
+      ),
+      expect.stringMatching(/"práce" as a form of práca is .*s2.*, not s4$/u),
+      expect.stringMatching(/"ulici" as a form of ulica is .*s6.*, not without a tag$/u),
+      expect.stringMatching(/lemmaCounts does not match the word tokens of the analysis$/u),
+    ]);
+  });
+
+  it('names spans out of order, a missing word token and a lemma the analysis does not list', async () => {
+    const spans = await check('spans', (row) => {
+      const s = row.analysis?.sentences[1];
+      if (s) s.e = row.body.length + 5;
+    });
+    expect(spans.issues).toEqual([
+      expect.stringMatching(/sentence 2 spans \d+ to \d+, out of order or outside the text$/u),
+    ]);
+    const tokens = await check('tokens', (row) => {
+      const s = row.analysis?.sentences[1];
+      if (s) s.tokens = [s.tokens[1] as Token, s.tokens[0] as Token, ...s.tokens.slice(2)];
+    });
+    expect(tokens.issues).toEqual([
+      expect.stringMatching(/a token of sentence 2 spans \d+ to \d+, out of order or outside/u),
+    ]);
+    const missing = await check('missing', (row) => {
+      row.analysis?.sentences[1]?.tokens.shift(); // "Dnes", lemma 71, counted twice in the text
+      if (row.analysis) row.analysis.lemmas = { ...row.analysis.lemmas, '30': undefined };
+    });
+    expect(missing.issues).toEqual([
+      expect.stringMatching(/"deň" points at lemma 30, which the analysis does not list$/u),
+      expect.stringMatching(/the analysis has \d+ word tokens, the text has \d+ words$/u),
+      expect.stringMatching(/lemmaCounts does not match/u),
+    ]);
+  });
+
+  it('a guessed reading fails a complete build and is a warning elsewhere', async () => {
+    const guess = (row: Lib) => {
+      token(row, 'deň').m = 'guess';
+    };
+    const partial = await check('guess', guess);
+    expect(partial.issues).toEqual([]);
+    expect(partial.warnings).toEqual([
+      expect.stringMatching(/1 words carry a guessed reading; run the analysis stage/u),
+    ]);
+    const complete = await check('guess-complete', guess, true);
+    expect(complete.issues).toEqual([expect.stringMatching(/1 words carry a guessed reading/u)]);
+  });
+
+  it('warns about a text without an analysis and a lemma without a gloss', async () => {
+    const none = await check('none', (row) => {
+      delete row.analysis;
+      delete row.lemmaCounts;
+    });
+    expect(none).toEqual({
+      issues: [],
+      warnings: [
+        '1 texts have no analysis of their current body (the app analyses them on first use): lib-001',
+      ],
+    });
+    const bare = await check('bare', (row) => {
+      const lemmas = row.analysis?.lemmas as Record<string, { gloss: string[] }>;
+      (lemmas['30'] as { gloss: string[] }).gloss = [];
+    });
+    expect(bare.warnings).toEqual([expect.stringMatching(/1 lemmas have no gloss: deň$/u)]);
+  });
 });

@@ -247,6 +247,22 @@ describe('the rule checks', () => {
       );
   });
 
+  it('allow a listed name beyond the vocabulary limit, and no other rare word', () => {
+    const s = slotOf((x) => x.words.length === 1 && x.trigger.id === 'prep-do');
+    // Bratislava ranks 71 and kamarát 54 in the mini dataset: both lie beyond a limit of 50.
+    const strict: RuleContext = { ...rc, vocabularyLimit: 50 };
+    const problems = (sk: string) => {
+      const r = checkCandidate(
+        { slot: s.slot, sentenceSk: sk, sentenceEn: 'x', gap: s.gap },
+        s,
+        strict,
+      );
+      return r.ok ? '' : r.problems.join('\n');
+    };
+    expect(problems(`Bratislava ide do ${s.gap}.`)).not.toMatch(/rare word/u);
+    expect(problems(`Kamarát ide do ${s.gap}.`)).toMatch(/rare word "Kamarát" \(rank 54\)/u);
+  });
+
   it('reject a gap that is not a form, a missing gap, a far trigger and an unknown word', () => {
     const s = slotOf((x) => x.words.length === 1 && x.trigger.id === 'prep-do');
     const problems = (sk: string, gap: string) => {

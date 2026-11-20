@@ -218,6 +218,98 @@ describe('glosses', () => {
   });
 });
 
+describe('analysis', () => {
+  const readings = {
+    contexts: ['Vidím ženy v meste.', 'Je to dobré.'],
+    words: [
+      {
+        w: 0,
+        context: 0,
+        word: 'ženy',
+        readings: [
+          { i: 0, lemma: 'žena', pos: 'noun', case: 'gen', number: 'sg', gender: 'f' },
+          { i: 1, lemma: 'žena', pos: 'noun', case: 'acc', number: 'pl', gender: 'f' },
+        ],
+      },
+      {
+        w: 1,
+        context: 1,
+        word: 'Je',
+        readings: [
+          { i: 0, lemma: 'byť', pos: 'verb', verbTag: 'Kesc+' },
+          { i: 1, lemma: 'jesť', pos: 'verb', verbTag: 'Kesc+' },
+        ],
+      },
+    ],
+  };
+  const glosses = {
+    lemmas: [
+      { lemmaId: 21, lemma: 'kino', pos: 'noun', gender: 'n' },
+      { lemmaId: 67, lemma: 'kúpiť', pos: 'verb', aspect: 'pf' },
+    ],
+  };
+
+  it('shows the open words of a text under their sentences, each reading by its index', async () => {
+    const r = await request('analysis', 'reader.disambiguate', 'aa11', ['lib-001'], readings);
+    expect(showRequest(paths, 'analysis', r).split('\n')).toEqual([
+      '# request aa11',
+      `# answer file: ${answerPath(paths, 'analysis', 'reader.disambiguate', 'aa11')}`,
+      '[0] Vidím ženy v meste.',
+      '0\tženy\t0: žena noun gen sg f | 1: žena noun acc pl f',
+      '[1] Je to dobré.',
+      '1\tJe\t0: byť verb Kesc+ | 1: jesť verb Kesc+',
+    ]);
+    const g = await request('analysis', 'reader.gloss', 'bb22', ['glosses'], glosses);
+    expect(showRequest(paths, 'analysis', g).split('\n').slice(2)).toEqual([
+      'lemmaId\tlemma\tpos\tgender\taspect',
+      '21\tkino\tnoun\tn\t',
+      '67\tkúpiť\tverb\t\tpf',
+    ]);
+  });
+
+  it('checks picks and glosses as the offline gateway will', async () => {
+    await request('analysis', 'reader.disambiguate', 'aa11', ['lib-001'], readings);
+    await request('analysis', 'reader.disambiguate', 'bb22', ['lib-002'], readings);
+    await request('analysis', 'reader.disambiguate', 'cc33', ['lib-003'], readings);
+    await answer('analysis', 'reader.disambiguate', 'bb22', { picks: [{ w: 0, c: 2 }] });
+    await answer('analysis', 'reader.disambiguate', 'cc33', {
+      picks: [
+        { w: 0, c: 1 },
+        { w: 1, c: 0 },
+      ],
+    });
+    const open = await openRequests(paths, 'analysis', 'reader.disambiguate');
+    expect(pick(open, ['lib-002']).map((r) => r.hash)).toEqual(['bb22']);
+    const reports = await lintRequests(paths, 'analysis', 'reader.disambiguate', open);
+    expect(reports.map((r) => r.state)).toEqual(['missing', 'invalid', 'checked']);
+    expect(reports[1]?.problem).toBe(
+      'check: word 0 ("ženy") has no reading 2; no pick for word 1 ("Je")',
+    );
+    expect(renderLint(reports).split('\n')).toEqual([
+      'aa11: NO ANSWER FILE',
+      'bb22: REFUSED WHOLE: check: word 0 ("ženy") has no reading 2; no pick for word 1 ("Je")',
+      'cc33: ok',
+    ]);
+
+    const g = await request('analysis', 'reader.gloss', 'dd44', ['glosses'], glosses);
+    await answer('analysis', 'reader.gloss', 'dd44', {
+      glosses: [{ lemmaId: 21, glosses: ['cinema'] }],
+    });
+    const refused = await lintRequests(paths, 'analysis', 'reader.gloss', [g]);
+    expect(refused[0]).toMatchObject({
+      state: 'invalid',
+      problem: 'check: no glosses for lemma 67 (kúpiť)',
+    });
+    await answer('analysis', 'reader.gloss', 'dd44', {
+      glosses: [
+        { lemmaId: 21, glosses: ['cinema'] },
+        { lemmaId: 67, glosses: ['to buy'] },
+      ],
+    });
+    expect((await lintRequests(paths, 'analysis', 'reader.gloss', [g]))[0]?.state).toBe('checked');
+  });
+});
+
 describe('sentences', () => {
   const item = (n: number, form: string, tag: string, formIs: string) => ({
     n,

@@ -20,7 +20,7 @@
 //   pnpm run pipeline library --fill mock      + scripted reviews, kept in the build folder
 //   pnpm run pipeline library --fill offline   + reviews written outside the API
 import { join } from 'node:path';
-import type { LibraryRow } from '@app/contracts';
+import { type LibraryRow, TextAnalysisSchema } from '@app/contracts';
 import {
   existsSync,
   JsonlWriter,
@@ -45,6 +45,7 @@ import {
   type LemmaInfo,
   profileText,
   type TextProfile,
+  wordsOf,
 } from './vocab';
 
 /** The starter library: twelve texts of 150 to 400 words. */
@@ -449,6 +450,101 @@ export const libraryVocabularyCheck: Check = {
   },
 };
 
+/**
+ * The word by word analysis of a text fits its body and the morphology of the set: spans in
+ * order and inside the text, one word token per word, lemma counts that match the tokens, and
+ * every reading a form of its lemma with its tag.
+ */
+export const libraryAnalysisCheck: Check = {
+  id: 'library.analysis',
+  description:
+    'The analysis of a library text fits its body (spans, word tokens, lemma counts), and every reading is a form of its lemma with its tag; no reading is a guess',
+  async run(ctx) {
+    if (!ctx.has('library.jsonl')) return;
+    const { index, lemmas } = await setVocabulary(ctx);
+    const without: string[] = [];
+    for await (const { n, row } of ctx.raw('library.jsonl')) {
+      const w = `library.jsonl:${n} (${String(row.id)})`;
+      if (row.analysis === undefined) {
+        without.push(String(row.id));
+        continue;
+      }
+      const parsed = TextAnalysisSchema.safeParse(row.analysis);
+      if (!parsed.success) continue; // the schema check reports the row
+      const a = parsed.data;
+      const body = String(row.body ?? '');
+      const counts = new Map<string, number>();
+      let words = 0;
+      let guesses = 0;
+      let end = 0;
+      let spans = true;
+      for (const [i, s] of a.sentences.entries()) {
+        if (s.s < end || s.e <= s.s || s.e > body.length) {
+          ctx.issue(
+            `${w}: sentence ${i + 1} spans ${s.s} to ${s.e}, out of order or outside the text`,
+          );
+          spans = false;
+          break;
+        }
+        end = s.e;
+        let at = s.s;
+        for (const t of s.tokens) {
+          if (t.s < at || t.e <= t.s || t.e > s.e) {
+            ctx.issue(
+              `${w}: a token of sentence ${i + 1} spans ${t.s} to ${t.e}, out of order or outside its sentence`,
+            );
+            spans = false;
+            break;
+          }
+          at = t.e;
+          if (t.t !== 'word') continue;
+          words++;
+          if (t.l === undefined) continue;
+          const word = body.slice(t.s, t.e);
+          counts.set(String(t.l), (counts.get(String(t.l)) ?? 0) + 1);
+          if (t.m === 'guess') guesses++;
+          const name = lemmas.get(t.l)?.lemma ?? a.lemmas[String(t.l)]?.lemma ?? '?';
+          if (!a.lemmas[String(t.l)])
+            ctx.issue(`${w}: "${word}" points at lemma ${t.l}, which the analysis does not list`);
+          const tags = index.tagsOf(word, t.l);
+          if (!tags) ctx.issue(`${w}: "${word}" is no form of lemma ${t.l} (${name})`);
+          else if (t.tag === undefined ? tags.size > 0 : !tags.has(t.tag))
+            ctx.issue(
+              `${w}: "${word}" as a form of ${name} is ${[...tags].join(' ') || 'without a tag'}, not ${t.tag ?? 'without a tag'}`,
+            );
+        }
+        if (!spans) break;
+      }
+      if (!spans) continue;
+      const inBody = wordsOf(body).length;
+      if (words !== inBody)
+        ctx.issue(`${w}: the analysis has ${words} word tokens, the text has ${inBody} words`);
+      const given = (row.lemmaCounts ?? {}) as Record<string, unknown>;
+      const same =
+        Object.keys(given).length === counts.size &&
+        [...counts].every(([id, c]) => given[id] === c);
+      if (!same) ctx.issue(`${w}: lemmaCounts does not match the word tokens of the analysis`);
+      if (guesses > 0)
+        target(
+          ctx,
+          `${w}: ${guesses} words carry a guessed reading; run the analysis stage until no request is open`,
+        );
+      const bare = Object.values(a.lemmas).filter((l) => l.gloss.length === 0);
+      if (bare.length > 0)
+        ctx.warn(
+          `${w}: ${bare.length} lemmas have no gloss: ${bare
+            .slice(0, 10)
+            .map((l) => l.lemma)
+            .join(', ')}`,
+        );
+    }
+    if (without.length > 0)
+      ctx.warn(
+        `${without.length} texts have no analysis of their current body (the app analyses them on first use): ${without.join(', ')}`,
+      );
+  },
+};
+
 export const libraryStage: Stage = {
   name: 'library',
   description:
@@ -471,5 +567,5 @@ export const libraryStage: Stage = {
   }),
   run: runLibrary,
   parts: [{ file: 'library.jsonl', path: (p) => join(p.build, 'library', 'library.jsonl') }],
-  checks: [libraryTextsCheck, libraryVocabularyCheck],
+  checks: [libraryTextsCheck, libraryVocabularyCheck, libraryAnalysisCheck],
 };

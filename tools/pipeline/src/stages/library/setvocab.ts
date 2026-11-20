@@ -50,7 +50,11 @@ async function build(ctx: CheckContext): Promise<SetVocabulary> {
   async function* forms() {
     for await (const { row } of ctx.raw('forms.jsonl'))
       if (typeof row.lemmaId === 'number' && typeof row.form === 'string')
-        yield { lemmaId: row.lemmaId, form: row.form };
+        yield {
+          lemmaId: row.lemmaId,
+          form: row.form,
+          ...(typeof row.tags === 'string' ? { tags: row.tags } : {}),
+        };
   }
   return { lemmas, index: await buildFormIndex(texts, forms()) };
 }

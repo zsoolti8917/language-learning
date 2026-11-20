@@ -1,4 +1,4 @@
-import { cp, readFile, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { SentenceRow } from '@app/contracts';
 import { MINI_DIR } from '@app/testkit/mini';
@@ -18,6 +18,7 @@ import {
   sentencesStage,
 } from '.';
 import { analyse } from './analyze';
+import { excludedPath, readExcluded } from './excluded';
 import { parseConllu, readTatoeba, TATOEBA_SOURCE } from './harvest';
 import { type Lexicon, lexiconFiles, loadLexicon } from './lexicon';
 import { describeTag } from './prompts';
@@ -321,6 +322,51 @@ describe('the sentences stage on the mini dataset', () => {
     expect(r.issues).toEqual([]);
     expect(r.ok).toBe(true);
     expect(r.issueCounts['sentences.rules']).toBeUndefined();
+  });
+});
+
+describe('the exclusion list', () => {
+  let t: TempRoot;
+  const generated = () => join(t.root, 'generated.jsonl');
+  const outPath = () => join(t.paths.build, 'sentences', 'sentences.jsonl');
+  const run = () =>
+    runStage(sentencesStage, t.ctx({ lexicon: MINI_DIR, generated: generated() }), {
+      force: true,
+    });
+  beforeAll(async () => {
+    t = await tempRoot();
+    await seedSentencesSample(t.paths);
+  });
+  afterAll(() => t.remove());
+
+  it('reads texts with their reasons, and nothing when the file is missing', async () => {
+    expect(await readExcluded(excludedPath(t.paths))).toEqual(new Map());
+    const file = join(t.root, 'list.yaml');
+    await writeFile(file, '- text: " Idem domov. "\n  reason: A test.\n');
+    expect(await readExcluded(file)).toEqual(new Map([['Idem domov.', 'A test.']]));
+    await writeFile(file, '- text: Idem domov.\n');
+    await expect(readExcluded(file)).rejects.toThrow(/list\.yaml: 0\.reason/u);
+    await writeFile(file, '- text: Idem domov.\n  reason: x\n  by: me\n');
+    await expect(readExcluded(file)).rejects.toThrow(/by/u);
+  });
+
+  it('leaves a listed sentence out of the kept sentences and counts it', async () => {
+    const before = (await run()).result as { excluded: number; kept: { tatoeba: number } };
+    expect(before.excluded).toBe(0);
+    const first = (await rows<SentenceRow>(outPath()))[0] as SentenceRow;
+    await mkdir(join(t.paths.content, 'authored', 'sentences'), { recursive: true });
+    await writeFile(
+      excludedPath(t.paths),
+      `- text: ${JSON.stringify(first.textSk)}\n  reason: Wrong Slovak in the source.\n` +
+        '- text: Táto veta v zdrojoch nie je.\n  reason: Not in any source.\n',
+    );
+    const after = (await run()).result as { excluded: number; kept: { tatoeba: number } };
+    expect(after.excluded).toBe(1);
+    expect(after.kept.tatoeba).toBe(before.kept.tatoeba - 1);
+    const out = await rows<SentenceRow>(outPath());
+    expect(out.some((s) => s.textSk === first.textSk)).toBe(false);
+    const report = await readFile(join(t.paths.build, 'sentences', 'report.md'), 'utf8');
+    expect(report).toContain('| listed in content/authored/sentences/excluded.yaml | 1 |');
   });
 });
 
