@@ -28,6 +28,24 @@ Read the whole sentence first and name the part each word plays in it. Then pick
 - **`jeho`, `jej`, `ich`**: as "his, her, their" before a noun the lemma is `jeho`, `jej`, `ich`, with the case, number and gender of that noun; as an object ("him, her, them") the lemma is `on`, `ona`, `ono`.
 - **An adjective as a noun** (`malé noun`, `druhá noun`, `známy noun`): only when the word names a thing or a person itself and describes no noun, said or understood.
 - **Names**: a capitalised lemma (`Jana`, `Bratislava`) when the word is that name.
+- **A word that stands twice in its sentence** is listed once for each place, in the order of the sentence. Decide each place on its own: the places can need different readings (`postavilo viac ciest, jazdilo by viac ľudí`: the first `viac` is accusative, the second nominative).
+
+## Small words with two readings
+
+The texts follow the Krátky slovník slovenského jazyka. Keep to these readings, so that the same use carries the same label in every text.
+
+- `už`: `adv` when it says that an action or a state has come about (`brat už býva v Prahe`, `babka už nežije`, `pani ma už pozná`); `part` when it stresses the expression right after it (`už minulý týždeň`, `už o štvrtej`).
+- `ešte`: `adv` for "still", "not yet", "in addition" and "once more" (`ešte nejedla`, `idem ešte po chlieb`, `ešte raz`); `part` before a comparative or a stressed expression (`ešte lepší`).
+- `konečne`: `adv` for "at last" (`konečne mám vlastný domov`); `part` only for "after all".
+- `však`: `conj` in the second place of its clause (`Najviac si však pamätám`); `part` at the start of a sentence or as a tag.
+- `aj keď`, `keď aj`, `hoci aj`: `aj` is `conj` here.
+- `veľa`, `málo`, `viac`, `menej`, `dosť`, `trochu`, `plno`: `num` with a genitive noun or pronoun, said or understood (`veľa ľudí`, `je jej veľa`, `vo vlaku je plno`); `adv` when the word says how much an action is done (`platil som veľa`, `málo sa hýbem`, `mal by som viac športovať`) and in `viac ako`, `menej ako` without a counted noun. When the data has no adverb reading (`najviac`, `menej`), pick the closest one that puts no wrong case on the word.
+- **The case of a numeral from five up and of a quantity word** is the case of the whole phrase, and the word itself is neuter singular: nominative for the subject (`bolo tam veľa ľudí`, `býva tu dvanásť rodín`, `je málo chodníkov`, `nás chodí päť`), accusative for an object or a measure (`mám dosť času`, `mal desať rokov`, `cesta trvá dvadsať minút`, `schudol osem kíl`).
+- `pol`: `pol hodiny` has the case of the phrase (`som tam pol hodiny`: accusative). In `o pol ôsmej` the word `pol` is locative after `o`, and the ordinal is genitive: half of the eighth hour.
+- `zima`, `teplo`, `chladno`, `ticho` with `je`, `bolo`, `bude` as a statement about the weather or a feeling are `adv` (`bolo teplo`, `nie je príliš zima`); a noun when the verb or an adjective agrees with the word (`bola mi zima`, `zima je studená`).
+- `raz`: the numeral, accusative, in `ešte raz`, `prvý raz`; `adv` for "once, at some time" (`raz mi povedala`).
+- `ako` after a verb of seeing or hearing is `conj` (`počúvala, ako dýcham`); in a question about manner, also an indirect one, it is `adv` (`vysvetlila, ako ich mám brať`).
+- A past form without a subject in the sentence that says "they, people" (`bicykel mi ukradli`, `kúrenie opravili`) takes the gender `o`. With `deti` as the subject, said or understood, a past form and an adjective are neuter plural.
 
 ## Verb tags
 
