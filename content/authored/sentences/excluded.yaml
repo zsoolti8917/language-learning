@@ -3,3 +3,5 @@
 # its exact Slovak text.
 - text: Namiesto toho som ho opäť poprosila, aby mi dovoliť dotknúť sa ich.
   reason: Broken grammar in the source, an infinitive after "aby" (it should be "dovolil").
+- text: Je prekrásna ako jej mať.
+  reason: The noun "mať" (mother) is bookish; in the set the word is read as the verb "mať", so a learner would learn it wrongly.

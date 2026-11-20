@@ -87,9 +87,18 @@ describe('the exercises stage with a mock fill on the mini dataset', () => {
       expect(r.flags).toMatchObject({ review: 'pass', generation: { route: 'content.exercises' } });
       expect(r.difficulty).toBeGreaterThanOrEqual(0);
       expect(r.difficulty).toBeLessThanOrEqual(1);
-      expect(r.sentenceSk.slice(r.target.start, r.target.end).toLowerCase()).toBe(
-        (r.target.answers[0] as string).toLowerCase(),
-      );
+      // The first answer is the gap as it stands in the text, capital included.
+      expect(r.sentenceSk.slice(r.target.start, r.target.end)).toBe(r.target.answers[0]);
+    }
+    // A question's answer opens the second sentence: "Koho? Mesta."
+    const later = bank.filter(
+      (r) => r.target.start > 0 && /^\p{Lu}/u.test(r.target.answers[0] as string),
+    );
+    expect(later.length).toBeGreaterThan(0);
+    for (const r of later) {
+      expect(r.target.answers.every((a) => /^\p{Lu}/u.test(a))).toBe(true);
+      if (r.kind === 'choice_form')
+        expect((r.options ?? []).every((o) => /^\p{Lu}/u.test(o.text))).toBe(true);
     }
     const kinds = new Set(bank.map((r) => r.kind));
     expect(kinds).toEqual(new Set(['cloze', 'choice_form', 'choice_meaning']));
