@@ -42,6 +42,7 @@ import {
   SpendLimitError,
 } from '../../model/runner';
 import { type Analysis, analyse } from './analyze';
+import { excludedPath, readExcluded } from './excluded';
 import {
   type HarvestedSentence,
   harvest,
@@ -265,8 +266,15 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
   const kept = new Map<string, Kept>();
   const harvested = new Map<string, HarvestedSentence>();
   let noTarget = 0;
+  // Sentences a reader found wrong (content/authored/sentences/excluded.yaml) are left out.
+  const excluded = await readExcluded(excludedPath(ctx.paths));
+  const excludedSeen = new Set<string>();
   for (const s of [...tatoeba, ...ud]) {
     harvested.set(s.id, s);
+    if (excluded.has(s.textSk.normalize('NFC'))) {
+      excludedSeen.add(s.textSk.normalize('NFC'));
+      continue;
+    }
     const a = analyse(s.textSk, lex, s.ud);
     const problem = sentenceProblem(a, lex);
     if (problem) {
@@ -665,6 +673,7 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
     harvested: { tatoeba: tatoeba.length, ud: ud.length },
     rejected: Object.fromEntries(REJECTIONS.map((r) => [r, rejected.get(r) ?? 0])),
     withoutTarget: noTarget,
+    excluded: excludedSeen.size,
     kept: {
       tatoeba: [...kept.values()].filter((k) => k.source === 'tatoeba').length,
       ud: [...kept.values()].filter((k) => k.source === 'ud').length,
@@ -696,6 +705,7 @@ function renderReport(
     harvested: { tatoeba: number; ud: number };
     rejected: Record<string, number>;
     withoutTarget: number;
+    excluded: number;
     kept: { tatoeba: number; ud: number };
     translations: number;
     generated: number;
@@ -723,6 +733,7 @@ function renderReport(
     '|---|---:|',
     ...Object.entries(s.rejected).map(([r, n]) => `| ${r} | ${n.toLocaleString('en')} |`),
     `| no word can be a target | ${s.withoutTarget.toLocaleString('en')} |`,
+    `| listed in content/authored/sentences/excluded.yaml | ${s.excluded.toLocaleString('en')} |`,
     '',
     '(`ambiguous` and `not-top-form` count words, not sentences.)',
     '',
@@ -889,6 +900,7 @@ export const sentencesStage: Stage = {
       ...(f.triggers ? [f.triggers] : []),
       sensesPath(ctx),
       generatedPath(ctx),
+      ...(existsSync(excludedPath(ctx.paths)) ? [excludedPath(ctx.paths)] : []),
     ];
   },
   outputs: (ctx) => ['sentences.jsonl', 'report.md', 'report.json'].map((f) => out(ctx, f)),

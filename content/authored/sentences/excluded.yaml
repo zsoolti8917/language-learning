@@ -1,0 +1,5 @@
+# Real sentences (Tatoeba, the treebank) that learners must not see, each with the reason.
+# The sentences stage leaves them out before it chooses examples. A sentence is matched by
+# its exact Slovak text.
+- text: Namiesto toho som ho opäť poprosila, aby mi dovoliť dotknúť sa ich.
+  reason: Broken grammar in the source, an infinitive after "aby" (it should be "dovolil").

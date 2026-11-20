@@ -7,7 +7,8 @@
 //   gender ("pekná dom").
 // A hint is not a verdict: an adjective can govern the noun after it (plný vody). The writer
 // and the reviewer of an offline answer read the hints and decide. A quantity word with one
-// neuter form (niekoľko, koľko, toľko) takes the genitive after it and gives no hint.
+// neuter form (niekoľko, koľko, toľko) takes the genitive after it and gives no hint, and a
+// numeral ends the phrase of a preposition: in "na desať ciest" the numeral governs the noun.
 import { type ParsedTag, tokenize, tryParseTag } from '@app/ling';
 import type { Lexicon, Reading } from '../stages/sentences/lexicon';
 
@@ -34,6 +35,10 @@ const isAttribute = (lex: Lexicon, w: Word): boolean =>
     const pos = lex.lemmas.get(r.lemmaId)?.pos;
     return pos === 'adj' || pos === 'pron';
   });
+
+/** A numeral in every reading: what follows it is its own phrase (päť rokov, desať ciest). */
+const isNumeral = (lex: Lexicon, w: Word): boolean =>
+  w.readings.length > 0 && w.readings.every((r) => lex.lemmas.get(r.lemmaId)?.pos === 'num');
 
 /** A quantity word: every reading is a neuter singular nominative, accusative or vocative. */
 const isQuantity = (w: Word): boolean =>
@@ -91,7 +96,7 @@ export function grammarHints(text: string, lex: Lexicon): string[] {
           hints.push(
             `after "${w.text}" (takes ${[...cases].join('/')}) "${n.text}" has no such reading; it can be ${casesIn(n) || 'no case form'}`,
           );
-        if (!allAgree(n)) break;
+        if (!allAgree(n) || isNumeral(lex, n) || isQuantity(n)) break;
       }
     }
     // An adjective or agreeing pronoun and the noun right after it.

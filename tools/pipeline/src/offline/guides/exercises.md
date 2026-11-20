@@ -25,6 +25,7 @@ Aim for 60 passing sentences per bucket, and at least 48. Take the slots in orde
   - A verb trigger is in the same clause as the gap, and no preposition stands right before the gap.
   - A question word trigger opens a short question and the gap is in the answer: "Komu pomáhaš? Bratovi."
 - You may use another form of the trigger when Slovak needs it: another person or tense of a verb, `zo` for `z`, `so` for `s`, `vo` for `v`, `ku` for `k`, `dve` or `dvaja` for `dva`, `traja`, `štyria`. With masculine animate nouns the nominative needs `dvaja`, `traja`, `štyria`.
+- A pronoun gap (base form `on` or `ona`) may stand in the short form where Slovak uses it: `mu` for `jemu` in "Pomáham mu." The long form is right under stress or at the start of the sentence: "Jemu to nevadí." Write `gap` as the pronoun stands in your sentence.
 - Every other word is a known form of one of the 3,000 most common words. The only names allowed are Peter, Jana, Martin, Eva, Tomáš, Anna, Bratislava and Slovensko, and only in exactly these forms.
 
 ## What makes a good exercise

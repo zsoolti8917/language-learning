@@ -77,6 +77,11 @@ describe('grammarHints', () => {
     expect(grammarHints('Päť vozidiel stojí.', lex)).toEqual([]);
   });
 
+  it('ends the phrase of a preposition at a numeral or a quantity word', () => {
+    expect(grammarHints('Idem v päť vozidiel.', lex)).toEqual([]);
+    expect(grammarHints('Idem v niekoľko vozidiel.', lex)).toEqual([]);
+  });
+
   it('skips words the lexicon does not know', () => {
     expect(grammarHints('Idem do Xanadu.', lex)).toEqual([]);
   });

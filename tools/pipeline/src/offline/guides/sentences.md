@@ -22,6 +22,7 @@ One Slovak example sentence with its English translation for a word in a given f
 - No names of people or places at all. A capitalised word inside a sentence is read as a name, and names are not in the vocabulary.
 - Comparatives and superlatives of adjectives (`lepší`, `väčší`, `najlepší`) are missing from the morphology. Adverbs such as `viac`, `menej`, `skôr` and `neskôr` are fine.
 - A negated verb is a word of its own (`nemať`, `nebyť`); a rare one may be outside the vocabulary.
+- The conditional particle `by` has no rank in the frequency data, so it is outside the vocabulary: write no conditional sentences.
 
 ## What makes a good sentence
 
@@ -29,7 +30,7 @@ One Slovak example sentence with its English translation for a word in a given f
 - The sentence shows what the word means and how it is used. A learner should feel the meaning from the context. "To je dobré." teaches nothing about `dobrý`.
 - The meaning column picks the sense. When a lemma is asked several times, each sentence shows a different situation, and never the same sentence frame twice.
 - Vary your sentences: different subjects, verbs, tenses and openings. Do not start every sentence with the form itself.
-- Clitics stand in second position (`som`, `si`, `sa`, `mi`, `ti`, `ho`, `ju`, `by`): "Včera som sa ho pýtal", not "Včera pýtal som sa ho".
+- Clitics stand in second position (`som`, `si`, `sa`, `mi`, `ti`, `ho`, `ju`): "Včera som sa ho pýtal", not "Včera pýtal som sa ho".
 - Check agreement (adjective, noun and verb in gender, number and case), the case after each preposition and verb, and aspect.
 - The English is a natural translation that keeps meaning and tense.
 

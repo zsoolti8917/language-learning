@@ -108,7 +108,7 @@ export function checkCandidate(
     if (inGap.has(w.s) || isTrigger(w.w)) continue;
     const info = rc.m.words.get(formKey(w.w));
     if (!info) problems.push(`unknown word "${w.w}"`);
-    else if (info.rank > rc.vocabularyLimit && !(info.properOnly && NAMES.includes(w.w)))
+    else if (info.rank > rc.vocabularyLimit && !NAMES.includes(w.w))
       problems.push(
         `rare word "${w.w}" (${Number.isFinite(info.rank) ? `rank ${info.rank}` : 'not ranked'})`,
       );
@@ -226,7 +226,8 @@ export function difficultyOf(
     if (w.s >= start && w.e <= end) continue;
     if (slot.trigger.spellings.has(formKey(w.w))) continue;
     const info = rc.m.words.get(formKey(w.w));
-    if (info && !info.properOnly) rarest = Math.max(rarest, scale(info.rank));
+    if (info && !info.properOnly && !NAMES.includes(w.w))
+      rarest = Math.max(rarest, scale(info.rank));
   }
   const noun = slot.words[slot.words.length - 1];
   const target = noun
