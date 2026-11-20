@@ -2063,7 +2063,7 @@
 {"lemmaId":81198,"form":"synom","tags":"s7 p3"}
 {"lemmaId":81215,"form":"syr","tags":"s1 s4 s5"}
 {"lemmaId":81215,"form":"syra","tags":"s2"}
-{"lemmaId":81215,"form":"syre","tags":"s6"}
+{"lemmaId":81215,"form":"syroch","tags":"p6"}
 {"lemmaId":81215,"form":"syrom","tags":"s7 p3"}
 {"lemmaId":81246,"form":"s","tags":"s1 s2 s3 s4 s5 s6 s7 p1 p2 p3 p4 p5 p6 p7"}
 {"lemmaId":81247,"form":"s","tags":""}
@@ -2155,7 +2155,6 @@
 {"lemmaId":83277,"form":"tri","tags":"v:Mesb+"}
 {"lemmaId":83326,"form":"tri","tags":"p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
 {"lemmaId":83326,"form":"troch","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
-{"lemmaId":83331,"form":"trištvrte","tags":"s1n s4n p1m p1i p1f p1n p2m p2i p2f p2n p3m p3i p3f p3n p4m p4i p4f p4n p5m p5i p5f p5n p6m p6i p6f p6n p7m p7i p7f p7n"}
 {"lemmaId":83354,"form":"trocha","tags":"s1 s5"}
 {"lemmaId":83354,"form":"troche","tags":"s3 s6"}
 {"lemmaId":83354,"form":"trochou","tags":"s7"}
@@ -2635,6 +2634,9 @@
 {"lemmaId":99467,"form":"štvrtej","tags":"s2f s3f s6f"}
 {"lemmaId":99467,"form":"štvrtá","tags":"s1f s5f"}
 {"lemmaId":99467,"form":"štvrtý","tags":"s1m s1i s4i s5m s5i"}
+{"lemmaId":99486,"form":"štvrte","tags":"s2 p1 p4 p5"}
+{"lemmaId":99486,"form":"štvrti","tags":"s3 s6"}
+{"lemmaId":99486,"form":"štvrť","tags":"s1 s4 s5"}
 {"lemmaId":99530,"form":"štyridsať","tags":"s1n s4n p1m p1i p1f p1n p2m p2i p2f p2n p3m p3i p3f p3n p4m p4i p4f p4n p5m p5i p5f p5n p6m p6i p6f p6n p7m p7i p7f p7n"}
 {"lemmaId":99544,"form":"štyri","tags":"p1i p1f p1n p4i p4f p4n p5i p5f p5n"}
 {"lemmaId":99544,"form":"štyroch","tags":"p2m p2i p2f p2n p4m p6m p6i p6f p6n"}
