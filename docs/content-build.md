@@ -263,11 +263,11 @@ Measured after a load into an empty PGlite database, which stores tables as Post
 | every other table | | | | under 1 |
 | The content in all | | | | 200.6 |
 
-The free plan of Supabase allows 500 MB. The content takes two fifths of it, inside the 180 to 210 MB the architecture expected for the forms alone, so the load needs no rank limit. What Supabase itself keeps and what learners write come on top.
+The free plan of Supabase allows 500 MB. The content takes two fifths of it, inside the 180 to 210 MB the architecture expected for the forms alone, so the load needs no rank limit. What Supabase itself keeps and what learners write come on top. After the load of 2026-11-20 the whole live database measures 229 MB (`pg_database_size`), up from 13 MB.
 
 ## What is open
 
-- **The load into the development database.** This build was loaded into PGlite only. The real load is `DATABASE_URL=… pnpm run pipeline load` from `tools/pipeline` after the rebuild above; it needs the database secret, which this work did not have. After it the preview deployment should report the new content version, and the smoke script should pass against it.
+- **The load is done.** On 2026-11-20 the set went into the database of the deployed app, which reports content version `2026-11-20.8`. It did not go through `load` (no database secret, no database connection from the working session) but through a staging schema and the SQL editor of Supabase, checked table by table against the loader's own result; `docs/handoff/I2.md` ("The load of 2026-11-20") has the route and the numbers. The rows of the starter set that this set does not hold are still there (37 sentences, 89 exercises, 2 scenarios, 6 second senses), and the smoke script of package F8 does not exist yet.
 - **`video` (adjective)** has no sentence, see above.
 - **Faults of the morphology** that the texts showed, each listed in `docs/handoff/I2.md`.
 - **Thirty items for a person**: `content/build/audit/for-you.md`, written by the `audit` stage.
