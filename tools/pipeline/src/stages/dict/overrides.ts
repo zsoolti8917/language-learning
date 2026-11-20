@@ -11,10 +11,7 @@ import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
 import { existsSync } from '../../lib/files';
 import type { Paths } from '../../lib/paths';
-import { MAX_GLOSS_LENGTH, MAX_SENSES, type Sense } from './wiktionary';
-
-/** Notes stand under the gloss on a card: one short line. */
-export const MAX_NOTE_LENGTH = 80;
+import { MAX_GLOSS_LENGTH, MAX_NOTE_LENGTH, MAX_SENSES, type Sense } from './wiktionary';
 
 const gloss = z.string().trim().min(1).max(MAX_GLOSS_LENGTH);
 const OverrideSchema = z.strictObject({

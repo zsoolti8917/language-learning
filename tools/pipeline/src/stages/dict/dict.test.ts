@@ -11,6 +11,7 @@ import { seedFreqSample } from '../freq/sample';
 import { dictStage, type GeneratedGloss, glossCoverageCheck, readGlosses } from '.';
 import { applyOverride, overridesPath, readOverrides } from './overrides';
 import {
+  cleanNote,
   genderOf,
   type KaikkiEntry,
   matchEntries,
@@ -364,6 +365,56 @@ describe('Wiktionary entries', () => {
       }),
     );
     expect(senses).toEqual([{ glossEn: 'on', note: 'with locative' }]);
+  });
+
+  it('keeps a parenthesis inside a parenthesis in one piece', () => {
+    expect(
+      shortGloss("to sign (to make (a document) official by writing one's signature)"),
+    ).toEqual({
+      gloss: 'to sign',
+      explanation: "to make (a document) official by writing one's signature",
+    });
+    expect(shortGloss('fashion (current (constantly changing) trend)')).toEqual({
+      gloss: 'fashion',
+      explanation: 'current (constantly changing) trend',
+    });
+    expect(shortGloss('to make (a thing) ready (for use)')).toEqual({
+      gloss: 'to make ready',
+      explanation: 'a thing; for use',
+    });
+    // A parenthesis that is never closed stays where it stood.
+    expect(shortGloss('to open (a door').gloss).toBe('to open (a door');
+  });
+
+  it('drops the labels that tell a learner nothing and a note longer than a line', () => {
+    expect(cleanNote('transitive')).toBeUndefined();
+    expect(cleanNote('relational, not comparable')).toBeUndefined();
+    expect(cleanNote('transitive, colloquial')).toBe('colloquial');
+    expect(cleanNote('reflexive with sa')).toBe('with sa');
+    expect(cleanNote('intransitive, often reflexive with si')).toBe('often with si');
+    expect(cleanNote('with locative')).toBe('with locative');
+    expect(cleanNote('a'.repeat(80))).toBe('a'.repeat(80));
+    expect(cleanNote('a'.repeat(81))).toBeUndefined();
+    const senses = sensesOf(
+      entry({
+        pos: 'verb',
+        senses: [
+          { glosses: ['to hold (to grasp)'], raw_glosses: ['(transitive) to hold (to grasp)'] },
+          { glosses: ['to stay'], raw_glosses: ['(intransitive) to stay'] },
+          { glosses: ['to wash oneself'], raw_glosses: ['(reflexive with sa) to wash oneself'] },
+          {
+            glosses: [`to last (${'to continue to exist for a very long time, '.repeat(2)}longer)`],
+          },
+        ],
+      }),
+    );
+    expect(senses).toEqual([
+      // Without its label the sense shows the explanation of its gloss, as one without a label does.
+      { glossEn: 'to hold', note: 'to grasp' },
+      { glossEn: 'to stay' },
+      { glossEn: 'to wash oneself', note: 'with sa' },
+      { glossEn: 'to last' },
+    ]);
   });
 
   it('skips forms of other words, puts archaic senses last, keeps three', () => {
