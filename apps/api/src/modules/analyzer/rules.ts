@@ -1,5 +1,7 @@
 // Pruning rules and trigger detection of the text analyzer. Pure: no ports, no SQL.
-// Every rule narrows the readings of a word and never removes the last one.
+// Every rule narrows the readings of a word and never removes the last one. A rule decides only
+// through the most frequent lemma of a word: when that lemma does not fit the phrase, the word
+// ends the phrase and keeps its readings for the model.
 import type {
   Case,
   Gender,
@@ -94,8 +96,36 @@ export interface Phrase {
 
 const NOMINAL_POS: ReadonlySet<Pos> = new Set(['noun', 'adj', 'pron', 'num']);
 const isNominal = (o: Option) => o.case !== undefined && NOMINAL_POS.has(o.pos);
+const isAdverb = (o: Option) => o.pos === 'adv';
 const NUMERAL_FROM = 5;
 const nomAcc = (o: Option) => o.case === 'nom' || o.case === 'acc';
+const lower = (s: string) => s.normalize('NFC').toLowerCase();
+
+/** Personal pronouns: each is a phrase of its own and never describes the noun after it. */
+const PERSONAL: ReadonlySet<string> = new Set([
+  'ja',
+  'ty',
+  'on',
+  'ona',
+  'ono',
+  'my',
+  'vy',
+  'oni',
+  'ony',
+  'seba',
+]);
+const isPersonal = (o: Option) => o.pos === 'pron' && PERSONAL.has(lower(o.lemma));
+/** A reading that can describe a noun: it agrees and is no personal pronoun. */
+const isModifier = (o: Option) => o.agrees && !isPersonal(o);
+
+/** True when two readings can stand in one phrase: the same case, number and gender. */
+function agree(a: Option, b: Option): boolean {
+  return (
+    a.case === b.case &&
+    (a.number === undefined || b.number === undefined || a.number === b.number) &&
+    (a.gender === undefined || b.gender === undefined || a.gender === b.gender)
+  );
+}
 
 /** Keeps the readings that pass `keep`, unless none would be left. Returns true on a change. */
 export function narrow(w: Word, keep: (o: Option) => boolean): boolean {
@@ -105,40 +135,117 @@ export function narrow(w: Word, keep: (o: Option) => boolean): boolean {
   return true;
 }
 
+/** The members of a phrase and the readings each keeps; nothing is changed until `commit`. */
+interface Walk {
+  members: number[];
+  kept: Option[][];
+}
+
+function commit(s: WorkSentence, walk: Walk): void {
+  walk.members.forEach((m, i) => {
+    const w = s.words[m];
+    const kept = walk.kept[i];
+    if (w && kept && kept.length > 0) w.options = kept;
+  });
+}
+
 /**
  * Walks the noun phrase that starts at token `start`: modifiers, then the head. Numbers and
- * adverbs inside are passed over. Each member is narrowed to nominal readings that `allowed`
- * accepts. Stops after the head (a word with no agreeing reading) or at anything else.
+ * adverbs inside are passed over. A word joins the phrase only through its most frequent
+ * lemma (the conjunction *a* is never the letter *a*, *bol* never the noun *bola*), and after
+ * a modifier only when it agrees with it (*o tom nič*, *v ňom autá* end at the pronoun). A
+ * personal pronoun ends the phrase. Each member keeps its nominal readings that `allowed`
+ * accepts, and its adverb readings (*po taliansky*, *na večer*) for the model to decide.
+ *
+ * With `preposition`, *jeho*, *jej*, *ich* are possessive (the pronoun itself would be
+ * *neho*, *nej*, *nich*). With `accusative` (a preposition that takes the accusative), the
+ * words after a number from five up or a quantity word are genitive, not accusative
+ * (*pre 10 európskych štátov*, *na päť dlhých rokov*).
  */
-function walkPhrase(s: WorkSentence, start: number, allowed: (o: Option) => boolean): number[] {
-  const members: number[] = [];
+function walkPhrase(
+  s: WorkSentence,
+  start: number,
+  allowed: (o: Option) => boolean,
+  opts: { preposition?: boolean; accusative?: boolean; counted?: boolean } = {},
+): Walk {
+  const walk: Walk = { members: [], kept: [] };
+  const afterNumber = (o: Option) => (allowed(o) && o.case !== 'acc') || o.case === 'gen';
+  let ok = allowed;
+  let previous: Option[] | undefined;
   for (let j = start; j < s.tokens.length; j++) {
     const tok = s.tokens[j];
     if (!tok || tok.t === 'punct') break;
-    if (tok.t === 'num') continue;
+    if (tok.t === 'num') {
+      if (opts.accusative && (integerOf(s.texts[j] ?? '') ?? 0) >= NUMERAL_FROM) {
+        ok = afterNumber;
+        previous = undefined;
+      }
+      continue;
+    }
     const w = s.words[j];
-    if (!w || w.options.length === 0) break;
-    if (w.options.every((o) => o.pos === 'adv')) continue;
-    if (!w.options.some(isNominal)) break;
-    narrow(w, (o) => isNominal(o) && allowed(o));
-    members.push(j);
-    if (!w.options.some((o) => o.agrees)) break;
+    const top = w?.options[0];
+    if (!w || !top) break;
+    if (w.options.every(isAdverb)) continue;
+    const ofTop = (list: Option[]) => list.some((o) => o.lemmaId === top.lemmaId);
+    let candidates = w.options.filter((o) => isNominal(o) && ok(o));
+    if (!ofTop(candidates)) break;
+    // A quantity word keeps its own form after a modifier (za posledných päť rokov).
+    const quantity = isQuantityWord(w);
+    const before = previous;
+    if (before && !quantity) {
+      candidates = candidates.filter((o) => before.some((m) => agree(m, o)));
+      if (!ofTop(candidates)) break;
+    }
+    if (opts.preposition && candidates.some(isPersonal) && candidates.some(isModifier))
+      candidates = candidates.filter((o) => !isPersonal(o));
+    // A number counts no pronoun (roku 1939 ich porazili).
+    if (opts.counted && candidates.some(isPersonal)) break;
+    const keep = new Set(candidates);
+    walk.members.push(j);
+    walk.kept.push(w.options.filter((o) => keep.has(o) || isAdverb(o)));
+    const modifiers = candidates.filter(isModifier);
+    if (modifiers.length === 0) break;
+    if (opts.accusative && quantity && candidates.some((o) => o.case === 'acc')) {
+      ok = afterNumber;
+      previous = undefined;
+    } else previous = quantity ? undefined : modifiers;
   }
-  return members;
+  return walk;
 }
 
-/** A preposition: the readings of `w` whose lemma is a preposition of the trigger list. */
+/**
+ * True when a walk stops on a modifier although a nominal word follows: the phrase goes on in
+ * another case (*v 10 veľkých mestách* is no genitive after the number), so it decides nothing.
+ */
+function dangling(s: WorkSentence, walk: Walk): boolean {
+  const last = walk.members[walk.members.length - 1];
+  const kept = walk.kept[walk.kept.length - 1];
+  if (last === undefined || !kept) return false;
+  if (kept.some((o) => isNominal(o) && !isModifier(o))) return false;
+  const next = s.words[last + 1]?.options[0];
+  return next !== undefined && isNominal(next);
+}
+
+/**
+ * A preposition: the readings of `w` whose lemma is a preposition of the trigger list, when
+ * the preposition is the word's most frequent reading (*pomocou* is first the noun *pomoc*).
+ */
 function prepositionReadings(w: Word, idx: TriggerIndex): Option[] {
+  if (w.options[0]?.pos !== 'prep') return [];
   return w.options.filter((o) => o.pos === 'prep' && idx.preposition.has(o.lemmaId));
 }
 
 /**
  * A word that counts in the genitive when it is itself in the nominative or accusative
- * (*päť žien*, *mnoho generácií*, *zopár otázok*): a numeral with the neuter singular
- * nominative or accusative reading that such words have in the data.
+ * (*päť žien*, *mnoho generácií*, *zopár otázok*): a numeral in its dictionary form with the
+ * neuter singular reading such words have in the data. An ordinal or adjectival numeral
+ * (*prvé*, *mnohé*, *ostatné*) has that reading too, but as a form of its lemma.
  */
 function isQuantityWord(w: Word): boolean {
-  return w.options.some((o) => o.pos === 'num' && (o.tag === 's1n' || o.tag === 's4n'));
+  return w.options.some(
+    (o) =>
+      o.pos === 'num' && (o.tag === 's1n' || o.tag === 's4n') && lower(o.form) === lower(o.lemma),
+  );
 }
 
 /** The value of a number token written in digits, or null. */
@@ -148,13 +255,16 @@ function integerOf(text: string): number | null {
 
 /**
  * Runs the rules on one sentence and returns the governed phrases: the cases a preposition
- * allows, the genitive plural after numerals from five up, then agreement of adjective and
- * noun. Readings are only removed while at least one is left.
+ * allows, the genitive after numerals from five up and quantity words, then agreement of
+ * adjective and noun. Readings are only removed while at least one is left. A rule decides
+ * only for the most frequent lemma of a word; a rarer homograph and an adverb reading are
+ * left for the model.
  */
 export function applyRules(s: WorkSentence, idx: TriggerIndex): Phrase[] {
   const phrases: Phrase[] = [];
 
   // 1. Prepositions limit the case of the phrase after them.
+  const inPrepPhrase = new Map<number, Phrase>();
   for (let j = 0; j < s.tokens.length; j++) {
     const w = s.words[j];
     if (!w) continue;
@@ -162,87 +272,118 @@ export function applyRules(s: WorkSentence, idx: TriggerIndex): Phrase[] {
     if (preps.length === 0) continue;
     const cases = new Set<Case>();
     for (const p of preps) for (const t of idx.preposition.get(p.lemmaId) ?? []) cases.add(t.case);
-    const members = walkPhrase(s, j + 1, (o) => o.case !== undefined && cases.has(o.case));
-    if (members.length === 0) continue;
+    const walk = walkPhrase(s, j + 1, (o) => o.case !== undefined && cases.has(o.case), {
+      preposition: true,
+      accusative: cases.has('acc'),
+    });
+    const last = walk.members[walk.members.length - 1];
+    if (last === undefined) continue;
+    commit(s, walk);
     narrow(w, (o) => preps.includes(o));
-    phrases.push({ trigger: j, kind: 'preposition', members, triggers: [] });
+    const phrase: Phrase = { trigger: j, kind: 'preposition', members: walk.members, triggers: [] };
+    phrases.push(phrase);
+    // Numbers inside the phrase belong to it too.
+    for (let k = j + 1; k <= last; k++) inPrepPhrase.set(k, phrase);
   }
 
-  // 2. Numerals. Numerals from five up and quantity words, in the nominative or accusative,
-  //    take the genitive (the plural after a numeral of the trigger list); dva, tri, štyri
-  //    (trigger case nominative) agree with the counted noun in case instead.
-  const inPrepPhrase = new Map<number, Phrase>();
-  for (const p of phrases) for (const m of p.members) inPrepPhrase.set(m, p);
+  // 2. Numerals. A number from five up and a quantity word, in the dictionary form and in the
+  //    nominative or accusative, take the genitive (the plural after a numeral of the trigger
+  //    list). dva, tri, štyri (trigger case nominative) and the declined forms of the others
+  //    (piatich, piatim) agree with the counted noun in case instead.
   for (let j = 0; j < s.tokens.length; j++) {
     const tok = s.tokens[j];
     if (!tok) continue;
     const w = s.words[j];
-    let triggers: TriggerFacts[] = [];
-    let nums: Option[] = [];
-    let plural = true;
     if (tok.t === 'num') {
       const n = integerOf(s.texts[j] ?? '');
       if (n === null || n < NUMERAL_FROM) continue;
       // A number inside a phrase whose preposition rules out nominative and accusative
       // (s 5 ženami) takes that case instead.
       const governing = inPrepPhrase.get(j);
-      if (governing && !prepAllowsNomAcc(s, governing, idx)) continue;
-    } else if (w) {
-      nums = w.options.filter((o) => idx.numeral.has(o.lemmaId));
-      for (const o of nums) triggers.push(...(idx.numeral.get(o.lemmaId) ?? []));
-      triggers = [...new Map(triggers.map((t) => [t.id, t])).values()];
-      if (triggers.length > 0 && triggers.every((t) => t.case !== 'gen')) {
-        const p = agreeingNumeral(s, j, w, nums, triggers);
-        if (p) phrases.push(p);
-        continue;
-      }
-      if (nums.length === 0 && isQuantityWord(w)) {
-        // Not in the trigger list (zopár, jedenásť): the same rule, any number after it.
-        nums = w.options.filter((o) => o.pos === 'num');
-        plural = false;
-      }
-      if (triggers.some((t) => t.kind === 'quantifier')) plural = false;
-      if (!nums.some(nomAcc)) continue;
-      // Quantity words are also adverbs (viac ho priťahoval, viac diferencovane): only a noun
-      // or adjective in the genitive right after one makes it count.
-      const next = s.words[j + 1];
-      if (
-        !plural &&
-        !next?.options.some((o) => (o.pos === 'noun' || o.pos === 'adj') && o.case === 'gen')
-      )
-        continue;
-    } else continue;
-    const members = walkPhrase(s, j + 1, (o) => o.case === 'gen' && (!plural || o.number === 'pl'));
-    if (members.length === 0) continue;
-    if (w && tok.t !== 'num') {
-      narrow(w, (o) => nums.includes(o) && nomAcc(o));
-      if (plural) narrow(w, (o) => o.number === 'pl');
+      const cases = governing ? prepCases(s, governing, idx) : undefined;
+      if (cases && !cases.has('nom') && !cases.has('acc')) continue;
+      const walk = walkPhrase(s, j + 1, (o) => o.case === 'gen' && o.number === 'pl', {
+        counted: true,
+      });
+      if (walk.members.length === 0 || dangling(s, walk)) continue;
+      // The phrase may stand in another case of the preposition instead (v 11 storočí as
+      // v 11. storočí): then the number decides nothing.
+      const other = (o: Option) =>
+        o.case !== undefined && o.case !== 'acc' && o.case !== 'gen' && cases?.has(o.case);
+      if (cases && walk.members.some((m) => s.words[m]?.options.some(other))) continue;
+      commit(s, walk);
+      phrases.push({
+        trigger: j,
+        kind: 'numeral',
+        members: walk.members,
+        triggers: [],
+        digits: true,
+      });
+      continue;
     }
-    // The numeral takes the gender of the counted noun.
-    const head = s.words[members[members.length - 1] as number];
-    if (w && head) {
-      const genders = new Set(head.options.map((o) => o.gender));
-      narrow(w, (o) => o.gender === undefined || genders.has(o.gender));
+    if (!w) continue;
+    let nums = w.options.filter((o) => idx.numeral.has(o.lemmaId));
+    let triggers: TriggerFacts[] = [];
+    for (const o of nums) triggers.push(...(idx.numeral.get(o.lemmaId) ?? []));
+    triggers = [...new Map(triggers.map((t) => [t.id, t])).values()];
+    let plural = true;
+    if (nums.length === 0) {
+      // Not in the trigger list (zopár, jedenásť): the same rule, any number after it.
+      if (!isQuantityWord(w)) continue;
+      nums = w.options.filter((o) => o.pos === 'num');
+      plural = false;
     }
-    phrases.push({
-      trigger: j,
-      kind: 'numeral',
-      members,
-      triggers,
-      ...(tok.t === 'num' ? { digits: true } : {}),
+    if (triggers.some((t) => t.kind === 'quantifier')) plural = false;
+    const governs = triggers.length === 0 || triggers.some((t) => t.case === 'gen');
+    const bare = nums.some((o) => o.tag === 's1n' || o.tag === 's4n');
+    if (!governs || !bare) {
+      const p = agreeingNumeral(s, j, w, nums, governs ? [] : triggers);
+      if (p) phrases.push(p);
+      continue;
+    }
+    if (!nums.some(nomAcc)) continue;
+    // Quantity words are also adverbs (viac ho priťahoval, viac diferencovane): only a noun
+    // or adjective in the genitive right after one makes it count.
+    const next = s.words[j + 1];
+    if (
+      !plural &&
+      !next?.options.some((o) => (o.pos === 'noun' || o.pos === 'adj') && o.case === 'gen')
+    )
+      continue;
+    const walk = walkPhrase(s, j + 1, (o) => o.case === 'gen' && (!plural || o.number === 'pl'), {
+      counted: true,
     });
+    if (walk.members.length === 0 || dangling(s, walk)) continue;
+    commit(s, walk);
+    // The numeral itself is the neuter singular, as the treebank tags it (päť žien prišlo).
+    narrow(w, (o) => nums.includes(o) && nomAcc(o));
+    narrow(w, (o) => o.tag === 's1n' || o.tag === 's4n');
+    phrases.push({ trigger: j, kind: 'numeral', members: walk.members, triggers });
   }
 
-  // 3. Adjectives (and agreeing pronouns) agree with the noun after them.
+  // 3. Adjectives (and agreeing pronouns) agree with the noun after them. The head is a word
+  //    that is first of all a noun (not bola for the verb, not dobré for the adjective), and a
+  //    modifier a word that is first of all one (not má of môj for the verb). jej, jeho, ich
+  //    before a noun are possessive or an object (dal jej knihu): the model decides.
   const featureKey = (o: Option) => `${o.case}|${o.number}|${o.gender}`;
   for (let h = 0; h < s.tokens.length; h++) {
     const head = s.words[h];
-    if (!head?.options.some((o) => o.pos === 'noun')) continue;
+    const top = head?.options[0];
+    if (!head || top?.pos !== 'noun') continue;
     const mods: Word[] = [];
     for (let k = h - 1; k >= 0; k--) {
       const m = s.words[k];
-      if (!m || isQuantityWord(m)) break;
-      if (!m.options.some((o) => o.agrees && !idx.numeral.has(o.lemmaId))) break;
+      const first = m?.options[0];
+      if (!m || !first || isQuantityWord(m) || m.options.some(isPersonal)) break;
+      // ktorý after a comma opens a clause; the noun after it is mostly its subject or object
+      // (model, ktorý učiteľ vytiahol).
+      if (lower(first.lemma) === 'ktorý' && s.texts[k - 1] === ',') break;
+      if (
+        !m.options.some(
+          (o) => o.lemmaId === first.lemmaId && isModifier(o) && !idx.numeral.has(o.lemmaId),
+        )
+      )
+        break;
       mods.push(m);
     }
     if (mods.length === 0) continue;
@@ -252,20 +393,24 @@ export function applyRules(s: WorkSentence, idx: TriggerIndex): Phrase[] {
         .map(featureKey),
     );
     for (const m of mods) {
-      const own = new Set(m.options.filter((o) => o.agrees).map(featureKey));
+      const own = new Set(m.options.filter(isModifier).map(featureKey));
       shared = new Set([...shared].filter((k) => own.has(k)));
     }
-    if (shared.size === 0) continue;
-    narrow(head, (o) => shared.has(featureKey(o)));
-    for (const m of mods) narrow(m, (o) => shared.has(featureKey(o)));
+    // The most frequent lemma of every word must fit, or the words do not belong together.
+    const fits = (w: Word) =>
+      w.options.some((o) => o.lemmaId === w.options[0]?.lemmaId && shared.has(featureKey(o)));
+    if (shared.size === 0 || !fits(head) || !mods.every(fits)) continue;
+    narrow(head, (o) => isAdverb(o) || shared.has(featureKey(o)));
+    for (const m of mods) narrow(m, (o) => isAdverb(o) || shared.has(featureKey(o)));
   }
 
   return phrases;
 }
 
 /**
- * dva, tri, štyri: the counted phrase is plural and in the numeral's own case (*dva roky*,
- * *dvoch chlapov*, *dvom ženám*); the numeral keeps the cases and genders the head allows.
+ * dva, tri, štyri, and a declined form of a higher numeral (*piatich*, *desiatim*): the
+ * counted phrase is plural and in the numeral's own case (*dva roky*, *dvoch chlapov*,
+ * *po desiatich dňoch*); the numeral keeps the cases and genders the head allows.
  */
 function agreeingNumeral(
   s: WorkSentence,
@@ -275,31 +420,29 @@ function agreeingNumeral(
   triggers: TriggerFacts[],
 ): Phrase | undefined {
   const cases = new Set(nums.map((o) => o.case));
-  const members = walkPhrase(
+  const walk = walkPhrase(
     s,
     j + 1,
     (o) => o.number === 'pl' && o.case !== undefined && cases.has(o.case),
   );
-  const head = s.words[members[members.length - 1] as number];
-  if (!head) return undefined;
+  const head = walk.kept[walk.kept.length - 1];
+  if (!head || dangling(s, walk)) return undefined;
+  commit(s, walk);
   narrow(
     w,
     (o) =>
       nums.includes(o) &&
-      head.options.some(
-        (h) => h.case === o.case && (o.gender === undefined || h.gender === o.gender),
-      ),
+      head.some((h) => h.case === o.case && (o.gender === undefined || h.gender === o.gender)),
   );
-  return { trigger: j, kind: 'numeral', members, triggers };
+  return { trigger: j, kind: 'numeral', members: walk.members, triggers };
 }
 
-function prepAllowsNomAcc(s: WorkSentence, p: Phrase, idx: TriggerIndex): boolean {
-  const w = s.words[p.trigger];
-  if (!w) return true;
-  for (const o of w.options)
-    for (const t of idx.preposition.get(o.lemmaId) ?? [])
-      if (t.case === 'nom' || t.case === 'acc') return true;
-  return false;
+/** The cases the preposition of a phrase allows. */
+function prepCases(s: WorkSentence, p: Phrase, idx: TriggerIndex): Set<Case> {
+  const cases = new Set<Case>();
+  for (const o of s.words[p.trigger]?.options ?? [])
+    for (const t of idx.preposition.get(o.lemmaId) ?? []) cases.add(t.case);
+  return cases;
 }
 
 /**

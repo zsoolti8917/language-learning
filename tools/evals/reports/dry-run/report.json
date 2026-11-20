@@ -284,19 +284,19 @@
       "value": 0.9738920579201404
     },
     "lemmaAccuracy": {
-      "n": 4394,
+      "n": 4399,
       "of": 4439,
-      "value": 0.9898625816625366
+      "value": 0.9909889614778103
     },
     "caseAccuracy": {
-      "n": 2121,
+      "n": 2127,
       "of": 2150,
-      "value": 0.9865116279069768
+      "value": 0.9893023255813953
     },
     "caseAccuracyAll": {
-      "n": 2121,
+      "n": 2127,
       "of": 2261,
-      "value": 0.9380804953560371
+      "value": 0.940734188412207
     },
     "byMethod": [
       {
@@ -315,30 +315,30 @@
       },
       {
         "method": "rule",
-        "words": 952,
+        "words": 901,
         "lemma": {
-          "n": 944,
-          "of": 952,
-          "value": 0.9915966386554622
+          "n": 895,
+          "of": 901,
+          "value": 0.9933407325194229
         },
         "case": {
-          "n": 524,
-          "of": 529,
-          "value": 0.9905482041587902
+          "n": 495,
+          "of": 497,
+          "value": 0.9959758551307847
         }
       },
       {
         "method": "model",
-        "words": 2525,
+        "words": 2576,
         "lemma": {
-          "n": 2506,
-          "of": 2525,
-          "value": 0.9924752475247525
+          "n": 2560,
+          "of": 2576,
+          "value": 0.9937888198757764
         },
         "case": {
-          "n": 1219,
-          "of": 1229,
-          "value": 0.9918633034987795
+          "n": 1254,
+          "of": 1261,
+          "value": 0.9944488501189532
         }
       },
       {
@@ -360,33 +360,33 @@
       {
         "key": "nom",
         "case": {
-          "n": 560,
+          "n": 563,
           "of": 580,
-          "value": 0.9655172413793104
+          "value": 0.9706896551724138
         }
       },
       {
         "key": "gen",
         "case": {
-          "n": 446,
+          "n": 447,
           "of": 448,
-          "value": 0.9955357142857143
+          "value": 0.9977678571428571
         }
       },
       {
         "key": "dat",
         "case": {
-          "n": 117,
+          "n": 118,
           "of": 119,
-          "value": 0.9831932773109243
+          "value": 0.9915966386554622
         }
       },
       {
         "key": "acc",
         "case": {
-          "n": 550,
+          "n": 551,
           "of": 553,
-          "value": 0.9945750452079566
+          "value": 0.9963833634719711
         }
       },
       {
@@ -426,18 +426,8 @@
         "n": 4
       },
       {
-        "gold": "nom",
-        "chosen": "acc",
-        "n": 4
-      },
-      {
         "gold": "acc",
         "chosen": "nom",
-        "n": 1
-      },
-      {
-        "gold": "acc",
-        "chosen": "loc",
         "n": 1
       },
       {
@@ -451,18 +441,28 @@
         "n": 1
       },
       {
-        "gold": "dat",
-        "chosen": "nom",
-        "n": 1
-      },
-      {
         "gold": "gen",
         "chosen": "dat",
         "n": 1
       },
       {
-        "gold": "gen",
-        "chosen": "acc",
+        "gold": "ins",
+        "chosen": "dat",
+        "n": 1
+      },
+      {
+        "gold": "loc",
+        "chosen": "nom",
+        "n": 1
+      },
+      {
+        "gold": "nom",
+        "chosen": "voc",
+        "n": 1
+      },
+      {
+        "gold": "nom",
+        "chosen": "dat",
         "n": 1
       }
     ]
@@ -471,18 +471,18 @@
     {
       "route": "reader.disambiguate",
       "model": "claude-opus-5-5",
-      "calls": 57,
+      "calls": 69,
       "cached": 0,
-      "estimated": 57,
+      "estimated": 69,
       "failed": 0,
-      "inputTokens": 384122,
-      "outputTokens": 58350,
+      "inputTokens": 447586,
+      "outputTokens": 60990,
       "cacheReadTokens": 0,
       "cacheWriteTokens": 0,
-      "costUsd": 2.703488,
-      "sentCostUsd": 2.703488,
-      "worstUsd": 10.656488,
-      "costPerCallUsd": 0.04742961403508771,
+      "costUsd": 3.010144,
+      "sentCostUsd": 3.010144,
+      "worstUsd": 12.830344,
+      "costPerCallUsd": 0.04362527536231884,
       "latencyMeanMs": null,
       "latencyP95Ms": null
     },
@@ -524,10 +524,10 @@
     }
   ],
   "totals": {
-    "calls": 1257,
+    "calls": 1269,
     "cached": 0,
-    "costUsd": 26.6366,
-    "worstUsd": 92.7896
+    "costUsd": 26.9433,
+    "worstUsd": 94.9635
   },
   "targets": [
     {
@@ -554,9 +554,9 @@
       "name": "Analyzer case accuracy (words the data knows)",
       "target": "at least 95 %",
       "value": {
-        "n": 2121,
+        "n": 2127,
         "of": 2150,
-        "value": 0.9865116279069768
+        "value": 0.9893023255813953
       },
       "met": true
     }
