@@ -344,6 +344,10 @@ describe('tokens, rules and choice on the mini lexicon', () => {
     expect(describeTag('p4f')).toBe('accusative plural, feminine');
     expect(describeTag('x3')).toBe('dative');
     expect(describeTag('v:Kesc+')).toBe('present tense, 3rd person singular');
+    // The present form of a perfective verb means the future; the words say so.
+    expect(describeTag('v:Kdpb+')).toBe(
+      'present form of a perfective verb (future meaning), 2nd person plural',
+    );
   });
 });
 
