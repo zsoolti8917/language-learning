@@ -19,7 +19,7 @@ export const SENTENCE_GROUP_SIZE = 40;
 export const REVIEW_GROUP_SIZE = 40;
 export const TRANSLATE_GROUP_SIZE = 25;
 
-const CASE_NAMES: Record<string, string> = {
+export const CASE_NAMES: Record<string, string> = {
   nom: 'nominative',
   gen: 'genitive',
   dat: 'dative',
@@ -28,7 +28,7 @@ const CASE_NAMES: Record<string, string> = {
   loc: 'locative',
   ins: 'instrumental',
 };
-const GENDER_NAMES: Record<string, string> = {
+export const GENDER_NAMES: Record<string, string> = {
   m_anim: 'masculine animate',
   m_inan: 'masculine inanimate',
   f: 'feminine',

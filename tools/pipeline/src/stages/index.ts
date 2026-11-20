@@ -3,6 +3,7 @@
 // The order also decides how validate assembles the parts of the set.
 import type { Stage } from '../lib/runner';
 import { analysisStage } from './analysis';
+import { auditStage } from './audit';
 import { dictStage } from './dict';
 import { exercisesStage } from './exercises';
 import { fetchStage } from './fetch';
@@ -30,6 +31,7 @@ export const STAGES: readonly Stage[] = [
   validateStage,
   loadStage,
   analysisStage,
+  auditStage,
 ];
 
 export function stageByName(name: string, stages: readonly Stage[] = STAGES): Stage | undefined {

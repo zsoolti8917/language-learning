@@ -28,6 +28,15 @@ import {
   glossProblems,
 } from '../stages/analysis/answers';
 import {
+  type AuditRequest,
+  auditExercisesTask,
+  auditGlossesTask,
+  auditSentencesTask,
+  type ExerciseAuditItem,
+  type GlossAuditItem,
+  type SentenceAuditItem,
+} from '../stages/audit/prompts';
+import {
   DEFAULT_PLAN,
   planAll,
   planLemmaFilter,
@@ -511,6 +520,51 @@ const readerGlossSpec: RouteSpec<GlossInput, ReaderGlossAnswer> = {
   ],
 };
 
+// --- content.audit.* (audit) ------------------------------------------------------------------
+// One block of lines per item: what the learner sees, then what the entry claims.
+
+const auditSentencesSpec: RouteSpec<AuditRequest<SentenceAuditItem>, unknown> = {
+  task: auditSentencesTask as BatchTask<AuditRequest<SentenceAuditItem>, unknown>,
+  input: (user) => ({ items: JSON.parse(user) as SentenceAuditItem[] }),
+  show: (input) =>
+    input.items.flatMap((i) => [
+      `[${i.n}] ${i.sk}`,
+      `     ${i.en}`,
+      ...i.teaches.map(
+        (t) =>
+          `     teaches: ${t.form} = ${t.formIs} of ${t.lemma} (${[t.pos, t.gender].filter(Boolean).join(' ')})${t.meaning ? `, meaning: ${t.meaning.join('; ')}` : ''}`,
+      ),
+      `     source: ${i.source}`,
+    ]),
+};
+
+const auditExercisesSpec: RouteSpec<AuditRequest<ExerciseAuditItem>, unknown> = {
+  task: auditExercisesTask as BatchTask<AuditRequest<ExerciseAuditItem>, unknown>,
+  input: (user) => ({ items: JSON.parse(user) as ExerciseAuditItem[] }),
+  show: (input) =>
+    input.items.flatMap((i) => [
+      `[${i.n}] ${i.kind}: ${i.sk}`,
+      `     ${i.en}`,
+      `     answer: ${i.answer} = ${i.asks} of ${i.cue}`,
+      ...(i.trigger ? [`     trigger: ${i.trigger}`] : []),
+      ...(i.options
+        ? [
+            `     options: ${i.options.map((o) => `${o.text}${o.correct ? ' (right)' : ''}`).join(' | ')}`,
+          ]
+        : []),
+    ]),
+};
+
+const auditGlossesSpec: RouteSpec<AuditRequest<GlossAuditItem>, unknown> = {
+  task: auditGlossesTask as BatchTask<AuditRequest<GlossAuditItem>, unknown>,
+  input: (user) => ({ items: JSON.parse(user) as GlossAuditItem[] }),
+  show: (input) =>
+    input.items.flatMap((i) => [
+      `[${i.n}] ${i.lemma} (${[i.pos, i.gender, i.aspect].filter(Boolean).join(' ')})`,
+      ...i.glosses.map((g, k) => `     ${k + 1}. ${g}`),
+    ]),
+};
+
 /** Every route of every stage with a model fill. */
 export const OFFLINE_ROUTES: Record<string, Record<string, AnySpec>> = {
   dict: { 'content.glosses': glossesSpec },
@@ -525,6 +579,11 @@ export const OFFLINE_ROUTES: Record<string, Record<string, AnySpec>> = {
   },
   library: { 'content.review': libraryReviewSpec },
   analysis: { 'reader.disambiguate': disambiguateSpec, 'reader.gloss': readerGlossSpec },
+  audit: {
+    'content.audit.sentences': auditSentencesSpec,
+    'content.audit.exercises': auditExercisesSpec,
+    'content.audit.glosses': auditGlossesSpec,
+  },
 };
 
 export function specOf(stage: string, route: string): AnySpec {
