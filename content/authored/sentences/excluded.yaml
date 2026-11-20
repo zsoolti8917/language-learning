@@ -13,6 +13,8 @@
   reason: "Odd wording for a learner: \"sú pohodlím\" (an instrumental of respect) reads like \"are comfort\"."
 - text: "Bolo to, rozumie sa, pred vojnou."
   reason: "The word is shown only inside the set phrase \"rozumie sa\" (of course), which its entry does not explain."
+- text: "Dotkol som sa jej."
+  reason: "The treebank labels \"jej\" an accusative, which only the possessive has; after \"dotknúť sa\" it is the genitive of \"ona\", so the card would mislead a learner."
 - text: "Dúfa, že vyhrá a ja tiež."
   reason: "A comma is missing after the clause \"že vyhrá\"."
 - text: "Iba jej skočiť na pomoc!"
