@@ -60,12 +60,23 @@ export interface TriggerIndex {
   /** Numerals and quantity words (*päť*, *dva*, *veľa*). */
   numeral: Map<number, TriggerFacts[]>;
   verb: Map<number, TriggerFacts[]>;
+  /** The verb rows by the lemma as written: a negated verb has a lemma of its own (*nemať*). */
+  verbByLemma: Map<string, TriggerFacts[]>;
 }
 
 export function indexTriggers(rows: readonly TriggerFacts[]): TriggerIndex {
-  const out: TriggerIndex = { preposition: new Map(), numeral: new Map(), verb: new Map() };
+  const out: TriggerIndex = {
+    preposition: new Map(),
+    numeral: new Map(),
+    verb: new Map(),
+    verbByLemma: new Map(),
+  };
   for (const r of rows) {
     if (r.lemmaId === null) continue;
+    if (r.kind === 'verb') {
+      const key = r.lemma.normalize('NFC').toLowerCase();
+      out.verbByLemma.set(key, [...(out.verbByLemma.get(key) ?? []), r]);
+    }
     const map =
       r.kind === 'preposition'
         ? out.preposition
@@ -479,38 +490,497 @@ export function assignTriggers(s: WorkSentence, phrases: readonly Phrase[], idx:
     }
   }
 
-  // Verbs: clauses end at punctuation.
+  const open = joinedAfterPreposition(s, chosen);
+
+  // Verbs: a clause ends at punctuation and at a conjunction before a verb with a subject.
+  // A hyphen inside a word ends nothing (e-maily, česko-slovenský).
+  const inWord = (j: number) => {
+    const t = s.tokens[j];
+    return s.texts[j] === '-' && s.tokens[j - 1]?.e === t?.s && s.tokens[j + 1]?.s === t?.e;
+  };
   let start = 0;
   for (let j = 0; j <= s.tokens.length; j++) {
-    if (j < s.tokens.length && s.tokens[j]?.t !== 'punct') continue;
-    markVerbClause(s, start, j, idx, chosen);
+    if (j < s.tokens.length && (s.tokens[j]?.t !== 'punct' || inWord(j))) continue;
+    for (const [from, to] of clausesOf(start, j, chosen))
+      markVerbClause(s, from, to, idx, chosen, open);
     start = j + 1;
   }
 }
 
+type Chosen = (j: number) => Option | undefined;
+
+/** The letters of a verb tag after `v:`: the form (I, K, L, B, M), the aspect, number, person. */
+const verbDetail = (o: Option) =>
+  o.pos === 'verb' && o.tag?.startsWith('v:') ? o.tag.slice(2) : '';
+const isInfinitive = (o: Option) => verbDetail(o).startsWith('I');
+
+/**
+ * The lemma of a verb reading without its negation: the data files a negated form under a
+ * lemma of its own (*nemám* under *nemať*, *nešiel* under *nejsť*).
+ */
+function verbLemma(o: Option): string {
+  const lemma = lower(o.lemma);
+  if (!verbDetail(o).endsWith('-') || !lemma.startsWith('ne')) return lemma;
+  return lemma === 'nejsť' ? 'ísť' : lemma.slice(2);
+}
+
+/** *som*, *si*, *sme*, *ste*: with a past form they only build the tense (*čítal som*). */
+const isPastAuxiliary = (o: Option) => verbLemma(o) === 'byť' && /^K.[sp][ab]/u.test(verbDetail(o));
+
+/** Words that join two words or phrases of the same kind (*chlieb a maslo*). */
+const JOINING: ReadonlySet<string> = new Set(['a', 'i', 'aj', 'alebo', 'ani', 'či']);
+const joins = (s: WorkSentence, j: number, chosen: Chosen) => {
+  const c = chosen(j);
+  return s.texts[j] === ',' || (c?.pos === 'conj' && JOINING.has(lower(c.lemma)));
+};
+
+/** Pronouns that open a clause after a comma (*na to, čo som videl*). */
+const RELATIVE: ReadonlySet<string> = new Set(['ktorý', 'kto', 'čo', 'aký', 'čí', 'koľko']);
+
+/**
+ * A noun phrase joined to the phrase after a preposition stands in the same case for the
+ * same reason (*s chlebom a maslom*, *v Prahe, Viedni a Budapešti*): it gets the trigger of
+ * the word before the joint. After a comma only a list counts, a phrase that another joint
+ * follows. In the accusative the joined phrase can as well be a second object of the verb
+ * (*knihu pre mamu a čokoládu pre otca*), so those words are returned instead, and get no
+ * reason at all.
+ */
+function joinedAfterPreposition(s: WorkSentence, chosen: Chosen): Set<number> {
+  const open = new Set<number>();
+  for (let j = 1; j + 1 < s.tokens.length; j++) {
+    const before = s.words[j - 1];
+    const head = chosen(j - 1);
+    if (before?.trig?.kind !== 'preposition' || !head?.case || !joins(s, j, chosen)) continue;
+    const members: number[] = [];
+    let complete = false;
+    for (let k = j + 1; k < s.tokens.length && !complete; k++) {
+      const w = s.words[k];
+      const o = chosen(k);
+      if (!w || w.trig || !o || !isNominal(o) || o.case !== head.case) break;
+      if (RELATIVE.has(lower(o.lemma))) break;
+      members.push(k);
+      complete = !isModifier(o);
+    }
+    const after = (members.at(-1) ?? j) + 1;
+    if (!complete || (s.texts[j] === ',' && after < s.tokens.length && !joins(s, after, chosen)))
+      continue;
+    for (const m of members) {
+      if (head.case === 'acc') open.add(m);
+      else (s.words[m] as Word).trig = { ...before.trig };
+    }
+  }
+  return open;
+}
+
+/** Conjunctions that open a clause of their own when a verb with a subject follows. */
+const CLAUSE_CONJUNCTIONS: ReadonlySet<string> = new Set([
+  'a',
+  'ale',
+  'alebo',
+  'ani',
+  'či',
+  'lebo',
+  'že',
+  'keď',
+  'ak',
+  'aby',
+  'keby',
+  'kým',
+  'pretože',
+  'keďže',
+  'hoci',
+]);
+
+/**
+ * Cuts the stretch between two punctuation marks into clauses: at the last conjunction between
+ * two verbs (*Čítam e-maily | a potom mám stretnutie*). A conjunction with no verb after it
+ * joins words, not clauses (*pijú víno alebo punč*), and *aj* and *i* mostly mean "also". An
+ * infinitive belongs to the verb before it (*bude vláda novými a starými opatreniami
+ * zabezpečovať*), and so does a past form to its *som* or *sme*.
+ */
+function clausesOf(from: number, to: number, chosen: Chosen): [number, number][] {
+  const out: [number, number][] = [];
+  let begin = from;
+  let at = -1;
+  let cut = -1;
+  // True while a som or sme of this clause still waits for its past form (som chlieb kúpil).
+  let waits = false;
+  let past = false;
+  for (let j = from; j < to; j++) {
+    const c = chosen(j);
+    if (!c) continue;
+    if (c.pos === 'verb') {
+      const isPast = verbDetail(c).startsWith('L');
+      if (at >= 0 && cut > at && !isInfinitive(c) && !(waits && isPast)) {
+        out.push([begin, cut]);
+        begin = cut + 1;
+        waits = false;
+        past = false;
+      }
+      if (isPast) {
+        past = true;
+        waits = false;
+      } else if (isPastAuxiliary(c) && !past) waits = true;
+      at = j;
+    } else if (c.pos === 'conj' && CLAUSE_CONJUNCTIONS.has(lower(c.lemma))) cut = j;
+  }
+  out.push([begin, to]);
+  return out;
+}
+
+/**
+ * Verbs that take another verb in the infinitive and have an object rule of their own. With
+ * an infinitive after them the object belongs to that verb (*ako ich mám brať*,
+ * *chcem ho vidieť*, *mal útočníkov zastaviť*), so they keep only a noun that itself takes
+ * the infinitive (*mám čas čítať*).
+ */
+const WITH_INFINITIVE: ReadonlySet<string> = new Set(['mať', 'chcieť', 'potrebovať', 'zabudnúť']);
+/** Nouns an infinitive hangs on: the noun is the object of the verb before it. */
+const NOUNS_WITH_INFINITIVE: ReadonlySet<string> = new Set([
+  'čas',
+  'chuť',
+  'možnosť',
+  'príležitosť',
+  'šanca',
+  'dôvod',
+  'spôsob',
+  'právo',
+  'povinnosť',
+  'potreba',
+  'nutnosť',
+  'snaha',
+  'túžba',
+  'tendencia',
+  'sklon',
+  'zámer',
+  'cieľ',
+  'plán',
+  'nápad',
+  'pokus',
+  'schopnosť',
+  'odvaha',
+  'sila',
+  'ochota',
+  'záujem',
+  'problém',
+  'úloha',
+  'strach',
+  'rozhodnutie',
+  'sľub',
+  'návrh',
+  'povolenie',
+  'zákaz',
+]);
+/** How far after a verb its infinitive stands at most, in tokens (*musím ho dnes vidieť*). */
+const CARRY_REACH = 6;
+
+/** Units of time: in the bare accusative they say how long (*čakal hodinu*, *chvíľu spím*). */
+const TIME_UNITS: ReadonlySet<string> = new Set([
+  'chvíľa',
+  'chvíľka',
+  'sekunda',
+  'minúta',
+  'hodina',
+  'deň',
+  'noc',
+  'týždeň',
+  'víkend',
+  'mesiac',
+  'polrok',
+  'rok',
+  'desaťročie',
+  'storočie',
+]);
+/** Nouns that say when or how long only with one of `TIME_WORDS` (*každý piatok*, *celý život*). */
+const TIME_NOUNS: ReadonlySet<string> = new Set([
+  ...TIME_UNITS,
+  'ráno',
+  'dopoludnie',
+  'predpoludnie',
+  'poludnie',
+  'popoludnie',
+  'poobedie',
+  'večer',
+  'pondelok',
+  'utorok',
+  'streda',
+  'štvrtok',
+  'piatok',
+  'sobota',
+  'nedeľa',
+  'jar',
+  'leto',
+  'jeseň',
+  'zima',
+  'január',
+  'február',
+  'marec',
+  'apríl',
+  'máj',
+  'jún',
+  'júl',
+  'august',
+  'september',
+  'október',
+  'november',
+  'december',
+  'čas',
+  'život',
+  'semester',
+  'sezóna',
+  'prázdniny',
+  'dovolenka',
+]);
+const TIME_WORDS: ReadonlySet<string> = new Set([
+  'každý',
+  'celý',
+  'tento',
+  'ten',
+  'tamten',
+  'minulý',
+  'budúci',
+  'predošlý',
+  'predchádzajúci',
+  'uplynulý',
+  'nasledujúci',
+  'ďalší',
+  'posledný',
+  'niektorý',
+  'jeden',
+  'prvý',
+  'druhý',
+  'tretí',
+]);
+
+/**
+ * An accusative that says when or how long, not what: `always` with a word such as *každý*
+ * or *minulý* (*každý mesiac*, *minulý týždeň*, *celý deň*), `unit` for a unit of time alone or
+ * counted (*hodinu*, *dva roky*, *päť minút*), which only *mať* takes as its object
+ * (*mám hodinu*, *mal som desať rokov*).
+ */
+function timeAccusative(j: number, from: number, chosen: Chosen): 'always' | 'unit' | undefined {
+  const c = chosen(j);
+  if (c?.case !== 'acc') return undefined;
+  // The noun of the phrase: the word itself, or the noun after its modifiers; a numeral
+  // counts its noun in the genitive.
+  let head = c.pos === 'noun' ? j : -1;
+  if (head < 0 && (isModifier(c) || c.pos === 'num')) {
+    for (let k = j + 1; head < 0 && k <= j + 3; k++) {
+      const o = chosen(k);
+      if (!o || !isNominal(o)) break;
+      const counted = c.pos === 'num' && o.case === 'gen';
+      if (!counted && !(o.case === 'acc' && agree(c, o))) break;
+      if (o.pos === 'noun') head = k;
+    }
+  }
+  const noun = head < 0 ? undefined : chosen(head);
+  if (!noun || !TIME_NOUNS.has(lower(noun.lemma))) return undefined;
+  for (let k = head - 1; k >= from && k >= head - 4; k--) {
+    const o = chosen(k);
+    if (!o || !isNominal(o) || o.pos === 'noun' || isPersonal(o)) break;
+    if (TIME_WORDS.has(lower(o.lemma))) return 'always';
+  }
+  return TIME_UNITS.has(lower(noun.lemma)) ? 'unit' : undefined;
+}
+
+interface ClauseVerb {
+  at: number;
+  lemma: string;
+  detail: string;
+  infinitive: boolean;
+  triggers: readonly TriggerFacts[];
+}
+
+/**
+ * Names the verb that asks for the case of a word, in one clause: the nearest verb of the
+ * trigger list with a rule for that case. A reason that may be wrong is left out, since a
+ * missing reason costs the reader nothing and a wrong one teaches a wrong rule:
+ * - *som*, *si*, *sme*, *ste* beside a past form (*my sme sa rozprávali*) and *budem* before
+ *   an infinitive only build the tense: they are no *byť* with a nominative;
+ * - a verb with an infinitive after it leaves the object to that verb (`WITH_INFINITIVE`);
+ * - a verb without a rule for the case that stands nearer is the likelier reason
+ *   (*túžba robiť hlúposti ma neopustila*);
+ * - the words after *ako* or *než* stand in the case of what they are compared with;
+ * - an accusative of time says when or how long (`timeAccusative`);
+ * - a genitive right after a noun belongs to that noun (*chovanci ústavu*);
+ * - an instrumental with *byť* is a job or a role only where it can be what is said of the
+ *   subject (`saidOfSubject`).
+ */
 function markVerbClause(
   s: WorkSentence,
   from: number,
   to: number,
   idx: TriggerIndex,
-  chosen: (j: number) => Option | undefined,
+  chosen: Chosen,
+  open: ReadonlySet<number>,
 ) {
-  const verbs: { at: number; triggers: TriggerFacts[] }[] = [];
+  const all: ClauseVerb[] = [];
   for (let j = from; j < to; j++) {
     const c = chosen(j);
-    const triggers = c ? idx.verb.get(c.lemmaId) : undefined;
-    if (c?.pos === 'verb' && triggers) verbs.push({ at: j, triggers });
+    if (c?.pos !== 'verb') continue;
+    const lemma = verbLemma(c);
+    all.push({
+      at: j,
+      lemma,
+      detail: verbDetail(c),
+      infinitive: isInfinitive(c),
+      triggers: idx.verb.get(c.lemmaId) ?? idx.verbByLemma.get(lemma) ?? [],
+    });
   }
+  const infinitiveAfter = (at: number) => all.find((v) => v.infinitive && v.at > at)?.at;
+  /** True for a verb that only carries the infinitive right after it (musím ho dnes vidieť). */
+  const carries = (v: ClauseVerb) => {
+    const inf = infinitiveAfter(v.at);
+    return inf !== undefined && inf <= v.at + CARRY_REACH;
+  };
+  const past = all.some((v) => v.detail.startsWith('L'));
+  const builds = (v: ClauseVerb) =>
+    v.lemma === 'byť' &&
+    ((past && /^K.[sp][ab]/u.test(v.detail)) ||
+      (v.detail.startsWith('B') && infinitiveAfter(v.at) !== undefined));
+  const verbs = all.filter((v) => v.triggers.length > 0 && !builds(v));
   if (verbs.length === 0) return;
+
+  // Words in a comparison: from ako or než to the next verb. An ako that opens the clause of a
+  // verb is "how" or "as" (ako ich mám brať): only a nominative right after it is set apart
+  // (ako dieťa som mal psa).
+  const apart = new Set<number>();
+  for (let j = from; j < to; j++) {
+    const c = chosen(j);
+    if (!c || (lower(c.lemma) !== 'ako' && lower(c.lemma) !== 'než')) continue;
+    const opens = j === from && all.some((v) => v.at > j);
+    for (let k = j + 1; k < to; k++) {
+      const o = chosen(k);
+      if (o?.pos === 'verb' || (opens && !(o && isNominal(o) && o.case === 'nom'))) break;
+      apart.add(k);
+    }
+  }
+  // A genitive right after a noun, and the words of its phrase and those joined to it.
+  for (let j = from + 1; j < to; j++) {
+    const c = chosen(j);
+    if (!c || !isNominal(c) || c.case !== 'gen') continue;
+    const before = chosen(j - 1);
+    const sameCase = before && isNominal(before) && before.case === 'gen';
+    if (
+      before?.pos === 'noun' ||
+      (apart.has(j - 1) && sameCase && isModifier(before)) ||
+      (j - 2 >= from &&
+        joins(s, j - 1, chosen) &&
+        apart.has(j - 2) &&
+        chosen(j - 2)?.case === 'gen')
+    )
+      apart.add(j);
+  }
+
+  let nominatives: number | undefined;
+  /**
+   * How many groups of nominative words the clause has. Joined words are one group, and so
+   * are words with only a genitive or *jeho*, *jej*, *ich* between them (*zníženie
+   * nezamestnanosti a zvýšenie efektívnosti*).
+   */
+  const nominativeGroups = () => {
+    if (nominatives !== undefined) return nominatives;
+    nominatives = 0;
+    let inside = false;
+    for (let j = from; j < to; j++) {
+      const o = chosen(j);
+      if (o && isNominal(o) && o.case === 'nom') {
+        if (!inside) nominatives++;
+        inside = true;
+      } else if (
+        !joins(s, j, chosen) &&
+        !(o && isNominal(o) && o.case === 'gen') &&
+        !(o?.pos === 'pron' && o.case === undefined)
+      )
+        inside = false;
+    }
+    return nominatives;
+  };
+  /**
+   * True when an instrumental can be what *byť* says of the subject (*otec je lekárom*). It
+   * does not hang on the adjective beside it (*pokryté snehom*, *vládou vypracovaný*) or on
+   * the noun before it (*cesta vlakom*), unless that noun is the subject after the verb
+   * (*je Malta členom*) or ends a phrase with a preposition (*bol v škole kapitánom*). And
+   * the clause says nothing else of the subject in the nominative (*je to autom desať minút*).
+   */
+  const saidOfSubject = (j: number, verbAt: number) => {
+    const instrumental = (k: number) => {
+      const o = chosen(k);
+      return o !== undefined && isNominal(o) && o.case === 'ins';
+    };
+    let first = j;
+    while (first - 1 >= from && instrumental(first - 1)) first--;
+    let last = j;
+    while (last + 1 < to && instrumental(last + 1)) last++;
+    // Not the rest of a phrase after a preposition (pred obradom samotným), and no tým on
+    // its own (tým bola vojna ukončená).
+    for (let k = first; k <= last; k++) if (s.words[k]?.trig?.kind === 'preposition') return false;
+    if (first === last && lower(chosen(j)?.lemma ?? '') === 'ten') return false;
+    const before = first - 1 >= from ? chosen(first - 1) : undefined;
+    const after = last + 1 < to ? chosen(last + 1) : undefined;
+    if (before?.pos === 'adj') return false;
+    if (after?.pos === 'adj' && after.case !== 'gen') return false;
+    if (
+      before?.pos === 'noun' &&
+      !(before.case === 'nom' && verbAt < first) &&
+      s.words[first - 1]?.trig?.kind !== 'preposition'
+    )
+      return false;
+    return nominativeGroups() <= 1;
+  };
+
   for (let j = from; j < to; j++) {
     const w = s.words[j];
     const c = chosen(j);
-    if (!w || w.trig || !c || !isNominal(c)) continue;
+    if (!w || w.trig || !c || !isNominal(c) || apart.has(j) || open.has(j)) continue;
+    // A name after the noun it names keeps the nominative (šéfredaktor týždenníka Október).
+    const named = j > from ? chosen(j - 1) : undefined;
+    if (
+      c.case === 'nom' &&
+      named?.pos === 'noun' &&
+      named.case !== 'nom' &&
+      !s.words[j - 1]?.trig &&
+      /^\p{Lu}/u.test(s.texts[j] ?? '')
+    )
+      continue;
+    const time = timeAccusative(j, from, chosen);
+    if (time === 'always') continue;
+    // The noun of the phrase the word stands in, when that noun takes an infinitive.
+    let noun = c.pos === 'noun' ? j : -1;
+    for (let k = j + 1; noun < 0 && k < to && k <= j + 3; k++) {
+      const o = chosen(k);
+      if (!o || !isNominal(o) || o.case !== c.case) break;
+      if (o.pos === 'noun') noun = k;
+    }
+    const takesInfinitive =
+      noun >= 0 && NOUNS_WITH_INFINITIVE.has(lower((chosen(noun) as Option).lemma));
     let best: { at: number; id: string } | undefined;
     for (const v of verbs) {
       const t = v.triggers.find((x) => x.case === c.case);
-      if (t && (!best || Math.abs(v.at - j) < Math.abs(best.at - j))) best = { at: v.at, id: t.id };
+      if (!t) continue;
+      if (time === 'unit' && v.lemma !== 'mať') continue;
+      if (WITH_INFINITIVE.has(v.lemma)) {
+        const inf = infinitiveAfter(v.at);
+        if (inf !== undefined && !(takesInfinitive && j > v.at && noun < inf)) continue;
+      }
+      if (v.lemma === 'byť' && c.case === 'ins' && !saidOfSubject(j, v.at)) continue;
+      // pocítil potrebu písať: the noun is no object of the infinitive after it.
+      if (v.infinitive && takesInfinitive && noun < v.at) continue;
+      if (!best || Math.abs(v.at - j) < Math.abs(best.at - j)) best = { at: v.at, id: t.id };
     }
-    if (best) w.trig = { i: best.at, kind: 'verb', id: best.id };
+    if (!best) continue;
+    // A verb with no rule for this case that stands nearer is the likelier reason. One with
+    // an infinitive after it only carries that verb (musím ho vidieť); an infinitive takes
+    // no subject and no word before it (mám čas čítať, je schopný konkurovať).
+    const reach = Math.abs(best.at - j);
+    const nearer = all.some(
+      (v) =>
+        Math.abs(v.at - j) < reach &&
+        !builds(v) &&
+        !carries(v) &&
+        !(v.infinitive && (c.case === 'nom' || j < v.at)) &&
+        !v.triggers.some((x) => x.case === c.case),
+    );
+    if (!nearer) w.trig = { i: best.at, kind: 'verb', id: best.id };
   }
 }

@@ -6,7 +6,7 @@ import type { Case, Gender, Pos } from '@app/contracts';
 import { readTag } from '@app/ling';
 import { describe, expect, it } from 'vitest';
 import type { TriggerFacts } from './repo';
-import { applyRules, indexTriggers, type Option, type WorkSentence } from './rules';
+import { applyRules, assignTriggers, indexTriggers, type Option, type WorkSentence } from './rules';
 
 const ids = new Map<string, number>();
 function idOf(lemma: string, pos: Pos): number {
@@ -69,7 +69,30 @@ const prep = (lemma: string, ...cases: Case[]): TriggerFacts[] =>
     lemmaId: idOf(lemma, 'prep'),
     case: c,
   }));
+const verb = (lemma: string, c: Case, id = lemma): TriggerFacts => ({
+  id: `verb-${id}`,
+  kind: 'verb',
+  lemma,
+  lemmaId: idOf(lemma, 'verb'),
+  case: c,
+});
 const TRIGGERS = indexTriggers([
+  ...prep('s', 'ins'),
+  ...prep('na', 'acc', 'loc'),
+  verb('byť', 'nom', 'byt-nom'),
+  verb('byť', 'ins', 'byt-ins'),
+  verb('mať', 'acc'),
+  verb('chcieť', 'acc'),
+  verb('vidieť', 'acc'),
+  verb('čítať', 'acc'),
+  verb('robiť', 'acc'),
+  verb('piť', 'acc'),
+  verb('jesť', 'acc'),
+  verb('čakať', 'acc'),
+  verb('platiť', 'acc'),
+  verb('písať', 'acc'),
+  verb('pomáhať', 'dat'),
+  verb('zúčastniť', 'gen'),
   ...prep('v', 'loc', 'acc'),
   ...prep('o', 'loc', 'acc'),
   ...prep('po', 'loc', 'acc'),
@@ -406,5 +429,329 @@ describe('numerals', () => {
       ['porazili', r('poraziť', 'verb', 'v:Ldpcm+')],
     );
     expect(after(s, 'ich')).toHaveLength(4);
+  });
+});
+
+// The verb named as the reason for a case. Every word has its one reading here, as it has
+// when the triggers are assigned. Each case is one the library texts or the treebank showed
+// the nearest listed verb getting wrong.
+describe('the verb that asks for a case', () => {
+  const v = (lemma: string, tag: string) => r(lemma, 'verb', `v:${tag}`);
+  const n = (lemma: string, tag: string, gender: Gender = 'm_inan') =>
+    r(lemma, 'noun', tag, gender);
+  const pron = (lemma: string, tag: string) => r(lemma, 'pron', tag);
+  const CONJ = (lemma: string) => r(lemma, 'conj');
+  const ADV = (lemma: string) => r(lemma, 'adv');
+
+  /** The reason of each word that has one, as `word<trigger word:rule`. */
+  function reasons(s: WorkSentence): string[] {
+    assignTriggers(s, applyRules(s, TRIGGERS), TRIGGERS);
+    return s.words.flatMap((w, i) =>
+      w?.trig ? [`${s.texts[i]}<${s.texts[w.trig.i ?? -1]}:${w.trig.id}`] : [],
+    );
+  }
+
+  it('a conjunction between two verbs ends the clause, one between two nouns does not', () => {
+    const s = sentence(
+      ['Čítam', v('čítať', 'Kesa+')],
+      ['knihu', n('kniha', 's4', 'f')],
+      ['a', CONJ('a')],
+      ['potom', ADV('potom')],
+      ['mám', v('mať', 'Kesa+')],
+      ['stretnutie', n('stretnutie', 's4', 'n')],
+    );
+    expect(reasons(s)).toEqual(['knihu<Čítam:verb-čítať', 'stretnutie<mám:verb-mať']);
+
+    const drinks = sentence(
+      ['pijú', v('piť', 'Kepc+')],
+      ['víno', n('víno', 's4', 'n')],
+      ['alebo', CONJ('alebo')],
+      ['punč', n('punč', 's4')],
+      ['a', CONJ('a')],
+      ['jedia', v('jesť', 'Kepc+')],
+      ['jedlá', n('jedlo', 'p4', 'n')],
+    );
+    expect(reasons(drinks)).toEqual([
+      'víno<pijú:verb-piť',
+      'punč<pijú:verb-piť',
+      'jedlá<jedia:verb-jesť',
+    ]);
+
+    // The subject of a verb without a rule is no nominative of the next clause's byť.
+    const sun = sentence(
+      ['Svietilo', v('svietiť', 'Lescn+')],
+      ['slnko', n('slnko', 's1', 'n')],
+      ['a', CONJ('a')],
+      ['bolo', v('byť', 'Lescn+')],
+      ['teplo', n('teplo', 's1', 'n')],
+    );
+    expect(reasons(sun)).toEqual(['teplo<bolo:verb-byt-nom']);
+  });
+
+  it('a hyphen inside a word ends no clause', () => {
+    const s = sentence(
+      ['čítam', v('čítať', 'Kesa+')],
+      ['e', r('e', 'noun', 's1 s4', 'n')],
+      '-',
+      ['maily', n('mail', 'p4')],
+      ['a', CONJ('a')],
+      ['mám', v('mať', 'Kesa+')],
+      ['stretnutie', n('stretnutie', 's4', 'n')],
+    );
+    // e-maily: the three tokens touch.
+    const [e, hyphen, maily] = [s.tokens[1], s.tokens[2], s.tokens[3]];
+    if (!e || !hyphen || !maily) throw new Error('no tokens');
+    hyphen.s = e.e;
+    hyphen.e = hyphen.s + 1;
+    maily.s = hyphen.e;
+    s.words[1] = {
+      options: r('e', 'noun', 's4', 'n').map((o) => ({ ...o, form: 'e' })),
+      initial: 1,
+    };
+    expect(reasons(s)).toContain('maily<čítam:verb-čítať');
+  });
+
+  it('som and sme beside a past form, and budem before an infinitive, are no byť', () => {
+    const talked = sentence(
+      ['my', pron('my', 'x1')],
+      ['sme', v('byť', 'Kepa+')],
+      ['mali', v('mať', 'Lepah+')],
+      ['problém', n('problém', 's4')],
+    );
+    expect(reasons(talked)).toEqual(['problém<mali:verb-mať']);
+
+    const students = sentence(
+      ['my', pron('my', 'x1')],
+      ['sme', v('byť', 'Kepa+')],
+      ['študenti', n('študent', 'p1', 'm_anim')],
+    );
+    expect(reasons(students)).toEqual(['my<sme:verb-byt-nom', 'študenti<sme:verb-byt-nom']);
+
+    const will = sentence(
+      ['ja', pron('ja', 'x1')],
+      ['budem', v('byť', 'Besa+')],
+      ['čítať', v('čítať', 'Ie+')],
+      ['knihu', n('kniha', 's4', 'f')],
+    );
+    expect(reasons(will)).toEqual(['knihu<čítať:verb-čítať']);
+
+    // The past form after the next conjunction belongs to another clause.
+    const made = sentence(
+      ['Čítala', v('čítať', 'Lesaf+')],
+      ['som', v('byť', 'Kesa+')],
+      ['knihu', n('kniha', 's4', 'f')],
+      ['a', CONJ('a')],
+      ['zaspala', v('zaspať', 'Ldsaf+')],
+    );
+    expect(reasons(made)).toEqual(['knihu<Čítala:verb-čítať']);
+  });
+
+  it('a negated verb has the rules of its verb', () => {
+    const s = sentence(['Nemám', v('nemať', 'Kesa-')], ['čas', n('čas', 's4')]);
+    expect(reasons(s)).toEqual(['čas<Nemám:verb-mať']);
+    const was = sentence(
+      ['Nebolo', v('nebyť', 'Lescn-')],
+      ['to', pron('ten', 's1n')],
+      ['ľahké', adj('ľahký', 's1n')],
+    );
+    expect(reasons(was)).toEqual(['to<Nebolo:verb-byt-nom', 'ľahké<Nebolo:verb-byt-nom']);
+  });
+
+  it('a verb with an infinitive after it leaves the object to that verb', () => {
+    // ako ich mám brať: brať has no rule, and mám is not the reason.
+    const take = sentence(
+      ['ako', ADV('ako')],
+      ['ich', pron('on', 'p4m')],
+      ['mám', v('mať', 'Kesa+')],
+      ['brať', v('brať', 'Ie+')],
+    );
+    expect(reasons(take)).toEqual([]);
+
+    const learn = sentence(
+      ['že', CONJ('že')],
+      ['ich', pron('on', 'p4m')],
+      ['chcem', v('chcieť', 'Kesa+')],
+      ['naučiť', v('naučiť', 'Id+')],
+      ['robiť', v('robiť', 'Ie+')],
+    );
+    expect(reasons(learn)).toEqual(['ich<robiť:verb-robiť']);
+
+    // A noun that takes the infinitive is the object of the first verb.
+    const time = sentence(
+      ['Mám', v('mať', 'Kesa+')],
+      ['čas', n('čas', 's4')],
+      ['čítať', v('čítať', 'Ie+')],
+      ['knihy', n('kniha', 'p4', 'f')],
+    );
+    expect(reasons(time)).toEqual(['čas<Mám:verb-mať', 'knihy<čítať:verb-čítať']);
+
+    const book = sentence(
+      ['Knihu', n('kniha', 's4', 'f')],
+      ['chcem', v('chcieť', 'Kesa+')],
+      ['čítať', v('čítať', 'Ie+')],
+    );
+    expect(reasons(book)).toEqual(['Knihu<čítať:verb-čítať']);
+  });
+
+  it('a nearer verb without a rule for the case is the likelier reason', () => {
+    const s = sentence(
+      ['túžba', n('túžba', 's1', 'f')],
+      ['robiť', v('robiť', 'Ie+')],
+      ['hlúposti', n('hlúposť', 'p4', 'f')],
+      ['ma', pron('ja', 'x4')],
+      ['neopustila', v('neopustiť', 'Ldscf-')],
+    );
+    expect(reasons(s)).toEqual(['hlúposti<robiť:verb-robiť']);
+
+    // musím only carries the infinitive.
+    const must = sentence(
+      ['Musím', v('musieť', 'Kesa+')],
+      ['ho', pron('on', 's4m')],
+      ['vidieť', v('vidieť', 'Ie+')],
+    );
+    expect(reasons(must)).toEqual(['ho<vidieť:verb-vidieť']);
+  });
+
+  it('the words after ako stand in the case of what they are compared with', () => {
+    const s = sentence(
+      ['Je', v('byť', 'Kesc+')],
+      ['to', pron('ten', 's1n')],
+      ['lepšie', ADV('lepšie')],
+      ['ako', CONJ('ako')],
+      ['hodina', n('hodina', 's1', 'f')],
+    );
+    expect(reasons(s)).toEqual(['to<Je:verb-byt-nom']);
+
+    const child = sentence(
+      ['Ako', CONJ('ako')],
+      ['dieťa', n('dieťa', 's1', 'n')],
+      ['mal', v('mať', 'Lescm+')],
+      ['psa', n('pes', 's4', 'm_anim')],
+    );
+    expect(reasons(child)).toEqual(['psa<mal:verb-mať']);
+  });
+
+  it('an accusative of time is no object', () => {
+    const month = sentence(
+      ['platím', v('platiť', 'Kesa+')],
+      ['každý', pron('každý', 's4i')],
+      ['mesiac', n('mesiac', 's4')],
+    );
+    expect(reasons(month)).toEqual([]);
+
+    const hour = sentence(
+      ['čakať', v('čakať', 'Ie+')],
+      ['skoro', ADV('skoro')],
+      ['hodinu', n('hodina', 's4', 'f')],
+    );
+    expect(reasons(hour)).toEqual([]);
+
+    // mať takes a unit of time as its object: mal som desať rokov, mám hodinu.
+    const lesson = sentence(['Mám', v('mať', 'Kesa+')], ['hodinu', n('hodina', 's4', 'f')]);
+    expect(reasons(lesson)).toEqual(['hodinu<Mám:verb-mať']);
+
+    // The pronoun before a time is the object: čakal ho hodinu.
+    const him = sentence(
+      ['čakal', v('čakať', 'Lescm+')],
+      ['ho', pron('on', 's4m')],
+      ['hodinu', n('hodina', 's4', 'f')],
+    );
+    expect(reasons(him)).toEqual(['ho<čakal:verb-čakať']);
+  });
+
+  it('a genitive right after a noun belongs to that noun', () => {
+    const s = sentence(
+      ['Zúčastnili', v('zúčastniť', 'Ldpcm+')],
+      ['sa', r('sa', 'other')],
+      ['stretnutia', n('stretnutie', 's2', 'n')],
+      ['chovanci', n('chovanec', 'p1', 'm_anim')],
+      ['ústavu', n('ústav', 's2')],
+    );
+    expect(reasons(s)).toEqual(['stretnutia<Zúčastnili:verb-zúčastniť']);
+  });
+
+  it('an instrumental with byť is a job or a role only where it is said of the subject', () => {
+    const doctor = sentence(
+      ['Otec', n('otec', 's1', 'm_anim')],
+      ['je', v('byť', 'Kesc+')],
+      ['dobrým', adj('dobrý', 's7m')],
+      ['lekárom', n('lekár', 's7', 'm_anim')],
+    );
+    expect(reasons(doctor)).toEqual([
+      'Otec<je:verb-byt-nom',
+      'dobrým<je:verb-byt-ins',
+      'lekárom<je:verb-byt-ins',
+    ]);
+
+    const snow = sentence(
+      ['Hory', n('hora', 'p1', 'f')],
+      ['sú', v('byť', 'Kepc+')],
+      ['pokryté', adj('pokrytý', 'p1f')],
+      ['snehom', n('sneh', 's7')],
+    );
+    expect(reasons(snow)).toEqual(['Hory<sú:verb-byt-nom', 'pokryté<sú:verb-byt-nom']);
+
+    const car = sentence(
+      ['Je', v('byť', 'Kesc+')],
+      ['to', pron('ten', 's1n')],
+      ['autom', n('auto', 's7', 'n')],
+      ['hodina', n('hodina', 's1', 'f')],
+    );
+    expect(reasons(car)).toEqual(['to<Je:verb-byt-nom', 'hodina<Je:verb-byt-nom']);
+
+    // The subject between the verb and what is said of it: je Malta členom.
+    const member = sentence(
+      ['je', v('byť', 'Kesc+')],
+      ['Malta', n('Malta', 's1', 'f')],
+      ['členom', n('člen', 's7', 'm_anim')],
+    );
+    expect(reasons(member)).toEqual(['Malta<je:verb-byt-nom', 'členom<je:verb-byt-ins']);
+  });
+
+  it('a noun joined to the phrase after a preposition has the reason of that phrase', () => {
+    const bread = sentence(
+      ['Je', v('byť', 'Kesc+')],
+      ['s', r('s', 'prep')],
+      ['chlebom', n('chlieb', 's7')],
+      ['a', CONJ('a')],
+      ['čerstvým', adj('čerstvý', 's7n')],
+      ['maslom', n('maslo', 's7', 'n')],
+    );
+    expect(reasons(bread)).toEqual([
+      'chlebom<s:prep-s-ins',
+      'čerstvým<s:prep-s-ins',
+      'maslom<s:prep-s-ins',
+    ]);
+
+    // In the accusative the joined noun can be a second object: it gets no reason at all.
+    const gift = sentence(
+      ['Mám', v('mať', 'Kesa+')],
+      ['darček', n('darček', 's4')],
+      ['pre', r('pre', 'prep')],
+      ['mamu', n('mama', 's4', 'f')],
+      ['a', CONJ('a')],
+      ['sestru', n('sestra', 's4', 'f')],
+    );
+    expect(reasons(gift)).toEqual(['darček<Mám:verb-mať', 'mamu<pre:prep-pre-acc']);
+
+    // A pronoun that opens a clause after a comma joins nothing: na to, čo vidím.
+    const what = sentence(
+      ['na', r('na', 'prep')],
+      ['to', pron('ten', 's4n')],
+      ',',
+      ['čo', pron('čo', 'x4')],
+      ['vidím', v('vidieť', 'Kesa+')],
+    );
+    expect(reasons(what)).toEqual(['to<na:prep-na-acc', 'čo<vidím:verb-vidieť']);
+  });
+
+  it('a name after the noun it names keeps the nominative', () => {
+    const s = sentence(
+      ['bol', v('byť', 'Lescm+')],
+      ['šéfom', n('šéf', 's7', 'm_anim')],
+      ['týždenníka', n('týždenník', 's2')],
+      ['Október', n('október', 's1')],
+    );
+    expect(reasons(s)).toEqual(['šéfom<bol:verb-byt-ins']);
   });
 });
