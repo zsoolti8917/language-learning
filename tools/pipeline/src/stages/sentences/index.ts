@@ -11,11 +11,15 @@
 //    the same rules, then by a second model pass (`content.review`).
 // Model output lives in content/generated/sentences.jsonl (in git), so a rebuild needs no
 // model call; mock fills go to the build folder.
+// Two lists of an editor apply to the real sentences: content/authored/sentences/excluded.yaml
+// (sentences left out) and translations.yaml (the English shown instead of the source's).
 //
 //   pnpm run pipeline sentences                    harvest + what was generated before
 //   pnpm run pipeline sentences --fill dry-run     + request count and cost of the fill
 //   pnpm run pipeline sentences --fill live        + sends it (refuses above $5 without --max-spend)
 //   pnpm run pipeline sentences --fill mock        + scripted answers (tests, local runs)
+//   pnpm run pipeline sentences --fill offline     + answers written outside the API, route by
+//                                                    route: translate, then sentences, then review
 //   --lexicon <set dir>   take lemmas, forms, triggers and senses from a set (the mini dataset)
 import { join } from 'node:path';
 import type { SentenceRow } from '@app/contracts';
@@ -30,17 +34,18 @@ import {
 } from '../../lib/files';
 import { codeDirOf, resolveArg, type Stage, type StageContext } from '../../lib/runner';
 import type { Check } from '../../lib/validate';
-import { FILL_OPTIONS, fillModeOf, runOptionsOf } from '../../model/options';
+import { FILL_OPTIONS, fillAlwaysRuns, fillModeOf, runOptionsOf } from '../../model/options';
 import { type CostEstimate, DEFAULT_MAX_SPEND_USD, formatUsd } from '../../model/pricing';
 import {
   type BatchJob,
   type BatchOutcome,
-  DEFAULT_MODEL,
   type RunOptions,
   runBatch,
   SpendLimitError,
 } from '../../model/runner';
 import { type Analysis, analyse } from './analyze';
+import { correctedPath, readCorrected } from './corrected';
+import { excludedPath, readExcluded } from './excluded';
 import {
   type HarvestedSentence,
   harvest,
@@ -230,7 +235,7 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
   const top = intArg(ctx, 'top', SENTENCE_TOP);
   const sample = intArg(ctx, 'sample', 0);
   const mode = fillModeOf(ctx);
-  const options = runOptionsOf(ctx);
+  const options = runOptionsOf(ctx, 'sentences');
   const files = lexiconFiles(ctx.paths.build, lexiconDir(ctx));
   for (const p of [files.lemmas, files.forms, ...(files.ranks ? [files.ranks] : [])])
     if (!existsSync(p))
@@ -264,8 +269,23 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
   const kept = new Map<string, Kept>();
   const harvested = new Map<string, HarvestedSentence>();
   let noTarget = 0;
+  // Sentences a reader found wrong (content/authored/sentences/excluded.yaml) are left out.
+  const excluded = await readExcluded(excludedPath(ctx.paths));
+  const excludedSeen = new Set<string>();
+  // English an editor corrected (content/authored/sentences/translations.yaml) replaces the
+  // translation of the source in the rows.
+  const corrected = await readCorrected(correctedPath(ctx.paths));
+  for (const text of corrected.keys())
+    if (excluded.has(text))
+      throw new Error(
+        `sentences: "${text}" is in excluded.yaml and in translations.yaml; keep it in one`,
+      );
   for (const s of [...tatoeba, ...ud]) {
     harvested.set(s.id, s);
+    if (excluded.has(s.textSk.normalize('NFC'))) {
+      excludedSeen.add(s.textSk.normalize('NFC'));
+      continue;
+    }
     const a = analyse(s.textSk, lex, s.ud);
     const problem = sentenceProblem(a, lex);
     if (problem) {
@@ -354,7 +374,7 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
           textEn: item.en.trim(),
           route: translateTask.route,
           promptVersion: translateTask.promptVersion,
-          model: translateTask.model ?? DEFAULT_MODEL,
+          model: r.model,
           requestHash: r.hash,
         };
         translations.set(id, row);
@@ -458,7 +478,13 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
       id: `s${i}`,
       input: { items: g.map(({ lemmaId: _id, ...it }, n) => ({ ...it, n })) },
     }));
-    type Passed = { item: (typeof items)[number]; sk: string; en: string; hash: string };
+    type Passed = {
+      item: (typeof items)[number];
+      sk: string;
+      en: string;
+      hash: string;
+      model: string;
+    };
     // Before anything is generated the review has no sentences: it is estimated with one
     // stand-in per item (a dry run reports that; a live run checks it fits the budget).
     const standIns: Passed[] = items.map((item) => ({
@@ -466,6 +492,7 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
       sk: `${item.form} ${'slovo '.repeat(6).trim()}.`,
       en: 'An English sentence of about eight words here.',
       hash: '',
+      model: '',
     }));
     if (options.mode === 'live') {
       const dry = { ...options, mode: 'dry-run' as const, log: () => undefined };
@@ -507,7 +534,7 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
           count(genRejected, t);
           continue;
         }
-        passed.push({ item, sk, en: ans.en.trim(), hash: r.hash });
+        passed.push({ item, sk, en: ans.en.trim(), hash: r.hash, model: r.model });
       }
     }
     const toReview = mode === 'dry-run' ? standIns : passed;
@@ -538,7 +565,7 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
             textEn: ans.en.trim(),
             route: task.route,
             promptVersion: task.promptVersion,
-            model: task.model ?? DEFAULT_MODEL,
+            model: p.model,
             requestHash: p.hash,
             review: {
               route: reviewTask.route,
@@ -594,13 +621,19 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
   const w = await JsonlWriter.open(out(ctx, 'sentences.jsonl'));
   const perSource: Record<string, number> = { tatoeba: 0, ud: 0, generated: 0 };
   const shown = new Map<number, number>();
+  let correctedRows = 0;
   for (const id of [...bySentence.keys()].sort()) {
     const k = (kept.get(id) ?? genKept.get(id)) as Kept;
     const links = (bySentence.get(id) ?? []).sort(
       (a, b) => a.target.tokenIndex - b.target.tokenIndex || a.lemmaId - b.lemmaId,
     );
-    const textEn = k.source === 'ud' ? translations.get(id)?.textEn : k.textEn;
-    if (!textEn) continue;
+    const sourceEn = k.source === 'ud' ? translations.get(id)?.textEn : k.textEn;
+    if (!sourceEn) continue;
+    // A written sentence with a wrong translation is removed from the generated file instead.
+    const own =
+      k.source === 'generated' ? undefined : corrected.get(k.analysis.text.normalize('NFC'));
+    if (own !== undefined) correctedRows++;
+    const textEn = own ?? sourceEn;
     const row: SentenceRow = {
       id,
       textSk: k.analysis.text,
@@ -657,6 +690,8 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
     harvested: { tatoeba: tatoeba.length, ud: ud.length },
     rejected: Object.fromEntries(REJECTIONS.map((r) => [r, rejected.get(r) ?? 0])),
     withoutTarget: noTarget,
+    excluded: excludedSeen.size,
+    corrected: correctedRows,
     kept: {
       tatoeba: [...kept.values()].filter((k) => k.source === 'tatoeba').length,
       ud: [...kept.values()].filter((k) => k.source === 'ud').length,
@@ -688,6 +723,8 @@ function renderReport(
     harvested: { tatoeba: number; ud: number };
     rejected: Record<string, number>;
     withoutTarget: number;
+    excluded: number;
+    corrected: number;
     kept: { tatoeba: number; ud: number };
     translations: number;
     generated: number;
@@ -715,6 +752,7 @@ function renderReport(
     '|---|---:|',
     ...Object.entries(s.rejected).map(([r, n]) => `| ${r} | ${n.toLocaleString('en')} |`),
     `| no word can be a target | ${s.withoutTarget.toLocaleString('en')} |`,
+    `| listed in content/authored/sentences/excluded.yaml | ${s.excluded.toLocaleString('en')} |`,
     '',
     '(`ambiguous` and `not-top-form` count words, not sentences.)',
     '',
@@ -722,7 +760,9 @@ function renderReport(
     '',
     `Rows written: ${s.rows} (${Object.entries(s.perSource)
       .map(([k, v]) => `${k} ${v}`)
-      .join(', ')}).`,
+      .join(
+        ', ',
+      )}).${s.corrected > 0 ? ` ${s.corrected} of them show the English of content/authored/sentences/translations.yaml.` : ''}`,
     '',
     `| Top | Lemmas | ${MIN_PER_LEMMA}+ sentences | One | None |`,
     '|---:|---:|---:|---:|---:|',
@@ -881,6 +921,8 @@ export const sentencesStage: Stage = {
       ...(f.triggers ? [f.triggers] : []),
       sensesPath(ctx),
       generatedPath(ctx),
+      ...(existsSync(excludedPath(ctx.paths)) ? [excludedPath(ctx.paths)] : []),
+      ...(existsSync(correctedPath(ctx.paths)) ? [correctedPath(ctx.paths)] : []),
     ];
   },
   outputs: (ctx) => ['sentences.jsonl', 'report.md', 'report.json'].map((f) => out(ctx, f)),
@@ -890,8 +932,7 @@ export const sentencesStage: Stage = {
     top: ctx.args.top ?? null,
     sample: ctx.args.sample ?? null,
     maxSpend: ctx.args['max-spend'] ?? null,
-    at:
-      fillModeOf(ctx) === 'dry-run' || fillModeOf(ctx) === 'live' ? ctx.now().toISOString() : null,
+    at: fillAlwaysRuns(ctx) ? ctx.now().toISOString() : null,
   }),
   run: runSentences,
   parts: [{ file: 'sentences.jsonl', path: (p) => join(p.build, 'sentences', 'sentences.jsonl') }],

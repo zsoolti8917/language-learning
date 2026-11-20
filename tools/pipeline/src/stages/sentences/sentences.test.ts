@@ -1,4 +1,4 @@
-import { cp, readFile, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { SentenceRow } from '@app/contracts';
 import { MINI_DIR } from '@app/testkit/mini';
@@ -18,8 +18,16 @@ import {
   sentencesStage,
 } from '.';
 import { analyse } from './analyze';
-import { parseConllu, readTatoeba, TATOEBA_SOURCE } from './harvest';
-import { type Lexicon, lexiconFiles, loadLexicon } from './lexicon';
+import { correctedPath, readCorrected } from './corrected';
+import { excludedPath, readExcluded } from './excluded';
+import {
+  type HarvestedSentence,
+  parseConllu,
+  readTatoeba,
+  TATOEBA_SOURCE,
+  withoutRepeats,
+} from './harvest';
+import { addAnimateAccusatives, Lexicon, lexiconFiles, loadLexicon } from './lexicon';
 import { describeTag } from './prompts';
 import {
   type Candidate,
@@ -45,6 +53,30 @@ async function miniRegistry(): Promise<LemmaRegistry> {
 }
 
 const ID = { mesto: 20, kniha: 12, ten: 42, ja: 37, byt: 60, praca: 15, zena: 11, dom: 6 };
+
+/** A lexicon of a few words for one test: each lemma is ranked by its id. */
+function smallLexicon() {
+  const lex = new Lexicon(3000);
+  const add = (
+    id: number,
+    lemma: string,
+    pos: 'noun' | 'verb' | 'num' | 'prep' | 'adv' | 'adj' | 'pron' | 'other',
+    forms: [string, string][],
+    more: object = {},
+  ) => {
+    lex.addLemma({
+      id,
+      key: `${lemma}|${pos}|${id}`,
+      lemma,
+      pos,
+      freqRank: id,
+      topForms: [],
+      ...more,
+    });
+    for (const [form, tags] of forms) lex.addForm(id, form, tags);
+  };
+  return { lex, add };
+}
 
 describe('tokens, rules and choice on the mini lexicon', () => {
   let lex: Lexicon;
@@ -95,6 +127,149 @@ describe('tokens, rules and choice on the mini lexicon', () => {
     expect(a.tokens[4]?.by).toBe('treebank');
     // The multiword token Aby has no single analysis; the lexicon does not know it.
     expect(a.tokens[0]?.readings).toEqual([]);
+  });
+
+  it('reads the plural in -ov of an animal noun as an accusative too', () => {
+    const { lex: small, add } = smallLexicon();
+    // The morphology files the singular and the plural of an animal under two lemmas.
+    add(
+      1,
+      'pes',
+      'noun',
+      [
+        ['pes', 's1'],
+        ['psa', 's2 s4'],
+      ],
+      { gender: 'm_anim' },
+    );
+    add(
+      2,
+      'pes',
+      'noun',
+      [
+        ['psy', 'p1 p4'],
+        ['psov', 'p2'],
+      ],
+      { gender: 'm_inan', pluralOnly: true },
+    );
+    add(3, 'kôň', 'noun', [['kôň', 's1']], { gender: 'm_anim' });
+    add(
+      4,
+      'kôň',
+      'noun',
+      [
+        ['kone', 'p1 p4'],
+        ['koní', 'p2'],
+      ],
+      { gender: 'm_inan', pluralOnly: true },
+    );
+    add(5, 'mať', 'verb', [['mám', 'v:Kesa+']]);
+    add(6, 'dva', 'num', [['dvoch', 'p2m p2i p4m']]);
+    add(7, 'bez', 'prep', [['bez', '']], { cases: ['gen'] });
+    add(8, 'doma', 'adv', [['doma', '']]);
+    add(9, 'stôl', 'noun', [['stolov', 'p2']], { gender: 'm_inan' });
+    add(10, 'pokoj', 'noun', [['pokoj', 's4']], { gender: 'm_inan' });
+    addAnimateAccusatives(small);
+    expect(small.readings('psov', false)).toEqual([
+      { lemmaId: 2, tag: 'p2', form: 'psov' },
+      { lemmaId: 1, tag: 'p4', form: 'psov' },
+    ]);
+    // koní is the genitive only (the accusative is kone); a table has no animate lemma.
+    expect(small.readings('koní', false)).toEqual([{ lemmaId: 4, tag: 'p2', form: 'koní' }]);
+    expect(small.readings('stolov', false)).toEqual([{ lemmaId: 9, tag: 'p2', form: 'stolov' }]);
+    // Mám doma dvoch psov: an accusative. Neither psov nor dvoch may show a genitive.
+    const has = analyse('Mám doma dvoch psov.', small);
+    expect(targetsOf(has, small).map((t) => t.form)).toEqual(['Mám', 'doma']);
+    // After bez only the genitive is left, and the word can be shown.
+    const without = analyse('Mám doma pokoj bez psov.', small);
+    expect(targetsOf(without, small).find((t) => t.form === 'psov')).toMatchObject({
+      lemmaId: 2,
+      tag: 'p2',
+    });
+  });
+
+  it('ends the phrase of a preposition where the agreement ends', () => {
+    const { lex: small, add } = smallLexicon();
+    add(1, 'o', 'prep', [['o', '']], { cases: ['acc', 'loc'] });
+    add(2, 'piaty', 'num', [['piatej', 's2f s3f s6f']]);
+    add(3, 'ráno', 'adv', [['ráno', '']]);
+    add(4, 'ráno', 'noun', [['ráno', 's1 s4 s5']], { gender: 'n' });
+    add(5, 'hodina', 'noun', [['hodine', 's3 s6']], { gender: 'f' });
+    add(6, 'vstať', 'verb', [['vstal', 'v:Ldsam+']]);
+    add(7, 'byť', 'verb', [['som', 'v:Kesa+']]);
+    // o piatej ráno: the phrase of o ends with piatej; ráno is the adverb or the noun, in no
+    // case that o asks for, and the sentence does not show it.
+    const morning = analyse('Vstal som o piatej ráno.', small);
+    expect(morning.tokens[3]?.readings.map((r) => r.tag)).toEqual(['s6f']);
+    expect(new Set(morning.tokens[4]?.readings.map((r) => r.lemmaId))).toEqual(new Set([3, 4]));
+    expect(targetsOf(morning, small).map((t) => t.form)).toEqual(['Vstal', 'som', 'o', 'piatej']);
+    // o piatej hodine: the noun agrees with piatej and takes the locative from o.
+    const hour = analyse('Vstal som o piatej hodine.', small);
+    expect(hour.tokens[4]?.readings.map((r) => r.tag)).toEqual(['s6']);
+  });
+
+  it('takes a personal pronoun neither for a modifier nor for a word with a modifier', () => {
+    const { lex: small, add } = smallLexicon();
+    add(1, 'on', 'pron', [
+      ['ho', 's2m s2i s4m s4i'],
+      ['neho', 's2m s2i s4m s4i'],
+    ]);
+    add(2, 'ono', 'pron', [
+      ['ho', 's2n s4n'],
+      ['neho', 's2n'],
+    ]);
+    add(3, 'ona', 'pron', [['jej', 's2f s3f']]);
+    add(4, 'jej', 'pron', [['jej', 's2m s2f s3f s4m s4f']]);
+    add(5, 'každý', 'pron', [['každý', 's1m s1i s4i']]);
+    add(6, 'nový', 'adj', [['nová', 's1f']]);
+    add(7, 'svoj', 'pron', [['svoju', 's4f']]);
+    add(8, 'skúsenosť', 'noun', [['skúsenosť', 's1 s4']], { gender: 'f' });
+    add(9, 'polovica', 'noun', [['polovicu', 's4']], { gender: 'f' });
+    add(10, 'otec', 'noun', [['otca', 's2 s4']], { gender: 'm_anim' });
+    add(11, 'pre', 'prep', [['pre', '']], { cases: ['acc'] });
+    add(12, 'od', 'prep', [['od', '']], { cases: ['gen'] });
+    add(13, 'mať', 'verb', [
+      ['má', 'v:Kesc+'],
+      ['mám', 'v:Kesa+'],
+    ]);
+    add(14, 'byť', 'verb', [
+      ['bola', 'v:Lescf+'],
+      ['som', 'v:Kesa+'],
+    ]);
+    add(15, 'rád', 'adj', [['rád', 's1m']]);
+    add(16, 'dať', 'verb', [['dal', 'v:Ldsam+']]);
+    add(17, 'ten', 'pron', [['to', 's1n s4n']]);
+    const shown = (text: string) =>
+      Object.fromEntries(targetsOf(analyse(text, small), small).map((t) => [t.form, t.tag]));
+    // Každý ho má rád: ho is not "every him"; neither word is narrowed to an accusative.
+    expect(shown('Každý ho má rád.')).toEqual({ má: 'v:Kesc+', rád: 's1m' });
+    // pre neho nová skúsenosť: the phrase of pre ends with the pronoun, the noun is a nominative.
+    expect(shown('Bola to pre neho nová skúsenosť.')).toMatchObject({
+      nová: 's1f',
+      skúsenosť: 's1',
+    });
+    // jej svoju polovicu: jej may be "to her"; the sentence does not show the possessive.
+    expect(shown('Dal som jej svoju polovicu.')).toEqual({
+      Dal: 'v:Ldsam+',
+      som: 'v:Kesa+',
+      svoju: 's4f',
+      polovicu: 's4',
+    });
+    // od jej otca: after a preposition the pronoun would be nej, so jej is the possessive.
+    expect(shown('Mám to od jej otca.')).toMatchObject({ jej: 's2m', otca: 's2' });
+  });
+
+  it('reads a word in capitals as an abbreviation, not as a form written small', () => {
+    const { lex: small, add } = smallLexicon();
+    add(1, 'dno', 'noun', [['dna', 's2']], { gender: 'n' });
+    add(2, 'DNA', 'other', [['DNA', '']]);
+    add(3, 'a', 'other', [['a', '']]);
+    expect(small.readings('DNA', true)).toEqual([{ lemmaId: 2, tag: '', form: 'DNA' }]);
+    expect(small.readings('DNA', false)).toEqual([{ lemmaId: 2, tag: '', form: 'DNA' }]);
+    expect(small.readings('Dna', true).map((r) => r.lemmaId)).toEqual([1, 2]);
+    expect(small.readings('dna', false).map((r) => r.lemmaId)).toEqual([1]);
+    // One capital letter at the start of a sentence is an ordinary word.
+    expect(small.readings('A', true).map((r) => r.lemmaId)).toEqual([3]);
   });
 
   it('rejects a sentence of the wrong length, with a rare word, or with an unknown word', async () => {
@@ -169,6 +344,10 @@ describe('tokens, rules and choice on the mini lexicon', () => {
     expect(describeTag('p4f')).toBe('accusative plural, feminine');
     expect(describeTag('x3')).toBe('dative');
     expect(describeTag('v:Kesc+')).toBe('present tense, 3rd person singular');
+    // The present form of a perfective verb means the future; the words say so.
+    expect(describeTag('v:Kdpb+')).toBe(
+      'present form of a perfective verb (future meaning), 2nd person plural',
+    );
   });
 });
 
@@ -188,6 +367,28 @@ describe('the harvest', () => {
       textSk: 'Bol som v práci.',
       license: 'CC BY 2.0 FR',
     });
+  });
+});
+
+describe('repeated sentences', () => {
+  it('leaves out a sentence written like an earlier one', () => {
+    const s = (id: string, textSk: string): HarvestedSentence => ({
+      id,
+      source: 'ud',
+      sourceRef: id,
+      license: 'CC BY-SA 4.0',
+      textSk,
+    });
+    const kept = withoutRepeats(
+      [
+        s('a', 'Inak bolo všetko v poriadku.'),
+        s('b', 'Bol na slnku, oni v tieni.'),
+        s('c', 'Inak bolo všetko v poriadku.'),
+      ],
+      // The texts of the Tatoeba sentences.
+      new Set(['Bol na slnku, oni v tieni.']),
+    );
+    expect(kept.map((x) => x.id)).toEqual(['a']);
   });
 });
 
@@ -321,6 +522,120 @@ describe('the sentences stage on the mini dataset', () => {
     expect(r.issues).toEqual([]);
     expect(r.ok).toBe(true);
     expect(r.issueCounts['sentences.rules']).toBeUndefined();
+  });
+});
+
+describe('the exclusion list', () => {
+  let t: TempRoot;
+  const generated = () => join(t.root, 'generated.jsonl');
+  const outPath = () => join(t.paths.build, 'sentences', 'sentences.jsonl');
+  const run = () =>
+    runStage(sentencesStage, t.ctx({ lexicon: MINI_DIR, generated: generated() }), {
+      force: true,
+    });
+  beforeAll(async () => {
+    t = await tempRoot();
+    await seedSentencesSample(t.paths);
+  });
+  afterAll(() => t.remove());
+
+  it('reads texts with their reasons, and nothing when the file is missing', async () => {
+    expect(await readExcluded(excludedPath(t.paths))).toEqual(new Map());
+    const file = join(t.root, 'list.yaml');
+    await writeFile(file, '- text: " Idem domov. "\n  reason: A test.\n');
+    expect(await readExcluded(file)).toEqual(new Map([['Idem domov.', 'A test.']]));
+    await writeFile(file, '- text: Idem domov.\n');
+    await expect(readExcluded(file)).rejects.toThrow(/list\.yaml: 0\.reason/u);
+    await writeFile(file, '- text: Idem domov.\n  reason: x\n  by: me\n');
+    await expect(readExcluded(file)).rejects.toThrow(/by/u);
+  });
+
+  it('leaves a listed sentence out of the kept sentences and counts it', async () => {
+    const before = (await run()).result as { excluded: number; kept: { tatoeba: number } };
+    expect(before.excluded).toBe(0);
+    const first = (await rows<SentenceRow>(outPath()))[0] as SentenceRow;
+    await mkdir(join(t.paths.content, 'authored', 'sentences'), { recursive: true });
+    await writeFile(
+      excludedPath(t.paths),
+      `- text: ${JSON.stringify(first.textSk)}\n  reason: Wrong Slovak in the source.\n` +
+        '- text: Táto veta v zdrojoch nie je.\n  reason: Not in any source.\n',
+    );
+    const after = (await run()).result as { excluded: number; kept: { tatoeba: number } };
+    expect(after.excluded).toBe(1);
+    expect(after.kept.tatoeba).toBe(before.kept.tatoeba - 1);
+    const out = await rows<SentenceRow>(outPath());
+    expect(out.some((s) => s.textSk === first.textSk)).toBe(false);
+    const report = await readFile(join(t.paths.build, 'sentences', 'report.md'), 'utf8');
+    expect(report).toContain('| listed in content/authored/sentences/excluded.yaml | 1 |');
+  });
+});
+
+describe('the list of corrected translations', () => {
+  let t: TempRoot;
+  const generated = () => join(t.root, 'generated.jsonl');
+  const outPath = () => join(t.paths.build, 'sentences', 'sentences.jsonl');
+  const run = () =>
+    runStage(sentencesStage, t.ctx({ lexicon: MINI_DIR, generated: generated() }), {
+      force: true,
+    });
+  beforeAll(async () => {
+    t = await tempRoot();
+    await seedSentencesSample(t.paths);
+  });
+  afterAll(() => t.remove());
+
+  it('reads texts with their English, and nothing when the file is missing', async () => {
+    expect(await readCorrected(correctedPath(t.paths))).toEqual(new Map());
+    const file = join(t.root, 'list.yaml');
+    await writeFile(
+      file,
+      '- text: " Idem tam. "\n  en: " I am going there. "\n  reason: A test.\n',
+    );
+    expect(await readCorrected(file)).toEqual(new Map([['Idem tam.', 'I am going there.']]));
+    await writeFile(file, '- text: Idem tam.\n  en: I am going there.\n');
+    await expect(readCorrected(file)).rejects.toThrow(/list\.yaml: 0\.reason/u);
+    await writeFile(
+      file,
+      '- text: Idem tam.\n  en: One.\n  reason: x\n- text: Idem tam.\n  en: Two.\n  reason: y\n',
+    );
+    await expect(readCorrected(file)).rejects.toThrow(/listed twice/u);
+  });
+
+  it('shows the corrected English of a real sentence and counts it', async () => {
+    const before = (await run()).result as { corrected: number; rows: number };
+    expect(before.corrected).toBe(0);
+    const first = (await rows<SentenceRow>(outPath()))[0] as SentenceRow;
+    expect(first.source).toBe('tatoeba');
+    await mkdir(join(t.paths.content, 'authored', 'sentences'), { recursive: true });
+    await writeFile(
+      correctedPath(t.paths),
+      `- text: ${JSON.stringify(first.textSk)}\n  en: The corrected English.\n  reason: The source said something else.\n` +
+        '- text: Táto veta v zdrojoch nie je.\n  en: Not there.\n  reason: Not in any source.\n',
+    );
+    const after = (await run()).result as { corrected: number; rows: number };
+    expect(after.corrected).toBe(1);
+    expect(after.rows).toBe(before.rows);
+    const out = await rows<SentenceRow>(outPath());
+    expect(out.find((s) => s.id === first.id)).toMatchObject({
+      textSk: first.textSk,
+      textEn: 'The corrected English.',
+      tokens: first.tokens,
+      links: first.links,
+    });
+    expect(out.filter((s) => s.id !== first.id).every((s) => s.textEn !== 'Not there.')).toBe(true);
+    const report = await readFile(join(t.paths.build, 'sentences', 'report.md'), 'utf8');
+    expect(report).toContain(
+      '1 of them show the English of content/authored/sentences/translations.yaml.',
+    );
+  });
+
+  it('refuses a sentence that is corrected and excluded at once', async () => {
+    const first = (await rows<SentenceRow>(outPath()))[0] as SentenceRow;
+    await writeFile(
+      excludedPath(t.paths),
+      `- text: ${JSON.stringify(first.textSk)}\n  reason: Wrong Slovak in the source.\n`,
+    );
+    await expect(run()).rejects.toThrow(/is in excluded\.yaml and in translations\.yaml/u);
   });
 });
 

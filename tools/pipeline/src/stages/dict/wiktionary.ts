@@ -6,6 +6,8 @@ import type { Pos } from '@app/contracts';
 
 export const MAX_SENSES = 3;
 export const MAX_GLOSS_LENGTH = 60;
+/** A note stands under its gloss on a card: one short line. */
+export const MAX_NOTE_LENGTH = 80;
 
 /** kaikki part of speech → ours. Others (character, phrase, prefix, suffix …) are skipped. */
 export const KAIKKI_POS: Readonly<Record<string, Pos>> = {
@@ -101,18 +103,46 @@ export function genderOf(e: KaikkiEntry): string | undefined {
 }
 
 /**
+ * The text of a gloss outside its parentheses, and the parenthesised parts. A part keeps the
+ * parentheses nested in it ("to sign (to make (a document) official)" has one part); a
+ * parenthesis that is never closed stays in the text as it was written.
+ */
+function splitParens(text: string): { outside: string; parts: string[] } {
+  const parts: string[] = [];
+  let outside = '';
+  let part = '';
+  let depth = 0;
+  for (const ch of text) {
+    if (ch === '(') {
+      if (depth > 0) part += ch;
+      depth++;
+    } else if (ch === ')' && depth > 0) {
+      depth--;
+      if (depth > 0) part += ch;
+      else {
+        parts.push(part.trim());
+        part = '';
+      }
+    } else if (depth > 0) part += ch;
+    else outside += ch;
+  }
+  if (depth > 0) outside += `(${part}`;
+  return { outside, parts };
+}
+
+/**
  * Shortens a gloss: drops a trailing "[…]" usage note and parenthesised explanations, which
  * it returns apart ("to make (to create from a certain material)" → "to make"). A gloss that
  * is only a parenthesis keeps it. Still too long: cut at the first semicolon, then hard.
  */
 export function shortGloss(text: string): { gloss: string; explanation?: string } {
   const plain = text.replace(/\s*\[[^\]]*\]\s*$/u, '').trim();
-  const parens = [...plain.matchAll(/\(([^)]*)\)/gu)].map((m) => (m[1] as string).trim());
-  let g = plain
-    .replace(/\s*\([^)]*\)/gu, '')
+  const { outside, parts } = splitParens(plain);
+  let g = outside
+    .replace(/\s{2,}/gu, ' ')
     .replace(/\s+([,;])/gu, '$1')
     .trim();
-  let explanation: string | undefined = parens.filter(Boolean).join('; ') || undefined;
+  let explanation: string | undefined = parts.filter(Boolean).join('; ') || undefined;
   if (!g) {
     g = plain;
     explanation = undefined;
@@ -121,6 +151,37 @@ export function shortGloss(text: string): { gloss: string; explanation?: string 
   if (g.length > MAX_GLOSS_LENGTH) g = `${g.slice(0, MAX_GLOSS_LENGTH - 1).trimEnd()}…`;
   g = g.replace(/[.,;:\s]+$/u, '');
   return explanation ? { gloss: g, explanation } : { gloss: g };
+}
+
+/**
+ * Labels of Wiktionary that tell a learner nothing: they describe the English gloss or name a
+ * word class ("relational" stands on every adjective made from a noun).
+ */
+const EMPTY_LABELS = new Set([
+  'transitive',
+  'intransitive',
+  'ambitransitive',
+  'relational',
+  'comparable',
+  'not comparable',
+  'countable',
+  'uncountable',
+  'uncountable or countable',
+]);
+
+/**
+ * A note as a card shows it: without the labels that say nothing, with "with sa" for
+ * "reflexive with sa", and none at all when it is longer than a line, which is a definition
+ * of the word and not a note on its gloss.
+ */
+export function cleanNote(note: string | undefined): string | undefined {
+  if (!note) return undefined;
+  const out = note
+    .split(/,\s*/u)
+    .map((p) => p.trim().replace(/\breflexive with (sa|si)\b/gu, 'with $1'))
+    .filter((p) => p && !EMPTY_LABELS.has(p))
+    .join(', ');
+  return out && out.length <= MAX_NOTE_LENGTH ? out : undefined;
 }
 
 /** The qualifier of a raw gloss, "(with locative) on" → "with locative". */
@@ -146,7 +207,7 @@ export function sensesOf(e: KaikkiEntry): Sense[] {
     if (seen.has(k)) return;
     seen.add(k);
     const raw = s.raw_glosses?.[s.raw_glosses.length - 1];
-    const note = noteOf(raw, last) ?? explanation;
+    const note = cleanNote(noteOf(raw, last)) ?? cleanNote(explanation);
     out.push({
       s: note ? { glossEn, note } : { glossEn },
       late: tags.some((t) => LATE_TAGS.has(t)),
@@ -178,6 +239,8 @@ export interface MatchLemma {
 export interface MatchResult {
   /** lemma id → senses (at most MAX_SENSES), from all matching entries in file order. */
   senses: Map<number, Sense[]>;
+  /** lemma id → every usable sense of the matching entries, also those past MAX_SENSES. */
+  all: Map<number, Sense[]>;
   /** lemma id → how it matched */
   how: Map<number, 'exact' | 'loose'>;
 }
@@ -207,6 +270,7 @@ export function matchEntries(
       nounGenders.set(l.lemma, s);
     }
   const senses = new Map<number, Sense[]>();
+  const all = new Map<number, Sense[]>();
   const how = new Map<number, 'exact' | 'loose'>();
   const add = (id: number, list: DictEntry[], kind: 'exact' | 'loose') => {
     const out: Sense[] = [];
@@ -214,12 +278,13 @@ export function matchEntries(
     for (const e of list)
       for (const s of e.senses) {
         const k = s.glossEn.toLowerCase();
-        if (seen.has(k) || out.length >= MAX_SENSES) continue;
+        if (seen.has(k)) continue;
         seen.add(k);
         out.push(s);
       }
     if (out.length > 0) {
-      senses.set(id, out);
+      senses.set(id, out.slice(0, MAX_SENSES));
+      all.set(id, out);
       how.set(id, kind);
     }
   };
@@ -239,5 +304,5 @@ export function matchEntries(
     const loose = (byWord.get(l.lemma) ?? []).filter((e) => accept.has(e.pos));
     if (loose.length > 0) add(l.id, loose, 'loose');
   }
-  return { senses, how };
+  return { senses, all, how };
 }

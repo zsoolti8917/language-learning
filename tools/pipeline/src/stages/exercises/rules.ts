@@ -108,7 +108,7 @@ export function checkCandidate(
     if (inGap.has(w.s) || isTrigger(w.w)) continue;
     const info = rc.m.words.get(formKey(w.w));
     if (!info) problems.push(`unknown word "${w.w}"`);
-    else if (info.rank > rc.vocabularyLimit && !(info.properOnly && NAMES.includes(w.w)))
+    else if (info.rank > rc.vocabularyLimit && !NAMES.includes(w.w))
       problems.push(
         `rare word "${w.w}" (${Number.isFinite(info.rank) ? `rank ${info.rank}` : 'not ranked'})`,
       );
@@ -134,8 +134,11 @@ export function checkCandidate(
 
 const capital = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-/** Every accepted answer: each word's forms with its tag, combined in order. */
-export function answersOf(slot: Slot, gapText: string, atStart: boolean): string[] {
+/**
+ * Every accepted answer: each word's forms with its tag, combined in order. `capitalised`:
+ * the gap opens a sentence of the text, so the answers take its capital.
+ */
+export function answersOf(slot: Slot, gapText: string, capitalised: boolean): string[] {
   const gapForms = wordsOf(gapText).map((w) => formKey(w.w));
   let combos: string[][] = [[]];
   slot.words.forEach((w, j) => {
@@ -146,7 +149,7 @@ export function answersOf(slot: Slot, gapText: string, atStart: boolean): string
   const out = combos.map((c) => c.join(' '));
   const own = gapForms.join(' ');
   const sorted = [own, ...out.filter((x) => x !== own).sort()];
-  return [...new Set(sorted)].map((a) => (atStart ? capital(a) : a));
+  return [...new Set(sorted)].map((a) => (capitalised ? capital(a) : a));
 }
 
 /** Cases tried for wrong options, in order, after the target's own. */
@@ -226,7 +229,8 @@ export function difficultyOf(
     if (w.s >= start && w.e <= end) continue;
     if (slot.trigger.spellings.has(formKey(w.w))) continue;
     const info = rc.m.words.get(formKey(w.w));
-    if (info && !info.properOnly) rarest = Math.max(rarest, scale(info.rank));
+    if (info && !info.properOnly && !NAMES.includes(w.w))
+      rarest = Math.max(rarest, scale(info.rank));
   }
   const noun = slot.words[slot.words.length - 1];
   const target = noun
@@ -262,8 +266,10 @@ export function buildRow(
   flags: Record<string, unknown>,
 ): ExerciseRow {
   const sentenceSk = c.sentenceSk.trim();
-  const atStart = checked.start === 0;
-  const answers = answersOf(slot, checked.text, atStart);
+  // The answers and the options are written as the gap stands in the text: with a capital
+  // where it opens a sentence, the first one or a later one ("Koho hľadáš? Klienta.").
+  const capitalised = /^\p{Lu}/u.test(checked.text);
+  const answers = answersOf(slot, checked.text, capitalised);
   let kind = kindOf(slot);
   let options: { text: string; correct: boolean }[] | undefined;
   if (kind === 'choice_form') {
@@ -273,7 +279,7 @@ export function buildRow(
       options = hashOrder(
         [
           { text: answers[0] as string, correct: true },
-          ...wrong.map((w) => ({ text: atStart ? capital(w) : w, correct: false })),
+          ...wrong.map((w) => ({ text: capitalised ? capital(w) : w, correct: false })),
         ],
         sentenceSk,
       );

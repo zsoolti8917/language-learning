@@ -1,4 +1,4 @@
-import { mkdir, readFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { SenseRow } from '@app/contracts';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -9,7 +9,9 @@ import { validateSet } from '../../lib/validate';
 import { freqOut, freqStage } from '../freq';
 import { seedFreqSample } from '../freq/sample';
 import { dictStage, type GeneratedGloss, glossCoverageCheck, readGlosses } from '.';
+import { applyOverride, overridesPath, readOverrides } from './overrides';
 import {
+  cleanNote,
   genderOf,
   type KaikkiEntry,
   matchEntries,
@@ -154,6 +156,182 @@ describe('dict on the sample', () => {
   });
 });
 
+describe("the editor's list", () => {
+  let t: TempRoot;
+  const sensesPath = () => join(t.paths.build, 'dict', 'senses.jsonl');
+  const glosses = () => join(t.root, 'glosses.jsonl');
+  const write = async (yaml: string) => {
+    await mkdir(join(t.paths.content, 'authored', 'glosses'), { recursive: true });
+    await writeFile(overridesPath(t.paths), yaml);
+  };
+
+  beforeAll(async () => {
+    t = await tempRoot();
+    await seedFreqSample(t.paths);
+    await runStage(freqStage, t.ctx());
+  }, 60_000);
+  afterAll(() => t.remove());
+
+  it('reads glosses with and without a note and refuses a list that contradicts itself', async () => {
+    await write(
+      [
+        '- key: sobota|noun|f|1',
+        '  glosses:',
+        '    - Saturday',
+        '    - gloss: Sabbath',
+        '      note: in Judaism',
+        '  why: The day of the week comes first.',
+        '',
+      ].join('\n'),
+    );
+    const list = await readOverrides(overridesPath(t.paths));
+    expect(list.get('sobota|noun|f|1')).toEqual({
+      key: 'sobota|noun|f|1',
+      glosses: [{ glossEn: 'Saturday' }, { glossEn: 'Sabbath', note: 'in Judaism' }],
+      why: 'The day of the week comes first.',
+    });
+    expect((await readOverrides(join(t.root, 'none.yaml'))).size).toBe(0);
+
+    const bad: [string, RegExp][] = [
+      [
+        '- key: a|conj||1\n  glosses: [and]\n  why: x\n- key: a|conj||1\n  glosses: [and]\n  why: x\n',
+        /stands twice/u,
+      ],
+      ['- key: a|conj||1\n  glosses: [and, And]\n  why: x\n', /lists the gloss "And" twice/u],
+      ['- key: a|conj||1\n  glosses: []\n  why: x\n', /glosses/u],
+      ['- key: a|conj||1\n  glosses: [a, b, c, d]\n  why: x\n', /glosses/u],
+      [`- key: a|conj||1\n  glosses: [${'x'.repeat(61)}]\n  why: x\n`, /glosses\.0/u],
+      ['- key: a|conj||1\n  glosses: [and]\n', /why/u],
+      ['- key: a|conj||1\n  glosses: [and]\n  why: x\n  source: me\n', /source|Unrecognized/u],
+    ];
+    for (const [yaml, message] of bad) {
+      await write(yaml);
+      await expect(readOverrides(overridesPath(t.paths))).rejects.toThrow(message);
+    }
+  });
+
+  it('keeps the source of a gloss the entry had and marks a new one manual', () => {
+    const current = [
+      { glossEn: 'Sabbath', note: 'Judaism', source: 'wiktionary' as const },
+      { glossEn: 'Saturday', source: 'wiktionary' as const },
+    ];
+    expect(
+      applyOverride(
+        {
+          key: 'sobota|noun|f|1',
+          glosses: [{ glossEn: 'Saturday' }, { glossEn: 'Sabbath' }, { glossEn: 'weekend day' }],
+          why: 'x',
+        },
+        current,
+      ),
+    ).toEqual([
+      { glossEn: 'Saturday', source: 'wiktionary' },
+      // The list gives no note, so the entry shows none.
+      { glossEn: 'Sabbath', source: 'wiktionary' },
+      { glossEn: 'weekend day', source: 'manual' },
+    ]);
+    // A sense of the Wiktionary entry that the stage had cut is still Wiktionary's.
+    expect(
+      applyOverride(
+        {
+          key: 'obchod|noun|m_inan|1',
+          glosses: [{ glossEn: 'store' }, { glossEn: 'shop' }],
+          why: 'x',
+        },
+        [{ glossEn: 'shop', source: 'generated' }],
+        [{ glossEn: 'trade' }, { glossEn: 'store', note: 'a place' }],
+      ),
+    ).toEqual([
+      { glossEn: 'store', source: 'wiktionary' },
+      { glossEn: 'shop', source: 'generated' },
+    ]);
+  });
+
+  it('writes the entries of the list, also for a lemma without a gloss, and reports a key it does not know', async () => {
+    await writeFile(overridesPath(t.paths), '[]\n');
+    const first = (await runStage(dictStage, t.ctx({ glosses: glosses() }))).result as {
+      overrides: { listed: number; applied: number };
+    };
+    expect(first.overrides).toMatchObject({ listed: 0, applied: 0 });
+    const before = await rows<SenseRow>(sensesPath());
+    const lemmas = await rows<{ id: number; key: string }>(
+      join(t.paths.build, 'morph', 'lemmas.jsonl'),
+    );
+    const keyOf = new Map(lemmas.map((l) => [l.id, l.key]));
+    const ranked = await rows<Ranked>(freqOut(t.paths, 'lemmas.jsonl'));
+    const count = new Map<number, number>();
+    for (const s of before) count.set(s.lemmaId, (count.get(s.lemmaId) ?? 0) + 1);
+    const two = [...count].find(([, n]) => n >= 2)?.[0];
+    const gap = ranked.find((r) => !count.has(r.id))?.id;
+    if (two === undefined || gap === undefined) throw new Error('the sample lacks a case');
+    const had = before.filter((s) => s.lemmaId === two);
+
+    await write(
+      [
+        `- key: ${JSON.stringify(keyOf.get(two))}`,
+        '  glosses:',
+        `    - ${JSON.stringify(had[1]?.glossEn)}`,
+        '    - gloss: a new gloss',
+        '      note: with a note',
+        '  why: The second sense is the common one.',
+        `- key: ${JSON.stringify(keyOf.get(gap))}`,
+        '  glosses: [only in the list]',
+        '  why: Neither source has the word.',
+        '- key: nikto|noun|x|9',
+        '  glosses: [nobody]',
+        '  why: Not a lemma of the sample.',
+        '',
+      ].join('\n'),
+    );
+    const logs: string[] = [];
+    // The list is an input of the stage: the run is not skipped.
+    const run = await runStage(dictStage, {
+      ...t.ctx({ glosses: glosses() }),
+      log: (m: string) => logs.push(m),
+    });
+    const r = run.result as {
+      overrides: Record<string, unknown>;
+      coverage: { manual: number; edited: number; missing: number }[];
+    };
+    expect(r.overrides).toEqual({
+      listed: 3,
+      applied: 2,
+      sensesKept: 1,
+      sensesAdded: 2,
+      unknownKeys: ['nikto|noun|x|9'],
+    });
+    expect(logs.join('\n')).toMatch(/1 keys of .*overrides\.yaml name no lemma of this build/u);
+    const after = await rows<SenseRow>(sensesPath());
+    expect(after.filter((s) => s.lemmaId === two)).toEqual([
+      { lemmaId: two, ord: 0, glossEn: had[1]?.glossEn, source: 'wiktionary', verified: false },
+      {
+        lemmaId: two,
+        ord: 1,
+        glossEn: 'a new gloss',
+        source: 'manual',
+        verified: false,
+        note: 'with a note',
+      },
+    ]);
+    expect(after.filter((s) => s.lemmaId === gap)).toEqual([
+      { lemmaId: gap, ord: 0, glossEn: 'only in the list', source: 'manual', verified: false },
+    ]);
+    // Every other entry is as it was.
+    const others = (list: SenseRow[]) => list.filter((s) => s.lemmaId !== two && s.lemmaId !== gap);
+    expect(others(after)).toEqual(others(before));
+    expect(r.coverage[0]).toMatchObject({ manual: 1, edited: 2 });
+    const report = await readFile(join(t.paths.build, 'dict', 'report.md'), 'utf8');
+    expect(report).toContain('names 3 lemmas; 2 entries follow it');
+    expect(report).toContain('nikto|noun|x|9');
+
+    // A lemma of the list is no gap for the model fill.
+    const dry = (
+      await runStage(dictStage, t.ctx({ glosses: glosses(), fill: 'dry-run' }), { force: true })
+    ).result as { fill: { gaps: number } };
+    expect(dry.fill.gaps).toBe(ranked.filter((x) => !count.has(x.id)).length - 1);
+  }, 60_000);
+});
+
 describe('Wiktionary entries', () => {
   const entry = (e: Partial<KaikkiEntry>): KaikkiEntry => ({
     word: 'x',
@@ -187,6 +365,56 @@ describe('Wiktionary entries', () => {
       }),
     );
     expect(senses).toEqual([{ glossEn: 'on', note: 'with locative' }]);
+  });
+
+  it('keeps a parenthesis inside a parenthesis in one piece', () => {
+    expect(
+      shortGloss("to sign (to make (a document) official by writing one's signature)"),
+    ).toEqual({
+      gloss: 'to sign',
+      explanation: "to make (a document) official by writing one's signature",
+    });
+    expect(shortGloss('fashion (current (constantly changing) trend)')).toEqual({
+      gloss: 'fashion',
+      explanation: 'current (constantly changing) trend',
+    });
+    expect(shortGloss('to make (a thing) ready (for use)')).toEqual({
+      gloss: 'to make ready',
+      explanation: 'a thing; for use',
+    });
+    // A parenthesis that is never closed stays where it stood.
+    expect(shortGloss('to open (a door').gloss).toBe('to open (a door');
+  });
+
+  it('drops the labels that tell a learner nothing and a note longer than a line', () => {
+    expect(cleanNote('transitive')).toBeUndefined();
+    expect(cleanNote('relational, not comparable')).toBeUndefined();
+    expect(cleanNote('transitive, colloquial')).toBe('colloquial');
+    expect(cleanNote('reflexive with sa')).toBe('with sa');
+    expect(cleanNote('intransitive, often reflexive with si')).toBe('often with si');
+    expect(cleanNote('with locative')).toBe('with locative');
+    expect(cleanNote('a'.repeat(80))).toBe('a'.repeat(80));
+    expect(cleanNote('a'.repeat(81))).toBeUndefined();
+    const senses = sensesOf(
+      entry({
+        pos: 'verb',
+        senses: [
+          { glosses: ['to hold (to grasp)'], raw_glosses: ['(transitive) to hold (to grasp)'] },
+          { glosses: ['to stay'], raw_glosses: ['(intransitive) to stay'] },
+          { glosses: ['to wash oneself'], raw_glosses: ['(reflexive with sa) to wash oneself'] },
+          {
+            glosses: [`to last (${'to continue to exist for a very long time, '.repeat(2)}longer)`],
+          },
+        ],
+      }),
+    );
+    expect(senses).toEqual([
+      // Without its label the sense shows the explanation of its gloss, as one without a label does.
+      { glossEn: 'to hold', note: 'to grasp' },
+      { glossEn: 'to stay' },
+      { glossEn: 'to wash oneself', note: 'with sa' },
+      { glossEn: 'to last' },
+    ]);
   });
 
   it('skips forms of other words, puts archaic senses last, keeps three', () => {
@@ -249,7 +477,8 @@ describe('Wiktionary entries', () => {
       parseEntry(entry({ word: 'kde', pos: 'pron', senses: [{ glosses: ['where'] }] })),
       parseEntry(entry({ word: 'dom', pos: 'noun', senses: [{ glosses: ['house'] }] })),
     ].filter((e) => e !== null);
-    const { senses, how } = matchEntries(lemmas, entries);
+    const { senses, all, how } = matchEntries(lemmas, entries);
+    expect(all.get(1)).toEqual(senses.get(1));
     expect(senses.get(1)?.[0]?.glossEn).toBe('to have');
     expect(senses.get(2)?.[0]?.glossEn).toBe('mother');
     expect(senses.get(3)?.[0]?.glossEn).toBe('piece');
@@ -257,5 +486,17 @@ describe('Wiktionary entries', () => {
     expect(senses.get(5)?.[0]?.glossEn).toBe('where');
     expect(how.get(5)).toBe('loose');
     expect(senses.has(6)).toBe(false);
+  });
+  it('shows three senses of a lemma and keeps the others for the editor', () => {
+    const e = parseEntry(
+      entry({
+        word: 'obchod',
+        senses: ['trade', 'deal', 'shop', 'store', 'Shop'].map((g) => ({ glosses: [g] })),
+      }),
+    );
+    if (!e) throw new Error('no entry');
+    const { senses, all } = matchEntries([{ id: 7, lemma: 'obchod', pos: 'noun' }], [e]);
+    expect(senses.get(7)?.map((s) => s.glossEn)).toEqual(['trade', 'deal', 'shop']);
+    expect(all.get(7)?.map((s) => s.glossEn)).toEqual(['trade', 'deal', 'shop', 'store']);
   });
 });

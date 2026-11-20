@@ -3,7 +3,8 @@
 // keep the reading the treebank's checked lemma and tag point at; every other word is
 // narrowed by four rules: a lemma on the frequency list wins over lemmas off it, a vocative
 // needs a comma or an exclamation beside it, a preposition limits the case of the noun
-// phrase after it, and an adjective agrees with its noun.
+// phrase after it, and an adjective agrees with its noun. The rules know no syntax, so they
+// stay away from a personal pronoun: it stands beside words it has nothing to do with.
 import type { TokenType } from '@app/contracts';
 import { type ParsedTag, tokenize, tryParseTag } from '@app/ling';
 import { mapSnk } from '../morph/snk';
@@ -65,8 +66,25 @@ const isNominal = (r: Reading): boolean => {
   const p = parsed(r);
   return p !== null && (p.kind === 'noun' || p.kind === 'agree' || p.kind === 'pron');
 };
-const isModifier = (t: TokenAnalysis): boolean =>
-  t.readings.length > 0 && t.readings.every((r) => parsed(r)?.kind === 'agree');
+
+/**
+ * The personal pronouns of the third person. Their forms carry a gender, so their tags look
+ * like an adjective's, but they neither stand before a noun as its modifier nor take one:
+ * in *Každý ho má rád* nothing agrees with *ho*, and in *Dal som jej svoju polovicu* the
+ * word *jej* is "to her", not "her".
+ */
+const PERSONAL: ReadonlySet<string> = new Set(['on', 'ona', 'ono', 'oni', 'ony']);
+const isPersonal = (lex: Lexicon, r: Reading): boolean => {
+  const l = lex.lemmas.get(r.lemmaId);
+  return l?.pos === 'pron' && PERSONAL.has(l.lemma);
+};
+/** After a preposition these pronouns begin with n (*od neho*, *pre ňu*, *k nim*). */
+const AFTER_PREPOSITION = /^[nň]/iu;
+
+/** A word that can only be a modifier of the word after it: an adjective or the like, and no personal pronoun. */
+const isModifier = (lex: Lexicon, t: TokenAnalysis): boolean =>
+  t.readings.length > 0 &&
+  t.readings.every((r) => parsed(r)?.kind === 'agree' && !isPersonal(lex, r));
 
 /** Keeps the readings that pass, unless none would. */
 function narrow(t: TokenAnalysis, keep: (r: Reading) => boolean): void {
@@ -79,6 +97,7 @@ function agrees(lex: Lexicon, mod: Reading, other: Reading): boolean {
   const a = parsed(mod);
   const b = parsed(other);
   if (a?.kind !== 'agree' || !b) return false;
+  if (isPersonal(lex, mod) || isPersonal(lex, other)) return false;
   if (b.kind === 'agree')
     return a.number === b.number && a.case === b.case && a.gender === b.gender;
   if (b.kind !== 'noun') return false;
@@ -110,18 +129,27 @@ function applyRules(lex: Lexicon, tokens: TokenAnalysis[]): void {
     for (let j = i + 1; j < words.length; j++) {
       const n = words[j] as TokenAnalysis;
       if (n.t !== 'word' || !n.readings.some(isNominal)) break;
+      // The word after a modifier belongs to the phrase only when the two agree: in
+      // *o piatej ráno* the phrase ends with *piatej*, and *ráno* is not in a case of *o*.
+      if (j > i + 1) {
+        const before = words[j - 1] as TokenAnalysis;
+        if (!n.readings.some((h) => before.readings.some((m) => agrees(lex, m, h)))) break;
+      }
+      const pronounFits = AFTER_PREPOSITION.test(n.text);
       narrow(n, (r) => {
         const p = parsed(r);
-        return p !== null && 'case' in p && cases.has(p.case);
+        if (p === null || !('case' in p) || !cases.has(p.case)) return false;
+        // *od jej otca*: after a preposition *jej* is the possessive, the pronoun would be *nej*.
+        return pronounFits || !isPersonal(lex, r);
       });
-      if (!isModifier(n)) break;
+      if (!isModifier(lex, n)) break;
     }
   }
   // Agreement, from the noun leftwards through its adjectives.
   for (let j = words.length - 2; j >= 0; j--) {
     const mod = words[j] as TokenAnalysis;
     const head = words[j + 1] as TokenAnalysis;
-    if (!isModifier(mod) || head.t !== 'word' || head.readings.length === 0) continue;
+    if (!isModifier(lex, mod) || head.t !== 'word' || head.readings.length === 0) continue;
     if (!head.readings.some((h) => mod.readings.some((m) => agrees(lex, m, h)))) continue;
     narrow(head, (h) => mod.readings.some((m) => agrees(lex, m, h)));
     narrow(mod, (m) => head.readings.some((h) => agrees(lex, m, h)));

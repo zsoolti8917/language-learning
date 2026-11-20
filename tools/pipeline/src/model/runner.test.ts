@@ -1,4 +1,4 @@
-import { mkdtemp, readdir, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
@@ -11,6 +11,9 @@ import {
   type BatchTask,
   buildRequest,
   DEFAULT_MODEL,
+  OFFLINE_MODEL,
+  type OfflineRequest,
+  offlinePath,
   requestHash,
   runBatch,
   SpendLimitError,
@@ -297,6 +300,134 @@ describe('safety switches', () => {
     });
     expect(client.created.map((b) => b.length)).toEqual([2, 2, 1]);
     expect(r.batchIds).toHaveLength(3);
+  });
+});
+
+describe('offline mode', () => {
+  const never: BatchClient = {
+    create: () => {
+      throw new Error('must not send');
+    },
+    retrieve: () => {
+      throw new Error('must not poll');
+    },
+    results: () => {
+      throw new Error('must not read');
+    },
+  };
+  const hashOf = (word: string) => requestHash(buildRequest(task, { word }));
+  const offline = () => ({
+    mode: 'offline' as const,
+    cacheDir,
+    client: never,
+    requestsDir: join(cacheDir, 'requests'),
+    answersDir: join(cacheDir, 'answers'),
+  });
+  const answer = async (word: string, value: unknown) => {
+    const path = offlinePath(join(cacheDir, 'answers'), task.route, hashOf(word));
+    await mkdir(join(cacheDir, 'answers', task.route), { recursive: true });
+    await writeFile(path, typeof value === 'string' ? value : JSON.stringify(value));
+  };
+  const requestFiles = async () =>
+    existsSync(join(cacheDir, 'requests', task.route))
+      ? (await readdir(join(cacheDir, 'requests', task.route))).sort()
+      : [];
+
+  it('writes every open request as a file and sends nothing', async () => {
+    const logs: string[] = [];
+    const r = await runBatch(task, jobs('mesto', 'žena'), {
+      ...offline(),
+      log: (m) => logs.push(m),
+    });
+    expect(r.sent).toBe(0);
+    expect(r.results).toEqual([]);
+    expect(r.open.sort()).toEqual([hashOf('mesto'), hashOf('žena')].sort());
+    expect(r.failures.map((f) => f.reason)).toEqual(['no answer yet', 'no answer yet']);
+    expect(await requestFiles()).toEqual(
+      [`${hashOf('mesto')}.json`, `${hashOf('žena')}.json`].sort(),
+    );
+    const request = JSON.parse(
+      await readFile(offlinePath(join(cacheDir, 'requests'), task.route, hashOf('mesto')), 'utf8'),
+    ) as OfflineRequest;
+    expect(request).toMatchObject({
+      hash: hashOf('mesto'),
+      route: 'test.route',
+      promptVersion: 1,
+      jobs: ['mesto'],
+      system: 'Gloss the word.',
+      user: 'mesto',
+    });
+    expect(request.schema).toMatchObject({ type: 'object' });
+    expect(logs.join('\n')).toMatch(/2 requests open/u);
+    expect(logs.join('\n')).toMatch(/nothing sent/u);
+  });
+
+  it('accepts a valid answer file, records who wrote it and closes the request', async () => {
+    await runBatch(task, jobs('mesto', 'žena'), offline());
+    await answer('mesto', { word: 'mesto', gloss: 'town' });
+    const r = await runBatch(task, jobs('mesto', 'žena'), {
+      ...offline(),
+      answeredBy: 'a-writer',
+    });
+    expect(r.results).toHaveLength(1);
+    expect(r.results[0]).toMatchObject({
+      id: 'mesto',
+      output: { word: 'mesto', gloss: 'town' },
+      cached: false,
+      model: 'a-writer',
+    });
+    expect(r.open).toEqual([hashOf('žena')]);
+    expect(await requestFiles()).toEqual([`${hashOf('žena')}.json`]);
+
+    // The answer is in the cache now: the file may go, and every mode reads it back.
+    await rm(join(cacheDir, 'answers'), { recursive: true });
+    const again = await runBatch(task, jobs('mesto'), offline());
+    expect(again.cached).toBe(1);
+    expect(again.results[0]).toMatchObject({ cached: true, model: 'a-writer' });
+    const dry = await runBatch(task, jobs('mesto'), { mode: 'dry-run', cacheDir, client: never });
+    expect(dry.cached).toBe(1);
+    expect(dry.estimate.requests).toBe(0);
+    expect(dry.results[0]?.model).toBe('a-writer');
+  });
+
+  it('names the default writer when none is given', async () => {
+    await answer('mesto', { word: 'mesto', gloss: 'town' });
+    const r = await runBatch(task, jobs('mesto'), offline());
+    expect(r.results[0]?.model).toBe(OFFLINE_MODEL);
+  });
+
+  it('refuses an answer that is not JSON, breaks the schema or fails the check, and keeps it open', async () => {
+    await answer('mesto', '{ not json');
+    await answer('žena', { word: 'žena', gloss: 42 });
+    await answer('dom', { word: 'strom', gloss: 'tree' });
+    const logs: string[] = [];
+    const r = await runBatch(task, jobs('mesto', 'žena', 'dom'), {
+      ...offline(),
+      log: (m) => logs.push(m),
+    });
+    expect(r.results).toEqual([]);
+    expect(r.open).toHaveLength(3);
+    const reasons = new Map(r.failures.map((f) => [f.id, f.reason]));
+    expect(reasons.get('mesto')).toBe('answer is not JSON');
+    expect(reasons.get('žena')).toMatch(/^schema: gloss/u);
+    expect(reasons.get('dom')).toBe('check: answered "strom" for "dom"');
+    expect(await requestFiles()).toHaveLength(3);
+    expect(await listFiles(join(cacheDir, task.route))).toEqual([]);
+    expect(logs.join('\n')).toMatch(/rejected dom: check/u);
+  });
+
+  it('removes the request files of jobs that are no longer asked', async () => {
+    await runBatch(task, jobs('mesto', 'žena'), offline());
+    await runBatch(task, jobs('žena', 'dom'), offline());
+    expect(await requestFiles()).toEqual(
+      [`${hashOf('dom')}.json`, `${hashOf('žena')}.json`].sort(),
+    );
+  });
+
+  it('needs the two folders', async () => {
+    await expect(
+      runBatch(task, jobs('mesto'), { mode: 'offline', cacheDir, client: never }),
+    ).rejects.toThrow(/requestsDir and answersDir/u);
   });
 });
 

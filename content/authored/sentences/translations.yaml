@@ -1,0 +1,187 @@
+# English translations of real sentences (Tatoeba, the treebank) that an editor corrected,
+# each with the reason. The Slovak sentence is good; the English beside it said something
+# else, or hid the word the sentence is shown for. The sentences stage shows `en` in place
+# of the source's translation. A sentence is matched by its exact Slovak text. Sorted by text.
+- text: "Ak budem mať čas, prídem."
+  en: "If I have time, I'll come."
+  reason: 'The source ("If time permits") hid "budem mať" (I have).'
+- text: "Ak si ma z tej strany nepoznal, tak si ma nepoznal vôbec."
+  en: "If you didn't know that side of me, then you didn't know me at all."
+  reason: 'The source left out "z tej strany" (that side) and "vôbec" (at all).'
+- text: "Aké tu býva na jar počasie?"
+  en: "What is the weather usually like here in spring?"
+  reason: 'The source''s English was unidiomatic and dropped the habitual "býva".'
+- text: "Chcem sa naučiť tancovať."
+  en: "I want to learn how to dance."
+  reason: '"Chcem" is "I want"; the source said "I would like".'
+- text: "Dala si dole oblečenie."
+  en: "She took off her clothes."
+  reason: '"dať si dole" is "to take off"; the source said "put away".'
+- text: "Ešte raz sa veľmi ospravedlňujem."
+  en: "Once again, I really apologize."
+  reason: 'The source ("Again, a thousand apologies") hid the verb "ospravedlňujem sa".'
+- text: "Jar je už vo vzduchu."
+  en: "Spring is already in the air."
+  reason: '"vo vzduchu" is "in the air"; the source said "Spring is already here".'
+- text: "Je mi to jedno."
+  en: "I don't care."
+  reason: "The source's English was vulgar; the Slovak is neutral."
+- text: "Je čas odtiaľto vypadnúť."
+  en: "It's time to get out of here."
+  reason: 'The source added a swear word ("get the hell out").'
+- text: "Jeden z nás sa musí zúčastniť stretnutia."
+  en: "One of us must attend the meeting."
+  reason: 'The source added "the two of".'
+- text: "Každý jeden človek hovorí nejakým jazykom."
+  en: "Every single person speaks some language."
+  reason: 'The source ("Everyone speaks a language") hid "jeden" and "nejakým".'
+- text: "Kde sa nachádza hotel?"
+  en: "Where is the hotel located?"
+  reason: 'The source''s "Where is the hotel at?" is nonstandard English.'
+- text: "Konečne som našiel riešenie tohto problému."
+  en: "I finally found the solution to this problem."
+  reason: '"tohto problému" is "this problem"; the source said "the problem".'
+- text: "Majú veľké množstvo údajov."
+  en: "They have a large amount of data."
+  reason: '"veľké množstvo údajov" is "a large amount of data"; the source said "a large stock of information".'
+- text: "Musíš študovať angličtinu krok po kroku."
+  en: "You have to study English step by step."
+  reason: 'The source''s English ("English is something to be learned step by step") hid "musíš" and the verb "študovať".'
+- text: "Myslím si, že nám chce predviesť svoje nové šaty."
+  en: "I think she wants to show off her new dress to us."
+  reason: 'The source dropped "chce" (wants).'
+- text: "Myslíte si, že angličtina je zložitá?"
+  en: "Do you think English is complicated?"
+  reason: '"zložitá" is "complicated"; the source said "difficult" (ťažká).'
+- text: "Myslíš si, že angličtina je zložitá?"
+  en: "Do you think English is complicated?"
+  reason: '"zložitá" is "complicated"; the source said "difficult" (ťažká).'
+- text: "Mám svoje nedostatky, ale sú to nedostatky, ktoré sa dajú ľahko napraviť."
+  en: "I have my flaws, but they are flaws that can easily be fixed."
+  reason: '"Mám svoje nedostatky" is "I have my flaws"; the source said "I am a flawed person".'
+- text: "Môžem použiť vašu kúpeľňu?"
+  en: "May I use your bathroom?"
+  reason: '"kúpeľňa" is "bathroom"; the source said "toilet".'
+- text: "Môžete mi pomôcť po schodoch?"
+  en: "Can you help me with the stairs?"
+  reason: 'The Slovak does not say "up"; the source said "help me up the stairs".'
+- text: "Môžeš ich tam odviezť?"
+  en: "Can you drive them there?"
+  reason: '"tam" is "there"; the source said "here".'
+- text: "Napíšte mi, ak prídete."
+  en: "Write to me if you're coming."
+  reason: '"ak prídete" is "if you come"; the source said "if you will come".'
+- text: "Navždy ťa budem milovať."
+  en: "I will love you forever."
+  reason: '"navždy" is "forever"; the source said "always" (vždy).'
+- text: "Nebo a peklo existujú v srdci človeka."
+  en: "Heaven and hell exist in the heart of man."
+  reason: '"v srdci" is singular; the source said "hearts".'
+- text: "Nemohla sa mi pozrieť priamo do očí."
+  en: "She couldn't look me straight in the eye."
+  reason: '"do očí" is "in the eye"; the source said "in the face".'
+- text: "Nie je ďaleko odtiaľ."
+  en: "It's not far from there."
+  reason: '"odtiaľ" is "from there"; the source said "from here".'
+- text: "Nie ste schopní pozrieť pravde do tváre."
+  en: "You are not able to look the truth in the face."
+  reason: 'The source ("You can''t handle the truth") hid "do tváre" (in the face).'
+- text: "Nie ste schopní čeliť pravde."
+  en: "You are not able to face the truth."
+  reason: 'The source ("You can''t handle the truth") hid "čeliť" (to face).'
+- text: "Nič o nej nevie."
+  en: "He knows nothing about her."
+  reason: '"nevie" is present; the source said "knew".'
+- text: "Pomaly si zvykol na tmu."
+  en: "Slowly he got used to the darkness."
+  reason: 'The Slovak says that he got used to the darkness; the source said "his eyes adjusted".'
+- text: "Posteľ bola dokonale vyrobená."
+  en: "The bed was perfectly crafted."
+  reason: '"vyrobená" is "manufactured"; the source''s "made" reads as a bed that was made up.'
+- text: "Povedala mi, že bola zvedavá."
+  en: "She told me that she had been curious."
+  reason: 'Slovak keeps the tense of the reported words: "bola" is "had been"; the source said "was curious", which would be "že je zvedavá".'
+- text: "Povedz to inými slovami."
+  en: "Say it in other words."
+  reason: '"inými slovami" is "in other words"; the source said "in another way".'
+- text: "Pozriem sa von oknom."
+  en: "I'll look out of the window."
+  reason: '"Pozriem sa" is perfective, so future; the source said "I look".'
+- text: "Počkám tu, kým nepríde."
+  en: "I'll wait here until she comes."
+  reason: '"Počkám" is perfective, so future; the source said "I wait".'
+- text: "Pri každom kine, divadle, klube je aj jeho adresa a telefón."
+  en: "For every cinema, theater and club there is also its address and phone number."
+  reason: 'The first translation said "Next to every cinema"; in a listing "pri" is not a place.'
+- text: "Prosím, dajte tieto stoličky preč."
+  en: "Please put these chairs away."
+  reason: '"tieto" is "these"; the source said "those".'
+- text: "Príroda je jediná kniha, ktorá na všetkých stránkach ponúka zaujímavý obsah."
+  en: "Nature is the only book that offers interesting content on every page."
+  reason: '"zaujímavý" is "interesting" and "ponúka" is "offers"; the source said "provides great content".'
+- text: "Páči sa mi, čo si urobila s mojimi vlasmi."
+  en: "I like what you did with my hair."
+  reason: '"s mojimi vlasmi" is "with my hair"; the source said "your hair".'
+- text: "Rozhodli sa pre nové zásady."
+  en: "They decided on new principles."
+  reason: '"Rozhodli sa" is "they decided" and "zásady" is plural; the source said "He had decided on a new policy".'
+- text: "S čím vám môžem pomôcť?"
+  en: "What can I help you with?"
+  reason: 'The source ("How can I help you?") hid "s čím" (with what).'
+- text: "Snaží sa nájsť jeho otca."
+  en: "She is trying to find his father."
+  reason: '"jeho otca" is another man''s father; with "He" the source read as his own (svojho).'
+- text: "Spojili svoje sily v boji proti nepriateľovi."
+  en: "They joined forces in the fight against the enemy."
+  reason: 'The source turned the noun "v boji" (in the fight) into a verb.'
+- text: "Stretneme sa v knižnici."
+  en: "We'll meet at the library."
+  reason: '"Stretneme sa" is "we''ll meet"; the source had the command "Meet me".'
+- text: "Takáto šanca už druhý raz nepríde."
+  en: "A chance like this won't come a second time."
+  reason: '"takáto šanca" is "a chance like this"; the source said "The lost chance will never come again".'
+- text: "Tieto dvere vedú do kancelárie."
+  en: "This door leads to the office."
+  reason: '"kancelária" is "office"; the source said "study".'
+- text: "To záleží len na tebe."
+  en: "That depends only on you."
+  reason: '"na tebe" is "on you"; the source said "on yourself".'
+- text: "To záleží len na vás."
+  en: "That depends only on you."
+  reason: '"na vás" is "on you"; the source said "on yourself".'
+- text: "Uvidíme, čo sa stane."
+  en: "We'll see what happens."
+  reason: '"Uvidíme" is the future "we''ll see"; the source said "Let''s see what will happen".'
+- text: "Učiteľ sa nesmie smiať na žiakovi, ktorý urobil chybu."
+  en: "A teacher must not laugh at a pupil who has made a mistake."
+  reason: '"smiať sa na" is "to laugh at"; the source said "laugh about".'
+- text: "V podstate máš pravdu."
+  en: "You're basically right."
+  reason: '"V podstate" is "basically"; the source said "actually".'
+- text: "Viete hrať na hudobný nástroj?"
+  en: "Can you play a musical instrument?"
+  reason: 'The source dropped "hudobný" (musical).'
+- text: "Vrátim sa po obede."
+  en: "I'll come back after lunch."
+  reason: 'The source added "again".'
+- text: "Všetko bolo na svojom mieste."
+  en: "Everything was in its place."
+  reason: 'The source ("where it should''ve been") hid "na svojom mieste" (in its place).'
+- text: "Zvykol som si viesť denník."
+  en: "I got used to keeping a diary."
+  reason: '"Zvykol som si" is "I got used to"; the source said "I used to keep a diary".'
+- text: "Získal cenu presne tak, ako sme očakávali."
+  en: "He won the prize, just as we expected."
+  reason: 'The source ("As was expected, he succeeded in winning the prize") lost "sme" (we) and the plain "získal".'
+- text: "Čo je to za budovu?"
+  en: "What kind of building is that?"
+  reason: '"Čo je to za …?" asks what kind of thing something is; the source said "What''s that building?".'
+- text: "Čo to mohlo spôsobiť?"
+  en: "What could have caused this?"
+  reason: '"mohlo spôsobiť" is past; the source said "What could cause this?".'
+- text: "Ďakujem vám za čokoládu."
+  en: "Thank you for the chocolate."
+  reason: 'The source added "your".'
+- text: "Šťastní sú tí, ktorí majú krátku pamäť."
+  en: "Happy are those who have a short memory."
+  reason: '"krátku pamäť" is "a short memory"; the source said "poor".'

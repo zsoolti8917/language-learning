@@ -193,9 +193,10 @@ describe('rules decide without the model', () => {
     expect(tok(body, analysis, 'žien')).toMatchObject({ tag: 'p2' });
     expect(tok(body, analysis, 'žien').trig).toBeUndefined();
     expect(tok(body, analysis, 'päť').tag).toMatch(/^[sp][14]/u);
-    // With the trigger row it is the plural nominative or accusative and marks the noun.
+    // With the trigger row it is the same reading (the neuter singular the treebank gives a
+    // numeral that counts in the genitive) and marks the noun.
     const listed = await analyze(body, local());
-    expect(tok(body, listed.analysis, 'päť').tag).toMatch(/^p[14]/u);
+    expect(tok(body, listed.analysis, 'päť').tag).toMatch(/^s[14]n$/u);
     expect(tok(body, listed.analysis, 'žien').trig).toMatchObject({ id: 'num-pat' });
   });
 
@@ -316,12 +317,33 @@ describe('the model step', () => {
     expect(ai.calls.map((c) => c.userId)).toEqual([USER]);
   });
 
-  it('asks once about the same word in the same sentence', async () => {
+  it('asks once about a sentence that stands in the text several times', async () => {
     const body = 'Vidím ženy. Vidím ženy. Vidím ženy.';
     const ai = local();
     const { analysis } = await analyze(body, ai);
     expect(askedWords(ai)).toEqual(['ženy']);
     for (let n = 0; n < 3; n++) expect(tok(body, analysis, 'ženy', n).m).toBe('model');
+  });
+
+  it('asks about a word that stands twice in one sentence once for each place', async () => {
+    // The first ženy is the object, the second the subject: one answer cannot serve both.
+    const body = 'Vidím ženy a ženy vidia knihy.';
+    const probe = local();
+    await analyze(body, probe);
+    const words = JSON.parse(probe.callsFor('reader.disambiguate')[0]?.messages[0]?.content ?? '{}')
+      .words as { word: string; readings: { i: number; case?: string; number?: string }[] }[];
+    expect(words.map((w) => w.word)).toEqual(['ženy', 'ženy', 'knihy']);
+    const pick = (w: number, c: string) => ({
+      w,
+      c: words[w]?.readings.find((r) => r.case === c && r.number === 'pl')?.i ?? -1,
+    });
+    const ai = strict().script('reader.disambiguate', {
+      data: { picks: [pick(0, 'acc'), pick(1, 'nom'), pick(2, 'acc')] },
+    });
+    const { analysis } = await analyze(body, ai);
+    expect(tok(body, analysis, 'ženy', 0)).toMatchObject({ m: 'model', tag: 'p4' });
+    expect(tok(body, analysis, 'ženy', 1)).toMatchObject({ m: 'model', tag: 'p1' });
+    expect(tok(body, analysis, 'knihy')).toMatchObject({ m: 'model', tag: 'p4' });
   });
 
   it('a text with instructions for the model still yields a valid analysis', async () => {

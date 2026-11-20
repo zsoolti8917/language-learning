@@ -2,7 +2,7 @@
 // library stage, the scenarios check and validate share it: a text is split with the
 // tokenizer of packages/ling, each word is looked up among the forms of the morphology, and
 // the share of words whose lemma ranks within the most common N is measured.
-import { tokenize } from '@app/ling';
+import { splitTags, tokenize } from '@app/ling';
 
 /** An A2 text has at least A2_MIN_SHARE of its words within the A2_WITHIN_RANK most common lemmas. */
 export const A2_WITHIN_RANK = 2000;
@@ -44,14 +44,45 @@ export function wantedSpellings(texts: Iterable<string>): Set<string> {
 /** The lemmas of each wanted spelling, built from a stream of form rows. */
 export class FormIndex {
   private readonly byForm = new Map<string, number[]>();
+  /** spelling → lemma id → the form tags of that spelling, for rows that came with tags. */
+  private readonly tags = new Map<string, Map<number, Set<string>>>();
 
   constructor(readonly wanted: ReadonlySet<string>) {}
 
-  add(form: string, lemmaId: number): void {
+  /** `tags` is the tag list of the form row ('p1 p4 p5'; empty for a word that does not inflect). */
+  add(form: string, lemmaId: number, tags?: string): void {
     if (!this.wanted.has(form)) return;
     const list = this.byForm.get(form);
     if (!list) this.byForm.set(form, [lemmaId]);
     else if (!list.includes(lemmaId)) list.push(lemmaId);
+    if (tags === undefined) return;
+    let byLemma = this.tags.get(form);
+    if (!byLemma) {
+      byLemma = new Map();
+      this.tags.set(form, byLemma);
+    }
+    let set = byLemma.get(lemmaId);
+    if (!set) {
+      set = new Set();
+      byLemma.set(lemmaId, set);
+    }
+    for (const t of splitTags(tags)) set.add(t);
+  }
+
+  /**
+   * The form tags a word as written has as a form of this lemma: an empty set for a word
+   * that does not inflect, undefined when the word is no form of the lemma (or the index was
+   * built without tags).
+   */
+  tagsOf(word: string, lemmaId: number): Set<string> | undefined {
+    let out: Set<string> | undefined;
+    for (const s of spellingsOf(word)) {
+      const set = this.tags.get(s)?.get(lemmaId);
+      if (!set) continue;
+      out ??= new Set();
+      for (const t of set) out.add(t);
+    }
+    return out;
   }
 
   /** The lemma ids a word as written can belong to. */
@@ -63,13 +94,16 @@ export class FormIndex {
   }
 }
 
-/** Reads form rows (`{ lemmaId, form }`) once and keeps only the spellings the texts need. */
+/**
+ * Reads form rows (`{ lemmaId, form }`, with `tags` when the caller needs readings) once and
+ * keeps only the spellings the texts need.
+ */
 export async function buildFormIndex(
   texts: Iterable<string>,
-  rows: AsyncIterable<{ lemmaId: number; form: string }>,
+  rows: AsyncIterable<{ lemmaId: number; form: string; tags?: string }>,
 ): Promise<FormIndex> {
   const index = new FormIndex(wantedSpellings(texts));
-  for await (const r of rows) index.add(r.form, r.lemmaId);
+  for await (const r of rows) index.add(r.form, r.lemmaId, r.tags);
   return index;
 }
 

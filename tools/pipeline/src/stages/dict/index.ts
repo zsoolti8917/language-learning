@@ -2,17 +2,20 @@
 // lemma; ranked lemmas without an entry are filled through the route `content.glosses`
 // (docs/work-packages.md, C2). Model glosses live in content/generated/glosses.jsonl (in
 // git), so a rebuild needs no model call; they enter senses.jsonl with source `generated`.
+// The editor's list content/authored/glosses/overrides.yaml says what an entry shows where
+// its source is wrong or badly ordered (./overrides.ts).
 //
 //   pnpm run pipeline dict                      Wiktionary + the glosses already generated
 //   pnpm run pipeline dict --fill dry-run       + request count and cost of the missing ones
 //   pnpm run pipeline dict --fill live          + sends them (refuses above $5 without --max-spend)
 //   pnpm run pipeline dict --fill mock          + scripted glosses, written to the build folder
+//   pnpm run pipeline dict --fill offline       + answers written outside the API (docs/content-build.md)
 import { join } from 'node:path';
 import type { SenseRow } from '@app/contracts';
 import { existsSync, JsonlWriter, readJsonl, stableJson, writeFileAtomic } from '../../lib/files';
 import { codeDirOf, resolveArg, type Stage, type StageContext } from '../../lib/runner';
 import type { Check } from '../../lib/validate';
-import { FILL_OPTIONS, fillModeOf, runOptionsOf } from '../../model/options';
+import { FILL_OPTIONS, fillAlwaysRuns, fillModeOf, runOptionsOf } from '../../model/options';
 import { formatUsd } from '../../model/pricing';
 import {
   GLOSS_GROUP_SIZE,
@@ -20,15 +23,10 @@ import {
   type GlossWord,
   glossesTask,
 } from '../../model/prompts/content-glosses';
-import { type BatchJob, type BatchOutcome, DEFAULT_MODEL, runBatch } from '../../model/runner';
+import { type BatchJob, type BatchOutcome, runBatch } from '../../model/runner';
 import type { FreqLemma } from '../freq/rank';
-import {
-  type DictEntry,
-  type KaikkiEntry,
-  matchEntries,
-  parseEntry,
-  type Sense,
-} from './wiktionary';
+import { applyOverride, overridesPath, readOverrides, type SourcedSense } from './overrides';
+import { type DictEntry, type KaikkiEntry, matchEntries, parseEntry } from './wiktionary';
 
 export const KAIKKI_SOURCE = 'kaikki-wiktionary';
 export const KAIKKI_FILE = 'kaikki.org-dictionary-Slovak.jsonl';
@@ -94,6 +92,10 @@ export interface Coverage {
   ranked: number;
   wiktionary: number;
   generated: number;
+  /** Entries that exist only through the editor's list. */
+  manual: number;
+  /** Entries of any source that the editor's list changed. */
+  edited: number;
   missing: number;
 }
 
@@ -123,7 +125,7 @@ export async function runDict(ctx: StageContext): Promise<Record<string, unknown
     const d = parseEntry(e);
     if (d) entries.push(d);
   }
-  const { senses: wikt, how } = matchEntries(lemmas.values(), entries);
+  const { senses: wikt, all: wiktAll, how } = matchEntries(lemmas.values(), entries);
   ctx.log(`dict: ${entries.length} usable entries of ${kaikkiRows}; ${wikt.size} lemmas matched`);
 
   // Generated glosses already made, by key.
@@ -133,16 +135,31 @@ export async function runDict(ctx: StageContext): Promise<Record<string, unknown
   const idByKey = new Map<string, number>();
   for (const l of lemmas.values()) idByKey.set(l.key, l.id);
 
-  // The gaps: ranked lemmas within the fill limit with neither kind of gloss.
+  // The editor's list, by key.
+  const opath = overridesPath(ctx.paths);
+  const overrides = await readOverrides(opath);
+  const unknownKeys = [...overrides.keys()].filter((k) => !idByKey.has(k)).sort();
+  if (unknownKeys.length > 0)
+    ctx.log(
+      `dict: ${unknownKeys.length} keys of ${opath} name no lemma of this build, e.g. ${unknownKeys.slice(0, 5).join(', ')}`,
+    );
+
+  // The gaps: ranked lemmas within the fill limit with no gloss of any kind.
   const ranked = [...ranks.values()].sort((a, b) => a.freqRank - b.freqRank);
   let gaps = ranked.filter((r) => {
     const l = lemmas.get(r.id);
-    return l && r.freqRank <= fillLimit && !wikt.has(r.id) && !generated.has(l.key);
+    return (
+      l &&
+      r.freqRank <= fillLimit &&
+      !wikt.has(r.id) &&
+      !generated.has(l.key) &&
+      !overrides.has(l.key)
+    );
   });
   if (sample > 0) gaps = gaps.slice(0, sample);
 
   let fill: BatchOutcome<GlossRequest, unknown> | null = null;
-  const options = runOptionsOf(ctx);
+  const options = runOptionsOf(ctx, 'dict');
   if (options && gaps.length > 0) {
     const words: GlossWord[] = gaps.map((r) => {
       const l = lemmas.get(r.id) as FreqLemma;
@@ -181,7 +198,7 @@ export async function runDict(ctx: StageContext): Promise<Record<string, unknown
           source: 'generated',
           route: glossesTask.route,
           promptVersion: glossesTask.promptVersion,
-          model: glossesTask.model ?? DEFAULT_MODEL,
+          model: r.model,
           requestHash: r.hash,
         });
         added++;
@@ -199,38 +216,40 @@ export async function runDict(ctx: StageContext): Promise<Record<string, unknown
     );
   }
 
-  // senses.jsonl: Wiktionary first; a generated gloss only where Wiktionary has none.
+  // senses.jsonl: Wiktionary first; a generated gloss only where Wiktionary has none; the
+  // entry of a lemma in the editor's list is what the list says.
   const w = await JsonlWriter.open(out(ctx, 'senses.jsonl'));
-  const source = new Map<number, 'wiktionary' | 'generated'>();
+  const source = new Map<number, 'wiktionary' | 'generated' | 'manual'>();
+  const edited = new Set<number>();
+  let sensesKept = 0;
+  let sensesAdded = 0;
   const ids = [...lemmas.keys()].sort((a, b) => a - b);
   for (const id of ids) {
-    const list: Sense[] | undefined = wikt.get(id);
-    if (list) {
-      source.set(id, 'wiktionary');
-      for (const [ord, s] of list.entries()) {
-        const row: SenseRow = {
-          lemmaId: id,
-          ord,
-          glossEn: s.glossEn,
-          source: 'wiktionary',
-          verified: false,
-        };
-        if (s.note) row.note = s.note;
-        await w.write(row);
-      }
-      continue;
+    const l = lemmas.get(id) as FreqLemma;
+    const fromWiktionary = wikt.get(id);
+    const fromModel = fromWiktionary ? undefined : generated.get(l.key);
+    let list: SourcedSense[] = fromWiktionary
+      ? fromWiktionary.map((s) => ({ ...s, source: 'wiktionary' }))
+      : (fromModel?.glosses ?? []).map((glossEn) => ({ glossEn, source: 'generated' }));
+    const o = overrides.get(l.key);
+    if (o) {
+      list = applyOverride(o, list, wiktAll.get(id));
+      edited.add(id);
+      for (const s of list) s.source === 'manual' ? sensesAdded++ : sensesKept++;
     }
-    const g = generated.get((lemmas.get(id) as FreqLemma).key);
-    if (!g) continue;
-    source.set(id, 'generated');
-    for (const [ord, glossEn] of g.glosses.entries())
-      await w.write({
+    if (list.length === 0) continue;
+    source.set(id, fromWiktionary ? 'wiktionary' : fromModel ? 'generated' : 'manual');
+    for (const [ord, s] of list.entries()) {
+      const row: SenseRow = {
         lemmaId: id,
         ord,
-        glossEn,
-        source: 'generated',
+        glossEn: s.glossEn,
+        source: s.source,
         verified: false,
-      } satisfies SenseRow);
+      };
+      if (s.note) row.note = s.note;
+      await w.write(row);
+    }
   }
   await w.close();
 
@@ -238,12 +257,15 @@ export async function runDict(ctx: StageContext): Promise<Record<string, unknown
     const inBand = ranked.filter((r) => r.freqRank <= band);
     const wk = inBand.filter((r) => source.get(r.id) === 'wiktionary').length;
     const gen = inBand.filter((r) => source.get(r.id) === 'generated').length;
+    const manual = inBand.filter((r) => source.get(r.id) === 'manual').length;
     return {
       band,
       ranked: inBand.length,
       wiktionary: wk,
       generated: gen,
-      missing: inBand.length - wk - gen,
+      manual,
+      edited: inBand.filter((r) => edited.has(r.id)).length,
+      missing: inBand.length - wk - gen - manual,
     };
   });
   const missingTop = ranked
@@ -258,6 +280,13 @@ export async function runDict(ctx: StageContext): Promise<Record<string, unknown
     looseMatches: looseCount,
     lemmasWithGenerated: [...source.values()].filter((s) => s === 'generated').length,
     senses: w.count,
+    overrides: {
+      listed: overrides.size,
+      applied: edited.size,
+      sensesKept,
+      sensesAdded,
+      unknownKeys,
+    },
     coverage,
     fill: fill
       ? {
@@ -275,9 +304,13 @@ export async function runDict(ctx: StageContext): Promise<Record<string, unknown
   };
   await writeFileAtomic(out(ctx, 'report.json'), stableJson({ ...summary, missingTop }));
   await writeFileAtomic(out(ctx, 'report.md'), renderReport(summary, missingTop));
+  if (overrides.size > 0)
+    ctx.log(
+      `dict: ${edited.size} entries follow the editor's list (${sensesKept} senses kept, ${sensesAdded} new)`,
+    );
   for (const c of coverage)
     ctx.log(
-      `dict: top ${c.band}: ${c.wiktionary} Wiktionary, ${c.generated} generated, ${c.missing} without a gloss`,
+      `dict: top ${c.band}: ${c.wiktionary} Wiktionary, ${c.generated} generated, ${c.manual} only in the editor's list, ${c.missing} without a gloss; ${c.edited} edited`,
     );
   return summary;
 }
@@ -289,6 +322,13 @@ function renderReport(
     lemmasWithWiktionary: number;
     looseMatches: number;
     senses: number;
+    overrides: {
+      listed: number;
+      applied: number;
+      sensesKept: number;
+      sensesAdded: number;
+      unknownKeys: string[];
+    };
     coverage: Coverage[];
     fill: Record<string, unknown>;
   },
@@ -299,12 +339,18 @@ function renderReport(
     '',
     `Wiktionary extract: ${s.kaikkiEntries.toLocaleString('en')} entries, ${s.usableEntries.toLocaleString('en')} with usable senses; ${s.lemmasWithWiktionary.toLocaleString('en')} lemmas matched (${s.looseMatches} by spelling across function word classes). ${s.senses.toLocaleString('en')} sense rows written.`,
     '',
-    '| Top | Ranked | Wiktionary | Generated | Without a gloss |',
-    '|---:|---:|---:|---:|---:|',
+    "| Top | Ranked | Wiktionary | Generated | Only in the editor's list | Without a gloss | Edited |",
+    '|---:|---:|---:|---:|---:|---:|---:|',
     ...s.coverage.map(
       (c) =>
-        `| ${c.band.toLocaleString('en')} | ${c.ranked} | ${c.wiktionary} (${((c.wiktionary / Math.max(1, c.ranked)) * 100).toFixed(1)} %) | ${c.generated} | ${c.missing} |`,
+        `| ${c.band.toLocaleString('en')} | ${c.ranked} | ${c.wiktionary} (${((c.wiktionary / Math.max(1, c.ranked)) * 100).toFixed(1)} %) | ${c.generated} | ${c.manual} | ${c.missing} | ${c.edited} |`,
     ),
+    '',
+    `The editor's list (content/authored/glosses/overrides.yaml) names ${s.overrides.listed.toLocaleString('en')} lemmas; ${s.overrides.applied.toLocaleString('en')} entries follow it, with ${s.overrides.sensesKept.toLocaleString('en')} senses kept from their source and ${s.overrides.sensesAdded.toLocaleString('en')} written new (source \`manual\`).${
+      s.overrides.unknownKeys.length > 0
+        ? ` ${s.overrides.unknownKeys.length} keys name no lemma of this build: ${s.overrides.unknownKeys.slice(0, 20).join(', ')}.`
+        : ''
+    }`,
     '',
     '## Model fill',
     '',
@@ -388,16 +434,20 @@ export const dictStage: Stage = {
   },
   // The glosses file is an input that a fill also writes; the runner fingerprints it after
   // the run, so a run that added glosses is skipped next time.
-  inputs: (ctx) => [...Object.values(inputsOf(ctx)), glossesPath(ctx)],
+  inputs: (ctx) => [
+    ...Object.values(inputsOf(ctx)),
+    glossesPath(ctx),
+    ...(existsSync(overridesPath(ctx.paths)) ? [overridesPath(ctx.paths)] : []),
+  ],
   outputs: (ctx) => ['senses.jsonl', 'report.md', 'report.json'].map((f) => out(ctx, f)),
   params: (ctx) => ({
     fill: fillModeOf(ctx),
     fillLimit: ctx.args['fill-limit'] ?? null,
     sample: ctx.args.sample ?? null,
     maxSpend: ctx.args['max-spend'] ?? null,
-    // A dry run or a live fill always reaches the model step, even when nothing else changed.
-    at:
-      fillModeOf(ctx) === 'dry-run' || fillModeOf(ctx) === 'live' ? ctx.now().toISOString() : null,
+    // A dry run, a live fill and an offline fill always reach the model step, even when
+    // nothing else changed.
+    at: fillAlwaysRuns(ctx) ? ctx.now().toISOString() : null,
   }),
   run: runDict,
   parts: [{ file: 'senses.jsonl', path: (p) => join(p.build, 'dict', 'senses.jsonl') }],

@@ -718,6 +718,7 @@
 {"id":78088,"key":"sneh|noun|m_inan|1","lemma":"sneh","pos":"noun","gender":"m_inan","pattern":"dub"}
 {"id":78097,"key":"snežiť|verb||1","lemma":"snežiť","pos":"verb","aspect":"ipf"}
 {"id":78147,"key":"sobota|noun|f|1","lemma":"sobota","pos":"noun","gender":"f","pattern":"zena"}
+{"id":78149,"key":"sobotný|adj||1","lemma":"sobotný","pos":"adj","pattern":"pekny"}
 {"id":78262,"key":"soliť|verb||1","lemma":"soliť","pos":"verb","aspect":"ipf"}
 {"id":78373,"key":"soľ|noun|f|1","lemma":"soľ","pos":"noun","gender":"f","pattern":"kost"}
 {"id":78437,"key":"spať|verb||1","lemma":"spať","pos":"verb","aspect":"ipf"}
@@ -818,7 +819,6 @@
 {"id":83180,"key":"trh|noun|m_inan|1","lemma":"trh","pos":"noun","gender":"m_inan","pattern":"dub"}
 {"id":83277,"key":"trieť|verb||1","lemma":"trieť","pos":"verb","aspect":"ipf"}
 {"id":83326,"key":"tri|num||1","lemma":"tri","pos":"num"}
-{"id":83331,"key":"trištvrte|num||1","lemma":"trištvrte","pos":"num","flags":{"indeclinable":true}}
 {"id":83354,"key":"trocha|noun|f|1","lemma":"trocha","pos":"noun","gender":"f","pattern":"zena"}
 {"id":83358,"key":"trochu|adv||1","lemma":"trochu","pos":"adv"}
 {"id":83359,"key":"trochu|num||1","lemma":"trochu","pos":"num","flags":{"indeclinable":true}}
@@ -1001,6 +1001,7 @@
 {"id":99128,"key":"štedrý|adj||1","lemma":"štedrý","pos":"adj","pattern":"pekny"}
 {"id":99334,"key":"študovať|verb||1","lemma":"študovať","pos":"verb","aspect":"ipf"}
 {"id":99467,"key":"štvrtý|num||1","lemma":"štvrtý","pos":"num"}
+{"id":99486,"key":"štvrť|noun|f|1","lemma":"štvrť","pos":"noun","gender":"f","pattern":"dlan"}
 {"id":99530,"key":"štyridsať|num||1","lemma":"štyridsať","pos":"num"}
 {"id":99544,"key":"štyri|num||1","lemma":"štyri","pos":"num"}
 {"id":99812,"key":"šéf|noun|m_anim|1","lemma":"šéf","pos":"noun","gender":"m_anim","pattern":"chlap"}

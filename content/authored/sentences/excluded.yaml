@@ -1,0 +1,137 @@
+# Real sentences (Tatoeba, the treebank) that learners must not see, each with the reason.
+# The sentences stage leaves them out before it chooses examples. A sentence is matched by
+# its exact Slovak text. Sorted by text.
+- text: "A kto tie náročné preteky vyhral."
+  reason: "A piece cut from a longer sentence: an indirect question that ends with a full stop."
+- text: "A potom už nič."
+  reason: 'A fragment without a verb: nothing shows the case of "nič".'
+- text: "A človeka dnešných čias."
+  reason: 'A fragment without a verb: nothing shows why "človeka" is in the genitive.'
+- text: "Akoby stratila akéhokoľvek ducha."
+  reason: 'The treebank labels "akéhokoľvek" a genitive; as the object of "stratila" a reader takes it for an accusative, so the label would mislead a learner.'
+- text: "Autobusy sú pohodlím na európskej úrovni."
+  reason: 'Odd wording for a learner: "sú pohodlím" (an instrumental of respect) reads like "are comfort".'
+- text: "Bolo to, rozumie sa, pred vojnou."
+  reason: 'The word is shown only inside the set phrase "rozumie sa" (of course), which its entry does not explain.'
+- text: "Dotkol som sa jej."
+  reason: 'The treebank labels "jej" an accusative, which only the possessive has; after "dotknúť sa" it is the genitive of "ona", so the card would mislead a learner.'
+- text: "Dúfa, že vyhrá a ja tiež."
+  reason: 'A comma is missing after the clause "že vyhrá".'
+- text: "Iba jej skočiť na pomoc!"
+  reason: "An exclamation with an infinitive that makes little sense without its context."
+- text: "Ich šťastie malo korene v ich priemysle."
+  reason: 'A mistranslation in the source: the English meant diligence by "industry", and the Slovak sentence about "priemysel" reads oddly.'
+- text: "Ja sa len pýtam otázky."
+  reason: 'Not Slovak: "pýtať sa otázky" copies "ask questions"; Slovak says "klásť otázky" or just "pýtať sa".'
+- text: "Je pokusom o teóriu našu."
+  reason: 'A bookish fragment: the possessive stands after its noun ("teóriu našu"), unclear without context.'
+- text: "Je prekrásna ako jej mať."
+  reason: 'The noun "mať" (mother) is bookish; in the set the word is read as the verb "mať", so a learner would learn it wrongly.'
+- text: "Je to pretože nechcete byť sami."
+  reason: 'Not Slovak: "Je to pretože" copies "It''s because"; Slovak says "Je to preto, že".'
+- text: "Kde je stanica metra?"
+  reason: 'The stage reads "metra" as a form of "meter"; here it is the genitive of "metro", a word outside the frequency list.'
+- text: "Kto sa ti staral o psa kým si bol preč?"
+  reason: 'A comma is missing before the clause "kým si bol preč".'
+- text: "Kurz dolára trochu klesol, pomyslel som si."
+  reason: 'The treebank labels "trochu" a numeral in the accusative; here it works as the adverb "a little", so the label would mislead a learner.'
+- text: "Kľúčové je nie to, čo môžem získať, ale to, čo musím stratiť."
+  reason: 'Word order copied from English: "Kľúčové je nie to" for "Kľúčové nie je to".'
+- text: "Matka je milovaná otcom."
+  reason: 'A drill sentence: the passive with its agent in the instrumental ("milovaná otcom") is not natural Slovak.'
+- text: "Milujem ťa vidieť smiať sa."
+  reason: 'Not Slovak: "Milujem ťa vidieť smiať sa" copies the English word for word.'
+- text: "Musíme nasledovať ich pokyny."
+  reason: '"nasledovať pokyny" copies the English "follow instructions"; Slovak says "riadiť sa pokynmi" or "postupovať podľa pokynov".'
+- text: "Myslím, že potrebujeme sa navzájom."
+  reason: 'Wrong word order: "sa" must follow "že" ("že sa navzájom potrebujeme").'
+- text: "Má zlé schopnosti organizovať."
+  reason: 'Not natural Slovak: "zlé schopnosti organizovať" copies the English wording.'
+- text: "Mám toľko peňazí koľko on."
+  reason: 'A comma is missing before the clause "koľko on".'
+- text: "Môj dom u jazera."
+  reason: 'The Slovak has no verb, and "u jazera" is nonstandard for "pri jazere".'
+- text: "Môj otec nikdy nebol mimo krajiny až doteraz."
+  reason: 'Word order copied from English: "až doteraz" at the end.'
+- text: "Môžete pozvať kohokoľvek chcete."
+  reason: 'A comma is missing before the clause "kohokoľvek chcete".'
+- text: "Môžeš pozvať kohokoľvek chceš."
+  reason: 'A comma is missing before the clause "kohokoľvek chceš".'
+- text: "Môžeš si vybrať čo chceš."
+  reason: 'A comma is missing before the clause "čo chceš".'
+- text: "Namiesto toho som ho opäť poprosila, aby mi dovoliť dotknúť sa ich."
+  reason: 'Broken grammar in the source, an infinitive after "aby" (it should be "dovolil").'
+- text: "Napadla ho skvelá myšlienka."
+  reason: '"Napadla ho" for an idea is a Bohemism; Slovak says "napadla mu" (with "ho" it reads as an attack).'
+- text: "Napriek tomu som jej požiadavku splnil."
+  reason: 'The word "jej" can be read as the possessive (her request) and as the dative of "ona" (splniť niekomu požiadavku), so the sentence is a confusing example of the possessive.'
+- text: "Nenašiel som žiadne peniaze v mojom vrecku."
+  reason: 'Slovak uses the reflexive possessive when the owner is the subject: "vo svojom vrecku", not "v mojom vrecku".'
+- text: "Netušili, čo to znamená a čoskoro sa dostali do úzkych."
+  reason: 'A comma is missing after the clause "čo to znamená".'
+- text: "Neviem ako to opraviť."
+  reason: 'A comma is missing before the clause "ako to opraviť".'
+- text: "Nás i seba samého."
+  reason: "A fragment without a verb; it cannot be understood without its context."
+- text: "Náš osud závisí na našich rozhodnutiach."
+  reason: 'Wrong case government: Slovak says "závisieť od" with the genitive, not "závisieť na".'
+- text: "Povedz komukoľvek kto príde, že som vonku."
+  reason: 'A comma is missing before the clause "kto príde".'
+- text: "Pozriem kedy prichádza vlak."
+  reason: 'A comma is missing before the clause "kedy prichádza vlak".'
+- text: "Pracuješ omnoho viac, než ja."
+  reason: 'A comma that does not belong there, before "než ja".'
+- text: "Prišli ste tu sami?"
+  reason: 'Nonstandard: with a verb of motion Slovak says "sem", not "tu".'
+- text: "Príliš náročnú po sexuálnej stránke."
+  reason: "A fragment without a verb, on a sexual topic."
+- text: "Príďte kedykoľvek budete chcieť."
+  reason: 'A comma is missing before the clause "kedykoľvek budete chcieť".'
+- text: "Sadol si a čítal kým jeho žena varila pri ohni."
+  reason: 'A comma is missing before the clause "kým jeho žena varila pri ohni".'
+- text: "Spôsob, ako kráča mi veľmi pripomína jeho otca."
+  reason: 'A comma is missing after the inserted clause "ako kráča".'
+- text: "Ta malá komunita má nový jazyk."
+  reason: 'A typo in the source: "Ta" for "Tá"; the stage read it as the adverb "ta".'
+- text: "Tela zvierat sa skladajú z buniek."
+  reason: 'A typo in the source: "Tela" for "Telá"; the stage read it as a genitive singular.'
+- text: "To dievča do kuchyne!"
+  reason: "A command without a verb that needs its context; alone it reads as a put-down of a girl."
+- text: "Tá, ktorú som najviac miloval."
+  reason: 'The treebank labels "najviac" a numeral in the accusative; here it works as the adverb "the most", so the label would mislead a learner.'
+- text: "Táto komunita nasleduje svoje vlastné pravidlá."
+  reason: '"nasledovať pravidlá" copies the English "follow rules"; Slovak says "riadiť sa pravidlami" or "dodržiavať pravidlá".'
+- text: "Viete koľko to stojí?"
+  reason: 'A comma is missing before the clause "koľko to stojí".'
+- text: "Viete čo toto znamená?"
+  reason: 'A comma is missing before the clause "čo toto znamená".'
+- text: "Vieš koľko to stojí?"
+  reason: 'A comma is missing before the clause "koľko to stojí".'
+- text: "Vieš koľko ľudí ročne zomrie na svete od hladu?"
+  reason: 'A comma is missing before the clause "koľko ľudí ročne zomrie".'
+- text: "Vieš čo toto znamená?"
+  reason: 'A comma is missing before the clause "čo toto znamená".'
+- text: "Vláda bude nasledovať tieto trendy."
+  reason: '"nasledovať trendy": the verb is used as in English "follow trends"; Slovak says "sledovať trendy".'
+- text: "Všetky dobré veci prichádzajú v troch."
+  reason: 'Not Slovak: a word for word copy of the English proverb (the Slovak saying is "Do tretice všetko dobré").'
+- text: "Zdvihol pohár a obrátil ho do seba."
+  reason: 'The treebank labels "ho" a neuter; it stands for "pohár", a masculine noun, so the label would mislead a learner.'
+- text: "Záleží to od súvislostí."
+  reason: 'Colloquial case government: the standard is "záleží na" with the locative, or "závisí od".'
+- text: "Čakal som hodinu aj pol."
+  reason: 'Unusual wording: Slovak says "hodinu a pol".'
+- text: "Čakala som hodinu aj pol."
+  reason: 'Unusual wording: Slovak says "hodinu a pol".'
+- text: "Človeku nemožno žiť bez soli."
+  reason: 'Stiff, translated Slovak: a dative with "nemožno" ("Človeku nemožno žiť") is not how Slovak says it.'
+- text: "Človeku nemožno žiť bez vody."
+  reason: 'Stiff, translated Slovak: a dative with "nemožno" ("Človeku nemožno žiť") is not how Slovak says it.'
+- text: "Človeku nemožno žiť bez vzduchu."
+  reason: 'Stiff, translated Slovak: a dative with "nemožno" ("Človeku nemožno žiť") is not how Slovak says it.'
+- text: "Čo sa však nestalo!"
+  reason: "A rhetorical exclamation: the negated verb means that something did happen, which confuses a learner."
+- text: "Ľuďom nemožno žiť bez vody."
+  reason: 'Stiff, translated Slovak: a dative with "nemožno" ("Ľuďom nemožno žiť") is not how Slovak says it.'
+- text: "Žiadna správa je dobrá správa."
+  reason: 'A word for word copy of the English proverb; Slovak says it without "je".'

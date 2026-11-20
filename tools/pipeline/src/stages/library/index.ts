@@ -2,7 +2,12 @@
 // authored texts in content/authored/library/, splits each with the tokenizer of
 // packages/ling, checks that every word is a known form of the morphology, counts tokens and
 // lemmas, and measures the vocabulary profile: in an A2 text at least 90 % of the words lie
-// within the 2,000 most common lemmas. The analysis stays empty until I2 runs the analyzer.
+// within the 2,000 most common lemmas.
+//
+// The word by word analysis of a text comes from the `analysis` stage, which runs the analyzer
+// of apps/api and keeps its results in content/generated/library-analysis.jsonl (in git). A
+// row of library.jsonl carries the analysis made for its current body; a text without one
+// keeps the empty analysis, and the app analyses it on first use.
 //
 // A second model pass (`content.review`) reads each text; its answers live in
 // content/generated/library-reviews.jsonl (in git), and each row of library.jsonl is marked
@@ -13,8 +18,9 @@
 //   pnpm run pipeline library --fill dry-run   + request count and cost of the missing reviews
 //   pnpm run pipeline library --fill live      + sends them (refuses above $5 without --max-spend)
 //   pnpm run pipeline library --fill mock      + scripted reviews, kept in the build folder
+//   pnpm run pipeline library --fill offline   + reviews written outside the API
 import { join } from 'node:path';
-import type { LibraryRow } from '@app/contracts';
+import { type LibraryRow, TextAnalysisSchema } from '@app/contracts';
 import {
   existsSync,
   JsonlWriter,
@@ -25,9 +31,10 @@ import {
 } from '../../lib/files';
 import { codeDirOf, resolveArg, type Stage, type StageContext } from '../../lib/runner';
 import type { Check } from '../../lib/validate';
-import { FILL_OPTIONS, fillModeOf, runOptionsOf } from '../../model/options';
+import { FILL_OPTIONS, fillAlwaysRuns, fillModeOf, runOptionsOf } from '../../model/options';
 import { formatUsd } from '../../model/pricing';
-import { type BatchJob, DEFAULT_MODEL, runBatch } from '../../model/runner';
+import { type BatchJob, runBatch } from '../../model/runner';
+import { analysisPath, type LibraryAnalysis, readAnalyses } from './analysis';
 import { type AuthoredText, LIBRARY_LEVELS, readAuthoredTexts } from './authored';
 import { REVIEW_PROMPT_VERSION, type ReviewAnswer, type ReviewInput, reviewTask } from './review';
 import { setVocabulary } from './setvocab';
@@ -38,6 +45,7 @@ import {
   type LemmaInfo,
   profileText,
   type TextProfile,
+  wordsOf,
 } from './vocab';
 
 /** The starter library: twelve texts of 150 to 400 words. */
@@ -74,6 +82,11 @@ export type ReviewMark =
     }
   | { status: 'unreviewed' };
 
+/** How the report shows the analysis of a text. */
+export type AnalysisMark =
+  | { status: 'analysed'; words: number; byModel: number; model: string; mock?: true }
+  | { status: 'none' };
+
 export type LibraryOutRow = LibraryRow & { review: ReviewMark };
 
 const out = (ctx: StageContext, f: string) => join(ctx.paths.build, 'library', f);
@@ -106,6 +119,17 @@ export async function readReviews(path: string): Promise<LibraryReview[]> {
   if (!existsSync(path)) return rows;
   for await (const r of readJsonl<LibraryReview>(path)) rows.push(r);
   return rows;
+}
+
+export function analysisMark(a: LibraryAnalysis | undefined): AnalysisMark {
+  if (!a) return { status: 'none' };
+  return {
+    status: 'analysed',
+    words: a.tokenCount,
+    byModel: a.methods.model,
+    model: a.model,
+    ...(a.mock ? { mock: true as const } : {}),
+  };
 }
 
 export function reviewMark(review: LibraryReview | undefined): ReviewMark {
@@ -193,7 +217,7 @@ export async function runLibrary(ctx: StageContext): Promise<Record<string, unkn
   };
   const pending = texts.filter((t) => !current(t));
   let fill: Record<string, unknown> = { mode, pending: pending.length };
-  const options = runOptionsOf(ctx);
+  const options = runOptionsOf(ctx, 'library');
   if (options && pending.length > 0 && problems.length === 0) {
     const jobs: BatchJob<ReviewInput>[] = pending.map((t) => ({
       id: t.id,
@@ -209,7 +233,7 @@ export async function runLibrary(ctx: StageContext): Promise<Record<string, unkn
         problems: r.output.problems,
         route: reviewTask.route,
         promptVersion: REVIEW_PROMPT_VERSION,
-        model: reviewTask.model ?? DEFAULT_MODEL,
+        model: r.model,
         requestHash: r.hash,
         ...(mode === 'mock' ? { mock: true as const } : {}),
       });
@@ -237,19 +261,32 @@ export async function runLibrary(ctx: StageContext): Promise<Record<string, unkn
     );
   }
 
-  const rows: LibraryOutRow[] = texts.map((t) => ({
-    id: t.id,
-    title: t.title,
-    body: t.body,
-    level: t.level,
-    source: t.source,
-    license: t.license,
-    ord: t.ord,
-    review: reviewMark(current(t)),
-  }));
+  // Analyses: a row is used only for the body it was made for.
+  const analyses = new Map<string, LibraryAnalysis>();
+  for (const a of await readAnalyses(analysisPath(ctx))) analyses.set(a.id, a);
+  const analysed = (t: AuthoredText) => {
+    const a = analyses.get(t.id);
+    return a && a.bodyHash === bodyHash(t.body) ? a : undefined;
+  };
+
+  const rows: LibraryOutRow[] = texts.map((t) => {
+    const a = analysed(t);
+    return {
+      id: t.id,
+      title: t.title,
+      body: t.body,
+      level: t.level,
+      ...(a ? { analysis: a.analysis, lemmaCounts: a.lemmaCounts } : {}),
+      source: t.source,
+      license: t.license,
+      ord: t.ord,
+      review: reviewMark(current(t)),
+    };
+  });
   const summary = {
     texts: texts.length,
     reviewed: rows.filter((r) => r.review.status === 'reviewed').length,
+    analysed: texts.filter((t) => analysed(t)).length,
     problems,
     fill,
     profiles: texts.map((t) => {
@@ -267,6 +304,7 @@ export async function runLibrary(ctx: StageContext): Promise<Record<string, unkn
         unknown: p.unknown,
         outside: p.outside,
         review: (rows.find((r) => r.id === t.id) as LibraryOutRow).review,
+        analysis: analysisMark(analysed(t)),
       };
     }),
   };
@@ -280,14 +318,15 @@ export async function runLibrary(ctx: StageContext): Promise<Record<string, unkn
   for (const r of rows) await w.write(r);
   await w.close();
   ctx.log(
-    `library: ${rows.length} texts, ${summary.reviewed} reviewed; ${summary.profiles.map((p) => `${p.id} ${p.level} ${p.words} words ${pct(p.share)}`).join(', ')}`,
+    `library: ${rows.length} texts, ${summary.reviewed} reviewed, ${summary.analysed} analysed; ${summary.profiles.map((p) => `${p.id} ${p.level} ${p.words} words ${pct(p.share)}`).join(', ')}`,
   );
-  return { texts: summary.texts, reviewed: summary.reviewed, fill };
+  return { texts: summary.texts, reviewed: summary.reviewed, analysed: summary.analysed, fill };
 }
 
 type Summary = {
   texts: number;
   reviewed: number;
+  analysed: number;
   problems: string[];
   fill: Record<string, unknown>;
   profiles: {
@@ -303,6 +342,7 @@ type Summary = {
     unknown: string[];
     outside: { word: string; lemma: string; rank: number | null }[];
     review: ReviewMark;
+    analysis: AnalysisMark;
   }[];
 };
 
@@ -310,13 +350,13 @@ function renderReport(s: Summary): string {
   const lines = [
     '# Library report',
     '',
-    `${s.texts} texts, ${s.reviewed} reviewed by a second model pass. Share: word tokens whose lemma ranks within the ${A2_WITHIN_RANK} most common, among the known words that are not only a proper name; an A2 text needs ${pct(A2_MIN_SHARE)}.`,
+    `${s.texts} texts, ${s.reviewed} reviewed by a second model pass, ${s.analysed} with a word by word analysis of their current body (the \`analysis\` stage makes it). Share: word tokens whose lemma ranks within the ${A2_WITHIN_RANK} most common, among the known words that are not only a proper name; an A2 text needs ${pct(A2_MIN_SHARE)}.`,
     '',
-    '| Id | Title | Level | Words | Lemmas | Names | Within | Share | Review |',
-    '|---|---|---|---:|---:|---:|---:|---:|---|',
+    '| Id | Title | Level | Words | Lemmas | Names | Within | Share | Review | Analysis |',
+    '|---|---|---|---:|---:|---:|---:|---:|---|---|',
     ...s.profiles.map(
       (p) =>
-        `| ${p.id} | ${p.title} | ${p.level} | ${p.words} | ${p.lemmas} | ${p.names} | ${p.within}/${p.counted} | ${pct(p.share)} | ${p.review.status === 'reviewed' ? `${p.review.verdict}${p.review.mock ? ' (mock)' : ''}, ${p.review.problems} problems` : 'unreviewed'} |`,
+        `| ${p.id} | ${p.title} | ${p.level} | ${p.words} | ${p.lemmas} | ${p.names} | ${p.within}/${p.counted} | ${pct(p.share)} | ${p.review.status === 'reviewed' ? `${p.review.verdict}${p.review.mock ? ' (mock)' : ''}, ${p.review.problems} problems` : 'unreviewed'} | ${p.analysis.status === 'analysed' ? `${p.analysis.words} words${p.analysis.mock ? ' (mock)' : ''}, ${p.analysis.byModel} chosen by ${p.analysis.model}` : 'none'} |`,
     ),
     '',
   ];
@@ -410,23 +450,122 @@ export const libraryVocabularyCheck: Check = {
   },
 };
 
+/**
+ * The word by word analysis of a text fits its body and the morphology of the set: spans in
+ * order and inside the text, one word token per word, lemma counts that match the tokens, and
+ * every reading a form of its lemma with its tag.
+ */
+export const libraryAnalysisCheck: Check = {
+  id: 'library.analysis',
+  description:
+    'The analysis of a library text fits its body (spans, word tokens, lemma counts), and every reading is a form of its lemma with its tag; no reading is a guess',
+  async run(ctx) {
+    if (!ctx.has('library.jsonl')) return;
+    const { index, lemmas } = await setVocabulary(ctx);
+    const without: string[] = [];
+    for await (const { n, row } of ctx.raw('library.jsonl')) {
+      const w = `library.jsonl:${n} (${String(row.id)})`;
+      if (row.analysis === undefined) {
+        without.push(String(row.id));
+        continue;
+      }
+      const parsed = TextAnalysisSchema.safeParse(row.analysis);
+      if (!parsed.success) continue; // the schema check reports the row
+      const a = parsed.data;
+      const body = String(row.body ?? '');
+      const counts = new Map<string, number>();
+      let words = 0;
+      let guesses = 0;
+      let end = 0;
+      let spans = true;
+      for (const [i, s] of a.sentences.entries()) {
+        if (s.s < end || s.e <= s.s || s.e > body.length) {
+          ctx.issue(
+            `${w}: sentence ${i + 1} spans ${s.s} to ${s.e}, out of order or outside the text`,
+          );
+          spans = false;
+          break;
+        }
+        end = s.e;
+        let at = s.s;
+        for (const t of s.tokens) {
+          if (t.s < at || t.e <= t.s || t.e > s.e) {
+            ctx.issue(
+              `${w}: a token of sentence ${i + 1} spans ${t.s} to ${t.e}, out of order or outside its sentence`,
+            );
+            spans = false;
+            break;
+          }
+          at = t.e;
+          if (t.t !== 'word') continue;
+          words++;
+          if (t.l === undefined) continue;
+          const word = body.slice(t.s, t.e);
+          counts.set(String(t.l), (counts.get(String(t.l)) ?? 0) + 1);
+          if (t.m === 'guess') guesses++;
+          const name = lemmas.get(t.l)?.lemma ?? a.lemmas[String(t.l)]?.lemma ?? '?';
+          if (!a.lemmas[String(t.l)])
+            ctx.issue(`${w}: "${word}" points at lemma ${t.l}, which the analysis does not list`);
+          const tags = index.tagsOf(word, t.l);
+          if (!tags) ctx.issue(`${w}: "${word}" is no form of lemma ${t.l} (${name})`);
+          else if (t.tag === undefined ? tags.size > 0 : !tags.has(t.tag))
+            ctx.issue(
+              `${w}: "${word}" as a form of ${name} is ${[...tags].join(' ') || 'without a tag'}, not ${t.tag ?? 'without a tag'}`,
+            );
+        }
+        if (!spans) break;
+      }
+      if (!spans) continue;
+      const inBody = wordsOf(body).length;
+      if (words !== inBody)
+        ctx.issue(`${w}: the analysis has ${words} word tokens, the text has ${inBody} words`);
+      const given = (row.lemmaCounts ?? {}) as Record<string, unknown>;
+      const same =
+        Object.keys(given).length === counts.size &&
+        [...counts].every(([id, c]) => given[id] === c);
+      if (!same) ctx.issue(`${w}: lemmaCounts does not match the word tokens of the analysis`);
+      if (guesses > 0)
+        target(
+          ctx,
+          `${w}: ${guesses} words carry a guessed reading; run the analysis stage until no request is open`,
+        );
+      const bare = Object.values(a.lemmas).filter((l) => l.gloss.length === 0);
+      if (bare.length > 0)
+        ctx.warn(
+          `${w}: ${bare.length} lemmas have no gloss: ${bare
+            .slice(0, 10)
+            .map((l) => l.lemma)
+            .join(', ')}`,
+        );
+    }
+    if (without.length > 0)
+      ctx.warn(
+        `${without.length} texts have no analysis of their current body (the app analyses them on first use): ${without.join(', ')}`,
+      );
+  },
+};
+
 export const libraryStage: Stage = {
   name: 'library',
   description:
     'Graded starter texts: known forms, vocabulary profile, a review pass (content.review)',
   codeDir: codeDirOf(import.meta.url),
-  options: { ...FILL_OPTIONS, reviews: { type: 'string' } },
+  options: { ...FILL_OPTIONS, reviews: { type: 'string' }, analysis: { type: 'string' } },
   // The reviews file is an input that a fill also writes; the runner fingerprints it after
   // the run, so a run that added reviews is skipped next time.
-  inputs: (ctx) => [libraryDir(ctx), ...Object.values(inputsOf(ctx)), reviewsPath(ctx)],
+  inputs: (ctx) => [
+    libraryDir(ctx),
+    ...Object.values(inputsOf(ctx)),
+    reviewsPath(ctx),
+    analysisPath(ctx),
+  ],
   outputs: (ctx) => ['library.jsonl', 'report.md', 'report.json'].map((f) => out(ctx, f)),
   params: (ctx) => ({
     fill: fillModeOf(ctx),
     maxSpend: ctx.args['max-spend'] ?? null,
-    at:
-      fillModeOf(ctx) === 'dry-run' || fillModeOf(ctx) === 'live' ? ctx.now().toISOString() : null,
+    at: fillAlwaysRuns(ctx) ? ctx.now().toISOString() : null,
   }),
   run: runLibrary,
   parts: [{ file: 'library.jsonl', path: (p) => join(p.build, 'library', 'library.jsonl') }],
-  checks: [libraryTextsCheck, libraryVocabularyCheck],
+  checks: [libraryTextsCheck, libraryVocabularyCheck, libraryAnalysisCheck],
 };

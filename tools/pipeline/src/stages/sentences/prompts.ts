@@ -19,7 +19,7 @@ export const SENTENCE_GROUP_SIZE = 40;
 export const REVIEW_GROUP_SIZE = 40;
 export const TRANSLATE_GROUP_SIZE = 25;
 
-const CASE_NAMES: Record<string, string> = {
+export const CASE_NAMES: Record<string, string> = {
   nom: 'nominative',
   gen: 'genitive',
   dat: 'dative',
@@ -28,7 +28,7 @@ const CASE_NAMES: Record<string, string> = {
   loc: 'locative',
   ins: 'instrumental',
 };
-const GENDER_NAMES: Record<string, string> = {
+export const GENDER_NAMES: Record<string, string> = {
   m_anim: 'masculine animate',
   m_inan: 'masculine inanimate',
   f: 'feminine',
@@ -56,7 +56,13 @@ export function describeTag(tag: string): string {
   // Verb: SNK letters after `v:` — form, aspect, then number and person (K, B, M) or
   // number, person and gender (L); a final + or - is the polarity.
   const d = p.detail;
-  const parts = [VERB_FORMS[d[0] as string] ?? 'verb form'];
+  // A perfective verb (aspect letter d) has no present: its present forms mean the future
+  // (oceníte: you will appreciate).
+  const parts = [
+    d.startsWith('Kd')
+      ? 'present form of a perfective verb (future meaning)'
+      : (VERB_FORMS[d[0] as string] ?? 'verb form'),
+  ];
   const rest = d.slice(2);
   if (/^[KBM]/u.test(d)) {
     if (NUMBERS[rest[0] as string])

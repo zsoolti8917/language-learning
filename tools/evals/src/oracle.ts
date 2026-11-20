@@ -106,12 +106,17 @@ function disambiguateAnswer(
     return { data: { picks: [] } };
   }
   const picks: { w: number; c: number }[] = [];
+  // A word that stands in a sentence more than once is asked once for each place, in order.
+  const places = new Map<string, number>();
   for (const item of input.words) {
     const context = input.contexts[item.context] ?? '';
     const sentence = [...gold.values()].find(
       (g) => context.includes(g.text) || g.text.includes(context),
     );
-    const w = sentence?.words.find((x) => x.form === item.word);
+    const place = places.get(`${item.context}|${item.word}`) ?? 0;
+    places.set(`${item.context}|${item.word}`, place + 1);
+    const same = sentence?.words.filter((x) => x.form === item.word) ?? [];
+    const w = same[place] ?? same[0];
     let c = 0;
     if (w) {
       // The gold reading: lemma (by the scoring's conventions) and case, else the case, else
