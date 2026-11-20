@@ -718,6 +718,7 @@
 {"id":78088,"key":"sneh|noun|m_inan|1","lemma":"sneh","pos":"noun","gender":"m_inan","pattern":"dub"}
 {"id":78097,"key":"snežiť|verb||1","lemma":"snežiť","pos":"verb","aspect":"ipf"}
 {"id":78147,"key":"sobota|noun|f|1","lemma":"sobota","pos":"noun","gender":"f","pattern":"zena"}
+{"id":78149,"key":"sobotný|adj||1","lemma":"sobotný","pos":"adj","pattern":"pekny"}
 {"id":78262,"key":"soliť|verb||1","lemma":"soliť","pos":"verb","aspect":"ipf"}
 {"id":78373,"key":"soľ|noun|f|1","lemma":"soľ","pos":"noun","gender":"f","pattern":"kost"}
 {"id":78437,"key":"spať|verb||1","lemma":"spať","pos":"verb","aspect":"ipf"}
