@@ -11,6 +11,8 @@
 //    the same rules, then by a second model pass (`content.review`).
 // Model output lives in content/generated/sentences.jsonl (in git), so a rebuild needs no
 // model call; mock fills go to the build folder.
+// Two lists of an editor apply to the real sentences: content/authored/sentences/excluded.yaml
+// (sentences left out) and translations.yaml (the English shown instead of the source's).
 //
 //   pnpm run pipeline sentences                    harvest + what was generated before
 //   pnpm run pipeline sentences --fill dry-run     + request count and cost of the fill
@@ -42,6 +44,7 @@ import {
   SpendLimitError,
 } from '../../model/runner';
 import { type Analysis, analyse } from './analyze';
+import { correctedPath, readCorrected } from './corrected';
 import { excludedPath, readExcluded } from './excluded';
 import {
   type HarvestedSentence,
@@ -269,6 +272,14 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
   // Sentences a reader found wrong (content/authored/sentences/excluded.yaml) are left out.
   const excluded = await readExcluded(excludedPath(ctx.paths));
   const excludedSeen = new Set<string>();
+  // English an editor corrected (content/authored/sentences/translations.yaml) replaces the
+  // translation of the source in the rows.
+  const corrected = await readCorrected(correctedPath(ctx.paths));
+  for (const text of corrected.keys())
+    if (excluded.has(text))
+      throw new Error(
+        `sentences: "${text}" is in excluded.yaml and in translations.yaml; keep it in one`,
+      );
   for (const s of [...tatoeba, ...ud]) {
     harvested.set(s.id, s);
     if (excluded.has(s.textSk.normalize('NFC'))) {
@@ -610,13 +621,19 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
   const w = await JsonlWriter.open(out(ctx, 'sentences.jsonl'));
   const perSource: Record<string, number> = { tatoeba: 0, ud: 0, generated: 0 };
   const shown = new Map<number, number>();
+  let correctedRows = 0;
   for (const id of [...bySentence.keys()].sort()) {
     const k = (kept.get(id) ?? genKept.get(id)) as Kept;
     const links = (bySentence.get(id) ?? []).sort(
       (a, b) => a.target.tokenIndex - b.target.tokenIndex || a.lemmaId - b.lemmaId,
     );
-    const textEn = k.source === 'ud' ? translations.get(id)?.textEn : k.textEn;
-    if (!textEn) continue;
+    const sourceEn = k.source === 'ud' ? translations.get(id)?.textEn : k.textEn;
+    if (!sourceEn) continue;
+    // A written sentence with a wrong translation is removed from the generated file instead.
+    const own =
+      k.source === 'generated' ? undefined : corrected.get(k.analysis.text.normalize('NFC'));
+    if (own !== undefined) correctedRows++;
+    const textEn = own ?? sourceEn;
     const row: SentenceRow = {
       id,
       textSk: k.analysis.text,
@@ -674,6 +691,7 @@ export async function runSentences(ctx: StageContext): Promise<Record<string, un
     rejected: Object.fromEntries(REJECTIONS.map((r) => [r, rejected.get(r) ?? 0])),
     withoutTarget: noTarget,
     excluded: excludedSeen.size,
+    corrected: correctedRows,
     kept: {
       tatoeba: [...kept.values()].filter((k) => k.source === 'tatoeba').length,
       ud: [...kept.values()].filter((k) => k.source === 'ud').length,
@@ -706,6 +724,7 @@ function renderReport(
     rejected: Record<string, number>;
     withoutTarget: number;
     excluded: number;
+    corrected: number;
     kept: { tatoeba: number; ud: number };
     translations: number;
     generated: number;
@@ -741,7 +760,9 @@ function renderReport(
     '',
     `Rows written: ${s.rows} (${Object.entries(s.perSource)
       .map(([k, v]) => `${k} ${v}`)
-      .join(', ')}).`,
+      .join(
+        ', ',
+      )}).${s.corrected > 0 ? ` ${s.corrected} of them show the English of content/authored/sentences/translations.yaml.` : ''}`,
     '',
     `| Top | Lemmas | ${MIN_PER_LEMMA}+ sentences | One | None |`,
     '|---:|---:|---:|---:|---:|',
@@ -901,6 +922,7 @@ export const sentencesStage: Stage = {
       sensesPath(ctx),
       generatedPath(ctx),
       ...(existsSync(excludedPath(ctx.paths)) ? [excludedPath(ctx.paths)] : []),
+      ...(existsSync(correctedPath(ctx.paths)) ? [correctedPath(ctx.paths)] : []),
     ];
   },
   outputs: (ctx) => ['sentences.jsonl', 'report.md', 'report.json'].map((f) => out(ctx, f)),

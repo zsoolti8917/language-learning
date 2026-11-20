@@ -36,6 +36,8 @@ const NAMES: ReadonlySet<string> = new Set(['Tom']);
 
 const UPPER = /^\p{Lu}/u;
 const LOWER = /^\p{Ll}/u;
+/** Two or more letters, all of them capitals. */
+const ABBREVIATION = /^\p{Lu}{2,}$/u;
 
 export class Lexicon {
   readonly lemmas = new Map<number, LexLemma>();
@@ -66,10 +68,13 @@ export class Lexicon {
    * The readings of a word as written. A capitalised word inside a sentence is a name and
    * matches only forms written with a capital (so *Tom* is not *tom*, a form of *ten*); a
    * small letter matches only forms written small; the first word of a sentence matches both.
+   * A word of several letters, all capitals, is an abbreviation and matches only a form
+   * written the same way (so *DNA* is not *dna*, a form of *dno*).
    */
   readings(word: string, initial: boolean): Reading[] {
     if (initial && NAMES.has(word)) return [];
     const all = this.byLower.get(word.toLowerCase()) ?? [];
+    if (ABBREVIATION.test(word)) return all.filter((r) => r.form === word);
     if (LOWER.test(word)) return all.filter((r) => !UPPER.test(r.form));
     if (!initial && UPPER.test(word)) return all.filter((r) => UPPER.test(r.form));
     return all;
