@@ -183,11 +183,21 @@ function walkPhrase(
       continue;
     }
     const w = s.words[j];
-    const top = w?.options[0];
-    if (!w || !top) break;
-    if (w.options.every(isAdverb)) continue;
+    if (!w) break;
+    // Right after a preposition jeho, jej, ich are the possessives: the personal pronoun has
+    // its own forms there (od neho, v nej, pre nich). Later in the phrase they can be an
+    // object again (po ktorej ich viedol).
+    const possessive =
+      opts.preposition === true &&
+      j === start &&
+      w.options.some(isPersonal) &&
+      w.options.some(isModifier);
+    const readings = possessive ? w.options.filter((o) => !isPersonal(o)) : w.options;
+    const top = readings[0];
+    if (!top) break;
+    if (readings.every(isAdverb)) continue;
     const ofTop = (list: Option[]) => list.some((o) => o.lemmaId === top.lemmaId);
-    let candidates = w.options.filter((o) => isNominal(o) && ok(o));
+    let candidates = readings.filter((o) => isNominal(o) && ok(o));
     if (!ofTop(candidates)) break;
     // A quantity word keeps its own form after a modifier (za posledných päť rokov).
     const quantity = isQuantityWord(w);
@@ -196,8 +206,6 @@ function walkPhrase(
       candidates = candidates.filter((o) => before.some((m) => agree(m, o)));
       if (!ofTop(candidates)) break;
     }
-    if (opts.preposition && candidates.some(isPersonal) && candidates.some(isModifier))
-      candidates = candidates.filter((o) => !isPersonal(o));
     // A number counts no pronoun (roku 1939 ich porazili).
     if (opts.counted && candidates.some(isPersonal)) break;
     const keep = new Set(candidates);

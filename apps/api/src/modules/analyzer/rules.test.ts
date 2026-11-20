@@ -284,6 +284,27 @@ describe('pronouns', () => {
     expect(after(feeling, 'pocit')).toEqual(['pocit s1', 'pocit s4']);
   });
 
+  it('jej after a preposition is possessive also where the personal pronoun has no such case', () => {
+    // The most frequent lemma of jej is ona, which has no locative jej: after a preposition
+    // the personal pronoun would be nej.
+    const s = sentence(
+      ['v', r('v', 'prep')],
+      ['jej', r('ona', 'pron', 's2f s3f'), r('jej', 'pron', 's1f s2f s3f s4f s6f s1n')],
+      ['kuchyni', r('kuchyňa', 'noun', 's3 s6', 'f')],
+    );
+    expect(after(s, 'jej')).toEqual(['jej s6f']);
+    expect(after(s, 'kuchyni')).toEqual(['kuchyňa s6']);
+
+    // Later in the phrase it can be the object: po ktorej ich viedol.
+    const led = sentence(
+      ['po', r('po', 'prep')],
+      ['ktorej', r('ktorý', 'pron', 's2f s3f s6f')],
+      ['ich', r('on', 'pron', 'p2m p4m'), r('ich', 'pron', 's1f s4f s6f p4m')],
+      ['viedol', r('viesť', 'verb', 'v:Lescm+')],
+    );
+    expect(after(led, 'ich')).toHaveLength(6);
+  });
+
   it('ktorý after a comma opens a clause and describes no noun', () => {
     const s = sentence(
       ['model', r('model', 'noun', 's1 s4', 'm_inan')],

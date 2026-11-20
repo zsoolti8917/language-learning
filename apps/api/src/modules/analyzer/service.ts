@@ -166,10 +166,13 @@ export async function analyzeText(
     phrases.push(applyRules(s, triggers));
   }
 
-  // 4. Words left open go to the model; identical words in identical contexts are asked once.
+  // 4. Words left open go to the model. A sentence that stands in the text more than once is
+  // asked once. A word that stands in one sentence more than once is asked for each place, in
+  // the order of the sentence: the places can need different readings (viac ciest, viac ľudí).
   const open = new Map<string, { item: OpenWord; words: Word[] }>();
   for (const s of sentences) {
     const sentenceText = body.slice(s.s, s.e);
+    const places = new Map<string, number>();
     s.words.forEach((w, i) => {
       if (!w || w.options.length === 0) return;
       if (w.initial === 1) w.method = 'single';
@@ -181,11 +184,14 @@ export async function analyzeText(
           context: contextOf(sentenceText, t.s - s.s, t.e - s.s),
           options: w.options,
         };
-        const key = JSON.stringify([
+        const same = JSON.stringify([
           item.context,
           item.word,
           w.options.map((o) => `${o.lemmaId}|${o.tag ?? ''}`),
         ]);
+        const place = places.get(same) ?? 0;
+        places.set(same, place + 1);
+        const key = `${place}:${same}`;
         const entry = open.get(key) ?? { item, words: [] };
         entry.words.push(w);
         open.set(key, entry);

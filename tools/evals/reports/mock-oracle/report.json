@@ -289,14 +289,14 @@
       "value": 0.9909889614778103
     },
     "caseAccuracy": {
-      "n": 2127,
+      "n": 2128,
       "of": 2150,
-      "value": 0.9893023255813953
+      "value": 0.9897674418604652
     },
     "caseAccuracyAll": {
-      "n": 2127,
+      "n": 2128,
       "of": 2261,
-      "value": 0.940734188412207
+      "value": 0.9411764705882353
     },
     "byMethod": [
       {
@@ -315,30 +315,30 @@
       },
       {
         "method": "rule",
-        "words": 901,
+        "words": 906,
         "lemma": {
-          "n": 895,
-          "of": 901,
-          "value": 0.9933407325194229
+          "n": 900,
+          "of": 906,
+          "value": 0.9933774834437086
         },
         "case": {
-          "n": 495,
-          "of": 497,
-          "value": 0.9959758551307847
+          "n": 497,
+          "of": 499,
+          "value": 0.9959919839679359
         }
       },
       {
         "method": "model",
-        "words": 2576,
+        "words": 2571,
         "lemma": {
-          "n": 2560,
-          "of": 2576,
-          "value": 0.9937888198757764
+          "n": 2555,
+          "of": 2571,
+          "value": 0.9937767405678725
         },
         "case": {
-          "n": 1254,
-          "of": 1261,
-          "value": 0.9944488501189532
+          "n": 1253,
+          "of": 1259,
+          "value": 0.9952343129467831
         }
       },
       {
@@ -384,9 +384,9 @@
       {
         "key": "acc",
         "case": {
-          "n": 551,
+          "n": 552,
           "of": 553,
-          "value": 0.9963833634719711
+          "value": 0.9981916817359855
         }
       },
       {
@@ -427,11 +427,6 @@
       },
       {
         "gold": "acc",
-        "chosen": "nom",
-        "n": 1
-      },
-      {
-        "gold": "acc",
         "chosen": "gen",
         "n": 1
       },
@@ -464,6 +459,11 @@
         "gold": "nom",
         "chosen": "dat",
         "n": 1
+      },
+      {
+        "gold": "nom",
+        "chosen": "acc",
+        "n": 1
       }
     ]
   },
@@ -471,12 +471,12 @@
     {
       "route": "reader.disambiguate",
       "model": "claude-opus-5-5",
-      "calls": 69,
+      "calls": 70,
       "cached": 0,
       "estimated": 0,
       "failed": 0,
-      "inputTokens": 322223,
-      "outputTokens": 9555,
+      "inputTokens": 330875,
+      "outputTokens": 9703,
       "cacheReadTokens": 0,
       "cacheWriteTokens": 0,
       "costUsd": 0,
@@ -524,7 +524,7 @@
     }
   ],
   "totals": {
-    "calls": 1269,
+    "calls": 1270,
     "cached": 0,
     "costUsd": 0,
     "worstUsd": 0
@@ -554,9 +554,9 @@
       "name": "Analyzer case accuracy (words the data knows)",
       "target": "at least 95 %",
       "value": {
-        "n": 2127,
+        "n": 2128,
         "of": 2150,
-        "value": 0.9893023255813953
+        "value": 0.9897674418604652
       },
       "met": true
     }
