@@ -178,6 +178,8 @@ export interface MatchLemma {
 export interface MatchResult {
   /** lemma id → senses (at most MAX_SENSES), from all matching entries in file order. */
   senses: Map<number, Sense[]>;
+  /** lemma id → every usable sense of the matching entries, also those past MAX_SENSES. */
+  all: Map<number, Sense[]>;
   /** lemma id → how it matched */
   how: Map<number, 'exact' | 'loose'>;
 }
@@ -207,6 +209,7 @@ export function matchEntries(
       nounGenders.set(l.lemma, s);
     }
   const senses = new Map<number, Sense[]>();
+  const all = new Map<number, Sense[]>();
   const how = new Map<number, 'exact' | 'loose'>();
   const add = (id: number, list: DictEntry[], kind: 'exact' | 'loose') => {
     const out: Sense[] = [];
@@ -214,12 +217,13 @@ export function matchEntries(
     for (const e of list)
       for (const s of e.senses) {
         const k = s.glossEn.toLowerCase();
-        if (seen.has(k) || out.length >= MAX_SENSES) continue;
+        if (seen.has(k)) continue;
         seen.add(k);
         out.push(s);
       }
     if (out.length > 0) {
-      senses.set(id, out);
+      senses.set(id, out.slice(0, MAX_SENSES));
+      all.set(id, out);
       how.set(id, kind);
     }
   };
@@ -239,5 +243,5 @@ export function matchEntries(
     const loose = (byWord.get(l.lemma) ?? []).filter((e) => accept.has(e.pos));
     if (loose.length > 0) add(l.id, loose, 'loose');
   }
-  return { senses, how };
+  return { senses, all, how };
 }
